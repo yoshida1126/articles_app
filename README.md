@@ -1,24 +1,31 @@
-# README
+Articles 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+--概要--
+  記事投稿サイト
 
-Things you may want to cover:
+--使用技術--
+  Ruby 3.2.2
+  Ruby on Rails 7.0.4.3 
+  MySQL 8.1.0 
+  unicorn
+  RSpec 
 
-* Ruby version
+--機能一覧-- 
+  •ユーザー登録、ログイン機能(devise) 
+  •記事投稿機能(編集、削除含む) 
+  •いいね機能
+    人気記事一覧機能
+  •コメント機能
+  •フォロー機能
+  •ページネーション機能(kaminari) 
+  •検索機能
+  •リマインド機能
+  •ハッシュタグ機能
+  •興味のあるジャンルの登録機能
+  •記事一覧機能(おすすめ記事(登録しているジャンルに関する記事)、人気記事)
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+  --テスト-- 
+  •RSpec 
+    単体テスト(model) 
+    機能テスト(request) 
+    統合テスト(system) 
