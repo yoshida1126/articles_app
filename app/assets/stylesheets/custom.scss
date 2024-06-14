@@ -65,11 +65,18 @@ p {
     padding-top: 9px;
     font-weight: bold;
     &:hover {
-      color: white;
+      color: #fff;
       text-decoration: none; 
     }
 }
 
+.navbar-inverse .navbar-nav li a {
+  color: #fff;
+}
+
+.navbar-inverse .navbar-nav li a:hover {
+  color: $gray-darker;
+}
 /* footer */ 
 
 footer {
