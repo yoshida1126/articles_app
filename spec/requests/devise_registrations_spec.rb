@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe "Users", type: :request do 
 
     describe "#create" do 
@@ -15,6 +17,16 @@ RSpec.describe "Users", type: :request do
         it "登録後ホームページにリダイレクトされること" do 
           post sign_up_path, params: { user: valid_user_params } 
           expect(response).to redirect_to root_path 
+        end 
+
+        it "登録後ログイン状態であること" do 
+          post sign_up_path, params: { user: valid_user_params }
+          # Deviseを使っているとRSpec上でログイン状態を確かめるヘルパーメソッド
+          # がうまく使えないため登録したユーザーのプロフィールページにアクセスできるかど
+          # うかで確認する
+          user = User.last
+          get "/users/#{user.id}"
+          expect(response).to have_http_status :ok
         end 
       end 
 

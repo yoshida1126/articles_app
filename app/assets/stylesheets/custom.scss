@@ -76,12 +76,17 @@ p {
     }
 }
 
-.navbar-inverse .navbar-nav li a {
+#logo:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar-inverse .navbar-nav li a  {
   color: #fff;
 }
 
-.navbar-inverse .navbar-nav li a:hover {
-  color: $gray-darker;
+#dropdown-menu {
+  background-color: #acc0c5;
 }
 /* footer */ 
 
@@ -104,6 +109,19 @@ footer {
         margin-left: 15px; 
       }
     }
+}
+
+@media (max-width: 800px) {
+  footer {
+    ul {
+      float: none;
+      padding: 0; 
+      li {
+        float: none;
+        margin-left: 0; 
+      }
+    }
+  }
 }
 
 /* sidebar */ 
@@ -166,4 +184,14 @@ input {
   .form-control {
     color: $state-danger-text;
   }
+}
+
+.create_user {
+  margin-top: 20px;
+}
+
+/* Dropdown menu */ 
+
+.dropdown-menu.active { 
+  display: block;
 }
