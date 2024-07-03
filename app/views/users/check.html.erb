@@ -1,0 +1,14 @@
+<h1>本当に退会しますか？</h1> 
+<div class="row delete-confirm">
+  <div class="col-md-6 col-md-offset-3">
+    <p>
+      退会すると、プロフィールページが見れなくなり、<br>
+      これまでの記事も全て削除されてしまいます。<br>
+      退会する場合は、「退会する」をクリックしてください。
+    </p>
+    <%= link_to "退会しない", root_path, class: "btn btn-primary" %> 
+    <%= link_to "退会する", delete_path(@user),  class: "btn btn-primary delete-confirm-btn",
+                           data: { "turbo-method": :delete,
+                                   turbo_confirm: "本当に退会しますか？" } %> 
+  </div>
+</div>

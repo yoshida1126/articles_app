@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable 
+         :recoverable, :rememberable, :confirmable 
 
   before_save { self.email = email.downcase }
   
@@ -11,5 +11,25 @@ class User < ApplicationRecord
   validates :email, presence: true, length: { maximum: 255 }, 
                     format: { with: VALID_EMAIL_REGEX },
                     uniqueness: true
-  validates :password, presence: true, length: { minimum: 6 } 
+  validates :password, length: { minimum: 6 }, allow_nil: true
+
+  with_options presence: true do 
+    with_options on: :create do 
+      validates :password 
+      validates :password_confirmation  
+    end 
+  end 
+
+  def update_without_current_password(params, * options)
+    params.delete(:current_password) 
+
+    if params[:password].blank? && params[:password_confirmation].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation)
+    end 
+
+    result = update(params, *options) 
+    clean_up_passwords 
+    result 
+  end 
 end

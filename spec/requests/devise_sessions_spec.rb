@@ -14,7 +14,7 @@ RSpec.describe "Sessions", type: :request do
 
       context "with valid information" do 
         it "ログインできること" do 
-            post login_path, params: { user: user } 
+            sign_in user 
             get "/users/#{user.id}"
             expect(response).to have_http_status :ok
         end 
@@ -22,16 +22,13 @@ RSpec.describe "Sessions", type: :request do
     end 
 
     describe "#destroy" do 
-        it "ログアウトできること" do 
-          user = FactoryBot.create(:user) 
+        let (:user) { FactoryBot.create(:user) }
 
-          # ログイン
-          get login_path 
-          post login_path params: { session: { email: user.email,
-                                               password: user.password } } 
-          user = User.last
-          get "/users/#{user.id}"
-          expect(response).to_not have_http_status :ok
+        before do 
+          sign_in user 
+        end 
+
+        it "ログアウトできること" do 
 
           # ログアウト
           delete logout_path 

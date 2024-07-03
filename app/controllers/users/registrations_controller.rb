@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  # before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
+  before_action :configure_permitted_parameters, only: [:update]
+  before_action :authenticate_user!, only: [:edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy] 
+  before_action :logged_in_user, only: [:destroy]
 
   # GET /resource/sign_up
   # def new
@@ -25,9 +29,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # DELETE /resource
-  # def destroy
-  #   super
-  # end
+  def destroy
+    User.find(params[:id]).destroy 
+    flash[:notice] = "アカウントを削除しました。" 
+    redirect_to root_path, status: :see_other 
+  end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
@@ -38,12 +44,39 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
+
+  def update_resource(resource, params) 
+    if params[:password].present? && params[:password_confirmation].present? 
+      resource.update(params) 
+    else
+      resource.update_without_current_password(params) 
+    end
+  end 
+
+  def configure_permitted_parameters 
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name]) 
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
   end
+
+  def correct_user 
+    @user = User.find(params[:id]) 
+    unless @user == current_user 
+      flash[:alert] = "※他のユーザーのアカウント情報は編集出来ません。" 
+      redirect_to(root_url, status: :see_other)
+    end 
+  end 
+
+  def logged_in_user 
+    unless user_signed_in? 
+      flash[:alert] = "ログインしてください。" 
+      redirect_to login_url, status: :see_other 
+    end 
+  end 
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
@@ -52,7 +85,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   # def after_sign_up_path_for(resource)
-  #   super(resource)
+  #   super(resource) 
   # end
 
   # The path used after sign up for inactive accounts.
