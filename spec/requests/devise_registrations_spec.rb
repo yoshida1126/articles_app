@@ -5,6 +5,7 @@ RSpec.describe "Users", type: :request do
     describe "#create" do 
 
       let(:valid_user_params) { FactoryBot.attributes_for(:user) }
+      let!(:other_user) { FactoryBot.create(:other_user) }
 
       context "with valid information" do
         it "登録できること" do 
@@ -29,6 +30,23 @@ RSpec.describe "Users", type: :request do
           sign_in (user) 
           get "/users/#{user.id}"
           expect(response).to have_http_status :ok
+        end 
+
+        it "認証後でないとログインできないこと" do 
+          post sign_up_path, params: { user: valid_user_params }
+          user = User.last 
+          sign_in (user) 
+          expect(response).to_not have_http_status :ok
+        end 
+
+        it "認証後でないと登録したユーザーのプロフィールページにアクセスできないこと" do 
+          post sign_up_path, params: { user: valid_user_params }
+          user = User.last 
+          # 登録したユーザーのプロフィールページにアクセスするために他のユーザー
+          # でログインする
+          sign_in (other_user)
+          get "/users/#{user.id}" 
+          expect(response).to_not have_http_status :ok 
         end 
       end 
 
