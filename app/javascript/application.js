@@ -2,3 +2,12 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "custom/menu" 
+import "custom/preview"
+import "custom/image"
+import "custom/image_upload"
+import "custom/profile_image_trimming"
+import "custom/marked"
+import jquery from "jquery" 
+window.$ = jquery 
+import "trix"
+import "@rails/actiontext"

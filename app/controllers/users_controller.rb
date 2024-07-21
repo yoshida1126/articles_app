@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_action :unconfirmed_account_check, only: [:show] 
 
   def show
+    @articles = @user.articles.paginate(page: params[:page])
   end
 
   def check 
@@ -10,13 +11,6 @@ class UsersController < ApplicationController
   end 
   
   private 
-
-  def logged_in_user 
-    unless user_signed_in? 
-      flash[:alert] = "ログインしてください。" 
-      redirect_to login_url, status: :see_other 
-    end 
-  end 
 
   def unconfirmed_account_check 
     @user = User.find(params[:id])

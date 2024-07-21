@@ -1,0 +1,29 @@
+<div class="article-page"> 
+  <span class="article-heading-image">
+    <%= image_tag @article.image if @article.image.attached? %>
+  </span>
+  <h1 class="article-title"><%= @article.title %></h1> 
+  <div class="row">
+    <aside class="col-md-12">
+      <section class="article-information"> 
+        <%= link_to @article.user do %>
+          <div class="article-profile-img">
+            <%= image_tag @article.user.profile_img if @article.user.profile_img.attached? %>
+          </div>
+          <div class="user-name"><%= link_to @article.user.name, @article.user %></div>
+        <% end %> 
+        <span class="timestamp"><%= @article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %> </span>
+      </section>
+      <% if @article.user == current_user %> 
+        <section class="article-edit">
+          <%= link_to "編集", edit_article_path(@article) %> | 
+          <%= link_to "削除", @article, data: { "turbo-method": :delete,
+          turbo_confirm: "本当に削除しますか？" } %> 
+        </section>
+      <% end %>
+    </aside>
+  </div> 
+  <div class="content">
+    <%= markdown(@article.content) %>
+  </div>
+</div>

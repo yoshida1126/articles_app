@@ -1,0 +1,55 @@
+<%= form_with(model: @article) do |f| %> 
+  <%= render 'shared/error_messages', object: f.object %> 
+  <div class="title-field">
+    <%= f.text_field :title, placeholder: "タイトルを入力してください。" %> 
+  </div> 
+  <label class="top-image">
+    <span class="btn select-image">見出し画像を選択</span>
+    <%= f.file_field :image, accept: "image/jpeg, image/png, image/gif", style: "display: none;" %>
+  </label>
+
+  <div class="toolbar">
+    <div class="article-image-upload">
+      <label>
+        <%= image_tag '/assets/picture-icon.png', id:"article-images", class:"btn picture-icon" %> 
+        <%= f.file_field :article_images, direct_upload: true, id: "artilce-image-field", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
+        data: { 
+          controller: "article-image-upload",
+          article_image_upload_url_value: rails_direct_uploads_url,
+          action: "input->article-image-upload#imageUpload"
+        } 
+        %>
+      </label>
+    </div>
+    <div class="preview-open">
+      <div id="preview", class="btn preview">
+        <%= image_tag '/assets/preview.png' %> 
+      </div>
+      <div id="edita", class="btn edita display">
+        <%= image_tag '/assets/editor.png' %> 
+      </div>
+    </div>
+  </div>
+  <div id="article-text-field">
+    <div class="text-area-and-preview">
+      <%= f.text_area :content, required: true, id: 'markdown', class: 'form-control article-text-area', placeholder: "本文を入力してください。",
+       data: {
+        controller: "markdown-upload",
+        markdown_upload_url_value: rails_direct_uploads_url,
+        action: "drop->markdown-upload#dropUpload"
+       } 
+      %>
+      <div id="html", class="html display">
+        <div class="preview-placeholder">
+          プレビューが表示されます。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input type="hidden" id="blob" name="blob_signed_ids[]"> 
+
+  <%= f.submit "投稿", class: "btn btn-primary" %> 
+<% end %> 
+
+

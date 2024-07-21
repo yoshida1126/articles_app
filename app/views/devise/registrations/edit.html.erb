@@ -17,6 +17,15 @@
       <%= f.label "新しいパスワード(確認)" %>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
 
+      <%= f.label :profile_img, "プロフィール画像" %>
+      <%= f.file_field :profile_img,  id: "profile_image_upload", accept: "image/jpeg, image/png, image/gif" %>
+
+      <% if @user.profile_img.attached? %>
+        <%= image_tag @user.profile_img, id:"target" %>
+      <% end %>
+  
+      <button id="selected-img-trim", type="button">画像をトリミングする</button>
+
       <%= f.submit "編集", class: "btn btn-primary" %> 
     <% end %>
 
@@ -25,3 +34,26 @@
     </div>
   </div>
 </div> 
+
+<div class="modal" id="modal-for-trim">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-bs-toggle="modal"><span>×</span></button>
+        <h4 class="modal-title">画像のトリミング</h4>
+      </div>
+      <div class="modal-body">
+        <div class="cropper-area">
+         <% if @user.profile_img.attached? %>
+           <%= image_tag @user.profile_img, id:"cropper-img" %>
+         <% end %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="crop-btn" type="button" class="btn btn-default">トリミング</button>
+      </div>
+    </div>
+  </div>
+</div> 
+
+

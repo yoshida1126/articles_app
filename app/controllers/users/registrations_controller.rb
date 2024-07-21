@@ -14,9 +14,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+    if params[:profile_img].present?
+      resource.profile_img.attach(params[:profile_img])
+    end 
+  end
 
   # GET /resource/edit
   # def edit
@@ -24,9 +27,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    super
+    if params[:profile_img].present?
+      resource.profile_img.attach(params[:profile_img])
+    end 
+  end
 
   # DELETE /resource
   def destroy
@@ -55,12 +61,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end 
 
   def configure_permitted_parameters 
-    devise_parameter_sanitizer.permit(:account_update, keys: [:name]) 
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :profile_img]) 
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :profile_img])
   end
 
   def correct_user 
@@ -68,13 +74,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     unless @user == current_user 
       flash[:alert] = "※他のユーザーのアカウント情報は編集出来ません。" 
       redirect_to(root_url, status: :see_other)
-    end 
-  end 
-
-  def logged_in_user 
-    unless user_signed_in? 
-      flash[:alert] = "ログインしてください。" 
-      redirect_to login_url, status: :see_other 
     end 
   end 
 

@@ -80,8 +80,8 @@ RSpec.describe "Users", type: :request do
         context "as a non logged in user" do 
 
           before do 
-            @user_params = { email: "example@email.com",
-                            password: "test1111" }
+            @user_params = { email: user.email,
+                            password: 'test1111' }
             get edit_user_path(user) 
           end 
 
