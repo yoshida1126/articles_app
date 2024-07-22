@@ -245,7 +245,7 @@ RSpec.describe "Users", type: :request do
         it "削除できること" do 
           expect {
             delete delete_path(user)
-          }.to change(User, :count) 
+          }.to change(User, :count)
         end 
 
         it "ルートパスにリダイレクトされること" do 
