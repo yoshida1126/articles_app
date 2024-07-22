@@ -105,6 +105,28 @@ hr {
   }
 }
 
+
+#account {
+  padding: 0;
+}
+
+.header-profile-img {
+  width: 33px;
+  height: 33px;
+  padding-top: 7.5px;
+  align-items: center;
+  transition: .1s;
+  &:hover {
+    opacity: .7;
+  }
+  img {
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
+    display: block;
+  }
+}
+
 /* footer */ 
 
 footer {
