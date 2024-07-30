@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
-  before_action :correct_user, only: [:update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   def show 
     @article = Article.find(params[:id]) 
@@ -57,6 +57,9 @@ class ArticlesController < ApplicationController
 
   def correct_user 
     @article = current_user.articles.find_by(id: params[:id]) 
-    redirect_to root_url, status: :see_other if @article.nil? 
+    if @article.nil? 
+      flash[:alert] = "#{current_user.name}さんの記事以外は編集できません。"
+      redirect_to root_url, status: :see_other
+    end  
   end 
 end

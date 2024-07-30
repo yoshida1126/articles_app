@@ -15,27 +15,32 @@ RSpec.describe "Layouts", type: :system do
 
             describe "Account" do 
                 before do 
-                    click_link "アカウント" 
+                    click_link 'プロフィール画像' 
                 end 
 
                 it "プロフィールをクリックするとプロフィールページに遷移すること" do 
-                    click_link "プロフィール"
+                    click_link "プロフィール", match: :first, exact: true
                     expect(page).to have_current_path "/users/#{user.id}"
                 end 
 
                 it "アカウント情報の編集をクリックすると編集ページに遷移すること" do 
-                    click_link "アカウント情報の編集" 
+                    click_link "アカウント情報の編集", match: :first
                     expect(page).to have_current_path edit_user_path(user)
                 end 
 
                 it "ログアウトをクリックするとルートパスに遷移すること" do 
-                    click_link "ログアウト" 
+                    click_link "ログアウト", match: :first
                     expect(page).to have_current_path root_path 
+                end 
+
+                it "投稿ボタンをクリックすると記事投稿ページに遷移すること" do 
+                    click_link "投　稿" , match: :first
+                    expect(page).to have_current_path new_article_path 
                 end 
 
                 it "ARTICLESをクリックするとルートパスに遷移すること" do
                     # rootに遷移することを確認するために編集ページに移動する
-                    click_link "アカウント情報の編集" 
+                    click_link "アカウント情報の編集", match: :first 
                     click_link "Articles" 
                     expect(page).to have_current_path root_path 
                 end

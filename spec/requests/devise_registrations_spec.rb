@@ -4,43 +4,45 @@ RSpec.describe "Users", type: :request do
 
     describe "#create" do 
 
-      let(:valid_user_params) { FactoryBot.attributes_for(:user) }
       let!(:other_user) { FactoryBot.create(:other_user) }
 
       context "with valid information" do
+        before do 
+          @valid_user_params = FactoryBot.attributes_for(
+            :user,
+            profile_img: fixture_file_upload("spec/fixtures/profile.jpg")
+          )
+        end 
         it "登録できること" do 
           get sign_up_path 
           expect {
-            post sign_up_path, params: { user: valid_user_params }
+            post sign_up_path, params: { user: @valid_user_params }
         }.to change(User, :count).by 1 
         end 
 
         it "登録後ホームページにリダイレクトされること" do 
-          post sign_up_path, params: { user: valid_user_params } 
+          post sign_up_path, params: { user: @valid_user_params } 
           expect(response).to redirect_to root_path 
         end 
 
         it "認証後ログインできること" do 
-          post sign_up_path, params: { user: valid_user_params }
+          post sign_up_path, params: { user: @valid_user_params }
           user = User.last 
           user.confirm 
-          # Deviseを使っているとRSpec上でログイン状態を確かめるヘルパーメソッド
-          # がうまく使えないため登録したユーザーのプロフィールページにアクセスできるかど
-          # うかで確認する
           sign_in (user) 
           get "/users/#{user.id}"
           expect(response).to have_http_status :ok
         end 
 
         it "認証後でないとログインできないこと" do 
-          post sign_up_path, params: { user: valid_user_params }
+          post sign_up_path, params: { user: @valid_user_params }
           user = User.last 
           sign_in (user) 
           expect(response).to_not have_http_status :ok
         end 
 
         it "認証後でないと登録したユーザーのプロフィールページにアクセスできないこと" do 
-          post sign_up_path, params: { user: valid_user_params }
+          post sign_up_path, params: { user: @valid_user_params }
           user = User.last 
           # 登録したユーザーのプロフィールページにアクセスするために他のユーザー
           # でログインする

@@ -17,7 +17,7 @@ describe "#create" do
             fill_in "Email", with: user.email 
             fill_in "Password", with: user.password 
             click_button "ログイン" 
-            click_on 'アカウント'
+            click_link 'プロフィール画像'
 
             expect(page).to_not have_link "ログイン", href: login_path 
             expect(page).to have_link "ログアウト", href: logout_path 
@@ -51,3 +51,22 @@ describe "#create" do
         end 
     end 
 end
+
+describe "#destroy" do 
+
+  let(:user) { FactoryBot.create(:user) } 
+
+  context "as a logged in user" do 
+    before do 
+        sign_in user 
+        visit root_path
+        click_link "プロフィール画像", match: :first, exact: true 
+        click_link "ログアウト", match: :first, exact: true 
+    end 
+
+    it "ログアウトできること" do 
+        expect(page).to_not have_content "プロフィール画像" 
+        expect(page).to_not have_content "投　稿"
+    end 
+  end 
+end 

@@ -5,6 +5,9 @@ FactoryBot.define do
     password { "test1111" }
     password_confirmation { "test1111" } 
     confirmed_at { Time.now }
+    after(:build) do |user| 
+      user.profile_img.attach(io: File.open('spec/fixtures/profile.jpg'), filename: 'profile.jpg', content_type: 'image/jpeg')
+    end 
   end
 
   factory :other_user, class: User do 
@@ -13,6 +16,9 @@ FactoryBot.define do
     password { "other1111" }
     password_confirmation { "other1111" } 
     confirmed_at { Time.now }
+    after(:build) do |other_user| 
+      other_user.profile_img.attach(io: File.open('spec/fixtures/profile.jpg'), filename: 'profile.jpg', content_type: 'image/jpeg')
+    end 
   end 
 
   factory :invalid_user, class: User do 

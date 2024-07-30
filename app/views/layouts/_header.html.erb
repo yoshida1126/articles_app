@@ -2,22 +2,13 @@
   <div class="container"> 
     <%= link_to "Articles", root_path, id: "logo" %>
     <nav>
-      <div class="navbar-header">
-        <button id="hamburger" type="button" class="navbar-toggle collapsed"> 
-          <span class="sr-only">Toggle navigation</span> 
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
       <ul id="navbar-menu" 
-          class="nav navbar-nav navbar-right collapse navbar-collapse">
-        <li><%= link_to "記事を探す", "#" %></li> 
+          class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
           <li class="dropdown">
             <a href="#" id="account" class="dropdown-toggle"> 
               <div class="header-profile-img">
-                <%= image_tag current_user.profile_img if current_user.profile_img.attached? %> 
+                <%= image_tag (current_user.profile_img if current_user.profile_img.attached?), alt: "プロフィール画像" %> 
               </div>
             </a>
             <ul id="dropdown-menu" class="dropdown-menu">
@@ -25,7 +16,26 @@
               <li><%= link_to "アカウント情報の編集", edit_user_path(current_user) %></li>
               <li class="divider"></li>
               <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete } %></li>
-            </ul> 
+            </ul>
+          </li>
+          <div id="responsive-menu">
+            <a href="#" id="account2" class="dropdown-toggle"> 
+              <div class="header-profile-img">
+                <%= image_tag (current_user.profile_img if current_user.profile_img.attached?) %> 
+              </div>
+            </a>
+            <ul id="dropdown-menu3" class="dropdown-menu dropdown-menu-right">
+              <li><%= link_to "プロフィール", current_user %></li>
+              <li><%= link_to "アカウント情報の編集", edit_user_path(current_user) %></li>
+              <li class="divider"></li>
+              <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete } %></li>
+            </ul>
+            <li class="responsive-link-btn">
+              <%= link_to "投　稿", new_article_path, class: "btn btn-custom" %>
+            </li>
+          </div>
+          <li class="link-btn">
+            <%= link_to "投　稿", new_article_path, class: "btn btn-custom" %>
           </li>
         <% else %>
           <li><%= link_to "ログイン", login_path %></li>
