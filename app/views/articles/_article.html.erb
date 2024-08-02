@@ -5,12 +5,12 @@
       </span>
       <span class="title"><%= article.title %></span>
     <% end %>
-      <%= link_to @user do %>
+      <%= link_to article.user do %>
         <div class="user-profile-img">
-          <%= image_tag @user.profile_img if @user.profile_img.attached? %>
+          <%= image_tag article.user.profile_img if article.user.profile_img.attached? %>
         </div>
         <div class="name">
-          <%= @user.name %>
+          <%= article.user.name %>
         </div>
       <% end %>
       

@@ -158,12 +158,14 @@ describe "#edit" do
       visit root_path
       click_link "プロフィール画像", match: :first, exact: true 
       click_link "プロフィール", match: :first, exact: true 
+      sleep 0.5
       click_link "#{article.title}"  
       click_link "option"       
       click_link "記事を編集"
     end
 
     it "記事の編集ページにアクセスできること" do 
+      sleep 0.5 
       expect(page).to have_content "記事編集フォーム" 
     end 
   end 
@@ -202,6 +204,7 @@ describe "#update" do
       visit root_path 
       click_link "プロフィール画像", match: :first, exact: true 
       click_link "プロフィール", match: :first, exact: true 
+      sleep 0.5
       click_link "#{article.title}"  
       click_link "option" 
       click_link "記事を編集"
@@ -247,6 +250,7 @@ describe "#update" do
       visit root_path 
       click_link "プロフィール画像", match: :first, exact: true 
       click_link "プロフィール", match: :first, exact: true 
+      sleep 0.5 
       click_link "#{article.title}" 
       click_link "option" 
       click_link "記事を編集"

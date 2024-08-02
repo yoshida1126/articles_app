@@ -77,4 +77,50 @@ RSpec.describe User, type: :model do
       end 
     end 
   end
+
+  describe "#follow and #unfollow" do 
+    let(:user) { FactoryBot.create(:user) }
+    let(:other_user) { FactoryBot.create(:other_user) }
+
+    it "can follow the other user" do 
+      expect(user.following?(other_user)).to_not be_truthy 
+      user.follow(other_user) 
+      expect(user.following?(other_user)).to be_truthy 
+      expect(other_user.followers.include?(user)).to be_truthy 
+    end 
+
+    it "can unfollow the other user" do 
+      user.follow(other_user) 
+      expect(user.following?(other_user)).to be_truthy 
+      user.unfollow(other_user) 
+      expect(user.following?(other_user)).to_not be_truthy 
+    end 
+  end 
+
+  describe "#feed" do 
+    let(:user) { FactoryBot.create(:user, :with_articles) } 
+    let(:user_following) { FactoryBot.create(:user, :with_articles) } 
+    let(:user_unfollowed) { FactoryBot.create(:user, :with_articles) } 
+    before do 
+      user.follow(user_following)  
+    end 
+
+    it "自分の記事がフィードに含まれていること" do 
+      user.articles.each do |article_self| 
+        expect(user.feed).to be_include(article_self) 
+      end 
+    end 
+
+    it "フォローしたユーザーの記事がフィードに含まれていること" do 
+      user_following.articles.each do |article_following| 
+        expect(user.feed).to be_include(article_following) 
+      end 
+    end 
+
+    it "フォローしていないユーザーの記事はフィードに含まれないこと" do 
+      user_unfollowed.articles.each do |article_unfollowed| 
+        expect(user.feed).to_not be_include(article_unfollowed) 
+      end 
+    end 
+  end 
 end

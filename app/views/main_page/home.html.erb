@@ -1,0 +1,30 @@
+<div class="home">
+  <% if @articles.any? %>
+    <h3>最近の投稿</h3> 
+    <% @articles.each do |article| %>
+      <ol class="articles">
+        <li id="article-<%= article.id %>">
+          <%= link_to article do %>
+            <span class="heading-image">
+              <%= image_tag article.image if article.image.attached? %>
+            </span>
+            <span class="title"><%= article.title %></span>
+          <% end %>
+          <%= link_to article.user do %>
+            <div class="user-profile-img">
+              <%= image_tag article.user.profile_img if article.user.profile_img.attached? %>
+            </div>
+            <div class="name">
+              <%= article.user.name %>
+            </div>
+          <% end %>
+      
+          <span class="timestamp"> 
+            <%= article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
+          </span> 
+        </li>
+      </ol>
+    <% end %>
+  <% end %>
+</div>
+

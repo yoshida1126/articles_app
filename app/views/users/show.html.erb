@@ -10,10 +10,18 @@
       </div>
     <% end %>
   </section>
+  <section class="stats">
+    <%= render 'shared/stats' %>
+  </section> 
+  <% unless current_user == @user %>
+    <section class="follow-btn">
+      <%= render 'follow_form' if current_user %> 
+    </section> 
+  <% end %>
   </aside>
   <div class="col-md-4"> 
     <% if @user.articles.any? %> 
-      <h3>投稿記事 (<%= @user.articles.count %>)</h3> 
+      <h3>投稿記事</h3> 
       <ol class="articles">
         <%= render @articles %> 
       </ol>

@@ -1,0 +1,63 @@
+<div class="row">
+  <aside class="col-md-4">
+  <section class="user-info"> 
+    <%= link_to @user do %>
+      <div class="profile_img">
+        <%= image_tag @user.profile_img if @user.profile_img.attached? %>
+      </div>
+      <div class="name">
+        <%= link_to @user.name, @user %>
+      </div>
+    <% end %>
+  </section>
+  <section class="stats">
+    <%= render 'shared/stats' %>
+  </section> 
+  <% unless current_user == @user %>
+    <section class="follow-btn">
+      <%= render 'follow_form' if current_user %> 
+    </section> 
+  <% end %>
+  </aside>
+  <div class="col-md-8">
+    <h4><%= @title %></h4>
+    <% if @users.any? %>
+      <ol class="users follow">
+        <% @users.each do |user| %> 
+            <li>
+              <div class="user-info">
+                <div class="user-profile-image">
+                  <a href="/users/<%= user.id %>">
+                    <%= image_tag user.profile_img if user.profile_img.attached? %>
+                  </a>
+                </div>
+                <div class="name">
+                  <a href="/users/<%= user.id %>">
+                    <%= user.name %>
+                  </a>
+                </div>
+              </div>
+              <% unless current_user == user %>
+                <div class="follow-button">
+                  <div id="follow_form">
+                    <% if current_user.following?(user) %> 
+                      <%= form_with(model: current_user.active_relationships.find_by(followed: user),
+                                    html: { method: :delete }) do |f| %> 
+                        <%= f.submit "フォロー解除", class: "btn" %> 
+                      <% end %> 
+                    <% else %> 
+                      <%= form_with(model: current_user.active_relationships.build) do |f| %>
+                        <div><%= hidden_field_tag :followed_id, user.id %></div> 
+                        <%= f.submit "フォロー", class: "btn btn-primary" %> 
+                      <% end %> 
+                    <% end %> 
+                  </div> 
+                </div>
+              <% end %>
+            </li> 
+        <% end %> 
+      </ol>
+      <%= will_paginate %> 
+    <% end %> 
+  </div>
+</div> 

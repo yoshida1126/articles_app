@@ -172,6 +172,13 @@ li.link-btn {
   display: none;
 }
 
+/* home */ 
+
+.home {
+  margin: auto;
+  width: 300px;
+}
+
 /* footer */ 
 
 footer {
@@ -231,6 +238,81 @@ aside {
     width: 50px;
     height: 50px;
     object-fit: cover;
+  }
+}
+
+.stats { 
+  overflow: auto;
+  padding: 0;
+  text-align: center;
+  a { 
+    float: left;
+    padding: 0 10px;
+    color: gray;
+    &:first-child {
+      padding-left: 0;
+    }
+    &:hover {
+      text-decoration: none;
+      color: blue;
+    }
+  }
+  strong {
+    display: block;
+  }
+}
+
+.follow-btn {
+  width: 150px;
+  .btn-primary {
+    background-color: #99b9c2;
+    border: 1px solid #99b9c2;
+  }
+}
+
+.follow-button {
+  width: 220px;
+  .btn-primary {
+    background-color: #99b9c2;
+    border: 1px solid #99b9c2;
+  }
+}
+
+.users {
+  list-style: none;
+  padding: 0;
+  display: table;
+  li {
+    padding: 10px 0;
+    border-top: 1px solid #e8e8e858;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+  }
+  a {
+    text-decoration: none;
+    color: #777;
+  }
+  .name {
+    display: table-cell;
+    vertical-align: middle;
+    margin-top: 5px;
+  }
+  .user-profile-image {
+    vertical-align: middle;
+    display: table-cell;
+    img {
+      border-radius: 50%;
+      margin-right: 10px;
+      width: 30px;
+      height: 30px;
+      object-fit: cover;
+    }
+  }
+  .follow-button {
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 100px;
   }
 }
 
