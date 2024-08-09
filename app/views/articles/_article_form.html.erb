@@ -3,12 +3,17 @@
   <div class="title-field">
     <%= f.text_field :title, required: true, placeholder: "タイトルを入力してください。" %> 
   </div> 
-  <label class="top-image">
-    <span class="btn select-image">見出し画像を選択</span>
+  <label class="select-header-image">
+    <span class="btn select-image">ヘッダー画像を選択</span>
     <%= f.file_field :image, accept: "image/jpeg, image/png, image/gif", style: "display: none;" %>
   </label>
 
+  <div id="header-img-preview">
+    <p>ここにヘッダー画像のプレビューが表示されます。</p>
+  </div>
+
   <div class="toolbar">
+    <%= turbo_frame_tag "articles-img" do %>
     <div class="article-image-upload">
       <label>
         <%= image_tag '/assets/picture-icon.png', id:"article-images", class:"btn picture-icon" %> 
@@ -21,8 +26,9 @@
         %>
       </label>
     </div>
+    <% end %>
     <div class="preview-open">
-      <div id="preview", class="btn preview">
+      <div id="preview-btn", class="btn preview-btn">
         <%= image_tag '/assets/preview.png' %> 
       </div>
       <div id="edita", class="btn edita display">
@@ -49,7 +55,9 @@
 
   <input type="hidden" id="blob" name="blob_signed_ids[]"> 
 
-  <%= f.submit "投稿", class: "btn btn-primary" %> 
+  <div class="article-submit-btn">
+    <%= f.submit "投　稿", class: "btn btn-primary" %> 
+  </div>
 <% end %> 
 
 

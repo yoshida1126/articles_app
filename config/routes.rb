@@ -28,5 +28,7 @@ Rails.application.routes.draw do
   end 
   get "/users/:id", to: "users#show" 
   resources :relationships, only: [:create, :destroy] 
-  resources :articles, only: [:show, :new, :create, :edit, :update, :destroy] 
+  resources :articles, only: [:show, :new, :create, :edit, :update, :destroy] do 
+    resource :likes, only: [:create, :destroy] 
+  end 
 end

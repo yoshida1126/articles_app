@@ -1,0 +1,19 @@
+<div id="good-btn">
+  <% if current_user %> 
+    <% if article.liked?(current_user) %>
+      <%= link_to article_likes_path(article.id), data: { "turbo-method": :delete }, remote: true do %> 
+        <i class="fas fa-heart" aria-hidden="true" style="color: #ff0069"></i>
+      <% end %> 
+    <% else %> 
+      <%= link_to article_likes_path(article.id), data: { "turbo-method": :post }, remote: true do %> 
+        <i class="far fa-heart" aria-hidden="true"></i>
+      <% end %> 
+    <% end %> 
+    <span><%= article.likes.count %></span>
+  <% else %>
+    <%= link_to article_likes_path(article.id), data: { "turbo-method": :post } do %> 
+      <i class="far fa-heart" aria-hidden="true"></i>
+    <% end %>
+    <span><%= article.likes.count %></span>
+  <% end %>
+</div>

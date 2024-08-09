@@ -1,0 +1,43 @@
+<% if URI(request.referer.to_s).path == "/users/#{current_user.id}/following" %>
+  <%= turbo_stream.update "follow_form_#{@user.id}" do %>
+    <%= render partial: "users/unfollow" %>
+  <% end %> 
+  <%= turbo_stream.update "following" do %> 
+    <%= current_user.following.count %> 
+  <% end %>
+<% elsif URI(request.referer.to_s).path == "/users/#{current_user.id}/followers" %>
+  <%= turbo_stream.update "follow_form_#{@user.id}" do %>
+    <%= render partial: "users/unfollow" %> 
+  <% end %>
+  <%= turbo_stream.update "following" do %> 
+    <%= current_user.following.count %> 
+  <% end %>
+<% elsif URI(request.referer.to_s).path == "/users/#{@user.id}" %>
+  <%= turbo_stream.update "follow_form" do %>
+    <%= render partial: "users/unfollow" %>
+  <% end %>
+  <%= turbo_stream.update "followers" do %>
+    <%= @user.followers.count %>
+  <% end %>
+<% elsif URI(request.referer.to_s).path == "/users/#{@user.id}/following" %>
+  <%= turbo_stream.update "follow_form" do %>
+    <%= render partial: "users/unfollow" %>
+  <% end %>
+  <%= turbo_stream.update "followers" do %> 
+    <%= @user.followers.count %> 
+  <% end %>
+  <%= turbo_stream.update "follow_form_#{@user.id}" do %>
+    <%= render partial: "users/unfollow" %>
+  <% end %>  
+<% elsif URI(request.referer.to_s).path == "/users/#{@user.id}/followers" %> 
+  <%= turbo_stream.update "follow_form" do %>
+    <%= render partial: "users/unfollow" %>
+  <% end %>
+  <%= turbo_stream.update "followers" do %> 
+    <%= @user.followers.count %> 
+  <% end %>
+<% else %>
+  <%= turbo_stream.update "follow_form_#{@user.id}" do %>
+    <%= render partial: "users/unfollow" %>
+  <% end %>
+<% end %>
