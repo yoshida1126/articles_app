@@ -43,7 +43,9 @@
                     <% if current_user.following?(user) %> 
                       <%= form_with(model: current_user.active_relationships.find_by(followed: user),
                                     html: { method: :delete }) do |f| %> 
-                        <%= f.submit "フォロー解除", class: "btn unfollow-btn" %> 
+                        <div class="unfollow-btn">
+                          <%= f.submit "フォロー解除", class: "btn" %> 
+                        </div>
                       <% end %> 
                     <% else %> 
                       <%= form_with(model: current_user.active_relationships.build) do |f| %>
