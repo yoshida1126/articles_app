@@ -4,9 +4,19 @@
     <%= f.text_field :title, placeholder: "タイトルを入力してください。" %> 
   </div> 
   <label class="top-image">
-    <span class="btn select-image">見出し画像を選択</span>
+    <span class="btn select-image">ヘッダー画像を選択</span>
     <%= f.file_field :image, accept: "image/jpeg, image/png, image/gif", style: "display: none;" %>
   </label>
+
+  <div id="header-img-preview">
+    <% if @article.image.attached? %>
+      <div class="preview">
+        <%= image_tag @article.image %>
+      </div>
+    <% else %> 
+      <p>ここにヘッダー画像のプレビューが表示されます。</p>
+    <% end %>
+  </div>
 
   <div class="toolbar">
     <div class="article-image-upload">
@@ -22,7 +32,7 @@
       </label>
     </div>
     <div class="preview-open">
-      <div id="preview", class="btn preview">
+      <div id="preview-btn", class="btn preview-btn">
         <%= image_tag '/assets/preview.png' %> 
       </div>
       <div id="edita", class="btn edita display">
@@ -47,7 +57,9 @@
     </div>
   </div>
 
-  <%= f.submit "編集", class: "btn btn-primary" %> 
+  <div class="article-edit-btn">
+    <%= f.submit "編集", class: "btn btn-primary" %> 
+  </div>
 <% end %> 
 
 

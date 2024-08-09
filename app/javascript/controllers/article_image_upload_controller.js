@@ -38,11 +38,6 @@ export default class extends Controller {
         
         form.setRangeText(text,end,end,"end")
         form.innerHTML = text;
-
-        const start = form.selectionStart;
-        const endposition = form.selectionEnd;
-        const br = "\n"
-        form.setRangeText(br,start,endposition,"end")
       }
     })
   }

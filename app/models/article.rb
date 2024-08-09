@@ -1,9 +1,8 @@
 class Article < ApplicationRecord
-  has_one_attached :image do |attachble|
-    attachble.variant :display, resize_to_limit: [200, 200] 
-  end 
+  has_one_attached :image
   has_many_attached :article_images
   belongs_to :user
+  has_many :likes, dependent: :destroy
   default_scope -> { order(created_at: :desc) }
   validates :user_id, presence: true 
   validates :title, presence: true, length: { maximum: 50 } 
@@ -12,4 +11,9 @@ class Article < ApplicationRecord
                                     message: "アップロード可能な画像形式はJPEG, PNG, GIFです。ファイル形式をご確認ください。"},
                     size:         { less_than: 5.megabytes,
                                     message: "5MB以下の画像をアップロードしてください。" }
+            
+  def liked?(user) 
+    likes.where(user_id: user.id).exists? 
+  end 
 end
+

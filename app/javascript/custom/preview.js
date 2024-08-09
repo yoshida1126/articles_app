@@ -20,24 +20,60 @@ document.addEventListener("turbo:load", function() {
       document.getElementById('html').innerHTML = html;
     });
 
-    const preview = document.getElementById("preview");
+    const preview = document.getElementById("preview-btn");
     const edita = document.getElementById("edita");
     const html = document.getElementById("html");
     const markdown = document.getElementById("markdown")
  
     preview.addEventListener("click", function() {
-      preview.classList.toggle("display")
-      preview.classList.toggle("img")
-      edita.classList.toggle("display")
-      html.classList.toggle("display")
-      markdown.classList.toggle("display")
+      if(window.matchMedia('(max-width: 767px)').matches) {
+        markdown.classList.toggle("display") 
+        preview.classList.toggle("display")
+        preview.classList.toggle("img")
+        edita.classList.toggle("display")
+        html.classList.toggle("display")
+        html.classList.toggle("preview-width")
+      } else if (window.matchMedia('(min-width:768px)').matches) {
+          preview.classList.toggle("display")
+          preview.classList.toggle("img")
+          edita.classList.toggle("display")
+          html.classList.toggle("display")
+          markdown.classList.toggle("edita-width")
+      }
     });
 
     edita.addEventListener("click", function() {
-      preview.classList.toggle("display")
-      edita.classList.toggle("display")
-      html.classList.toggle("display")
-      markdown.classList.toggle("display")
+      if(window.matchMedia('(max-width: 767px)').matches) {
+        if (document.querySelector(".edita-width") !== null) {
+          markdown.classList.toggle("edita-width")
+          preview.classList.toggle("display")
+          preview.classList.toggle("img")
+          edita.classList.toggle("display")
+          html.classList.toggle("display")
+        }
+        else {
+          markdown.classList.toggle("display") 
+          preview.classList.toggle("display")
+          preview.classList.toggle("img")
+          edita.classList.toggle("display")
+          html.classList.toggle("display")
+          html.classList.toggle("preview-width")
+        }
+      } else if (window.matchMedia('(min-width:768px)').matches) {
+          if (document.querySelector(".preview-width") !== null) {
+            html.classList.toggle("preview-width")
+            markdown.classList.toggle("display")
+            preview.classList.toggle("display")
+            edita.classList.toggle("display")
+            html.classList.toggle("display")
+          }
+          else {
+            preview.classList.toggle("display")
+            edita.classList.toggle("display")
+            html.classList.toggle("display")
+            markdown.classList.toggle("edita-width")
+          }
+      }
     });
   };
 });

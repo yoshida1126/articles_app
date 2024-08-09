@@ -92,7 +92,7 @@ document.addEventListener("turbo:load", function() {
       // inputタグをリセットする
       document.getElementById("profile_image_upload").value = '';
       // トリミングする画像を元の画像に戻す(処理を中断しないと元の画像が一瞬表示されるためsetTimeoutを使っている)
-      setTimeout(function() { cropper.replace(origin_Url) }, 300);
+      ajsetTimeout(function() { cropper.replace(origin_Url) }, 300);
     });
 
     $('.modal-dialog').on('click', function(e) {

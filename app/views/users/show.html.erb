@@ -1,5 +1,5 @@
 <div class="row">
-  <aside class="col-md-4">
+  <aside class="col-sm-4">
   <section class="user-info"> 
     <%= link_to @user do %>
       <div class="profile_img">
@@ -19,9 +19,9 @@
     </section> 
   <% end %>
   </aside>
-  <div class="col-md-4"> 
+  <div class="col-sm-8"> 
     <% if @user.articles.any? %> 
-      <h3>投稿記事</h3> 
+      <h4>投稿記事</h4> 
       <ol class="articles">
         <%= render @articles %> 
       </ol>
