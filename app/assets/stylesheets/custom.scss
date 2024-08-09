@@ -467,16 +467,14 @@ input {
   }
 }
 
-.unfollow-btn {
-  .btn {
+.unfollow-btn.btn {
+  outline: none;
+  &:hover {
+    opacity: .8;
     outline: none;
-    &:hover {
-      opacity: .8;
-      outline: none;
-    }
-    &:active {
-      outline: none;
-    }
+  }
+  &:active {
+    outline: none;
   }
 }
 
