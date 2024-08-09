@@ -453,6 +453,7 @@ input {
   border: 1px solid #99b9c2; 
   background-color: #99b9c2; 
   outline: none;
+  width: 100%;
   &:hover {
     opacity: .8;
     border: 1px solid #99b9c2; 
@@ -1155,10 +1156,10 @@ aside {
     justify-content: center;
    }
    
-   .follow-btn {
+  /* .follow-btn {
     margin: auto;
     margin-top: 10px;
-   }
+   }*/
   }
 
   // 記事ページ
