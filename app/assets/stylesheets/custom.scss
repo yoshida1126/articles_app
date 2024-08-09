@@ -468,12 +468,18 @@ input {
 }
 
 .unfollow-btn.btn {
+  border: 1px solid rgb(232, 232, 232);
+  background-color: rgb(232, 232, 232); 
   outline: none;
   &:hover {
+    border: 1px solid rgb(232, 232, 232);
+    background-color: rgb(232, 232, 232);
     opacity: .8;
     outline: none;
   }
   &:active {
+    border: 1px solid rgb(232, 232, 232);
+    background-color: rgb(232, 232, 232);
     outline: none;
   }
 }
