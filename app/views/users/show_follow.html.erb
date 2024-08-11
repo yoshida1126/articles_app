@@ -1,25 +1,25 @@
 <div class="row">
-  <aside class="col-md-4">
-  <section class="user-info"> 
-    <%= link_to @user do %>
-      <div class="profile_img">
-        <%= image_tag @user.profile_img if @user.profile_img.attached? %>
-      </div>
-      <div class="name">
-        <%= link_to @user.name, @user %>
-      </div>
-    <% end %>
-  </section>
-  <section class="stats">
-    <%= render 'shared/stats' %>
-  </section> 
-  <% unless current_user == @user %>
-    <section class="follow-btn">
-      <%= render 'follow_form' if current_user %> 
+  <aside class="col-sm-4">
+    <section class="user-info"> 
+      <%= link_to @user do %>
+        <div class="profile_img">
+          <%= image_tag @user.profile_img if @user.profile_img.attached? %>
+        </div>
+        <div class="name">
+          <%= link_to @user.name, @user %>
+        </div>
+      <% end %>
+    </section>
+    <section class="stats">
+      <%= render 'shared/stats' %>
     </section> 
-  <% end %>
+    <% unless current_user == @user %>
+      <section class="follow-btn">
+        <%= render 'follow_form' if current_user %> 
+      </section> 
+    <% end %>
   </aside>
-  <div class="col-md-8">
+  <div class="col-sm-8">
     <h4><%= @title %></h4>
     <% if @users.any? %>
       <ol class="users follow">
