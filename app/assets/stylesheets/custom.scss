@@ -480,6 +480,15 @@ input {
   }
 }
 
+#follow_form {
+  .unfollow-btn.btn {
+    width: 200px;
+  }
+  .follow-btn.btn {
+    width: 200px;
+  }
+ }
+
 /* Dropdown menu */ 
 
 .dropdown-menu.active { 
@@ -1187,6 +1196,16 @@ aside {
    .stats {
     display: flex;
     justify-content: center;
+   }
+   #follow_form {
+    text-align: center;
+    width: 100%;
+    .unfollow-btn.btn {
+      width: 200px;
+    }
+    .follow-btn.btn {
+      width: 200px;
+    }
    }
   }
 
