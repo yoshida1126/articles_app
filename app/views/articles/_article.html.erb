@@ -1,18 +1,25 @@
   <li id="article-<%= article.id %>">
-    <%= link_to article do %>
+    
       <span class="heading-image">
-        <%= image_tag article.image if article.image.attached? %>
+        <%= link_to article do %>
+          <%= image_tag article.image if article.image.attached? %>
+        <% end %>
       </span>
-      <span class="title"><%= article.title %></span>
-    <% end %>
-      <%= link_to article.user do %>
-        <div class="user-profile-img">
+      <span class="title">
+        <%= link_to article do %>
+          <%= article.title %>
+        <% end %>
+      </span>
+      <div class="user-profile-img">
+        <%= link_to article.user do %>
           <%= image_tag article.user.profile_img if article.user.profile_img.attached? %>
-        </div>
-        <div class="name">
+        <% end %>
+      </div>
+      <div class="name">
+        <%= link_to article.user do %>
           <%= article.user.name %>
-        </div>
-      <% end %>    
+        <% end %> 
+      </div>  
       <span class="timestamp"> 
         <%= article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
       </span> 

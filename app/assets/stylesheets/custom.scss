@@ -626,6 +626,9 @@ input {
     color: #777;
   }
   span.heading-image {
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
     transition: .1s;
     &:hover {
       opacity: .5;
@@ -635,16 +638,25 @@ input {
       height: 106px;
       object-fit: cover;
     }
+    a {
+      display: inline-block;
+      width: fit-content;
+      height: fit-content;
+    }
   }
-  .title {
-    display: block;
-    font-size: 1.1em;
-    font-weight: 530;
-    margin-top: 10px;
-    margin-bottom: 8px;
-    padding-top: 0;
-    color: #060c0d;
-  } 
+   .title {
+      display: block;
+      width: fit-content;
+      font-size: 1.1em;
+      font-weight: 530;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      padding-top: 0;
+      color: #060c0d;
+      a {
+        color: #060c0d;
+      }
+    } 
   .timestamp {
     color: $gray-light;
     display: block;
@@ -1230,6 +1242,10 @@ aside {
         max-height: 433px;
         object-fit: contain;
       }
+    }
+
+    .select-operation {
+      margin-right: 10px;
     }
   }
 

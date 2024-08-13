@@ -11,8 +11,8 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = current_user.articles.build(article_params) 
-    @article.image.attach(params[:article][:image])
+    @article = current_user.articles.build(image_resize(article_params)) 
+    @article.image.attach(article_params[:image])
 
     # unless params[:blob_signed_ids].empty? 
     #   params[:blob_signed_ids].each do |blob_signed_id| 
@@ -35,7 +35,17 @@ class ArticlesController < ApplicationController
   end
 
   def update
-    if @article.update(article_params)
+    if article_params[:image] 
+      @article.image.purge  
+      params = image_resize(article_params)
+      @article.image.attach(params[:image])   
+      if @article.update(params)
+        flash[:notice] = "記事を編集しました。" 
+        redirect_to current_user, status: :see_other 
+      else 
+        render 'articles/edit', status: :unprocessable_entity 
+      end 
+    elsif @article.update(article_params)
       flash[:notice] = "記事を編集しました。" 
       redirect_to current_user, status: :see_other 
     else 
@@ -62,4 +72,12 @@ class ArticlesController < ApplicationController
       redirect_to root_url, status: :see_other
     end  
   end 
+
+  def image_resize(params) 
+    if params[:image] 
+      params[:image].tempfile = ImageProcessing::MiniMagick.source(params[:image].tempfile).resize_to_limit(640, 360).call
+    end 
+    params
+  end 
+
 end

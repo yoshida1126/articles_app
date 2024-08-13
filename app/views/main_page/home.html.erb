@@ -4,24 +4,30 @@
     <ol class="articles">
       <% @weekly_trend_articles.each do |article| %>
         <li id="article-<%= article.id %>">
-          <%= link_to article do %>
-            <span class="heading-image">
+          <span class="heading-image">
+            <%= link_to article do %>
               <% if article.image.attached? %> 
                 <%= image_tag article.image %>
               <% else %> 
                 <%= image_tag "/assets/header.png" %> 
               <% end %> 
-            </span>
-            <span class="title"><%= article.title %></span>
-          <% end %>
-          <%= link_to article.user do %>
-            <div class="user-profile-img">
+            <% end %>
+          </span>
+          <span class="title">
+            <%= link_to article do %>
+              <%= article.title %>
+            <% end %>
+          </span>
+          <div class="user-profile-img">
+            <%= link_to article.user do %>
               <%= image_tag article.user.profile_img if article.user.profile_img.attached? %>
-            </div>
-            <div class="name">
+            <% end %>
+          </div>
+          <div class="name">
+            <%= link_to article.user do %>
               <%= article.user.name %>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
           <span class="timestamp"> 
             <%= article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
           </span> 
