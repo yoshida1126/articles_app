@@ -52,6 +52,9 @@ document.addEventListener("turbo:load", function() {
 
      
       if (active) {
+        if(document.querySelector(".article-option")) {
+          return null
+        }
         $('html').click(function(e) {
           if(!$(e.target).closest('.article-option').length) {
             let menu = document.querySelector("#dropdown-menu2");
