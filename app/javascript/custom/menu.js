@@ -30,9 +30,9 @@ document.addEventListener("turbo:load", function() {
         });
     }
 
-    if (active) {
+    if(active) {
       $('html').click(function(e) {
-        if(!$(e.target).closest('.dropdownmenu').length) {
+        if(!$(e.target).closest('.responsive-header').length) {
           let menu = document.querySelector("#dropdown-menu3");
           menu.classList.remove("active");
         }
@@ -53,11 +53,11 @@ document.addEventListener("turbo:load", function() {
      
       if (active) {
         $('html').click(function(e) {
-          if(!$(e.target).closest('.dropdownmenu').length) {
+          if(!$(e.target).closest('.article-option').length) {
             let menu = document.querySelector("#dropdown-menu2");
             menu.classList.remove("active");
           }
         });
-      }
+      } 
     }
 });

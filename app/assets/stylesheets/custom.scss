@@ -1157,6 +1157,8 @@ aside {
       color: #777;
     }
     .title {
+      width: 100%;
+      text-align: center;
       display: block;
       font-size: 1.1em;
       font-weight: 530;
@@ -1245,7 +1247,7 @@ aside {
     }
 
     .select-operation {
-      margin-right: 10px;
+      margin-right: 20px;
     }
   }
 
