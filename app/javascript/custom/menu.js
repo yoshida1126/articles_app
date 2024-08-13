@@ -49,18 +49,21 @@ document.addEventListener("turbo:load", function() {
             event.stopPropagation();
           });
       }
+    }
 
-     
-      if (active) {
-        if(document.querySelector(".article-option")) {
-          return null
-        }
+    if(active) {
+      let option = document.querySelector(".article-option");
+      if(option) {
         $('html').click(function(e) {
           if(!$(e.target).closest('.article-option').length) {
             let menu = document.querySelector("#dropdown-menu2");
-            menu.classList.remove("active");
+            if (menu) {
+              menu.classList.remove("active");
+            }
           }
-        });
-      } 
+        }); 
+      } else {
+          return null;
+      }
     }
 });
