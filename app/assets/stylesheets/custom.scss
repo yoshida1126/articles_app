@@ -1157,8 +1157,6 @@ aside {
       color: #777;
     }
     .title {
-      width: 100%;
-      text-align: center;
       display: block;
       font-size: 1.1em;
       font-weight: 530;
@@ -1166,6 +1164,9 @@ aside {
       padding-top: 0;
       color: #060c0d;
     } 
+    .title-responsive {
+      width: 100%;
+    }
     span.heading-image {
       transition: .1s;
       &:hover {
