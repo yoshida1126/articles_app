@@ -100,7 +100,7 @@ describe "#create" do
       fill_in "article[content]", with: "Article content" 
       attach_file "article[image]", "spec/fixtures/earth.png", visible: false
       attach_file "article[article_images][]", "spec/fixtures/map.png", visible: false
-      click_button "投稿"
+      click_button "投　稿"
     end 
 
     it "記事の投稿に成功すること" do 
@@ -134,14 +134,14 @@ describe "#create" do
     it "タイトルを入力していないと投稿できないこと" do 
       fill_in "article[title]", with: ""
       fill_in "article[content]", with: "Article content" 
-      click_button "投稿" 
+      click_button "投　稿" 
       expect(page).to_not have_selector "div.alert-success"
     end 
 
     it "記事の内容が空だと投稿できないこと" do 
       fill_in "article[title]", with: "Article Title" 
       fill_in "article[content]", with: "" 
-      click_button "投稿" 
+      click_button "投　稿" 
       expect(page).to_not have_selector "div.alert-success" 
     end 
   end 
@@ -212,7 +212,7 @@ describe "#update" do
       fill_in "article[content]", with: "Article Edit content" 
       attach_file "article[image]", "spec/fixtures/earth.png", visible: false
       attach_file "article[content][]", "spec/fixtures/map.png", visible: false
-      click_button "編集"
+      click_button "編　集"
     end 
 
     it "記事の編集に成功すること" do 
