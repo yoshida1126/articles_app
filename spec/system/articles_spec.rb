@@ -89,7 +89,7 @@ describe "#new" do
 end 
 
 describe "#create" do 
-  let(:user) { FactoryBot.create(:user) } 
+  let!(:user) { FactoryBot.create(:user) } 
 
   context "as a logged in user(input correct article informations)" do 
 
@@ -108,17 +108,14 @@ describe "#create" do
     end 
 
     it "プロフィールページの記事一覧に投稿したヘッダー画像があること" do
-      visit "/users/#{user.id}"
       expect(page).to have_selector "img[src$='earth.png']" 
     end 
 
     it "プロフィールページの記事一覧に投稿した記事のタイトルがあること" do 
-      visit "/users/#{user.id}" 
       expect(page).to have_content "Article Title" 
     end 
 
     it "投稿した記事の画像が表示されていること" do 
-      visit "/users/#{user.id}" 
       click_link "Article Title"
       expect(page).to have_selector "img[src$='map.png']"
     end 
@@ -220,24 +217,21 @@ describe "#update" do
     end 
 
     it "プロフィールページの記事一覧ページに編集した記事のタイトルがあること" do 
-      visit "/users/#{user.id}" 
+      sleep 0.5
       expect(page).to have_content "Article Edit Title" 
     end 
 
     it "記事のタイトルが変わっていること" do 
-      visit "/users/#{user.id}"
       click_link "Article Edit Title" 
       expect(page).to have_content "Article Edit content" 
     end 
 
     it "編集で追加したヘッダー画像があること" do
-      visit "/users/#{user.id}"
       click_link "Article Edit Title"
       expect(page).to have_selector "img[src$='earth.png']" 
     end 
 
     it "編集で追加した記事の画像が表示されていること" do 
-      visit "/users/#{user.id}" 
       click_link "Article Edit Title"
       expect(page).to have_selector "img[src$='map.png']"
     end 

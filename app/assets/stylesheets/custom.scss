@@ -888,6 +888,7 @@ aside {
   max-width: 640px;
   margin-bottom: 30px;
   aspect-ratio: 16/9;
+  border: 1px dashed #ccc;
   background:repeating-linear-gradient(
     -45deg,
     #ccc,
@@ -897,7 +898,9 @@ aside {
   );
   p {
     text-align: center;
-    padding-top: 120px;
+    font-size: 1.5rem;
+    max-width: 100%;
+    padding-top: 25%;
     color: #777;
   }
   .preview {
@@ -1242,7 +1245,7 @@ aside {
       margin: 0 calc(50% - 50vw);
       img {
         width: 100%;
-        max-height: 433px;
+        max-height: 360px;
         object-fit: contain;
       }
     }
@@ -1260,5 +1263,13 @@ aside {
 
   #html {
     margin-bottom: 30px;
+  }
+
+  // 記事編集ページ
+
+  #header-img-preview {
+    p {
+      font-size: 1.3rem;
+    }
   }
 }

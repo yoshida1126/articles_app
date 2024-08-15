@@ -75,7 +75,7 @@ class ArticlesController < ApplicationController
 
   def image_resize(params) 
     if params[:image] 
-      params[:image].tempfile = ImageProcessing::MiniMagick.source(params[:image].tempfile).resize_to_limit(640, 360).call
+      params[:image].tempfile = ImageProcessing::MiniMagick.source(params[:image].tempfile).resize_to_limit(1024, 1024).call
     end 
     params
   end 

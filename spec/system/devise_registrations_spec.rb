@@ -16,7 +16,7 @@ RSpec.describe "Users", type: :system do
             fill_in "Email", with: valid_user_params[:email] 
             fill_in "Password", with: valid_user_params[:password] 
             fill_in "Confirmation", with: valid_user_params[:password_confirmation] 
-            click_button "登録" 
+            click_button "登　録" 
 
             expect(page).to have_selector "div.alert-success"
         end 
@@ -29,7 +29,7 @@ RSpec.describe "Users", type: :system do
           fill_in "Email", with: "example@invalid" 
           fill_in "Password", with: "test" 
           fill_in "Confirmation", with: "tes" 
-          click_button "登録" 
+          click_button "登　録" 
 
           expect(page).to have_selector "div#error_explanation" 
           expect(page).to have_selector "div.alert-danger" 
