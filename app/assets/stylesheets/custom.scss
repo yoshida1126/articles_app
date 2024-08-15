@@ -149,7 +149,7 @@ hr {
 .header-profile-img {
   width: 33px;
   height: 33px;
-  padding-top: 7.5px;
+  padding-top: 8px;
   align-items: center;
   transition: .1s;
   &:hover {
@@ -166,7 +166,7 @@ hr {
 li.link-btn {
   height: 30px;
   margin-left: 15px;
-  margin-top: 11px;
+  margin-top: 10px;
   background-color: #99b9c2;
   border: .5px solid #fff;
   border-radius: 10px;
@@ -175,14 +175,13 @@ li.link-btn {
     opacity: .7;
   }
   a {
-    padding-top: 3px;
+    padding-top: 4px;
     padding-bottom: 3px;
   }
 }
 
 .btn-custom {
   border-radius: 10px;
-  padding: 0;
 }
 
 #responsive-menu {
@@ -1057,21 +1056,30 @@ aside {
   #responsive-menu {
     display: flex;
     float: right;
-    width: 100px;
-    margin-right: 20px;
-    height: 30px;
-    align-items: center;
+    width: fit-content;
+    margin-bottom: 10px;
   }
 
   .navbar {
+    nav {
+      max-height: 50px;
+    }
+    height: fit-content;
     margin: 0 auto;
+    a {
+      height: fit-content;
+    }
+  }
+
+  .navbar-nav {
+    margin: 0;
   }
 
   .responsive-link-btn {
     display: block;
     height: 30px;
+    margin-top: 10px;
     margin-left: 15px;
-    margin-top: 5px;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 1.5px;
@@ -1083,8 +1091,12 @@ aside {
       background-color: #96abaf;
     }
     a {
+      max-width: 75px;
       padding-top: 3px;
       padding-bottom: 3px;
+    }
+    .btn-custom {
+      padding-top: 2.5px;
     }
   }
 
@@ -1130,7 +1142,8 @@ aside {
   .header-profile-img {
     width: 33px;
     height: 33px;
-    margin-bottom: 10px;
+    margin-top: 8px;
+    padding-top: 0;
     transition: .1s;
     &:hover {
       opacity: .7;
