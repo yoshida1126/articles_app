@@ -4,7 +4,7 @@ document.addEventListener("turbo:load", function() {
   if (document.getElementById("profile_image_upload")) {
     let target = document.getElementById('target');
     var cropperImg = document.getElementById('cropper-img');
-    var origin_Url = cropperImg.src;
+    var origin_Url = cropperImg.src;  
     var close_btn = document.getElementsByClassName("close")[0];
     var modal = document.getElementById("modal-for-trim");
     var overlay = document.createElement("div");

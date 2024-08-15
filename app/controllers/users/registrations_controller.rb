@@ -30,6 +30,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update
     super
     if params[:profile_img].present?
+      @user.profile_img.purge 
       resource.profile_img.attach(params[:profile_img])
     end 
   end
