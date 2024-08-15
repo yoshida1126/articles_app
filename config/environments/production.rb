@@ -92,7 +92,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_dispatch.default_headers = {
-    'Access-Control-Allow-Origin' => 'https://articles-app-eeda.onrender.com',
+    'Access-Control-Allow-Origin' => '*',
     'Access-Control-Request-Methods' => '*',
     'Access-Control-Request-Headers' => '*'
   }
