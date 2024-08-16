@@ -619,8 +619,8 @@ input {
   li {
     padding: 10px 0;
     border-top: 1px solid #e8e8e858;
-    width: 200px;
     height: auto;
+    width: 200px;
   }
   a {
     text-decoration: none;
@@ -1170,6 +1170,7 @@ aside {
     li {
       padding: 10px 0;
       border-top: 1px solid #e8e8e858;
+      width: 100%;
     }
     a {
       text-decoration: none;
@@ -1179,12 +1180,14 @@ aside {
       display: block;
       font-size: 1.1em;
       font-weight: 530;
-      margin-top: 15px;
       padding-top: 0;
       color: #060c0d;
+      width: 200px;
+      margin: auto;
+      margin-top: 15px;
+      margin-bottom: 8px;
     } 
     .title-responsive {
-      width: 100%;
     }
     span.heading-image {
       transition: .1s;
@@ -1194,7 +1197,7 @@ aside {
       img {
         width: 200px;
         height: 106px;
-        object-fit: contain;
+        object-fit: cover;
       }
     }
     .name {
@@ -1262,7 +1265,7 @@ aside {
       img {
         width: 100%;
         max-height: 360px;
-        object-fit: contain;
+        object-fit: cover;
       }
     }
 
