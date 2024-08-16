@@ -10,7 +10,9 @@ class Article < ApplicationRecord
   validates :image, content_type: { in: %w[image/jpeg image/png image/gif],
                                     message: "アップロード可能な画像形式はJPEG, PNG, GIFです。ファイル形式をご確認ください。"},
                     size:         { less_than: 5.megabytes,
-                                    message: "5MB以下の画像をアップロードしてください。" }
+                                    message: "5MB以下の画像をアップロードしてください。" },
+                    dimension:    { width: { min: 375, max: 1024 },
+                                    height: { min: 360, max: 1024 } }
             
   def liked?(user) 
     likes.where(user_id: user.id).exists? 

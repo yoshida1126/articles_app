@@ -619,6 +619,8 @@ input {
   li {
     padding: 10px 0;
     border-top: 1px solid #e8e8e858;
+    width: 200px;
+    height: auto;
   }
   a {
     text-decoration: none;
@@ -635,6 +637,7 @@ input {
     img {
       width: 200px;
       height: 106px;
+      border-radius: 5px;
       object-fit: cover;
     }
     a {
@@ -1191,7 +1194,7 @@ aside {
       img {
         width: 200px;
         height: 106px;
-        object-fit: cover;
+        object-fit: contain;
       }
     }
     .name {

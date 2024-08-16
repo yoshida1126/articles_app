@@ -22,7 +22,7 @@
   <div class="col-sm-8"> 
     <% if @user.articles.any? %> 
       <h4>投稿記事</h4> 
-      <ol class="articles">
+      <ol id="profile-page-articles", class="articles">
         <%= render @articles %> 
       </ol>
       <%= will_paginate @articles %> 
