@@ -47,7 +47,7 @@
       <div class="modal-body">
         <div class="cropper-area">
          <% if @user.profile_img.attached? %>
-           <%= image_tag @user.profile_img, id:"cropper-img" %>
+           <%= image_tag @user.profile_img, id:"cropper-img", crossOrigin: "anonymous" %>
          <% end %>
         </div>
       </div>
