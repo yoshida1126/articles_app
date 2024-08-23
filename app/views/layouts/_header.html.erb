@@ -1,9 +1,26 @@
 <header class="navbar navbar-fixed-top navbar-inverse fixed-top" style="background-color:#99b9c2;"> 
-  <div class="container"> 
-    
+  <div class="container">   
     <nav>
-    <%= link_to "Articles", root_path, id: "logo" %>
+      <%= link_to "Articles", root_path, id: "logo" %>
       <ul id="navbar-menu" class="nav navbar-nav navbar-right">
+        <%= search_form_for @search, url: articles_path, method: :get do |f| %>
+          <%= button_tag type: "submit", id: "search-btn", class:"btn-default" do %> 
+            <i class="fas fa-search"></i> 
+          <% end %> 
+          <%= f.search_field :title_or_content_eq, placeholder: 'キーワード検索', value: "", class: "search-window", required: "required" %>
+        <% end %> 
+        <div id="search-window-open">
+          <a><i class="fas fa-search"></i></a>
+        </div>
+        <div id="responsive-search-window" class="display">
+          <%= search_form_for @search, url: articles_path, id: "search-window", class: "display", method: :get do |f| %>
+            <%= button_tag type: "submit", id: "responsive-search-btn", class:"btn-default" do %> 
+              <i class="fas fa-search"></i> 
+            <% end %> 
+            <%= f.search_field :title_or_content_eq, placeholder: 'キーワード検索', value: "", class: "responsive-search-window", required: "required" %> 
+          <% end %>
+          <button type="button"id="search-window-close" class="display"><span class="dli-close"></span></button>
+        </div>
         <% if user_signed_in? %>
           <li class="dropdown">
             <a href="#" id="account" class="dropdown-toggle"> 

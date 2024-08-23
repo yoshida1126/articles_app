@@ -1,10 +1,18 @@
 class ApplicationController < ActionController::Base
+    include ApplicationHelper
+    before_action :configure_permitted_parameters, if: :devise_controller? 
+    before_action :search 
 
     def home 
     end 
 
-    include ApplicationHelper
-    before_action :configure_permitted_parameters, if: :devise_controller? 
+    def search
+      @article = Article.new
+      @search = Article.ransack(params[:q])
+      if params[:q].present?
+        @search_articles = @search.result(distinct: true).order(created_at: :desc).page(params[:page])
+      end 
+    end 
 
     protected 
 

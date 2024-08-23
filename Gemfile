@@ -22,7 +22,8 @@ gem "will_paginate", "3.3.1"
 gem "bootstrap-will_paginate", "1.0.0" 
 gem "redcarpet" 
 gem "marked-rails"
-gem 'rack-cors'
+gem "ransack" 
+gem "rack-cors"
 
 group :development, :test do
   gem "debug", "1.7.1", platforms: %i[ mri mingw x64_mingw ]

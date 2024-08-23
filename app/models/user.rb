@@ -68,4 +68,8 @@ class User < ApplicationRecord
                    OR user_id = :user_id", user_id: id).limit(15) 
            .includes(:user, image_attachment: :blob)
   end 
+
+  def self.ransackable_associations (auth_object = nil) 
+    ["article"] 
+  end 
 end

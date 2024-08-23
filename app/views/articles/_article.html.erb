@@ -1,29 +1,28 @@
-  <li id="article-<%= article.id %>">
-    
-      <span class="heading-image">
-        <%= link_to article do %>
-          <%= image_tag article.image if article.image.attached? %>
-        <% end %>
-      </span>
-      <span class="title title-responsive">
-        <%= link_to article do %>
-          <%= article.title %>
-        <% end %>
-      </span>
-      <div class="user-profile-img">
-        <%= link_to article.user do %>
-          <%= image_tag article.user.profile_img if article.user.profile_img.attached? %>
-        <% end %>
-      </div>
-      <div class="name">
-        <%= link_to article.user do %>
-          <%= article.user.name %>
-        <% end %> 
-      </div>  
-      <span class="timestamp"> 
-        <%= article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
-      </span> 
-      <span class="likes_btn_<%= article.id %>">
-        <%= render "likes/btn", article: article %>
-      </span>
-  </li>
+<li id="article-<%= article.id %>"> 
+  <span class="heading-image">
+    <%= link_to article do %>
+      <%= image_tag article.image if article.image.attached? %>
+    <% end %>
+  </span>
+  <span class="title title-responsive">
+    <%= link_to article do %>
+      <%= article.title %>
+    <% end %>
+  </span>
+  <div class="user-profile-img">
+    <%= link_to article.user do %>
+      <%= image_tag article.user.profile_img if article.user.profile_img.attached? %>
+    <% end %>
+  </div>
+  <div class="name">
+    <%= link_to article.user do %>
+      <%= article.user.name %>
+    <% end %> 
+  </div>  
+  <span class="timestamp"> 
+    <%= article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
+  </span> 
+  <span class="likes_btn_<%= article.id %>">
+    <%= render "likes/btn", article: article %>
+  </span>
+</li>

@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+Rails.application.routes.draw do 
   root 'main_page#home'
   get "/help", to: "static_pages#help"
   get "/about", to: "static_pages#about"
@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   end 
   get "/users/:id", to: "users#show" 
   resources :relationships, only: [:create, :destroy] 
-  resources :articles, only: [:show, :new, :create, :edit, :update, :destroy] do 
+  resources :articles, only: [:index, :show, :new, :create, :edit, :update, :destroy] do 
     resource :likes, only: [:create, :destroy] 
   end 
 end

@@ -1,0 +1,9 @@
+<% if @search_articles.any? %> 
+  <h4 class="search-result"># 検索結果 <%= @search_articles.count %> 件</h4> 
+  <ol id="profile-page-articles", class="articles">
+    <%= render @search_articles %> 
+  </ol>
+  <%= will_paginate @search_articles %> 
+<% else %>
+  <h4 class="search-result">検索結果 0 件</h4>
+<% end %>
