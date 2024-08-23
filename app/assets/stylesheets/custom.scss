@@ -210,9 +210,10 @@ li.link-btn {
     outline: none;
   }
   #search-btn {
-    width: 40px;
     border: none;
     border-radius: 4px;
+    padding-left: 5px;
+    padding-right: 6px;
     &:hover {
       background: none;
       outline: none;
@@ -1193,6 +1194,8 @@ aside {
         color: rgb(150, 150, 150);
         border: none;
         border-radius: 4px;
+        padding-left: 5px;
+        padding-right: 6px;
         &:hover {
           background: none;
           outline: none;
