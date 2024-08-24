@@ -190,7 +190,7 @@ li.link-btn {
 
 #article_search {
   display: flex;
-  width: 230px;
+  width: 300px;
   height: 30px;
   margin-top: 10px;
   margin-right: 20px;
@@ -214,9 +214,11 @@ li.link-btn {
     border-radius: 4px;
     padding-left: 5px;
     padding-right: 2px;
+    color: #969696;
     &:hover {
       background: none;
       outline: none;
+      color: #777;
     }
     &:focus {
       background: none;
