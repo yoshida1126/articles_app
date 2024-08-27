@@ -23,6 +23,7 @@ gem "bootstrap-will_paginate", "1.0.0"
 gem "redcarpet" 
 gem "marked-rails"
 gem "ransack" 
+gem "acts-as-taggable-on"
 gem "rack-cors"
 
 group :development, :test do

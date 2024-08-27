@@ -18,6 +18,11 @@
     <% end %>
   </div>
 
+  <div id="add-tags">
+    <%= f.label :tag_list, "タグ(半角のスペースで区切って入力してください。)", class: "form-label" %> 
+    <%= f.text_field :tag_list, value: @article.tag_list.join(" "), class: "form-control" %> 
+  </div> 
+
   <div class="toolbar">
     <div class="article-image-upload">
       <label>

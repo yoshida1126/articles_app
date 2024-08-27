@@ -40,6 +40,18 @@
       <% end %>
     </div>
   </div> 
+  <% if @tags.present? %> 
+    <div class="tags">
+      <ul>
+        <i class="fas fa-tag"></i>
+        <% @tags.each do |tag| %>
+          <li class="tag">
+            <%= link_to tag, tag_path(tag.name) %>
+          </li>
+        <% end %> 
+      </ul>
+    </div >
+  <% end %> 
   <div class="content">
     <%= markdown(@article.content) %>
   </div>

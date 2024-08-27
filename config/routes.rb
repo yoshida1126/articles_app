@@ -31,4 +31,5 @@ Rails.application.routes.draw do
   resources :articles, only: [:index, :show, :new, :create, :edit, :update, :destroy] do 
     resource :likes, only: [:create, :destroy] 
   end 
+  resources :tags, only: [:show] 
 end

@@ -7,6 +7,7 @@ class ArticlesController < ApplicationController
 
   def show 
     @article = Article.find(params[:id]) 
+    @tags = @article.tag_counts_on(:tags)
   end 
 
   def new
@@ -65,7 +66,7 @@ class ArticlesController < ApplicationController
   private 
 
   def article_params 
-    params.require(:article).permit(:title, :content, :image)
+    params.require(:article).permit(:title, :content, :image, :tag_list)
   end 
 
   def correct_user 
