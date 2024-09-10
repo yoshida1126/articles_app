@@ -28,11 +28,18 @@ user.profile_img.attach(io: File.open("app/assets/images/profile.jpg"),
 end 
 
 users = User.order(:created_at).take(6) 
-50.times do 
+array = %w(テスト テスト記事 記事)
+array.each { |tag|
+  5.times do 
     title = "test"
+    tag_list = ActsAsTaggableOn::Tag.new 
+    tag_list.name = tag
+    tag_list.save  
     content = Faker::Lorem.sentence(word_count: 5) 
-    users.each { |user| user.articles.create!(title: title, content: content)}
-end 
+    users.each { |user| user.articles.create!(title: title, tag_list: tag_list, content: content)}
+  end 
+}
+
 
 users = User.all 
 user = users.first 

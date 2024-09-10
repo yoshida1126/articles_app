@@ -1,9 +1,22 @@
-<% if @search_articles.any? %> 
-  <h4 class="search-result"># 検索結果 <%= @search_articles.count %> 件</h4> 
+<% if @weekly_trend_articles %> 
+  <h4 class="search-result">トレンド記事一覧</h4> 
   <ul id="search-or-tagged-articles" class="articles">
-    <%= render partial: "articles/shared/search_articles", collection: @search_articles, as: "article" %> 
+    <%= render partial: "articles/shared/search_articles", collection: @weekly_trend_articles, as: "article" %> 
+  </ul>  
+<% elsif @articles %>
+  <h4 class="search-result">最近の投稿一覧</h4> 
+  <ul id="search-or-tagged-articles" class="articles">
+    <%= render partial: "articles/shared/search_articles", collection: @articles, as: "article" %>
   </ul>
-  <%= will_paginate @search_articles %> 
-<% else %>
-  <h4 class="search-result">検索結果 0 件</h4>
-<% end %> 
+  <div class="pagination">
+    <%= will_paginate @articles %> 
+  </div>
+<% elsif @trend1_tag_articles %>
+  <h4 class="search-result"><%= @tag1_name %>
+  <ul id="search-or-tagged-articles" class="articles">
+    <%= render partial: "articles/shared/search_articles", collection: @trend1_tag_articles, as: "article" %>
+  </ul>
+  <div class="pagination">
+    <%= will_paginate @trend1_tag_articles %> 
+  </div>
+<% end %>

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do 
   root 'main_page#home'
+  get "/trend_articles", to: "main_page#trend" 
+  get "/recentry_articles", to: "main_page#recentry" 
+  get "/tag#{:id}/articles", to: "main_page#trend_tag_articles"
   get "/help", to: "static_pages#help"
   get "/about", to: "static_pages#about"
   get "/users/check", to: "users#check", as: :user_delete_check
@@ -32,4 +35,5 @@ Rails.application.routes.draw do
     resource :likes, only: [:create, :destroy] 
   end 
   resources :tags, only: [:show] 
+  get "search" => "searches#search" 
 end

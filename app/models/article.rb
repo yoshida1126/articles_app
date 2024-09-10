@@ -3,7 +3,9 @@ class Article < ApplicationRecord
   has_many_attached :article_images
   belongs_to :user
   has_many :likes, dependent: :destroy
-  acts_as_taggable_on :tags 
+  acts_as_taggable_on :tags
+  validates :tag_list, presence: true 
+  validate :validate_tag
   default_scope -> { order(created_at: :desc) }
   validates :user_id, presence: true 
   validates :title, presence: true, length: { maximum: 50 } 
@@ -35,5 +37,15 @@ class Article < ApplicationRecord
   def self.ransackable_associations (auth_object = nil) 
     []
   end 
-end
+
+  private 
+
+  MAX_TAG_COUNT = 10 
+
+  def validate_tag 
+    if tag_list.size > MAX_TAG_COUNT 
+      errors.add("タグ", "の数は10個以下にしてください。")
+    end 
+  end
+end 
 

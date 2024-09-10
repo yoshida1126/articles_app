@@ -256,16 +256,35 @@ li.link-btn {
 
 .home {
   margin: auto;
-  h4 {
+  .title-and-link {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
     margin-top: 50px;
+    h4 {
+      margin-top: 0;
+    }
+    .articles-link {
+      font-size: 1.3rem;
+      &:hover {
+        opacity: .7;
+      }
+      a {
+        text-decoration: none;
+        color: #777;
+      }
+      i {
+        color: #777;
+      }
+    }
   }
   ol.articles {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     overflow-x: scroll;
     margin-bottom: 50px;
     li {
-      width: 300px;
+      //width: 300px;
       margin-right: 20px;
     }
   }
@@ -552,6 +571,51 @@ input {
   }
  }
 
+ // pagination 
+
+ div.pagination {
+  width: 100%;
+  ul.pagination {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    color: #99b9c2;
+  }
+}
+
+.pagination>li>a {
+  border: none;
+  color: #777;
+}
+
+.pagination>.active>a {
+  background: #99b9c2;  
+  border-radius: 50%;
+}
+
+.pagination>.active>a:hover {
+  background: #99b9c2;  
+}
+
+.pagination>li>a:hover {
+  background: #99b9c2;  
+  border-radius: 50%;
+  opacity: .8;
+  color: #fff;
+}
+
+.pagination li:first-child a {
+  color: #777;
+  background: none;
+}
+
+.pagination li:last-child a {
+  color: #777;
+  background: none;
+}
+
+
+
 /* Dropdown menu */ 
 
 .dropdown-menu.active { 
@@ -693,7 +757,6 @@ input {
   padding: 0;
   li {
     padding: 10px 0;
-    border-top: 1px solid #e8e8e858;
     height: auto;
     width: fit-content;
     .name {
@@ -1405,9 +1468,6 @@ aside {
     li {
       padding: 10px 0;
       border-top: 1px solid #e8e8e858;
-      width: 200px;
-      margin-left: auto;
-      margin-right: auto;
     }
     a {
       text-decoration: none;

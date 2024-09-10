@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
     end 
 
     def search
-      @article = Article.new
       @search = Article.ransack(params[:q])
       if params[:q].present?
         @search_articles = @search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page], per_page: 32)

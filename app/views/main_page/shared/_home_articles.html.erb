@@ -1,4 +1,4 @@
-<li id="article-<%= article.id %>"> 
+<li id="article-<%= article.id %>">
   <span class="heading-image">
     <%= link_to article do %>
       <% if article.image.attached? %> 
@@ -8,7 +8,7 @@
       <% end %> 
     <% end %>
   </span>
-  <span class="title title-responsive">
+  <span class="title">
     <%= link_to article do %>
       <%= article.title %>
     <% end %>
@@ -23,8 +23,8 @@
       <div class="name">
         <%= link_to article.user do %>
           <%= article.user.name %>
-        <% end %> 
-      </div>  
+        <% end %>
+      </div>
       <span class="timestamp"> 
         <%= article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
       </span> 

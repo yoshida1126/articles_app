@@ -1,90 +1,87 @@
 <div class="home">
   <% if @weekly_trend_articles.any? %>
-    <h4>トレンド記事</h4> 
+    <div class="title-and-link">
+      <h4>トレンド記事</h4> 
+      <div class="articles-link">
+        <a href="/trend_articles">トレンド記事一覧</a>
+        <i class="fas fa-angle-right"></i>
+      </div>
+    </div>
     <ol class="articles">
-      <% @weekly_trend_articles.each do |article| %>
-        <li id="article-<%= article.id %>">
-          <span class="heading-image">
-            <%= link_to article do %>
-              <% if article.image.attached? %> 
-                <%= image_tag article.image %>
-              <% else %> 
-                <%= image_tag "/assets/header.png" %> 
-              <% end %> 
-            <% end %>
-          </span>
-          <span class="title">
-            <%= link_to article do %>
-              <%= article.title %>
-            <% end %>
-          </span>
-          <div class="article-info">
-            <div class="user-profile-img">
-              <%= link_to article.user do %>
-                <%= image_tag article.user.profile_img if article.user.profile_img.attached? %>
-              <% end %>
-            </div>
-            <div class="name-and-timestamp">
-              <div class="name">
-                <%= link_to article.user do %>
-                  <%= article.user.name %>
-                <% end %>
-              </div>
-              <span class="timestamp"> 
-                <%= article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
-              </span> 
-            </div>
-          </div>
-          <span class="likes_btn_<%= article.id %>">
-            <%= render "likes/btn", article: article %>
-          </span>
-        </li>
-      <% end %>
+      <%= render partial: "main_page/shared/home_articles", collection: @weekly_trend_articles, as: :article %>
     </ol>
   <% end %>
   <% if @articles.any? %>
-    <h4>最近の投稿</h4> 
+    <div class="title-and-link">
+      <h4>最近の投稿</h4> 
+      <div class="articles-link">
+        <a href="/recentry_articles">すべて見る</a>
+        <i class="fas fa-angle-right"></i>
+      </div>
+    </div>
     <ol class="articles">
-      <% @articles.each do |article| %>
-        <li id="article-<%= article.id %>">
-          <span class="heading-image">
-            <%= link_to article do %>
-              <% if article.image.attached? %> 
-                <%= image_tag article.image %>
-              <% else %> 
-                <%= image_tag "/assets/header.png" %> 
-              <% end %> 
-            <% end %>
-          </span>
-          <span class="title">
-            <%= link_to article do %>
-              <%= article.title %>
-            <% end %>
-          </span>
-          <div class="article-info">
-            <div class="user-profile-img">
-              <%= link_to article.user do %>
-                <%= image_tag article.user.profile_img if article.user.profile_img.attached? %>
-              <% end %>
-            </div>
-            <div class="name-and-timestamp">
-              <div class="name">
-                <%= link_to article.user do %>
-                  <%= article.user.name %>
-                <% end %>
-              </div>
-              <span class="timestamp"> 
-                <%= article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
-              </span> 
-            </div>
-          </div>
-          <span class="likes_btn_<%= article.id %>">
-            <%= render "likes/btn", article: article %>
-          </span>
-        </li>
-      <% end %>
+      <%= render partial: "main_page/shared/home_articles", collection: @articles, as: :article %>
     </ol>
   <% end %>
-  
+  <% if @trend1_tag_articles %>
+    <div class="title-and-link">
+      <h4><%= @tag1_name %></h4> 
+      <div class="articles-link">
+        <%= link_to "すべて見る", tag_path(@tag1_name) %>
+        <i class="fas fa-angle-right"></i>
+      </div>
+    </div>
+    <ol class="articles">
+      <%= render partial: "main_page/shared/home_articles", collection: @trend1_tag_articles, as: :article %>
+    </ol>
+  <% end %>
+  <% if @trend2_tag_articles %>
+    <div class="title-and-link">
+      <h4><%= @tag2_name %></h4> 
+      <div class="articles-link">
+        <%= link_to "すべて見る", tag_path(@tag2_name) %>
+        <i class="fas fa-angle-right"></i>
+      </div>
+    </div>
+    <ol class="articles">
+      <%= render partial: "main_page/shared/home_articles", collection: @trend2_tag_articles, as: :article %>
+    </ol>
+  <% end %>
+  <% if @trend3_tag_articles %>
+    <div class="title-and-link">
+      <h4><%= @tag3_name %></h4> 
+      <div class="articles-link">
+        <%= link_to "すべて見る", tag_path(@tag3_name) %>
+        <i class="fas fa-angle-right"></i>
+      </div>
+    </div>
+    <ol class="articles">
+      <%= render partial: "main_page/shared/home_articles", collection: @trend3_tag_articles, as: :article %>
+    </ol>
+  <% end %>
+  <% if @trend4_tag_articles %>
+    <div class="title-and-link">
+      <h4><%= @tag4_name %></h4> 
+      <div class="articles-link">
+        <%= link_to "すべて見る", tag_path(@tag4_name) %>
+        <i class="fas fa-angle-right"></i>
+      </div>
+    </div>
+    <ol class="articles">
+      <%= render partial: "main_page/shared/home_articles", collection: @trend4_tag_articles, as: :article %>
+    </ol>
+  <% end %>
+  <% if @trend5_tag_articles %>
+    <div class="title-and-link">
+      <h4><%= @tag5_name %></h4> 
+      <div class="articles-link">
+        <%= link_to "すべて見る", tag_path(@tag5_name) %>
+        <i class="fas fa-angle-right"></i>
+      </div>
+    </div>
+    <ol class="articles">
+      <%= render partial: "main_page/shared/home_articles", collection: @trend5_tag_articles, as: :article %>
+    </ol>
+  <% end %>
 </div>
 

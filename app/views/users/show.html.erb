@@ -25,7 +25,9 @@
       <ol id="profile-page-articles", class="articles">
         <%= render @articles %> 
       </ol>
-      <%= will_paginate @articles %> 
     <% end %>
+  </div>
+  <div class="pagination">
+    <%= will_paginate @articles %> 
   </div>
 </div> 

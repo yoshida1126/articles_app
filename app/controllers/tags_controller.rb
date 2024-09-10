@@ -7,6 +7,6 @@ class TagsController < ApplicationController
 
     @total_articles_count = @tagged_articles.count 
 
-    @tagged_articles = @tagged_articles.paginate(page: params[:page], per_page: 32)
+    @tagged_articles = @tagged_articles.paginate(page: params[:page], per_page: 30)
   end 
 end 

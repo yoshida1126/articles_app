@@ -3,7 +3,7 @@
     <nav>
       <%= link_to "Articles", root_path, id: "logo" %>
       <ul id="navbar-menu" class="nav navbar-nav navbar-right">
-        <%= search_form_for @search, url: articles_path, method: :get do |f| %>
+        <%= search_form_for @search, url: search_path, method: :get do |f| %>
           <%= button_tag type: "submit", id: "search-btn", class:"btn-default" do %> 
             <i class="fas fa-search"></i> 
           <% end %> 
@@ -13,7 +13,7 @@
           <a><i class="fas fa-search"></i></a>
         </div>
         <div id="responsive-search-window" class="display">
-          <%= search_form_for @search, url: articles_path, id: "search-window", class: "display", method: :get do |f| %>
+          <%= search_form_for @search, url: search_path, id: "search-window", class: "display", method: :get do |f| %>
             <%= button_tag type: "submit", id: "responsive-search-btn", class:"btn-default" do %> 
               <i class="fas fa-search"></i> 
             <% end %> 
