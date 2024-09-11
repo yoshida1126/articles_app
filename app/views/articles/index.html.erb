@@ -11,12 +11,4 @@
   <div class="pagination">
     <%= will_paginate @articles %> 
   </div>
-<% elsif @trend1_tag_articles %>
-  <h4 class="search-result"><%= @tag1_name %>
-  <ul id="search-or-tagged-articles" class="articles">
-    <%= render partial: "articles/shared/search_articles", collection: @trend1_tag_articles, as: "article" %>
-  </ul>
-  <div class="pagination">
-    <%= will_paginate @trend1_tag_articles %> 
-  </div>
 <% end %>

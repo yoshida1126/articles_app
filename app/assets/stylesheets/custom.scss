@@ -747,9 +747,13 @@ input {
 
 #search-or-tagged-articles {
   display: grid;
+  place-content: center;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   justify-content: space-between;
   column-gap: 10px;
+  li {
+    margin: 0 auto;
+  }
 }
 
 .articles {
@@ -1221,7 +1225,6 @@ aside {
 
   .container {
     width: 100%;
-    height: 50px;
     padding-right: 10px;
     padding-left: 10px;
   }
@@ -1467,7 +1470,6 @@ aside {
     padding: 0;
     li {
       padding: 10px 0;
-      border-top: 1px solid #e8e8e858;
     }
     a {
       text-decoration: none;
