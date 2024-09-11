@@ -4,7 +4,7 @@ class Article < ApplicationRecord
   belongs_to :user
   has_many :likes, dependent: :destroy
   acts_as_taggable_on :tags
-  validates :tag_list, presence: true 
+  validates :tag_list, presence: { message: 'を入力してください。'}
   validate :validate_tag
   default_scope -> { order(created_at: :desc) }
   validates :user_id, presence: true 

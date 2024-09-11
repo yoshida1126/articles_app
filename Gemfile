@@ -25,6 +25,8 @@ gem "marked-rails"
 gem "ransack" 
 gem "acts-as-taggable-on"
 gem "rack-cors"
+gem "rails-i18n"
+gem "devise-i18n"  
 
 group :development, :test do
   gem "debug", "1.7.1", platforms: %i[ mri mingw x64_mingw ]

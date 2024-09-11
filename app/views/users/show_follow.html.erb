@@ -60,6 +60,6 @@
     <% end %> 
   </div>
   <div class="pagination">
-    <%= will_paginate %> 
+    <%= render partial: "shared/pagination", locals: { object: @users } %>
   </div>
 </div> 

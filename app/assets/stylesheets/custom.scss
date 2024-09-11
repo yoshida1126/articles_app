@@ -88,6 +88,7 @@ hr {
 }
 
 #logo {
+    font-family:"ヒラギノ丸ゴ Pro W4","ヒラギノ丸ゴ Pro","Hiragino Maru Gothic Pro","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO";
     float: left;
     margin-right: 10px;
     font-size: 1.7em;
@@ -164,6 +165,7 @@ hr {
 }
 
 li.link-btn {
+  font-family:"ヒラギノ丸ゴ Pro W4","ヒラギノ丸ゴ Pro","Hiragino Maru Gothic Pro","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO";
   height: 30px;
   margin-left: 15px;
   margin-top: 10px;
@@ -257,11 +259,13 @@ li.link-btn {
 .home {
   margin: auto;
   .title-and-link {
+    font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
     h4 {
+      font-weight: bold;
       margin-top: 0;
     }
     .articles-link {
@@ -742,6 +746,8 @@ input {
 }
 
 .search-tag-result {
+  font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
+  font-weight: bold;
   margin-top: 40px;
 }
 
@@ -1117,6 +1123,12 @@ aside {
 }
 
 .content {
+  font-family: '游ゴシック体' , 'Yu Gothic', YuGothic, sans-serif;
+  line-height: 2.5;
+  p {
+    font-size: 1.7rem;
+    font-weight: lighter;
+  }
   h1, h2 {
     text-align: left;
     margin-top: 0;
@@ -1218,6 +1230,8 @@ aside {
 /* search */ 
 
 .search-result {
+  font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
+  font-weight: bold;
   margin-top: 40px;
 }
 

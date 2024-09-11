@@ -9,6 +9,6 @@
     <%= render partial: "articles/shared/search_articles", collection: @articles, as: "article" %>
   </ul>
   <div class="pagination">
-    <%= will_paginate @articles %> 
+    <%= render partial: "shared/pagination", locals: { object: @articles } %>
   </div>
 <% end %>

@@ -3,7 +3,7 @@
   <ul id="search-or-tagged-articles" class="articles"> 
     <%= render partial: "articles/shared/search_articles", collection: @search_articles, as: "article" %> 
   </ul>
-  <%= will_paginate @search_articles %> 
+  <%= render partial: "shared/pagination", locals: { object: @search_articles } %>
 <% else %>
   <h4 class="search-result">検索結果 0 件</h4>
 <% end %>

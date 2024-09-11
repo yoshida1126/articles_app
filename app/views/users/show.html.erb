@@ -28,6 +28,6 @@
     <% end %>
   </div>
   <div class="pagination">
-    <%= will_paginate @articles %> 
+    <%= render partial: "shared/pagination", locals: { object: @articles } %>
   </div>
 </div> 

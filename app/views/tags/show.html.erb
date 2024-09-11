@@ -6,7 +6,7 @@
         <%= render partial: "articles/shared/search_articles", collection: @tagged_articles, as: "article" %>
       </ul>
       <div class="pagination">
-        <%= will_paginate @tagged_articles %> 
+        <%= render partial: "shared/pagination", locals: { object: @tagged_articles } %>
       </div>
     <% end %>
   </div>

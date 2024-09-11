@@ -19,17 +19,17 @@ class User < ApplicationRecord
 
   before_save { self.email = email.downcase }
   
-  validates :name, presence: true, length: { maximum: 50 } 
+  validates :name, presence: { message: "を入力してください。"}, length: { maximum: 50 } 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-  validates :email, presence: true, length: { maximum: 255 }, 
-                    format: { with: VALID_EMAIL_REGEX },
-                    uniqueness: true
-  validates :password, length: { minimum: 6 }, allow_nil: true
+  validates :email, presence: { message: "を入力してください。"}, length: { maximum: 255, message: "は最大255文字です。" }, 
+                    format: { with: VALID_EMAIL_REGEX, message: "は無効です。" },
+                    uniqueness: { message: "はすでに使われています。"}
+  validates :password, length: { minimum: 6, message: "は6文字以上を設定してください。" }, allow_nil: true 
 
   with_options presence: true do 
     with_options on: :create do 
-      validates :password 
-      validates :password_confirmation  
+      validates :password, presence: { message: "を入力してください。"} 
+      validates :password_confirmation, presence: { message: "を入力してください。"} 
     end 
   end 
 
