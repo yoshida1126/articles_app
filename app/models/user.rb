@@ -13,6 +13,8 @@ class User < ApplicationRecord
                     uniqueness: true
   validates :password, length: { minimum: 6 }, allow_nil: true
 
+  validate :introduction, length: { maximum: 50 }
+
   with_options presence: true do 
     with_options on: :create do 
       validates :password 
