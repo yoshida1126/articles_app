@@ -1,0 +1,56 @@
+<% @article.article_comments.each do |article_comment| %>
+  <div class="comment-box">
+    <div class="comment-info">
+      <div class="comment-user-info">
+        <div class="article-comment-profile-img">
+          <%= link_to article_comment.user do %>
+            <%= image_tag article_comment.user.profile_img, class: "comment-user-img" %>
+          <% end %>
+        </div>
+        <div class="article-comment-user-name">    
+          <%= link_to article_comment.user do %>  
+            <%= article_comment.user.name %>
+          <% end %>
+        </div>
+      </div>
+      <div class="comment-time-and-option">
+        <% unless article_comment.updated_at == article_comment.created_at %>
+          <%= article_comment.updated_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
+          <br>
+          (編集済み)
+        <% else %>
+          <%= article_comment.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
+        <% end %>
+        <% if article_comment.user == current_user %> 
+          <section class="article-edit">
+            <div class="dropdown">
+              <a href="#" id="option3-<%= article_comment.id %>" class="dropdown-toggle dropdown3"> 
+                <span class="dli-more-v"></span>
+              </a>
+              <ul id="dropdown-menu3-<%= article_comment.id %>" class="dropdown-menu article-comment-option">
+                <li><a href="#">コメントを編集</a></li>
+                <li class="divider"></li>
+                <li><%= link_to "コメントを削除", article_article_comment_path(article_comment.article, article_comment), data: { "turbo-method": :delete,
+                        turbo_confirm: "本当に削除しますか？" } %> 
+                </li>
+              </ul> 
+            </div>
+          </section>
+        <% end %>
+      </div>
+    </div>
+    <div class="comment">
+      <%= markdown(article_comment.comment) %>
+    </div>
+    <span class="likes_btn_<%= article_comment.id %>">
+      <%= render "article_comment_likes/btn", article: @article, article_comment: article_comment %>
+    </span>
+  </div>
+  <div id="comment-edit-<%= article_comment.id %>" class="article-comment-edit-area" style="display:none">
+    <% if @error_comment.present? %> 
+      <%= render "shared/error_messages", object: @error_comment %>
+    <% end %>   
+    <%= render "article_comments/comment_edit_form", article_comment: article_comment %>
+  </div>
+  <hr>
+<% end %>

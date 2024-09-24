@@ -1,5 +1,6 @@
 class LikesController < ApplicationController
   before_action :logged_in_user 
+  
   def create
     @article = Article.find_by(id: params[:article_id])
     @article_like = Like.new(user_id: current_user.id, article_id: params[:article_id]) 

@@ -1,0 +1,14 @@
+ja: 
+  activerecord: 
+    models:
+      article: 記事
+      article_comment: コメント 
+    attributes:
+      article:
+        title: タイトル
+        content: 本文
+        tag_list: タグ
+        created_at: 投稿日
+        updated_at: 更新日
+      article_comment: 
+        comment: コメント

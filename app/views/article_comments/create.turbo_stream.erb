@@ -1,0 +1,15 @@
+<% if @error_comment %>
+  <%= turbo_stream.update "comment-error" do %>
+    <%= render "shared/error_messages", object: @error_comment, status: :unprocessable_entity %> 
+  <% end %>
+<% else %>
+  <%= turbo_stream.update "comment-count" do %>
+    コメント <%= @article.article_comments.count %>件
+  <% end %>
+  <%= turbo_stream.update "article-comment-list" do %> 
+    <%= render partial: "article_comments/comment", article: @article %>
+  <% end %>
+  <%= turbo_stream.update "comment-area" do %>
+    <%= render partial: "article_comments/comment_form" %>
+  <% end %>
+<% end %>

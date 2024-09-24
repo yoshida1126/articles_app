@@ -14,7 +14,11 @@
         <%= link_to @article.user do %>
           <div class="user-name"><%= link_to @article.user.name, @article.user %></div>
         <% end %>
-        <span class="timestamp"><%= @article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %> </span>
+        <% unless @article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M:%-S") == @article.updated_at.strftime("%Y年%-m月%-d日 %-H:%-M:%-S") %>
+          <span class="timestamp"><%= @article.updated_at.strftime("%Y年%-m月%-d日 %-H:%-M") %> (編集済み)</span>
+        <% else %>
+          <span class="timestamp"><%= @article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %> </span>
+        <% end %>
       </div>
     </section>
     <div class="select-operation"> 
@@ -54,5 +58,21 @@
   <% end %> 
   <div class="content">
     <%= markdown(@article.content) %>
+  </div>
+  <div class="article-comment">
+    <p id="comment-count">コメント <%= @article.article_comments.count %>件</p>
+    <hr>
+    <div id="article-comment-list">     
+      <%= render "article_comments/comment"%>
+    </div>
+    <div id="comment-area">
+      <% if current_user %>
+        <%= render "article_comments/comment_form" %>
+      <% else %>
+        <div class="login-and-sign-up-page-link">
+          コメントを投稿するには、 <%= link_to "ログイン", login_path %> するか <%= link_to "会員登録", sign_up_path %> してください。
+        </div>
+      <% end %> 
+    </div>
   </div>
 </div>

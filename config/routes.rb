@@ -33,6 +33,9 @@ Rails.application.routes.draw do
   resources :relationships, only: [:create, :destroy] 
   resources :articles, only: [:index, :show, :new, :create, :edit, :update, :destroy] do 
     resource :likes, only: [:create, :destroy] 
+    resources :article_comments, only: [:create, :destroy, :edit, :update] do 
+      resource :article_comment_likes, only: [:create, :destroy]
+    end 
   end 
   resources :tags, only: [:show] 
   get "search" => "searches#search" 

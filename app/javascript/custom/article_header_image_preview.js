@@ -1,4 +1,7 @@
-document.addEventListener("turbo:load", function() {
+document.addEventListener("turbo:load", header_image_preview);
+document.addEventListener("turbo:render", header_image_preview);
+
+function header_image_preview () {
   const preview = document.getElementById("header-img-preview");
 
   if (!preview) return null; 
@@ -30,4 +33,4 @@ document.addEventListener("turbo:load", function() {
     previewWrapper.appendChild(previewImage);
     preview.appendChild(previewWrapper);
   });
-})
+}

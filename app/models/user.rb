@@ -14,6 +14,10 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed 
   has_many :followers, through: :passive_relationships
 
+  has_many :article_comments, dependent: :destroy 
+
+  has_many :article_comment_likes, dependent: :destroy
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable 
 

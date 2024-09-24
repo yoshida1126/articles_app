@@ -1,0 +1,50 @@
+<%= image_tag current_user.profile_img, class: "comment-user-img" %> 
+    コメントする
+<div id="comment-error">
+  <% if @error_comment.present? %> 
+    <%= render "shared/error_messages", object: @error_comment %>
+  <% end %> 
+</div>
+<%= form_with model: [@article, @article_comment], local: true, remote: true do |f| %> 
+  <div class="toolbar">
+    <%= turbo_frame_tag "articles-img" do %>
+      <div class="article-image-upload">
+        <label>
+          <%= image_tag '/assets/picture-icon.png', id:"article-images", class:"btn picture-icon" %> 
+          <%= f.file_field :comment_images, direct_upload: true, id: "artilce-image-field", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
+              data: { 
+                controller: "article-image-upload",
+                article_image_upload_url_value: rails_direct_uploads_url,
+                action: "input->article-image-upload#imageUpload"
+              } 
+          %>
+        </label>
+      </div>
+    <% end %>
+    <div class="preview-open">
+      <div id="preview-btn", class="btn preview-btn">
+        <%= image_tag '/assets/preview.png' %> 
+      </div>
+      <div id="edita", class="btn edita display">
+        <%= image_tag '/assets/editor.png' %> 
+      </div>
+    </div>
+  </div>
+  <div class="text-area-and-preview">
+    <%= f.text_area :comment, id: 'markdown', class: 'form-control article-text-area', placeholder: "コメントを入力",
+        data: {
+          controller: "markdown-upload",
+          markdown_upload_url_value: rails_direct_uploads_url,
+          action: "drop->markdown-upload#dropUpload"
+        } 
+    %>
+    <div id="html", class="html2 display">
+      <div class="preview-placeholder">
+        プレビューが表示されます。
+      </div>
+    </div>
+  </div>
+  <div class="submit-btn">
+    <%= f.submit "送信する", class: "btn", remote: true %> 
+  </div>
+<% end %> 

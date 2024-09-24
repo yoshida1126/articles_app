@@ -3,6 +3,7 @@ class Article < ApplicationRecord
   has_many_attached :article_images
   belongs_to :user
   has_many :likes, dependent: :destroy
+  has_many :article_comments, dependent: :destroy 
   acts_as_taggable_on :tags
   validates :tag_list, presence: { message: 'を入力してください。'}
   validate :validate_tag

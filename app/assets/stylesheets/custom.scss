@@ -447,8 +447,8 @@ input {
 #error_explanation {
   color: red;
   ul {
-    color: red;
-    margin: 0 0  30px 0;
+    margin-left: 20px;
+    padding-left: 10px;
   }
 }
 .field_with_errors {
@@ -940,6 +940,13 @@ aside {
   .dropdown-menu {
     border-radius: 10px;
   }
+  #option {
+    display: block;
+    width: 100%;
+    height: 20px;
+    padding-right: 10px;
+    margin-left: 15px;
+  }
 }
 
 .article-edit-btn {
@@ -995,11 +1002,200 @@ aside {
   }
 }
 
+//comment 
+
+.article-comment {
+  background-color: rgb(243, 243, 243);
+  border-radius: 8px;
+  p {
+    padding-top: 15px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  hr {
+    border-top: 1px solid #d1d1d1;
+    margin: 0;
+  }
+  #article-comment-list {
+    .comment-info {
+      margin-top: 10px;
+      margin-left: 10px;
+      margin-right: 10px;
+      display: flex;
+      justify-content: space-between;
+      .comment-user-info {
+        display: flex;
+        .article-comment-user-name {
+          margin-top: 6px;
+        }
+        a {
+          width: fit-content;
+          color: #333333;
+          text-decoration: none;
+        }
+        .article-comment-profile-img {
+          margin-right: 10px;
+          width: fit-content;
+          .comment-user-img {
+            width: 33px;
+            height: 33px;
+            border-radius: 50%;
+          }
+        }
+      }
+      .comment-time-and-option {
+        display: flex;
+        font-size: 1.3rem;
+        color: #777;
+        padding-top: 4px;
+        max-width: 200px;
+        .dropdown3 {
+          display: block;
+          width: 100%;
+          height: 20px;
+          padding-right: 10px;
+          margin-left: 15px;
+        }
+      }
+    }
+    .comment {   
+      margin-right: 10px;
+      margin-left: 10px;
+      margin-bottom: 10px;
+      font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
+      font-size: 1.7rem;
+      font-weight: lighter;
+      line-height: 1.7em;
+      p {
+        padding: 0;
+        padding-top: 15px;
+        overflow-wrap: break-word;
+        img {
+          max-width: 100%;
+        }
+      }
+    }
+    #good-btn {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    div#comment-edit {
+      display: none;
+    }
+
+    .submit-and-cancel-btn {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+      .edit-cancel-btn {
+        width: 100px;
+        background-color: #8a8a8a;
+        border-radius: 4px;
+        text-align: center;
+        margin-right: 10px;
+        &:hover {
+          opacity: .8;
+        }
+        a {
+          padding-top: 7px;
+          display: block;
+          height: 100%;
+          color: #fff;
+          text-decoration: none;
+          &:hover {
+            color: #fff;
+          }
+        }
+      }
+      .submit-btn {
+        .btn {
+          width: 100px;
+          color: #fff;
+          background-color: #99b9c2;
+          &:hover {
+            opacity: .8;
+          }
+        }
+      }
+    }
+    .article-comment-edit-area {
+      margin-top: 20px;
+      margin-left: 10px;
+      margin-right: 10px;
+      p {
+        margin-left: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  #comment-area {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    .comment-user-img {
+      width: 33px;
+      height: 33px;
+      border-radius: 50%;
+      margin-bottom: 10px; 
+    }   
+    .submit-btn {
+      display: flex;
+      justify-content: flex-end;
+      color: #fff;
+      .btn {
+        margin-bottom: 20px;
+        background-color: #99b9c2;
+        width: 100px;
+        color: #fff;
+      }
+      &:hover {
+        opacity: .8;
+      }
+    }
+    .article-comment-text-area {
+      height: 200px;
+    }
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.login-and-sign-up-page-link {
+  font-size:1.5rem;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  a {
+    color: #7caab4;
+    &:hover {
+      opacity: .7;
+      text-decoration: none;
+    }
+  }
+}
+
 #dropdown-menu2 {
   background-color: #acc0c5;
   a {
     color: #fff;
     &:hover {
+      background-color: #96abaf;
+    }
+  }
+}
+
+ul.article-comment-option {
+  background-color: #acc0c5;
+  right: 0;
+  left: auto;
+  li a {
+    margin: 0 !important;
+    color: #fff;
+    &:hover {
+      color: #fff;
       background-color: #96abaf;
     }
   }
@@ -1042,6 +1238,7 @@ aside {
       display: block;
     }
     .article-image-upload {
+      height: 30px;
       &:hover {
         background-color: #96abaf;
       }
@@ -1198,6 +1395,7 @@ aside {
   padding-top: 2px;
   padding-left: 10px;
   padding-right: 10px;
+  background-color: #fff;
   width: 50%;
   height: 300px;
   border: 1px solid #ccc;
@@ -1412,6 +1610,13 @@ aside {
     }
   }
 
+  .select-operation {
+    margin-top: 8px;
+    .article-edit {
+      margin: 0;
+    }
+  }
+
   #dropdown-menu3 {
     border-radius: 10px;
     margin-right: 10px;
@@ -1581,10 +1786,6 @@ aside {
     .select-operation {
       margin-right: 20px;
     }
-  }
-
-  .article-edit {
-    margin-top: 10px;
   }
 
   // 記事投稿ページ

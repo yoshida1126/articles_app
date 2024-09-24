@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_27_012756) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_14_020755) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -47,6 +47,26 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_27_012756) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "article_comment_likes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "article_comment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_comment_id"], name: "index_article_comment_likes_on_article_comment_id"
+    t.index ["user_id"], name: "index_article_comment_likes_on_user_id"
+  end
+
+  create_table "article_comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "comment"
+    t.bigint "user_id", null: false
+    t.bigint "article_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_article_comments_on_article_id"
+    t.index ["user_id", "article_id", "created_at"], name: "index_article_comments_on_user_id_and_article_id_and_created_at"
+    t.index ["user_id"], name: "index_article_comments_on_user_id"
   end
 
   create_table "articles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -127,6 +147,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_27_012756) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "article_comment_likes", "article_comments"
+  add_foreign_key "article_comment_likes", "users"
+  add_foreign_key "article_comments", "articles"
+  add_foreign_key "article_comments", "users"
   add_foreign_key "articles", "users"
   add_foreign_key "likes", "articles"
   add_foreign_key "likes", "users"
