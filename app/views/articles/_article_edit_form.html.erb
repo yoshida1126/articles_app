@@ -1,7 +1,7 @@
 <%= form_with(model: @article) do |f| %> 
   <%= render 'shared/error_messages', object: f.object %> 
   <div class="title-field">
-    <%= f.text_field :title, placeholder: "タイトルを入力してください。" %> 
+    <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力してください。" %> 
   </div> 
   <label class="top-image">
     <span class="btn select-image">ヘッダー画像を選択</span>

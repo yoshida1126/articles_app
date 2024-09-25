@@ -823,6 +823,21 @@ div.gender {
       display: inline-block;
       width: fit-content;
       height: fit-content;
+      text-decoration: none;
+    }
+    .no-heading-image {
+      text-align: center;
+      font-size: 2rem;
+      background-color: #99b9c2;
+      width: 200px;
+      height: 106px;
+      border-radius: 5px;
+      object-fit: cover;
+      color: #fff;
+      font-weight: lighter;
+      p {
+        padding-top: 35px;
+      }
     }
   }
   .title {

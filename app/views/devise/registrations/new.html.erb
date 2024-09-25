@@ -35,7 +35,7 @@
       <%= f.password_field :password_confirmation, class: 'form-control' %> 
 
       <%= f.label :profile_img, "プロフィール画像" %>
-      <%= f.file_field :profile_img,  id: "profile_image_upload", accept: "image/jpeg, image/png, image/gif" %>
+      <%= f.file_field :profile_img,  id: "profile_image_upload", class:"form-control", accept: "image/jpeg, image/png, image/gif" %>
 
       <%= image_tag "profile.jpg", id: "target" %> 
   

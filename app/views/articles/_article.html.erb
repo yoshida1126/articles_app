@@ -4,8 +4,10 @@
       <% if article.image.attached? %> 
         <%= image_tag article.image %>
       <% else %> 
-        <%= image_tag "/assets/header.png" %> 
-      <% end %> 
+        <div class="no-heading-image">
+          <p>Articles</p>
+        </div>
+      <% end %>
     <% end %>
   </span>
   <span class="title title-responsive">
