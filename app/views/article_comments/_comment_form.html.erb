@@ -1,4 +1,8 @@
-<%= image_tag current_user.profile_img, class: "comment-user-img" %> 
+<% if current_user.profile_img.attached? %>
+  <%= image_tag current_user.profile_img, class: "comment-user-img" %> 
+<% else %>
+  <%= image_tag "profile.jpg", class: "comment-user-img" %>
+<% end %>
     コメントする
 <div id="comment-error">
   <% if @error_comment.present? %> 

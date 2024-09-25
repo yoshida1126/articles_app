@@ -21,7 +21,7 @@
         <% if article.user.profile_img.attached? %>
           <%= image_tag article.user.profile_img %>
         <% else %>
-          <%= image_tag profile.jpg %>
+          <%= image_tag "profile.jpg" %>
         <% end %>
       <% end %>
     </div>
