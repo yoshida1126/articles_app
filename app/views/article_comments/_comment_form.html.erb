@@ -10,7 +10,7 @@
     <%= turbo_frame_tag "articles-img" do %>
       <div class="article-image-upload">
         <label>
-          <%= image_tag '/assets/picture-icon.png', id:"article-images", class:"btn picture-icon" %> 
+          <i class="far fa-image"></i>
           <%= f.file_field :comment_images, direct_upload: true, id: "artilce-image-field", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
               data: { 
                 controller: "article-image-upload",
@@ -23,10 +23,10 @@
     <% end %>
     <div class="preview-open">
       <div id="preview-btn", class="btn preview-btn">
-        <%= image_tag '/assets/preview.png' %> 
+        <i class="fas fa-book-open"></i>
       </div>
       <div id="edita", class="btn edita display">
-        <%= image_tag '/assets/editor.png' %> 
+        <i class="fas fa-edit"></i> 
       </div>
     </div>
   </div>
