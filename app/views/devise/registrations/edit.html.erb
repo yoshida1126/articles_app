@@ -47,7 +47,9 @@
       <%= f.file_field :profile_img,  id: "profile_image_upload", accept: "image/jpeg, image/png, image/gif" %>
 
       <% if @user.profile_img.attached? %>
-        <%= image_tag @user.profile_img, id:"target" %>
+        <%= image_tag @user.profile_img, id: "target" %>
+      <% else %>
+        <%= image_tag "profile.jpg", id: "target" %> 
       <% end %>
   
       <button id="selected-img-trim", type="button">画像をトリミングする</button>
@@ -74,6 +76,8 @@
         <div class="cropper-area">
          <% if @user.profile_img.attached? %>
            <%= image_tag @user.profile_img, id:"cropper-img", crossOrigin: "anonymous" %>
+        <% else %>
+           <%= image_tag "profile.jpg", id:"cropper-img" %>
          <% end %>
         </div>
       </div>
