@@ -18,7 +18,11 @@
   <div class="article-info">
     <div class="user-profile-img">
       <%= link_to article.user do %>
-        <%= image_tag article.user.profile_img if article.user.profile_img.attached? %>
+        <% if article.user.profile_img.attached? %>
+          <%= image_tag article.user.profile_img %>
+        <% else %>
+          <%= image_tag profile.jpg %>
+        <% end %>
       <% end %>
     </div>
     <div class="name-and-timestamp">
