@@ -30,6 +30,8 @@ class User < ApplicationRecord
                     uniqueness: { message: "はすでに使われています。"}
   validates :password, length: { minimum: 6, message: "は6文字以上を設定してください。" }, allow_nil: true 
 
+  validates :introduction, length: { maximum: 100 }
+
   with_options presence: true do 
     with_options on: :create do 
       validates :password, presence: { message: "を入力してください。"} 

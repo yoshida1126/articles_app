@@ -4,6 +4,7 @@ document.addEventListener("turbo:load", profile_image_trimming);
 document.addEventListener("turbo:render", profile_image_trimming);
 
 function profile_image_trimming() {
+  document.removeEventListener("turbo:load", profile_image_trimming);
   if (document.getElementById("profile_image_upload")) {
     let target = document.getElementById('target');
     var cropperImg = document.getElementById('cropper-img');

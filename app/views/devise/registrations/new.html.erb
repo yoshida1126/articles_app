@@ -11,6 +11,23 @@
       <%= f.label :email %> 
       <%= f.email_field :email, class: 'form-control' %> 
 
+      <div class="birthday">
+        <%= f.label :birthday %>
+        <div class="birthday-select">
+          <%= f.date_select :birthday, start_year: 1930, end_year: (Time.now.year - 10), include_blank: true, class: 'form-control' %>
+        </div>
+      </div>
+
+      <div class="gender">
+        <%= f.label :gender %> 
+        <div class="gender-select">
+          <%= f.select :gender, ['女', '男'], include_blank: true %>
+        </div>
+      </div>
+
+      <%= f.label :introduction %>
+      <%= f.text_area :introduction, class: 'form-control' %>
+
       <%= f.label :password %> 
       <%= f.password_field :password, class: 'form-control' %> 
 
@@ -20,7 +37,7 @@
       <%= f.label :profile_img, "プロフィール画像" %>
       <%= f.file_field :profile_img,  id: "profile_image_upload", accept: "image/jpeg, image/png, image/gif" %>
 
-      <%= image_tag 'profile.jpg', id: "target" %> 
+      <%= image_tag "profile.jpg", id: "target" %> 
   
       <button id="selected-img-trim", type="button">画像をトリミングする</button>
 

@@ -20,11 +20,10 @@ user.profile_img.attach(io: File.open("app/assets/images/profile.jpg"),
     password = "password"
     user = User.create!(name: name,
                  email: email,
+                 introduction: Faker::Lorem.sentence(word_count: 2) 
                  password: password,
                  password_confirmation: password,
                  confirmed_at: Time.zone.now) 
-    user.profile_img.attach(io: File.open("app/assets/images/profile.jpg"),
-                            filename: "profile.jpg")
 end 
 
 users = User.order(:created_at).take(6) 

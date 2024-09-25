@@ -323,12 +323,23 @@ footer {
 /* sidebar */ 
 
 aside {
-  section.user_info {
+  section.user-info {
     margin-top: 20px;
+  }
+  section.introduction {
+    margin: 0;
+    padding: 0;
+    p {
+      overflow-wrap: break-word;
+      max-width: 250px;
+      color: gray;
+      font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
+      font-size: 1.3rem;
+      margin: 0;
+    }
   }
   section {
     padding: 10px 0;
-    margin-top: 20px;
     &:first-child {
       border: 0;
       padding-top: 0;
@@ -359,10 +370,11 @@ aside {
   }
 }
 
-.stats { 
+section.stats { 
   overflow: auto;
   padding: 0;
   text-align: center;
+  margin-top: 10px;
   a { 
     float: left;
     padding: 0 10px;
@@ -512,6 +524,21 @@ input {
       outline: none;
     }
   }
+}
+
+div.birthday {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  div.birthday-select {
+    display: block;
+    padding-top: 6px;
+    padding-top: 6px;
+  }
+}
+
+div.gender {
+  margin-top: 10px;
+  margin-bottom: 16px;
 }
 
 .login-btn.btn {
@@ -1239,6 +1266,15 @@ ul.article-comment-option {
     }
     .article-image-upload {
       height: 30px;
+      .fa-image {
+        color: rgb(127, 127, 127);
+        cursor: pointer;
+        font-size: 2rem;
+        padding-top: 5.5px;
+        padding-left: 7px;
+        padding-right: 7px;
+        padding-bottom: 6px;
+      }
       &:hover {
         background-color: #96abaf;
       }
@@ -1247,6 +1283,10 @@ ul.article-comment-option {
 
 .preview-open {
   margin-left: auto;
+  padding-bottom: 2px;
+  .fa-book-open {
+    font-size: 1.5rem;
+  }
 }
 
 #markdown.size {
@@ -1259,16 +1299,22 @@ ul.article-comment-option {
 }
 
 #preview-btn {
-  color: #fff;
+  padding-bottom: 4px;
+  color: rgb(127, 127, 127);
   &:hover {
     background-color: #96abaf;
   }
 }
 
 #edita {
-  color: #fff;
+  padding-bottom: 4px;
+  color: rgb(127, 127, 127);
   &:hover {
     background-color: #96abaf;
+  }
+  .fa-edit {
+    text-align: center;
+    font-size: 1.5rem;
   }
 }
 
@@ -1276,8 +1322,10 @@ ul.article-comment-option {
   margin-bottom: 20px;
   border-radius: 10px;
   background-color: #99b9c2;
+  color: #666;
   &:hover {
     opacity: .8;
+    color: #666;
   }
 }
 
@@ -1743,6 +1791,10 @@ ul.article-comment-option {
       float: right;
       padding-right: 20px;
     }
+   }
+   section.introduction {
+    display: flex;
+    justify-content: center;
    }
    .stats {
     display: flex;

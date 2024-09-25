@@ -10,6 +10,32 @@
 
       <%= f.label :email %> 
       <%= f.email_field :email, class: 'form-control' %> 
+      
+      <div class="birthday">
+        <%= f.label :birthday %>
+        <div class="birthday-select">
+          <%= raw sprintf(
+              f.date_select(
+                :birthday,
+                use_month_numbers: true,
+                start_year: 1930,
+                end_year: (Time.now.year - 10),
+                include_blank: true, 
+                class: 'form-control',
+                date_separator: '%s'),
+                '年 ', '月 ') + '日' %>
+        </div>
+      </div>
+
+      <div class="gender">
+        <%= f.label :gender %> 
+        <div class="gender-select">
+          <%= f.select :gender, ['女', '男'], include_blank: true %>
+        </div>
+      </div>
+
+      <%= f.label :introduction %>
+      <%= f.text_area :introduction, class: 'form-control' %>
 
       <%= f.label "新しいパスワード" %>
       <%= f.password_field :password, class: 'form-control' %>
