@@ -1,8 +1,8 @@
-document.addEventListener("turbo:render", menu);
 document.addEventListener("turbo:load", menu);
+document.addEventListener("turbo:render", menu);
 
 function menu() {
-  document.removeEventListener("turbo:load", menu)
+  document.removeEventListener("turbo:load", menu);
     let account = document.querySelector("#account");
     if (account) {
         account.addEventListener("click", function(event) { 
@@ -122,4 +122,3 @@ function menu() {
       }
     }
 };
-

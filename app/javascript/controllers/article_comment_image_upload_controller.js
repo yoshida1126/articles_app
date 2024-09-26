@@ -1,15 +1,15 @@
 import { Controller } from "@hotwired/stimulus"
 import { DirectUpload } from "@rails/activestorage"
 
-// Connects to data-controller="markdown-upload"
 export default class extends Controller {
   static values = { url: String };
   connect() {
   }
 
-  dropUpload(e){
+  imageUpload(e){
     e.preventDefault();
-    Array.from(e.dataTransfer.files).forEach(file => this.uploadFile(file));
+    Array.from(e.target.files).forEach(file => this.uploadFile(file));
+    Array.from(e.target.files).null;
   }
 
   uploadFile(file){
@@ -30,9 +30,13 @@ export default class extends Controller {
         console.log(error);
       } else {
         const text = this.markdownUrl(blob);
-        const start = this.element.selectionStart;
-        const end = this.element.selectionEnd;
-        this.element.setRangeText(text,start,end)
+        const form = this.element.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild
+
+        const end = form.value.length;
+        form.focus();
+        form.setSelectionRange(end, end);
+
+        form.setRangeText(text,end,end,"end")
       }
     })
   }
@@ -42,6 +46,7 @@ export default class extends Controller {
     const url = `https://articles-app-bucket.s3.ap-northeast-1.amazonaws.com/${blob.key}`;
     //const url = `/rails/active_storage/blobs/${blob.signed_id}/${blob.filename}`;
     const prefix = (this.isImage(blob.content_type) ? '!' : '');
+    // document.getElementById('blob').value = blob.blob_sined_id
 
     return `${prefix}[${filename}](${url})\n`;
   }
@@ -59,5 +64,3 @@ export default class extends Controller {
     return file.size <= maxSize;
   }
 }
-
-

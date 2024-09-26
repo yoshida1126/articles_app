@@ -35,9 +35,8 @@ export default class extends Controller {
         const end = form.value.length;
         form.focus();
         form.setSelectionRange(end, end);
-        
+
         form.setRangeText(text,end,end,"end")
-        form.innerHTML = text;
       }
     })
   }
