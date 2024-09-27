@@ -1321,11 +1321,33 @@ ul.article-comment-option {
   }
 }
 
+.preview-btn {
+  padding-bottom: 4px;
+  color: whitesmoke;
+  &:hover {
+    background-color: #96abaf;
+    color: whitesmoke;
+  }
+}
+
 #edita {
   padding-bottom: 4px;
   color: whitesmoke;
   &:hover {
     background-color: #96abaf;
+  }
+  .fa-edit {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+}
+
+.edita {
+  padding-bottom: 4px;
+  color: whitesmoke;
+  &:hover {
+    background-color: #96abaf;
+    color: whitesmoke;
   }
   .fa-edit {
     text-align: center;
@@ -1401,19 +1423,19 @@ ul.article-comment-option {
   display: none;
 }
 
-#preview-btn.display {
+.preview-btn.display {
   display: none;
 }
 
-#edita.display {
+.edita.display {
   display: none;
 }
 
-#html.display {
+.html.display {
   display: none;
 }
 
-#html.preview-width {
+.html.preview-width {
   width: 100%;
   margin-bottom: 30px;
 }
@@ -1454,7 +1476,7 @@ ul.article-comment-option {
   }
 }
 
-#html {
+.html {
   padding-top: 2px;
   padding-left: 10px;
   padding-right: 10px;
@@ -1857,7 +1879,7 @@ ul.article-comment-option {
 
   // 記事投稿ページ
 
-  #html {
+  .html {
     margin-bottom: 30px;
   }
 

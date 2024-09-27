@@ -28,11 +28,11 @@
         <% if article_comment.user == current_user %> 
           <section class="article-edit">
             <div class="dropdown">
-              <a href="#" id="option3-<%= article_comment.id %>" class="dropdown-toggle dropdown3"> 
+              <a href="#" data-controller="article-comment-menu" data-action="click->article-comment-menu#menu" id="option3-<%= article_comment.id %>"  class="dropdown-toggle dropdown3"> 
                 <span class="dli-more-v"></span>
               </a>
               <ul id="dropdown-menu3-<%= article_comment.id %>" class="dropdown-menu article-comment-option">
-                <li><a href="#">コメントを編集</a></li>
+                <li><a href="#" data-controller="article-comment-menu" data-action="click->article-comment-menu#edit">コメントを編集</a></li>
                 <li class="divider"></li>
                 <li><%= link_to "コメントを削除", article_article_comment_path(article_comment.article, article_comment), data: { "turbo-method": :delete,
                         turbo_confirm: "本当に削除しますか？" } %> 
