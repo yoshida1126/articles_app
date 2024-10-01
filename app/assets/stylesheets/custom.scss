@@ -1155,6 +1155,7 @@ aside {
           width: 100px;
           color: #fff;
           background-color: #99b9c2;
+          outline: none;
           &:hover {
             opacity: .8;
           }
@@ -1190,6 +1191,7 @@ aside {
         margin-bottom: 20px;
         background-color: #99b9c2;
         width: 100px;
+        outline: none;
         color: #fff;
       }
       &:hover {
