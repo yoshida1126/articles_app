@@ -9,7 +9,7 @@ end
 describe "#show" do 
   let(:user) { FactoryBot.create(:user) } 
   let(:other_user) { FactoryBot.create(:other_user) }
-  let!(:article) { Article.create(title: "test", content: "test", user_id: user.id) }
+  let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   context "user login(article user)" do 
     before do 
@@ -98,6 +98,7 @@ describe "#create" do
       visit "articles/new"   
       fill_in "article[title]", with: "Article Title"   
       fill_in "article[content]", with: "Article content" 
+      fill_in "article[tag_list]", with: "test"
       attach_file "article[image]", "spec/fixtures/earth.png", visible: false
       attach_file "article[article_images][]", "spec/fixtures/map.png", visible: false
       click_button "投　稿"
@@ -112,7 +113,8 @@ describe "#create" do
     end 
 
     it "プロフィールページの記事一覧に投稿した記事のタイトルがあること" do 
-      expect(page).to have_content "Article Title" 
+      sleep 1
+      expect(page).to have_content('Article Title') 
     end 
 
     it "投稿した記事の画像が表示されていること" do 
@@ -131,6 +133,7 @@ describe "#create" do
     it "タイトルを入力していないと投稿できないこと" do 
       fill_in "article[title]", with: ""
       fill_in "article[content]", with: "Article content" 
+      fill_in "article[tag_list]", with: "test"
       click_button "投　稿" 
       expect(page).to_not have_selector "div.alert-success"
     end 
@@ -138,7 +141,16 @@ describe "#create" do
     it "記事の内容が空だと投稿できないこと" do 
       fill_in "article[title]", with: "Article Title" 
       fill_in "article[content]", with: "" 
+      fill_in "article[tag_list]", with: "test"
       click_button "投　稿" 
+      expect(page).to_not have_selector "div.alert-success" 
+    end 
+
+    it "タグを付けないと投稿できないこと" do 
+      fill_in "article[title]", with: "Article Title" 
+      fill_in "article[content]", with: "Article Content"
+      fill_in "article[tag_list]", with: ""
+      click_button "投　稿"
       expect(page).to_not have_selector "div.alert-success" 
     end 
   end 
@@ -147,7 +159,7 @@ end
 describe "#edit" do 
   let(:user) { FactoryBot.create(:user) } 
   let(:other_user) { FactoryBot.create(:other_user) }
-  let!(:article) { Article.create(title: "test", content: "test", user_id: user.id) }
+  let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   context "as a logged in user" do 
     before do 
@@ -157,7 +169,7 @@ describe "#edit" do
       click_link "プロフィール", match: :first, exact: true 
       sleep 0.5
       click_link "#{article.title}"  
-      click_link "option"       
+      click_link "option", match: :first, exact: true     
       click_link "記事を編集"
     end
 
@@ -193,7 +205,7 @@ end
 
 describe "#update" do 
   let(:user) { FactoryBot.create(:user) } 
-  let!(:article) { Article.create(title: "test", content: "test", user_id: user.id) }
+  let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   context "as a logged in user(input correct article informations)" do 
     before do 
@@ -203,21 +215,22 @@ describe "#update" do
       click_link "プロフィール", match: :first, exact: true 
       sleep 0.5
       click_link "#{article.title}"  
-      click_link "option" 
+      click_link "option", match: :first, exact: true
       click_link "記事を編集"
       fill_in "article[title]", with: "Article Edit Title"   
-      fill_in "article[content]", with: "Article Edit content" 
+      fill_in "article[content]", with: "Article Edit content"
+      fill_in "article[tag_list]", with: "test" 
       attach_file "article[image]", "spec/fixtures/earth.png", visible: false
       attach_file "article[content][]", "spec/fixtures/map.png", visible: false
       click_button "編　集"
     end 
 
     it "記事の編集に成功すること" do 
-      expect(page).to have_selector "div.alert-success" 
+      expect(page).to have_selector ".alert-success" 
     end 
 
     it "プロフィールページの記事一覧ページに編集した記事のタイトルがあること" do 
-      sleep 0.5
+      sleep 1
       expect(page).to have_content "Article Edit Title" 
     end 
 
@@ -227,6 +240,7 @@ describe "#update" do
     end 
 
     it "編集で追加したヘッダー画像があること" do
+      sleep 1
       click_link "Article Edit Title"
       expect(page).to have_selector "img[src$='earth.png']" 
     end 
@@ -246,7 +260,7 @@ describe "#update" do
       click_link "プロフィール", match: :first, exact: true 
       sleep 0.5 
       click_link "#{article.title}" 
-      click_link "option" 
+      click_link "option", match: :first, exact: true
       click_link "記事を編集"
     end 
 
@@ -259,13 +273,18 @@ describe "#update" do
       fill_in "article[content]", with: "" 
       expect(page).to_not have_selector "div.alert-success" 
     end 
+
+    it "記事のタグが空だと編集できないこと" do 
+      fill_in "article[tag_list]", with: "" 
+      expect(page).to_not have_selector "div.alert-success" 
+    end 
   end 
 end 
 
 describe "#destroy" do 
   let(:user) { FactoryBot.create(:user) } 
   let(:other_user) { FactoryBot.create(:other_user) }
-  let!(:article) { Article.create(title: "test", content: "test", user_id: user.id) }
+  let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   context "as a logged in user(correct user)" do 
     before do 

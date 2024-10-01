@@ -4,7 +4,7 @@ RSpec.describe "Articles", type: :request do
 
   let(:user) { FactoryBot.create(:user) } 
   let(:other_user) { FactoryBot.create(:other_user) }
-  let!(:article) { Article.create(title: "test", content: "test", user_id: user.id) }
+  let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   describe "#show" do 
 
@@ -62,7 +62,8 @@ RSpec.describe "Articles", type: :request do
       before do 
         @valid_article_params = { 
           title: "test",
-          content: "test"
+          content: "test",
+          tag_list: "test"
         }
         sign_in user 
         get "/articles/new"

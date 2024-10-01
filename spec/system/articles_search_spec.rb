@@ -8,7 +8,7 @@ end
 
 describe "#search" do 
   let(:user) { FactoryBot.create(:user) } 
-  let!(:article) { Article.create(title: "test", content: "test", user_id: user.id) }
+  let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   context "search article" do 
     before do 

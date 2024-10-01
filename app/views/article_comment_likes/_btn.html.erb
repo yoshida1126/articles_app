@@ -2,17 +2,17 @@
   <% if current_user %> 
     <% if article_comment.liked?(current_user) %>
       <%= link_to article_article_comment_article_comment_likes_path(article, article_comment), data: { "turbo-method": :delete }, id: "unlike-btn", remote: true do %> 
-        <i class="fas fa-heart" aria-hidden="true" style="color: #ff0069"></i>
+        <i id="article-comment-unlike-btn" class="fas fa-heart" aria-hidden="true" style="color: #ff0069"></i>
       <% end %> 
     <% else %> 
       <%= link_to article_article_comment_article_comment_likes_path(article, article_comment), data: { "turbo-method": :post }, id: "like-btn", remote: true do %> 
-        <i class="far fa-heart" aria-hidden="true"></i>
+        <i id="article-comment-like-btn" class="far fa-heart" aria-hidden="true"></i>
       <% end %> 
     <% end %> 
     <span class="likes-count"><%= article_comment.article_comment_likes.count %></span>
   <% else %>
     <%= link_to article_article_comment_article_comment_likes_path(article, article_comment), data: { "turbo-method": :post }, id: "like-btn" do %> 
-      <i class="far fa-heart" aria-hidden="true"></i>
+      <i id="article-comment-like-btn" class="far fa-heart" aria-hidden="true"></i>
     <% end %>
     <span class="likes-count"><%= article_comment.article_comment_likes.count %></span>
   <% end %>

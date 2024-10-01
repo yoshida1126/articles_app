@@ -157,9 +157,9 @@ RSpec.describe "Users", type: :request do
             expect(user.email).to eq @valid_user_params[:email] 
           end 
 
-          it "ルートパスにリダイレクトされること" do 
+          it "プロフィールページにリダイレクトされること" do 
             patch user_path(user), params: { user: @valid_user_params } 
-            expect(response).to redirect_to root_path
+            expect(response).to redirect_to user_path(user)
           end 
 
           it "成功時のフラッシュメッセージが表示されること" do 
@@ -192,7 +192,7 @@ RSpec.describe "Users", type: :request do
 
           it "正しいエラーメッセージが表示されること" do 
             patch user_path(user), params: { user: invalid_user_params } 
-            expect(response.body).to include "The form contains 3 errors" 
+            expect(response.body).to include "3件のエラーが含まれています。" 
           end 
         end 
 
