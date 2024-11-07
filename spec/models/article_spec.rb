@@ -41,7 +41,7 @@ RSpec.describe Article, type: :model do
        expect(article).to_not be_valid 
       end 
 
-      it "タイトルが50文字以上だとバリデーションが通らないこと" do 
+      it "タイトルが51文字以上だとバリデーションが通らないこと" do 
         article.title = "a" * 51 
         expect(article).to_not be_valid 
       end 

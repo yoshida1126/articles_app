@@ -18,6 +18,8 @@ class User < ApplicationRecord
 
   has_many :article_comment_likes, dependent: :destroy
 
+  has_many :favorite_article_lists, dependent: :destroy
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable 
 

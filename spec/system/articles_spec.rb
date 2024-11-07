@@ -226,6 +226,7 @@ describe "#update" do
     end 
 
     it "記事の編集に成功すること" do 
+      sleep 0.5
       expect(page).to have_selector ".alert-success" 
     end 
 
@@ -247,6 +248,7 @@ describe "#update" do
 
     it "編集で追加した記事の画像が表示されていること" do 
       click_link "Article Edit Title"
+      sleep 1 
       expect(page).to have_selector "img[src$='map.png']"
     end 
   end 

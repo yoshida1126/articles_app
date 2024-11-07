@@ -1,0 +1,48 @@
+<li id="article-<%= favorite.article.id %>">
+  <span class="heading-image">
+    <%= link_to favorite.article do %>
+      <% if favorite.article.image.attached? %> 
+        <%= image_tag favorite.article.image %>
+      <% else %> 
+        <div class="no-heading-image">
+          <p>Articles</p>
+        </div>
+      <% end %> 
+    <% end %>
+  </span>
+  <span class="title">
+    <%= link_to favorite.article do %>
+      <%= favorite.article.title %>
+    <% end %>
+  </span>
+  <div class="article-info">
+    <div class="user-profile-img">
+      <%= link_to favorite.article.user do %>
+        <% if favorite.article.user.profile_img.attached? %>
+          <%= image_tag favorite.article.user.profile_img %>
+        <% else %>
+          <%= image_tag "profile.jpg" %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="name-and-timestamp">
+      <div class="name">
+        <%= link_to favorite.article.user do %>
+          <%= favorite.article.user.name %>
+        <% end %>
+      </div>
+      <span class="timestamp"> 
+        <%= favorite.article.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
+      </span>
+    </div>
+  </div> 
+  <span class="likes_btn_<%= favorite.article.id %>">
+    <%= render "likes/btn", article: favorite.article %>
+  </span>
+  <%= form_with(model: favorite, url: favorite_path(favorite.id), method: :delete) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+    <%= f.hidden_field :favorite_article_list_id, value: @favorite_article_list.id %>
+    <%= f.hidden_field :article_id, value: favorite.article.id %>    
+    <%= f.submit "削 除", class: "favorite_article_delete_btn" %>
+  <% end %>
+</li>

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     member do 
       get :following, :followers 
     end 
+    resources :favorite_article_lists, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   end 
   get "/users/:id", to: "users#show" 
   resources :relationships, only: [:create, :destroy] 
@@ -39,4 +40,5 @@ Rails.application.routes.draw do
   end 
   resources :tags, only: [:show] 
   get "search" => "searches#search" 
+  resources :favorites, only: [:create, :destroy]
 end

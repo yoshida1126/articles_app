@@ -1,0 +1,21 @@
+<h2>リストの編集</h2>
+<%= form_with(model: @favorite_article_list, url: user_favorite_article_list_path, method: :put) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <div class="title-field">
+    <%= f.label "リストのタイトル" %>
+    <%= f.text_field :list_title, class: "form-control", required: true %> 
+  </div> 
+  <div class="article-submit-btn">
+    <%= f.submit "編 集", class: "btn btn-primary" %> 
+  </div>
+<% end %>
+
+<% if @favorites.any? %>
+  <h2>リストの整理</h2>
+  <ul id="search-or-tagged-articles" class="articles"> 
+    <%= render partial: "edit_favorite_articles", collection: @favorites, as: "favorite" %> 
+  </ul>
+  <%= render partial: "shared/pagination", locals: { object: @favorites } %>
+<% else %>
+  <p class="no-list">このリストにはまだ記事を登録していません。</p> 
+<% end %>

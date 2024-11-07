@@ -1,0 +1,4 @@
+<%= turbo_stream.update "favorite-submit" do %>
+    <%= render partial: "favorites/favorite_submit" %>
+<% end %>
+<%= turbo_stream.update "flash", partial: "layouts/flash" %>

@@ -2,7 +2,7 @@ class ArticleComment < ApplicationRecord
     has_many_attached :comment_images
     belongs_to :article 
     belongs_to :user
-    has_many :article_comment_likes
+    has_many :article_comment_likes, dependent: :destroy
 
     validates :comment, presence: true
 

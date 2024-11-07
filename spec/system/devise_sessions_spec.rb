@@ -14,8 +14,8 @@ describe "#create" do
 
         it "ヘッダーにログインリンクがなく、ログアウトリンク、プロフィールリンクがあること" do 
             visit login_path 
-            fill_in "Email", with: user.email 
-            fill_in "Password", with: user.password 
+            fill_in "メールアドレス", with: user.email 
+            fill_in "パスワード", with: user.password 
             click_button "ログイン" 
             click_link 'プロフィール画像'
 
@@ -28,8 +28,8 @@ describe "#create" do
     context "user login with invalid information" do 
         it "エラーメッセージが表示されること" do 
             visit login_path 
-            fill_in "Email", with: "" 
-            fill_in "Password", with: "" 
+            fill_in "メールアドレス", with: "" 
+            fill_in "パスワード", with: "" 
             click_button "ログイン" 
         
             expect(page).to have_selector "div.alert.alert-danger" 
@@ -40,8 +40,8 @@ describe "#create" do
 
         it "パスワードが間違っている場合エラーメッセージが表示されること" do
             visit login_path 
-            fill_in "Email", with: user.email 
-            fill_in "Password", with: "test" 
+            fill_in "メールアドレス", with: user.email 
+            fill_in "パスワード", with: "test" 
             click_button "ログイン" 
 
             expect(page).to have_selector "div.alert.alert-danger" 

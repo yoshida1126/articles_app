@@ -1,0 +1,4 @@
+<%= turbo_stream.update "search-or-tagged-articles" do %>
+    <%= render partial: "favorite_article_lists/edit_favorite_articles", collection: @favorites, as: "favorite" %>
+<% end %>
+<%= turbo_stream.update "flash", partial: "layouts/flash" %>

@@ -1,3 +1,6 @@
 <%= turbo_stream.update "article-comment-list" do %> 
   <%= render partial: "article_comments/comment", article: @article %>
 <% end %>
+<%= turbo_stream.update "comment-count" do %>
+  コメント <%= @article.article_comments.count %>件
+<% end %>

@@ -22,6 +22,10 @@ FactoryBot.define do
     trait :with_articles do 
       after(:create) { |user| create_list(:article, 5, user: user) } 
     end 
+
+    trait :with_favorite_article_lists do 
+      after(:create) { |user| create_list(:favorite_article_list, 1, user: user) }
+    end 
   end
 
   factory :other_user, class: User do 

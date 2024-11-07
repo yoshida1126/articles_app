@@ -15,3 +15,11 @@ import jquery from "jquery"
 window.$ = jquery 
 import "trix"
 import "@rails/actiontext"
+
+document.addEventListener("turbo:load", flash);
+document.addEventListener("turbo:submit-end", flash);
+
+function flash() {
+  document.removeEventListener("turbo:load", flash);
+  setTimeout("$('.flash-alert').fadeOut('slow')", 5000);
+};

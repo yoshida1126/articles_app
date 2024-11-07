@@ -1,0 +1,33 @@
+<% if list.articles.any? %>
+  <li id="article-<%= list.articles.last.id %>">
+    <span class="heading-image">
+      <% if list.articles.first.image.attached? %> 
+        <%= link_to user_favorite_article_list_path(@user, list) do %>
+          <%= image_tag list.articles.first.image %>
+        <% end %>
+      <% else %> 
+        <%= link_to user_favorite_article_list_path(@user, list) do %>
+          <div class="no-heading-image">
+            <p>Articles</p>
+          </div>
+        <% end %>
+      <% end %>
+    </span>
+    <div class="title">
+      <%= link_to list.list_title, user_favorite_article_list_path(@user, list) %> 
+    </div>
+  </li>
+<% else %>
+  <li>
+    <span class="heading-image">
+      <%= link_to user_favorite_article_list_path(@user, list) do %>
+        <div class="no-heading-image">
+          <p>Articles</p>
+        </div>
+      <% end %>
+    </span>
+    <div class="title">
+      <%= link_to list.list_title, user_favorite_article_list_path(@user, list) %> 
+    </div>
+  </li>
+<% end %>

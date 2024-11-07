@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_24_045244) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_21_090417) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -77,6 +77,25 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_24_045244) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "created_at"], name: "index_articles_on_user_id_and_created_at"
     t.index ["user_id"], name: "index_articles_on_user_id"
+  end
+
+  create_table "favorite_article_lists", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "article_id"
+    t.string "list_title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_favorite_article_lists_on_article_id"
+    t.index ["user_id"], name: "index_favorite_article_lists_on_user_id"
+  end
+
+  create_table "favorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "article_id"
+    t.bigint "favorite_article_list_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_favorites_on_article_id"
+    t.index ["favorite_article_list_id"], name: "index_favorites_on_favorite_article_list_id"
   end
 
   create_table "likes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -153,6 +172,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_24_045244) do
   add_foreign_key "article_comments", "articles"
   add_foreign_key "article_comments", "users"
   add_foreign_key "articles", "users"
+  add_foreign_key "favorite_article_lists", "articles"
+  add_foreign_key "favorite_article_lists", "users"
+  add_foreign_key "favorites", "articles"
+  add_foreign_key "favorites", "favorite_article_lists"
   add_foreign_key "likes", "articles"
   add_foreign_key "likes", "users"
   add_foreign_key "taggings", "tags"

@@ -59,6 +59,33 @@
   <div class="content">
     <%= markdown(@article.content) %>
   </div>
+
+  <div id="favorite-submit">
+    <p><i class="fas fa-star"></i>お気に入りの記事リストに追加</p>
+    <p class="favorite-submit-introduction">リストに追加することで後で見返しやすくなります。</p>
+    <% if current_user %>
+      <% if @favorite_article_lists.any? %>
+        <%= form_with(model: @favorite, url: favorites_path, method: :post) do |f| %>
+          <%= f.hidden_field :article_id, value: @article.id %>
+          <div id="list-select">
+            <%= f.collection_select :favorite_article_list_id, @favorite_article_lists, :id, :list_title, include_blank: "リストを選択" %>  
+          </div>     
+          <%= f.submit "リストに追加", class: "favorite-submit-btn" %>
+        <% end %>
+      <% else %>
+        <p class="favorite-submit-introduction">まだ<%= current_user.name %>さんはお気に入りリストを作成していません。<br>
+          新しいリストを作成しますか？</p>
+        <div class="favorite_article_list_option">
+          <%= link_to "リストを作成", new_user_favorite_article_list_path(current_user) %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="login-and-sign-up-page-link">
+        お気に入り登録するには、<%= link_to "ログイン", login_path %> するか <%= link_to "会員登録", sign_up_path %> してください。
+      </div>
+    <% end %>
+  </div>
+
   <div class="article-comment">
     <p id="comment-count">コメント <%= @article.article_comments.count %>件</p>
     <hr>

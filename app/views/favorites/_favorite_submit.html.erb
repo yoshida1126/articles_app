@@ -1,0 +1,10 @@
+<p><i class="fas fa-star"></i>お気に入りの記事リストに追加</p>
+<p class="favorite-submit-introduction">リストに追加することで後で見返しやすくなります。</p>
+<%= form_with(model: @favorite, url: favorites_path, method: :post) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <%= f.hidden_field :article_id, value: @article.id %>
+  <div id="list-select">
+    <%= f.collection_select :favorite_article_list_id, @favorite_article_lists, :id, :list_title, include_blank: "リストを選択" %>  
+  </div>     
+  <%= f.submit "リストに追加", class: "favorite-submit-btn" %>
+<% end %>

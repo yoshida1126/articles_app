@@ -4,6 +4,8 @@ class Article < ApplicationRecord
   belongs_to :user
   has_many :likes, dependent: :destroy
   has_many :article_comments, dependent: :destroy 
+  has_many :favorites, dependent: :destroy
+  has_many :favorite_article_lists, through: :favorites
   acts_as_taggable_on :tags
   validates :tag_list, presence: { message: 'を入力してください。'}
   validate :validate_tag

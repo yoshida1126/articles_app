@@ -9,6 +9,10 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id]) 
     @tags = @article.tag_counts_on(:tags)
     @article_comment = ArticleComment.new 
+    if current_user 
+      @favorite_article_lists = current_user.favorite_article_lists 
+      @favorite = Favorite.new
+    end
   end 
 
   def new
