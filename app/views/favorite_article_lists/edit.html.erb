@@ -1,7 +1,7 @@
 <h2>リストの編集</h2>
 <%= form_with(model: @favorite_article_list, url: user_favorite_article_list_path, method: :put) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
-  <div class="title-field">
+  <div class="list-title-field">
     <%= f.label "リストのタイトル" %>
     <%= f.text_field :list_title, class: "form-control", required: true %> 
   </div> 
