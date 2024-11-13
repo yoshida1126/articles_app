@@ -552,11 +552,6 @@ div.birthday {
   }
 }
 
-div.gender {
-  margin-top: 10px;
-  margin-bottom: 16px;
-}
-
 .login-btn.btn {
   border: 1px solid #99b9c2; 
   background-color: #99b9c2; 
@@ -617,6 +612,36 @@ div.gender {
     width: 200px;
   }
  }
+
+ .create_user {
+   a {
+    color: #99b9c2;
+   }
+ }
+
+ .pass-reset-btn {
+  background-color: #99b9c2;
+  border: 1px solid #99b9c2;
+  outline: none;
+ }
+
+ .pass-reset-btn.btn:hover {
+  background-color: #99b9c2;
+  opacity: .8;
+  border: 1px solid #99b9c2;
+ }
+
+ .pass-reset-btn.btn:active {
+  border: 1px solid #99b9c2;
+  background-color: #99b9c2;
+  outline: none;
+  }
+
+  .pass-reset-btn.btn-primary {
+    border: 1px solid #99b9c2;
+    background-color: #99b9c2;
+    outline: none;
+  }
 
  // pagination 
 

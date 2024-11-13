@@ -1,6 +1,6 @@
-require_relative "boot"
+require_relative 'boot'
 
-require "rails/all"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -10,15 +10,15 @@ module ArticlesApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
-    config.active_storage.variant_processor = :mini_magick 
+    config.active_storage.variant_processor = :mini_magick
 
-    config.i18n.default_locale = :ja 
+    config.i18n.default_locale = :ja
 
-    config.time_zone = 'Tokyo' 
+    config.time_zone = 'Tokyo'
 
     config.active_record.default_timezone = :local
 
-    Faker::Config.locale = :en 
+    Faker::Config.locale = :en
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -27,6 +27,6 @@ module ArticlesApp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += %W[#{config.root}/lib]
   end
 end

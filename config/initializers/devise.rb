@@ -25,7 +25,7 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
 
-  config.mailer_sender = "devise@example.com"
+  config.mailer_sender = 'devise@example.com'
 
   # Configure the class responsible to send e-mails.
   config.mailer = 'Devise::Mailer'
@@ -158,7 +158,7 @@ Devise.setup do |config|
   # initial account confirmation) to be applied. Requires additional unconfirmed_email
   # db field (see migrations). Until confirmed, new email is stored in
   # unconfirmed_email column, and copied to email column on successful confirmation.
-  config.reconfirmable = false 
+  config.reconfirmable = false
 
   # Defines which key will be used when confirming an account
   # config.confirmation_keys = [:email]
@@ -279,9 +279,9 @@ Devise.setup do |config|
   # change the failure app, you can configure them inside the config.warden block.
   #
   config.warden do |manager|
-    manager.failure_app = CustomAuthenticationFailure 
-  #  manager.intercept_401 = false
-  #  manager.default_strategies(scope: :user).unshift :some_external_strategy
+    manager.failure_app = CustomAuthenticationFailure
+    #  manager.intercept_401 = false
+    #  manager.default_strategies(scope: :user).unshift :some_external_strategy
   end
 
   # ==> Mountable engine configurations

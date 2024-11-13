@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_21_090417) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_12_002025) do
   create_table "action_text_rich_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.text "body", size: :long
@@ -151,7 +151,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_21_090417) do
     t.string "encrypted_password", default: "", null: false
     t.string "name", null: false
     t.datetime "birthday"
-    t.boolean "gender"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

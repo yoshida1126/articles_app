@@ -21,5 +21,5 @@ document.addEventListener("turbo:submit-end", flash);
 
 function flash() {
   document.removeEventListener("turbo:load", flash);
-  setTimeout("$('.flash-alert').fadeOut('slow')", 5000);
+  setTimeout("$('.flash-alert').fadeOut('slow')", 3000);
 };

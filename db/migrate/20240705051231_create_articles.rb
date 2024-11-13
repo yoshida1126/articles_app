@@ -7,6 +7,6 @@ class CreateArticles < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
-    add_index :articles, [:user_id, :created_at]
+    add_index :articles, %i[user_id created_at]
   end
 end

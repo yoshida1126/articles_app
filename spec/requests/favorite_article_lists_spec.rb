@@ -1,5 +1,4 @@
 require 'rails_helper'
 
-RSpec.describe "FavoriteArticleLists", type: :request do
-  
+RSpec.describe 'FavoriteArticleLists', type: :request do
 end
