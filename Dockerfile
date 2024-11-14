@@ -12,3 +12,6 @@ RUN gem install bundler
 RUN bundle install
 
 ADD . /articles_app 
+
+RUN mkdir -p tmp/sockets 
+RUN mkdir -p tpm/pids
