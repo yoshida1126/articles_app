@@ -5,7 +5,7 @@ ruby '3.2.2'
 
 gem 'active_storage_validations', '0.9.8'
 gem 'acts-as-taggable-on'
-gem 'bcrypt', '3.1.18'
+gem 'bcrypt', '3.1.16'
 gem 'bootsnap', '1.16.0', require: false
 gem 'bootstrap-sass', '3.4.1'
 gem 'bootstrap-will_paginate', '1.0.0'
