@@ -19,7 +19,7 @@ services:
       - public-data:/articles_app/public 
       - tmp-data:/articles_app/tmp 
       - log-data:/articles_app/log 
-
+    tty: true
   web:
     build:
       context: containers/nginx 
@@ -28,6 +28,7 @@ services:
       - tmp-data:/articles_app/tmp 
     ports: 
       - 80:80 
+    tty: true
 
 volumes:
   public-data:
