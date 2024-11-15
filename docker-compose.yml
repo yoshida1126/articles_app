@@ -15,10 +15,14 @@ services:
       
   app:
     build: .
-    command: bundle exec unicorn_rails -c config/unicorn.rb -E production -D
+    command: bundle exec unicorn_rails -p 3000 -c config/unicorn.rb -E production -D
+    tty: true
+    stdin_open: true 
     volumes:
       - .:/articles_app/
       - public:/articles_app/public 
+    ports:
+      - 3000:3000
     depends_on:
       - db
     environment:
