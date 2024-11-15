@@ -5,7 +5,7 @@ RUN apk update && \
   build-essential \
   libpq-dev \ 
   nodejs \
-  default-mysql-dev \
+  mysql-dev \
   vim 
 
 RUN gem install bundler
@@ -18,7 +18,7 @@ FROM ruby:3.2.2-alpine as app
 RUN apk update && \ 
   apk add --no-cache \
   tzdata \ 
-  default-mysql-client
+  mysql-client
 
 RUN mkdir /articles_app 
 
