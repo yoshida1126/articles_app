@@ -16,4 +16,4 @@ ADD . /articles_app
 RUN mkdir -p tmp/sockets 
 RUN mkdir -p tpm/pids
 
-CMD ["sh", "entrypoint.sh"]
+CMD ["entrypoint.sh", "entrypoint.sh"]
