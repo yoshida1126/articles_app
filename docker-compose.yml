@@ -1,36 +1,35 @@
 version: '3' 
 
 services:
-#  db:
-#    image: mysql:8.0.32
-#    environment:
-#      MYSQL_USER: user 
-#      MYSQL_ROOT_PASSWORD: pass 
-#    ports:
-#      - "3306:3306" 
-#    volumes:
-#      - mysql_data:/var/lib/mysql 
+  db:
+    image: mysql:8.0.32
+    restart: always
+    environment:
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DB: ${DB_DATABASE}
+    volumes:
+      - mysql_data:/var/lib/mysql 
       
   app:
     build: .
     command: bundle exec unicorn_rails -c config/unicorn.rb -E production -D
     volumes:
       - .:/articles_app/
-      - public-data:/articles_app/public 
-      - tmp-data:/articles_app/tmp 
-      - log-data:/articles_app/log 
-    tty: true
+      - public:/articles_app/public 
+    depends_on:
+      - db
+    environment:
+      - RAILS_ENV=production 
+
   web:
     build:
       context: containers/nginx 
     volumes:
-      - public-data:/articles_app/public 
-      - tmp-data:/articles_app/tmp 
+      - public:/articles_app/public 
     ports: 
       - 80:80 
-    tty: true
 
 volumes:
-  public-data:
-  tmp-data:
-  log-data:
+  mysql_data:
+  public:
