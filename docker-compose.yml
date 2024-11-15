@@ -8,6 +8,8 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DB: ${DB_DATABASE}
+    ports:
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql 
       
