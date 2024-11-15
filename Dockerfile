@@ -7,8 +7,6 @@ ADD Gemfile Gemfile.lock /articles_app/
 ENV RAILS_ENV=production 
 RUN RAILS_ENV=${RAILS_ENV} bundle install
 
-FROM ruby:3.2.2-alpine as app
-
 RUN mkdir /articles_app 
 
 WORKDIR /articles_app 
