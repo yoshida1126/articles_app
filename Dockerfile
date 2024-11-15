@@ -2,7 +2,6 @@ FROM ruby:3.2.2-alpine as builder
 
 RUN apk update && \
   apk add --no-cache \
-  build-essential \
   libpq-dev \ 
   nodejs \
   mysql-dev \
