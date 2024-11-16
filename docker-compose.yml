@@ -12,6 +12,8 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql 
+    networks:
+      - articles-network
       
   app:
     build: 
@@ -28,6 +30,8 @@ services:
       - 3000:3000
     depends_on:
       - db
+    networks:
+      - articles-network
 
   web:
     build:
@@ -40,8 +44,14 @@ services:
       - 80:80 
     depends_on:
       - app
+    networks:
+      - articles-network
 
 volumes:
   mysql_data:
   public:
   tmp-data:
+
+networks:
+  articles-network:
+    external: true
