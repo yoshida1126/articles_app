@@ -1,16 +1,25 @@
 FROM ruby:3.2.2
 
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs default-mysql-client vim
+ENV DOCKERIZE_VERSION v0.6.1
 
-ENV RAILS_ENV=production
-
-RUN mkdir /articles_app 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \ 
+    nodejs \
+    mariadb-client \
+    build-essential \
+    wget \
+    && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && apt-get clean \
+    && rem -rf /var/lib/apt/lists/*
 
 WORKDIR /articles_app 
 
-ADD Gemfile Gemfile.lock /articles_app/
-
-ADD . /articles_app 
+COPY Gemfile /articles_app/Gemfile 
+COPY Gemfile.lock /articles_app/Gemfile.lock      
 
 RUN gem install bundler
 RUN bundle install
+
+COPY . /articles_app 

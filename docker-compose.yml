@@ -14,8 +14,10 @@ services:
       - mysql_data:/var/lib/mysql 
       
   app:
-    build: .
-    command: bundle exec unicorn_rails -p 3000 -c config/unicorn.rb -E production -D
+    build: 
+      context: . 
+      dockerfile: Dockerfile
+    command: dockerize -wait tcp://db:3306 -timeout 20s bundle exec unicorn -p 3000 -c /articles_app/config/unicorn.rb
     tty: true
     stdin_open: true 
     volumes:
@@ -31,10 +33,13 @@ services:
   web:
     build:
       context: containers/nginx 
+      dockerfile: Dockerfile
     volumes:
       - public:/articles_app/public 
     ports: 
       - 80:80 
+    depends_on:
+      - app
 
 volumes:
   mysql_data:
