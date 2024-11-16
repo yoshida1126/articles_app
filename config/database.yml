@@ -55,4 +55,3 @@ production:
   database: <%= ENV['DB_DATABASE'] %>
   username: <%= ENV['DB_USERNAME'] %>
   password: <%=   ENV['DB_PASSWORD'] %>
-  host: db
