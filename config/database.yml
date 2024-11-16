@@ -53,7 +53,7 @@ test:
 production:
   <<: *default
   database: "<%= ENV['DB_DATABASE'] %>"
-  username: root
+  username: "<%= ENV['DB_USERNAME'] %>"
   password: "<%= ENV['DB_PASSWORD'] %>"
   host: db
   port: 3306
