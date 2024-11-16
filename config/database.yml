@@ -53,5 +53,5 @@ test:
 production:
   <<: *default
   database: "<%= ENV['DB_DATABASE'] %>"
-  username: "<%= ENV['DB_USERNAME'] %>"
+  username: root
   password: "<%=   ENV['DB_PASSWORD'] %>"
