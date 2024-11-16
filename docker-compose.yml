@@ -3,7 +3,6 @@ version: '3'
 services:
   db:
     image: mysql:8.0.32
-    restart: always
     environment:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
