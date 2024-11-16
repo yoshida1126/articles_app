@@ -5,7 +5,7 @@ ENV DOCKERIZE_VERSION v0.6.1
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \ 
     nodejs \
-    mariadb-client \
+    default-mysql-client \
     build-essential \
     wget \
     && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
