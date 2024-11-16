@@ -3,6 +3,7 @@ version: '3'
 services:
   db:
     image: mysql:8.0.32
+    command: mysqld --character-set-sever=utf8 --collation-sever=utf8_unicode_ci
     environment:
       MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
