@@ -21,7 +21,8 @@ services:
     tty: true
     stdin_open: true 
     volumes:
-      - .:/articles_app/
+      - .:/articles_app:cached
+      - tmp-data:/articles_app/tmp/sockets
       - public:/articles_app/public 
     ports:
       - 3000:3000
@@ -33,6 +34,7 @@ services:
       context: containers/nginx 
       dockerfile: Dockerfile
     volumes:
+      - tmp-data:/articles_app/tmp/sockets
       - public:/articles_app/public 
     ports: 
       - 80:80 
