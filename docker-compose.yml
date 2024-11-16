@@ -23,6 +23,7 @@ services:
     volumes:
       - .:/articles_app:cached
       - public:/articles_app/public 
+      - tmp-data:/articles_app/tmp/sockets
     ports:
       - 3000:3000
     depends_on:
@@ -34,6 +35,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - public:/articles_app/public 
+      - tmp-data:/articles_app/tmp/sockets
     ports: 
       - 80:80 
     depends_on:
