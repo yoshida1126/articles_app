@@ -20,9 +20,9 @@ default: &default
 
 development:
   <<: *default
-  database: articles_app_db
-  username: root
-  password: pass
+  database: "<%= ENV['DB_DATABASE'] %>"
+  username: "<%= ENV['DB_USERNAME'] %>"
+  password: "<%= ENV['DB_PASSWORD'] %>"
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
