@@ -52,7 +52,7 @@ test:
 #
 production:
   <<: *default
-  databese: <%= ENV['DB_DATABASE'] %>
+  database: <%= ENV['DB_DATABASE'] %>
   username: <%= ENV['DB_USERNAME'] %>
   password: <%=   ENV['DB_PASSWORD'] %>
   host: db
