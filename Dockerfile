@@ -1,6 +1,7 @@
 FROM ruby:3.2.2
 
 ENV DOCKERIZE_VERSION v0.6.1
+ENV RAILS_ENV="production"
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \ 
