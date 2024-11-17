@@ -32,6 +32,8 @@ services:
       - db
     networks:
       - articles-network
+    env_file:
+      - ./.env
 
   web:
     build:
