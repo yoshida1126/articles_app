@@ -23,4 +23,6 @@ COPY Gemfile.lock /articles_app/Gemfile.lock
 RUN gem install bundler
 RUN bundle install
 
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+
 COPY . /articles_app 
