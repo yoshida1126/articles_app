@@ -1,6 +1,6 @@
 require 'active_support/core_ext/integer/time'
 
-Articles_App.application.configure do
+ArticlesApp.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
