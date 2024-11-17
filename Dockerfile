@@ -24,5 +24,6 @@ RUN gem install bundler
 RUN bundle install
 
 RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails db:migrate
 
-COPY . /articles_app 
+COPY . /articles_app
