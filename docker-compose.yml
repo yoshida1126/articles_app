@@ -23,7 +23,6 @@ services:
     tty: true
     stdin_open: true 
     volumes:
-      - .:/articles_app:cached
       - public:/articles_app/public 
       - tmp-data:/articles_app/tmp/sockets
     ports:

@@ -32,3 +32,6 @@
 
 /.env
 /config/credentials/production.key
+
+/docker-compose-dev.yml
+/Dockerfile.dev
