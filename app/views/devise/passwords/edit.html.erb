@@ -8,12 +8,12 @@
       <%= f.hidden_field :reset_password_token %>
 
       <%= f.label :password %> 
-      <%= f.password_field :password %> 
+      <%= f.password_field :password, class: 'form-control' %> 
 
       <%= f.label :password_confirmation %>
-      <%= f.password_field :password %> 
+      <%= f.password_field :password, class: 'form-control' %> 
 
-      <%= f.submit "パスワード再設定", class: "btn btn-primary" %> 
+      <%= f.submit "パスワード再設定", class: "btn btn-primary pass-reset-btn" %> 
     <% end %>
   </div>
 </div>
