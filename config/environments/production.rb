@@ -62,7 +62,7 @@ ArticlesApp::Application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "articles_app_production"
 
-  config.action_mailer.default_url_options = { host: 10.0.1.10 }
+  config.action_mailer.default_url_options = { host: '10.0.1.10' }
 
   config.action_mailer.raise_delivery_errors = true
 
