@@ -2,4 +2,4 @@
 
 <p><%= @user.name %>さんはまだメールアドレスでの認証がお済みではないので下記のリンクより登録を完了させてください。</p>
 
-<p><%= link_to 'アカウント認証', user_confirmation_url(@resource, confirmation_token: @token) %></p>
+<p><%= link_to 'アカウント認証', confirmation_url(@resource, confirmation_token: @token) %></p>
