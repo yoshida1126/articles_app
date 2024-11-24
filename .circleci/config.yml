@@ -1,0 +1,69 @@
+version: 2.1
+
+executors:
+  default:
+    working_directory: ~/articles_app
+    docker:
+      - image: circleci/ruby:3.2.2-node
+        environment:
+          BUNDLER_VERSION: 2.4.12
+          RAILS_ENV: test
+          DB_HOST: 127.0.0.1
+          DB_USERNAME: 'root'
+          DB_PASSWORD: ''
+      - image: circleci/mysql:8.0.32
+        environment:
+          MYSQL_ROOT_HOST: '%'
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+
+commands:
+  setup:
+    steps:
+      - checkout
+      - run:
+          name: Update bundler
+          command: gem update bundler
+
+      - run:
+          name: Which bundler?
+          command: bundler -v
+      
+      -restore_cache:
+        keys:
+          - gem-cache-v1-{{ checksum "Gemfile.lock" }}
+          - gem-cache-v1-
+
+      - run:
+          name: Bundle Install
+          command: bundle check --path vendor/bundle || bundle install --deployment
+
+      - save_cache:
+          key: gem-cache-v1-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+jobs:
+  test:
+    executor: default
+    environment:
+      RAILS_ENV: test
+    steps:
+      - checkout
+      - setup
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 90s
+
+      - run:
+          name: Use specific database.yml
+          command: mv config/database.yml.ci config/database.yml
+
+      - run:
+          name: Database setup
+          command: |
+            bundle exec rspec
+
+workflows:
+  build_and_test:
+    jobs:
+      - test
