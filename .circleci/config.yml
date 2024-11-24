@@ -11,7 +11,7 @@ executors:
           DB_HOST: 127.0.0.1
           DB_USERNAME: 'root'
           DB_PASSWORD: ''
-      - image: cimg/mysql:8.0.32
+      - image: circleci/mysql:5.7
         environment:
           MYSQL_ROOT_HOST: '%'
           MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
