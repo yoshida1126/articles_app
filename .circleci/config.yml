@@ -61,8 +61,8 @@ jobs:
       - run:
           name: Database Setup
           command: |
-          bin/rails db:create
-          bin/rails db:schema:load --trace
+            bin/rails db:create
+            bin/rails db:schema:load --trace
 
       - run:
           name: Database setup
