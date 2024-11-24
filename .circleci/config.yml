@@ -59,6 +59,12 @@ jobs:
           command: mv config/database.yml.ci config/database.yml
 
       - run:
+          name: Database Setup
+          command: |
+          bin/rails db:create
+          bin/rails db:schema:load --trace
+
+      - run:
           name: Database setup
           command: |
             bundle exec rspec
