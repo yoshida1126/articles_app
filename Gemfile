@@ -50,7 +50,7 @@ group :test do
   gem 'minitest', '5.18.0'
   gem 'minitest-reporters', '1.6.0'
   gem 'rails-controller-testing', '1.0.5'
-  gem 'selenium-webdriver', '4.11.0'
+  gem 'selenium-webdriver'
 end
 
 group :production do

@@ -19,8 +19,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     return unless params[:profile_img].present?
 
     resource.profile_img.attach(params[:profile_img])
-
-    WelcomeMailer.send_when_signup(params[:user][:email], params[:user][:name]).deliver
   end
 
   # GET /resource/edit

@@ -1,72 +1,69 @@
 require 'rails_helper'
 
-RSpec.describe 'Likes', type: :system do
-  before do
-    driven_by(:rack_test)
-  end
-end
+RSpec.describe 'Likes', type: :system, js: true do
+ 
+  describe '#create' do
+    let!(:user) { FactoryBot.create(:user) }
+    let!(:article) { Article.create(title: 'test', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
 
-describe '#create' do
-  let!(:user) { FactoryBot.create(:user) }
-  let!(:article) { Article.create(title: 'test', content: 'test', tag_list: 'test', user_id: user.id) }
-  let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
+    context 'as a logged in user' do
+      before do
+        sign_in user
+        visit root_path
+        click_link 'プロフィール画像', match: :first, exact: true
+        click_link 'プロフィール', match: :first, exact: true
+        click_link "#{article.title}", exact: true
+      end
 
-  context 'as a logged in user' do
-    before do
-      sign_in user
-      visit root_path
-      click_link 'プロフィール画像', match: :first, exact: true
-      click_link 'プロフィール', match: :first, exact: true
-      click_link "#{article.title}", exact: true
+      it 'コメント欄にいいねボタンがあること' do
+        expect(page).to have_css '#article-comment-like-btn'
+      end
+
+      it 'コメントにいいねできること' do
+        find('#article-comment-like-btn').click
+        expect(page).to have_css '#article-comment-unlike-btn'
+      end
     end
 
-    it 'コメント欄にいいねボタンがあること' do
-      expect(page).to have_css '#article-comment-like-btn'
-    end
+    context 'as a non logged in user' do
+      before do
+        visit root_path
+        click_link "#{article.title}", match: :first
+      end
 
-    it 'コメントにいいねできること' do
-      first('#article-comment-like-btn').click
-      expect(page).to have_css '#article-comment-unlike-btn'
-    end
-  end
-
-  context 'as a non logged in user' do
-    before do
-      visit root_path
-      click_link "#{article.title}", match: :first
-    end
-
-    it 'いいねボタンを押すとログインページにリダイレクトされること' do
-      first('#article-comment-like-btn').click
-      sleep 0.2
-      expect(current_path).to eq login_path
+      it 'いいねボタンを押すとログインページにリダイレクトされること' do
+        find_by_id('article-comment-like-btn').click
+        sleep 0.2
+        expect(current_path).to eq login_path
+      end
     end
   end
-end
 
-describe '#destroy' do
-  let!(:user) { FactoryBot.create(:user) }
-  let!(:article) { Article.create(title: 'test', content: 'test', tag_list: 'test', user_id: user.id) }
-  let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
+  describe '#destroy' do
+    let!(:user) { FactoryBot.create(:user) }
+    let!(:article) { Article.create(title: 'test', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
 
-  context 'as a logged in user' do
-    before do
-      sign_in user
-      visit root_path
-      click_link 'プロフィール画像', match: :first, exact: true
-      click_link 'プロフィール', match: :first, exact: true
-      click_link "#{article.title}", exact: true
-      first('#article-comment-like-btn').click
-      sleep 0.2
-    end
+    context 'as a logged in user' do
+      before do
+        sign_in user
+        visit root_path
+        click_link 'プロフィール画像', match: :first, exact: true
+        click_link 'プロフィール', match: :first, exact: true
+        click_link "#{article.title}", exact: true
+        find_by_id('article-comment-like-btn').click
+        sleep 0.2
+      end
 
-    it 'すでにいいねされたボタンがあること' do
-      expect(page).to have_css '#article-comment-unlike-btn'
-    end
+      it 'すでにいいねされたボタンがあること' do
+        expect(page).to have_css '#article-comment-unlike-btn'
+      end
 
-    it 'いいねを解除できること' do
-      first('#article-comment-unlike-btn').click
-      expect(page).to have_css '#article-comment-like-btn'
+      it 'いいねを解除できること' do
+        find_by_id('article-comment-unlike-btn').click
+        expect(page).to have_css '#article-comment-like-btn'
+      end
     end
   end
 end
