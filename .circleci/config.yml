@@ -74,7 +74,6 @@ jobs:
           name: Database setup
           command: |
             bundle exec rspec
-          no_output_timeout: 20m
 
 workflows:
   build_and_test:
