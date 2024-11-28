@@ -23,7 +23,7 @@ RSpec.configure do |config|
   config.before(:each, type: :system, js: true) do
       driven_by :selenium, using: :chrome, options: {
         browser: :remote,
-        url: "tcp://127.0.0.1:4444"
+        url: "tcp://127.0.0.1:4444/wd/hub"
       }
       Capybara.server_host = 'app'
   end
