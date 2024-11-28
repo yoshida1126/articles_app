@@ -17,6 +17,7 @@ executors:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
       - image: selenium/standalone-chrome-debug:latest
         name: chrome
+        shm_size: 2g
 
 commands:
   setup:
