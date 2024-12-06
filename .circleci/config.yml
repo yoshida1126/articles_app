@@ -48,7 +48,7 @@ jobs:
   test:
     executor: default
     environment:
-      RAILS_ENV: development
+      RAILS_ENV: test
     steps:
       - checkout
       - setup
