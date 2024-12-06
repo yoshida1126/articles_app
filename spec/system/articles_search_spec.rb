@@ -4,12 +4,12 @@ RSpec.describe 'Search', type: :system, js: true do
   
   describe '#search' do
     let(:user) { FactoryBot.create(:user) }
-    let!(:article) { Article.create(title: 'test', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'search article' do
       before do
         visit root_path
-        fill_in 'q_title_or_content_eq', with: 'test'
+        fill_in 'q_title_or_content_eq', with: 'test article'
         find('#search-btn').click
       end
 
