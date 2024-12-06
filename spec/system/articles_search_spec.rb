@@ -9,7 +9,7 @@ RSpec.describe 'Search', type: :system, js: true do
     context 'search article' do
       before do
         visit root_path
-        fill_in 'q_title_or_content_eq', with: 'tes'
+        fill_in 'q_title_or_content_eq', with: 'test'
         find('#search-btn').click
       end
 

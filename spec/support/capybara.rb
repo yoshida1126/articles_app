@@ -25,6 +25,6 @@ RSpec.configure do |config|
         browser: :remote,
         url: "http://chrome:4444/wd/hub"
       }
-      # Capybara.server_host = 'app'
+      # Capybara.server_host = 'app' # circleci上ではDocker composeを使用していないためgithubにプッシュする時はコメントアウトを外すこと
   end
 end
