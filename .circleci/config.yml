@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Dockerコンテナのビルド
-          command/ docker-compose -f docker-compose-dev.yml build
+          command: docker-compose -f docker-compose-dev.yml build
       - run:
           name: Dockerコンテナの起動
           command: docker-compose -f docker-compose-dev.yml up -d
