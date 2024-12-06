@@ -7,16 +7,16 @@ jobs:
       - checkout
       - run:
           name: Dockerコンテナのビルド
-          command: docker-compose -f docker-compose-dev.yml build
+          command: docker compose -f docker-compose-dev.yml build
       - run:
           name: Dockerコンテナの起動
-          command: docker-compose -f docker-compose-dev.yml up -d
+          command: docker compose -f docker-compose-dev.yml up -d
       - run:
           name: db接続を待機
           command: sleep 10
       - run:
           name: データベースのセットアップ
-          command: docker-compose -f docker-compose-dev.yml exec rails db:migrate RAILS_ENV=development
+          command: docker compose -f docker-compose-dev.yml exec rails db:migrate RAILS_ENV=development
       - run:
           name: Dockerコンテナの停止
-          command: docker-compose -f docker-compose -f docker-compose-dev.yml down
+          command: docker compose -f docker-compose -f docker-compose-dev.yml down
