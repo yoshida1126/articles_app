@@ -1,4 +1,9 @@
 version: 2
+
+executors:
+  default:
+    working_directory: ~/articles_app
+
 jobs:
   build:
     machine:
