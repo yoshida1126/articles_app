@@ -15,7 +15,6 @@ RSpec.describe 'Registrations', type: :system, js: true do
         fill_in 'パスワード', with: valid_user_params[:password]
         fill_in 'パスワード（確認用）', with: valid_user_params[:password_confirmation]
         click_button "登　録"
-        sleep 2
         expect(page).to have_selector 'div.alert-success'
       end
     end
