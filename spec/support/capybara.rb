@@ -25,6 +25,6 @@ RSpec.configure do |config|
         browser: :remote,
         url: "http://chrome:4444/wd/hub"
       }
-      Capybara.server_host = '3000'
+      # Capybara.server_host = 'app'
   end
 end
