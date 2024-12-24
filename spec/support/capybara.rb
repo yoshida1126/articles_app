@@ -20,11 +20,11 @@ RSpec.configure do |config|
     driven_by :rack_test
   end
 
-  config.before(:each, type: :system, js: true) do
-      driven_by :selenium, using: :chrome, options: {
-        browser: :remote,
-        url: "http://chrome:4444/wd/hub"
-      }
-      Capybara.server_host = 'localhost:3000'
-  end
+  # config.before(:each, type: :system, js: true) do
+  #   driven_by :selenium, using: :chrome, options: {
+  #     browser: :remote,
+  #     url: "http://chrome:4444/wd/hub"
+  #   }
+  #   Capybara.server_host = 'app'
+  # end
 end
