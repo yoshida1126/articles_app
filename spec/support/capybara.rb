@@ -22,9 +22,10 @@ RSpec.configure do |config|
 
   config.before(:each, type: :system, js: true) do 
     driven_by :selenium, using: :chrome, options: {
-      browser: :local,
       url: 'http://chrome:4444/wd/hub'
     }
+    Capybara.server_port = 4444
+    Capybara.server_host = IPSocket.getaddress(Socket.gethostname)
   end 
 
 =begin
