@@ -21,9 +21,11 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :system, js: true) do 
-    driven_by :selenium, using: :chrome
+    driven_by :selenium, using: :chrome, options: {
+      url = 'http://chrome:4444/wd/hub'
+    }
   end 
-  
+
 =begin
   config.before(:each, type: :system, js: true) do
     driven_by :selenium, using: :chrome, options: {
