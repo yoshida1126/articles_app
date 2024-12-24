@@ -22,6 +22,7 @@ RSpec.configure do |config|
 
   config.before(:each, type: :system, js: true) do 
     driven_by :selenium, using: :chrome, options: {
+      browser: :local,
       url: 'http://chrome:4444/wd/hub'
     }
   end 
