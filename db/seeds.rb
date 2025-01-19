@@ -16,7 +16,7 @@ user = User.create!(
 user.profile_img.attach(io: File.open('app/assets/images/profile.jpg'),
                         filename: 'profile.jpg')
 
-99.times do |n|
+20.times do |n|
   name = Faker::Name.name
   email = "example-#{n + 1}@example.org"
   password = 'password'
