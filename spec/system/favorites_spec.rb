@@ -18,7 +18,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
         expect(page).to have_selector 'div.alert-success'
       end
 
-      it 'リストに追加hした記事があること' do
+      it 'リストに追加した記事があること' do
         visit user_favorite_article_lists_path(user)
         click_link 'Test'
         expect(page).to have_content 'Test article'
