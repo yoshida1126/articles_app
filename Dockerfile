@@ -23,9 +23,9 @@ COPY Gemfile.lock /articles_app/Gemfile.lock
 RUN gem install bundler
 RUN bundle install
 
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec app rails assets:precompile
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec app rails db:create
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec app rails db:migrate
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec app rails db:seed
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails db:create
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails db:migrate
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails db:seed
 
 COPY . /articles_app
