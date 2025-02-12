@@ -12,14 +12,21 @@ URL(https://articles.jp)
   * MySQL 8.1.0  
   * unicorn  
   * RSpec   
-  * Rubocop  
+  * Rubocop 
+  * Docker / Docker-compose  
+  * CircleCi (導入段階)  
+  * AWS  
+      * VPC  
+      * EC2 
+      * Route53   
+      * S3 
 
 # 機能一覧
 <ins></ins>
   * ユーザー登録、ログイン機能(devise) 
   * 投稿機能
-      記事の投稿・編集  
-      画像投稿(プロフィール画像・記事のヘッダー画像や記事に貼る画像　記事に貼る画像はダイレクトアップロードができる。)  
+      * 記事の投稿・編集  
+      * 画像投稿(プロフィール画像・記事のヘッダー画像や記事に貼る画像　記事に貼る画像はダイレクトア ップロードができる。)  
   * マークダウン機能 (redcarpet)  
   * いいね機能  
   * コメント機能  
@@ -31,5 +38,5 @@ URL(https://articles.jp)
 # テスト
 <ins></ins>
   * RSpec   
-      単体テスト(model)  
-      統合テスト(system)   
+      * 単体テスト(model)  
+      * 統合テスト(system)   
