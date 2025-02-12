@@ -1,12 +1,12 @@
 # Articles
 <ins></ins>
 
+記事の投稿サイトです。
+レスポンシブ対応しているのでスマホからでもご覧いただけます。
 URL(https://articles.jp)
 
---概要--
-  記事投稿サイト
-
---使用技術--
+# 使用技術
+<ins></ins>
   Ruby 3.2.2
   Ruby on Rails 7.0.4.3 
   MySQL 8.1.0 
@@ -14,7 +14,8 @@ URL(https://articles.jp)
   RSpec 
   Rubocop
 
---機能一覧-- 
+# 機能一覧
+<ins></ins>
   •ユーザー登録、ログイン機能(devise) 
   •投稿機能
     記事の投稿・編集
@@ -27,7 +28,8 @@ URL(https://articles.jp)
   •検索機能 (ransack)
   •ハッシュタグ機能 (acts-as-taggable-on)
 
-  --テスト-- 
+# テスト
+<ins></ins>
   •RSpec 
     単体テスト(model) 
     統合テスト(system) 
