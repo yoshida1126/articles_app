@@ -5,6 +5,8 @@
 レスポンシブ対応しているのでスマホからでもご覧いただけます。  
 URL(https://articles.jp)  
 
+<img width="1280" alt="Image" src="https://github.com/user-attachments/assets/85b6e565-3680-4863-9075-220ca085207f" />  
+
 # 使用技術
 <ins></ins>
   * Ruby 3.2.2  
