@@ -1,9 +1,9 @@
 # Articles
 <ins></ins>
 
-記事の投稿サイトです。
-レスポンシブ対応しているのでスマホからでもご覧いただけます。
-URL(https://articles.jp)
+記事の投稿サイトです。  
+レスポンシブ対応しているのでスマホからでもご覧いただけます。  
+URL(https://articles.jp)  
 
 # 使用技術
 <ins></ins>
