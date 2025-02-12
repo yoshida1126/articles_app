@@ -30,6 +30,6 @@ URL(https://articles.jp)
 
 # テスト
 <ins></ins>
-  * RSpec 
+  * RSpec   
       単体テスト(model)  
       統合テスト(system)   
