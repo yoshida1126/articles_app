@@ -1,4 +1,4 @@
-<h1><%= @favorite_article_list.list_title %>(<%= @favorite_article_list.articles.size %>)</h1>
+<h1><%= @favorite_article_list.list_title %></h1>
 <% if @favorites.any? %>
   <ul id="search-or-tagged-articles" class="articles"> 
     <%= render partial: "favorite_articles", collection: @favorites, as: "favorite" %> 
