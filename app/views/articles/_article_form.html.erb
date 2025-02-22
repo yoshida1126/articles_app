@@ -43,7 +43,7 @@
   </div>
   <div id="article-text-field">
     <div class="text-area-and-preview">
-      <%= f.text_area :content, required: true, id: 'markdown', class: 'form-control article-text-area', placeholder: "本文を入力してください。",
+      <%= f.text_area :content, required: true, id: 'markdown', class: 'form-control article-text-area', maxlength: "3000", placeholder: "本文を入力してください。",
        data: {
         controller: "markdown-upload",
         markdown_upload_url_value: rails_direct_uploads_url,
@@ -58,7 +58,7 @@
     </div>
   </div>
 
-  <input type="hidden" id="blob" name="blob_signed_ids[]"> 
+  <span class="count" id="count_text">0 ／3000文字</span>
 
   <div class="article-submit-btn">
     <%= f.submit "投　稿", class: "btn btn-primary" %> 
