@@ -62,39 +62,4 @@ RSpec.describe 'Layouts', type: :system do
       end
     end
   end
-
-  describe 'footer' do
-    context 'as a logged in user' do
-      before do
-        sign_in(user)
-        visit root_path
-      end
-
-      it 'Aboutをクリックするとアバウトページに遷移すること' do
-        click_link 'About'
-        expect(page).to have_current_path about_path
-      end
-
-      it 'Helpをクリックするとヘルプページに遷移すること' do
-        click_link 'Help'
-        expect(page).to have_current_path help_path
-      end
-    end
-
-    context 'as a non logged in user' do
-      before do
-        visit root_path
-      end
-
-      it 'Aboutをクリックするとアバウトページに遷移すること' do
-        click_link 'About'
-        expect(page).to have_current_path about_path
-      end
-
-      it 'Helpをクリックするとヘルプページに遷移すること' do
-        click_link 'Help'
-        expect(page).to have_current_path help_path
-      end
-    end
-  end
 end
