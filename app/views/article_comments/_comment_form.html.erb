@@ -35,7 +35,7 @@
     </div>
   </div>
   <div class="text-area-and-preview">
-    <%= f.text_area :comment, id: 'markdown', class: 'form-control article-text-area', placeholder: "コメントを入力",
+    <%= f.text_area :comment, id: 'markdown', class: 'form-control article-text-area', maxlength: "1500", placeholder: "コメントを入力",
         data: {
           controller: "markdown-upload toolbar",
           markdown_upload_url_value: rails_direct_uploads_url,
