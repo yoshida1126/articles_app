@@ -77,13 +77,11 @@ jobs:
   deploy:
     executor: default
     environment:
-      HOST_NAME: '35.77.119.201' # elasticipを使用していないためgithubにpushする際に適宜変更する。
-      USER_NAME: 'ec2-user'
-      APP_DIR: '/var/www/articles_app'
+      
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:kWolJ1EpxUqbesj0AavwXmSjtuGEFj6/wYtZczvGNb0"
+            - SHA256:kWolJ1EpxUqbesj0AavwXmSjtuGEFj6/wYtZczvGNb0
       - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "/var/www/articles_app/deploy.sh"
 
 workflows:
