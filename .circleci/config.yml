@@ -82,6 +82,7 @@ jobs:
       APP_DIR: '/var/www/articles_app'
       APP_NAME: 'articles_app'
     steps:
+      - checkout
       - add_ssh_keys:
           fingerprints:
             - "SHA256:kWolJ1EpxUqbesj0AavwXmSjtuGEFj6/wYtZczvGNb0"
