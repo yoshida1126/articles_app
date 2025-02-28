@@ -82,7 +82,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - SHA256:kWolJ1EpxUqbesj0AavwXmSjtuGEFj6/wYtZczvGNb0
-      - run: ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "/var/www/articles_app/deploy.sh"
+      - run: ssh $SSH_USER@$SSH_HOST "/var/www/articles_app/deploy.sh"
 
 workflows:
   build_and_test:
