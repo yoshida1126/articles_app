@@ -75,8 +75,7 @@ jobs:
           command: |
             bundle exec rspec
   deploy:
-    machine:
-        enabled: true
+    executor: default
     environment:
       HOST_NAME: '35.77.119.201' # elasticipを使用していないためgithubにpushする際に適宜変更する。
       USER_NAME: 'ec2-user'
