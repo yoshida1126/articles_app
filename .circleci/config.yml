@@ -22,8 +22,6 @@ commands:
   setup:
     steps:
       - checkout
-      - run: yarn install
-      
       - run:
           name: Update bundler
           command: gem update bundler
