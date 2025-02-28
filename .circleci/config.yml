@@ -85,7 +85,6 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "SHA256:kWolJ1EpxUqbesj0AavwXmSjtuGEFj6/wYtZczvGNb0"
-      - run : ssh-keyscan ${HOST_NAME} >> ~/.ssh/known_hosts
       - deploy:
           name: deploy
           commands:
