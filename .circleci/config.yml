@@ -85,8 +85,6 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "SHA256:kWolJ1EpxUqbesj0AavwXmSjtuGEFj6/wYtZczvGNb0"
-      - run : sudo yum update
-      - run : sudo yum install rsync.x86_64
       - run : ssh-keyscan ${HOST_NAME} >> ~/.ssh/known_hosts
       - run : ssh ${USER_NAME}@${HOST_NAME} "cd ${ APP_DIR }"
       - run : ssh ${USER_NAME}@${HOST_NAME} "docker compose down"
