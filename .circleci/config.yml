@@ -81,7 +81,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - SHA256:kWolJ1EpxUqbesj0AavwXmSjtuGEFj6/wYtZczvGNb0
+            - "SHA256:kWolJ1EpxUqbesj0AavwXmSjtuGEFj6/wYtZczvGNb0"
       - run: ssh $SSH_USER@$SSH_HOST "/var/www/articles_app/deploy.sh"
 
 workflows:
