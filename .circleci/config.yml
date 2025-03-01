@@ -82,6 +82,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "SHA256:kWolJ1EpxUqbesj0AavwXmSjtuGEFj6/wYtZczvGNb0"
+      - run: mkdir -p ~/.ssh && touch -c ~/.ssh/known_hosts
       - run: ssh-keyscan ${SSH_HOST} >> ~/.ssh/known_hosts
       - run: ssh $SSH_USER@$SSH_HOST "/var/www/articles_app/deploy.sh"
 
