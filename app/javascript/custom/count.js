@@ -1,11 +1,10 @@
-document.addEventListener("turbo:load", count);
-document.addEventListener("turbo:render", count);
+if(document.getElementsByClassName("count").length) {
+    document.addEventListener("turbo:load", count);
+    document.addEventListener("turbo:render", count);
 
-function count() {
-    if(document.getElementsByClassName("count")) {
+    function count() {  
         let count = document.getElementsByClassName("count");
         const articleText = document.getElementById('markdown');
-
         articleText.addEventListener("keyup", () => {
             let length = articleText.value.length
             let countText = document.getElementById('count_text')
