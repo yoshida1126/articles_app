@@ -2,6 +2,7 @@ class LikesController < ApplicationController
   before_action :logged_in_user
 
   def create
+    # 記事に対していいねをつける
     @article = Article.find_by(id: params[:article_id])
     @article_like = Like.new(user_id: current_user.id, article_id: params[:article_id])
     respond_to do |format|
@@ -22,6 +23,7 @@ class LikesController < ApplicationController
   end
 
   def destroy
+    # 記事のいいねを取り消す
     @article = Article.find_by(id: params[:article_id])
     @article_like = Like.find_by(user_id: current_user.id, article_id: params[:article_id])
     respond_to do |format|

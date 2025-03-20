@@ -2,6 +2,7 @@ class ArticleCommentLikesController < ApplicationController
   before_action :logged_in_user
 
   def create
+    # 記事のコメントに対していいねをつける
     article = Article.find_by(id: params[:article_id])
     article_comment = ArticleComment.find_by(id: params[:article_comment_id])
     like = ArticleCommentLike.new(user_id: current_user.id, article_comment_id: params[:article_comment_id])
@@ -18,6 +19,7 @@ class ArticleCommentLikesController < ApplicationController
   end
 
   def destroy
+    # 記事のコメントに対してのいいねを取り消す
     article = Article.find_by(id: params[:article_id])
     article_comment = ArticleComment.find_by(id: params[:article_comment_id])
     like = ArticleCommentLike.find_by(user_id: current_user.id, article_comment_id: params[:article_comment_id])

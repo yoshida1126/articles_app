@@ -3,6 +3,7 @@ class FavoritesController < ApplicationController
   before_action :correct_user, only: [:destroy]
 
   def create
+    # 記事をお気に入りリストに追加する
     @article = Article.find(params.dig(:favorite, :article_id))
     @favorite_article_lists = current_user.favorite_article_lists
     @user = @article.user
@@ -24,6 +25,7 @@ class FavoritesController < ApplicationController
   end
 
   def destroy
+    # 記事をお気に入りリストから消去する
     @favorite_article_list = FavoriteArticleList.find(params.dig(:favorite, :favorite_article_list_id))
     @article = Article.find(params.dig(:favorite, :article_id))
     @favorite = Favorite.find(params[:id])

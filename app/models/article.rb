@@ -1,6 +1,6 @@
 class Article < ApplicationRecord
-  has_one_attached :image
-  has_many_attached :article_images
+  has_one_attached :image # 記事のヘッダー画像
+  has_many_attached :article_images # 記事本文に使う画像
   belongs_to :user
   has_many :likes, dependent: :destroy
   has_many :article_comments, dependent: :destroy
@@ -41,6 +41,11 @@ class Article < ApplicationRecord
   end
 
   private
+
+  # 以下、タグの上限に関するコード
+  # todo:
+  # タグが10個までしかつけられないことを明示していないのは
+  # 不親切であるため、後々改善する
 
   MAX_TAG_COUNT = 10
 

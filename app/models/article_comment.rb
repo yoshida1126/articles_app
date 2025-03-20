@@ -7,6 +7,7 @@ class ArticleComment < ApplicationRecord
   validates :comment, presence: true
 
   def liked?(user)
+    # 二重にいいねできないように確認
     article_comment_likes.where(user_id: user.id).exists?
   end
 end

@@ -5,10 +5,11 @@ class ArticlesController < ApplicationController
   def index; end
 
   def show
+    # 記事のページの情報を取得する
     @article = Article.find(params[:id])
     @tags = @article.tag_counts_on(:tags)
     @article_comment = ArticleComment.new
-    return unless current_user
+    return unless current_user # ログインしていない時お気に入りのリストは必要ないのでここで情報を返す
 
     @favorite_article_lists = current_user.favorite_article_lists
     @favorite = Favorite.new
@@ -22,6 +23,11 @@ class ArticlesController < ApplicationController
     @article = current_user.articles.build(image_resize(article_params))
     @article.image.attach(article_params[:image])
 
+    # TODO:
+    # 今のままではダイレクトアップロードした画像が記事を作成する段階で
+    # 画像を消したとしてもS3には保存されたままになってしまうので、
+    # アップロードした段階でアタッチして、投稿時に画像が使われていないと
+    # S3からは画像を消去する処理が必要。
     # unless params[:blob_signed_ids].empty?
     #   params[:blob_signed_ids].each do |blob_signed_id|
     #     blob = ActiveStorage::Blob.find_signed(blob_signed_id)
@@ -47,6 +53,9 @@ class ArticlesController < ApplicationController
       @article.image.purge
       params = image_resize(article_params)
       @article.image.attach(params[:image])
+      # TODO:
+      # updateに関してもcreateと同じで、編集時にダイレクトアップロードした
+      # 画像でアップロード時には使われていない画像に関してS3から消去する処理が必要。
       if @article.update(params)
         flash[:notice] = '記事を編集しました。'
         redirect_to current_user, status: :see_other
@@ -74,6 +83,7 @@ class ArticlesController < ApplicationController
   end
 
   def correct_user
+    # 記事の作成者が、現在ログイン中のユーザーであるかを確認
     @article = current_user.articles.find_by(id: params[:id])
     return unless @article.nil?
 
