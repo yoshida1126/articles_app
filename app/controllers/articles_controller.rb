@@ -23,10 +23,9 @@ class ArticlesController < ApplicationController
     @article = current_user.articles.build(image_resize(article_params))
     @article.image.attach(article_params[:image])
 
-    # TODO:
-    # 今のままではダイレクトアップロードした画像が記事を作成する段階で
-    # 画像を消したとしてもS3には保存されたままになってしまうので、
-    # アップロードした段階でアタッチして、投稿時に画像が使われていないと
+    # TODO: 今のままではダイレクトアップロードした画像を、
+    # 記事を作成する段階で消したとしてもS3には保存されたままになってしまうので、
+    # アップロードした段階でアタッチして、画像が使われていないと
     # S3からは画像を消去する処理が必要。
     # unless params[:blob_signed_ids].empty?
     #   params[:blob_signed_ids].each do |blob_signed_id|
@@ -53,8 +52,8 @@ class ArticlesController < ApplicationController
       @article.image.purge
       params = image_resize(article_params)
       @article.image.attach(params[:image])
-      # TODO:
-      # updateに関してもcreateと同じで、編集時にダイレクトアップロードした
+      # TODO: updateに関してもcreateと同じで、
+      # 編集時にダイレクトアップロードした
       # 画像でアップロード時には使われていない画像に関してS3から消去する処理が必要。
       if @article.update(params)
         flash[:notice] = '記事を編集しました。'

@@ -3,9 +3,20 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - 'spec/**/*'
-    - 'db/*'
-    - 'bin/*' 
-    - 'config/*/*'
+    - 'lib/**/*'
+    - 'log/**/*'
+    - 'node_modules/**/*'
+    - 'public/**/*'
+    - 'storage/**/*'
+    - 'test/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - 'db/**/*'
+    - 'bin/**/*' 
+    - 'config/**/*'
+
+Layout/LineLength:
+  Max: 120 
 
 Lint/ShadowingOuterLocalVariable:
   Enabled: false 
@@ -17,7 +28,7 @@ Metrics/BlockLength:
   Max: 40
 
 Metrics/CyclomaticComplexity:
-  Max: 10 
+  Max: 10
 
 Metrics/MethodLength: 
   Max: 40 
@@ -40,11 +51,11 @@ Style/Documentation:
 Style/FrozenStringLiteralComment: 
   Enabled: false 
 
+Style/GlobalVars:
+  Enabled: false
+
 Style/IfUnlessModifier:
   Enabled: false 
 
 Style/RedundantFetchBlock:
   Enabled: false 
-
-Layout/LineLength:
-  Max: 120 

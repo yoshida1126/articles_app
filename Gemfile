@@ -37,9 +37,9 @@ end
 
 group :development do
   gem 'irb', '1.10.0'
+  gem 'puma', '5.6.8'
   gem 'repl_type_completor', '0.1.2'
   gem 'solargraph', '0.50.0'
-  gem 'puma', '5.6.8'
   gem 'web-console', '4.2.0'
 end
 

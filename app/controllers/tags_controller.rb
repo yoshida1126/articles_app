@@ -1,6 +1,6 @@
 class TagsController < ApplicationController
   def show
-    # あるタグがつけられた記事の一覧の情報を取得
+    # 関連するタグがつけられた記事の一覧を取得
     @tag = ActsAsTaggableOn::Tag.find_by(name: params[:id])
 
     @tagged_articles = Article.tagged_with(params[:id])
