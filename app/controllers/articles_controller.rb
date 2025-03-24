@@ -29,13 +29,7 @@ class ArticlesController < ApplicationController
     # S3からは画像を消去する処理が必要。
     # 記事本文中からS3のURLを正規表現やnokogiriを使い抽出
     # そのURLから使われている画像のblobデータを取得。
-    unless params[:article][:blob_signed_ids].empty?
-      blob_signed_ids = JSON.parse(params[:article][:blob_signed_ids])
-      blob_signed_ids.each do |blob_signed_id|
-        blob = ActiveStorage::Blob.find_signed(blob_signed_id)
-        @article.article_images.attach(blob)
-      end
-    end
+    article_images_attach(params)
 
     if @article.save
       flash[:notice] = '記事を作成しました。'
@@ -51,6 +45,7 @@ class ArticlesController < ApplicationController
   end
 
   def update
+    article_images_attach(params)
     if article_params[:image]
       @article.image.purge
       params = image_resize(article_params)
@@ -58,6 +53,7 @@ class ArticlesController < ApplicationController
       # TODO: updateに関してもcreateと同じで、
       # 編集時にダイレクトアップロードした
       # 画像でアップロード時には使われていない画像に関してS3から消去する処理が必要。
+
       if @article.update(params)
         flash[:notice] = '記事を編集しました。'
         redirect_to current_user, status: :see_other
@@ -99,5 +95,15 @@ class ArticlesController < ApplicationController
                                                                                                             1024).call
     end
     params
+  end
+
+  def article_images_attach(params)
+    unless params[:article][:blob_signed_ids].empty?
+      blob_signed_ids = JSON.parse(params[:article][:blob_signed_ids])
+      blob_signed_ids.each do |blob_signed_id|
+        blob = ActiveStorage::Blob.find_signed(blob_signed_id)
+        @article.article_images.attach(blob)
+      end
+    end
   end
 end
