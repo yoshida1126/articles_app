@@ -46,7 +46,10 @@ export default class extends Controller {
     //const url = `https://articles-app-bucket.s3.ap-northeast-1.amazonaws.com/${blob.key}`;
     const url = `/rails/active_storage/blobs/${blob.signed_id}/${blob.filename}`;
     const prefix = (this.isImage(blob.content_type) ? '!' : '');
-    // document.getElementById('blob').value = blob.blob_sined_id
+    const signedIdsField = document.getElementById("blob");
+    let signedIds = signedIdsField.value ? JSON.parse(signedIdsField.value) : [];
+    signedIds.push(blob.signed_id);
+    signedIdsField.value = JSON.stringify(signedIds)
 
     return `${prefix}[${filename}](${url})\n`;
   }

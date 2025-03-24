@@ -27,12 +27,15 @@ class ArticlesController < ApplicationController
     # 記事を作成する段階で消したとしてもS3には保存されたままになってしまうので、
     # アップロードした段階でアタッチして、画像が使われていないと
     # S3からは画像を消去する処理が必要。
-    # unless params[:blob_signed_ids].empty?
-    #   params[:blob_signed_ids].each do |blob_signed_id|
-    #     blob = ActiveStorage::Blob.find_signed(blob_signed_id)
-    #     @article.article_images.attach([blob])
-    #   end
-    # end
+    # 記事本文中からS3のURLを正規表現やnokogiriを使い抽出
+    # そのURLから使われている画像のblobデータを取得。
+    unless params[:article][:blob_signed_ids].empty?
+      blob_signed_ids = JSON.parse(params[:article][:blob_signed_ids])
+      blob_signed_ids.each do |blob_signed_id|
+        blob = ActiveStorage::Blob.find_signed(blob_signed_id)
+        @article.article_images.attach(blob)
+      end
+    end
 
     if @article.save
       flash[:notice] = '記事を作成しました。'
@@ -78,7 +81,7 @@ class ArticlesController < ApplicationController
   private
 
   def article_params
-    params.require(:article).permit(:title, :content, :image, :tag_list)
+    params.require(:article).permit(:title, :content, :image, :tag_list, :article_images)
   end
 
   def correct_user
