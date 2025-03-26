@@ -37,6 +37,9 @@
     </div>
   </div>
 </div>
+
+<%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
+
 <div class="submit-and-cancel-btn">
   <div class="edit-cancel-btn">
     <a href="#" data-controller="article-comment-menu" data-action="click->article-comment-menu#cancel" class="cancel-btn">キャンセル</a>

@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="comment-time-and-option">
-        <% unless article_comment.updated_at == article_comment.created_at %>
+        <% if article_comment.updated_at != article_comment.created_at %>
           <%= article_comment.updated_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
           <br>
           (編集済み)

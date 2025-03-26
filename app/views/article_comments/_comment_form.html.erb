@@ -48,6 +48,9 @@
       </div>
     </div>
   </div>
+  
+  <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
+
   <div class="submit-btn">
     <%= f.submit "送信する", class: "btn", remote: true %> 
   </div>
