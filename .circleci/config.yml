@@ -17,6 +17,13 @@ executors:
           MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
       - image: seleniarm/standalone-chromium
         name: chrome
+      - image: redis:latest
+        name: redis
+        command: redis-server
+      - image: redis:latest
+        name: sidekiq
+        command: bundle exec sidekiq
+
 
 commands:
   setup:
@@ -55,6 +62,10 @@ jobs:
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 90s
+      
+      - run:
+          name: Wait for Redis
+          command: dockerize -wait tcp://redis:6379 -timeout 90s
 
       - run:
           name: Use specific database.yml
