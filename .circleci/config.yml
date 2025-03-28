@@ -20,9 +20,13 @@ executors:
       - image: redis:latest
         name: redis
         command: redis-server
-      - image: redis:latest
+      - image: cimg/ruby:3.2.2
         name: sidekiq
         command: bundle exec sidekiq
+        environment:
+          REDIS_URL: redis://redis:6379/0
+        volumes:
+          - .:/articles_app
 
 
 commands:
