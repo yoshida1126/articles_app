@@ -63,7 +63,7 @@ services:
     volumes:
       - .:/articles_app/
     networks:
-      - articles-net
+      - articles-network
 
   redis:
     image: redis:latest
@@ -72,7 +72,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - articles-net
+      - articles-network
 
 volumes:
   mysql_data:
