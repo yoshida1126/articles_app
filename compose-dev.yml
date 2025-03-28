@@ -25,6 +25,7 @@ services:
       - 3000:3000 
     depends_on:
       - db
+      - redis
       - chrome
     volumes:
       - .:/articles_app/  
@@ -34,6 +35,33 @@ services:
       - ./.env
     networks:
       articles-net:
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: "Dockerfile.dev"
+    command: bundle exec sidekiq
+    depends_on:
+      - redis
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    env_file:
+      - ./.env 
+    volumes:
+      - .:/articles_app/
+    networks:
+      - articles-net
+    
+  
+  redis:
+    image: redis:latest
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      articles-net:
+
 
   chrome:
     # platform: linux/x86_64
@@ -52,3 +80,5 @@ networks:
 
 volumes:
   mysql_data:
+  redis-data:
+    driver: local
