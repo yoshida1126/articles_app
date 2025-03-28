@@ -20,14 +20,6 @@ executors:
       - image: redis:latest
         name: redis
         command: redis-server
-      - image: cimg/ruby:3.2.2
-        name: sidekiq
-        command: bundle exec sidekiq
-        environment:
-          REDIS_URL: redis://redis:6379/0
-        volumes:
-          - .:/articles_app
-
 
 commands:
   setup:
@@ -74,6 +66,10 @@ jobs:
       - run:
           name: Use specific database.yml
           command: mv config/database.yml.ci config/database.yml
+
+      - run:
+          name: Start Sidekiq in the background
+          command: bundle exec sidekiq & sleep 5
 
       - run:
           name: assets precompile
