@@ -83,4 +83,3 @@ volumes:
 
 networks:
   articles-network:
-    external: true
