@@ -83,3 +83,4 @@ volumes:
 
 networks:
   articles-network:
+    driver: bridge
