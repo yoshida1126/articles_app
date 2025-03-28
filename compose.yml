@@ -53,7 +53,7 @@ services:
     build:
       context: .
       dockerfile: "Dockerfile"
-    command: bundle exec sidekiq
+    command: dockerize -wait tcp://redis:6379 -timeout 90s && bundle exec sidekiq
     depends_on:
       - redis
     environment:
