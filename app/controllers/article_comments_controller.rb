@@ -8,7 +8,7 @@ class ArticleCommentsController < ApplicationController
     article = Article.find(params[:article_id])
     @article_comment = current_user.article_comments.new(article_comment_params)
 
-    handle_comment_images(blob_signed_ids)
+    handle_comment_images_for_create(blob_signed_ids)
 
     @article_comment.article_id = article.id
     @article = Article.find(params[:article_id])
@@ -50,7 +50,7 @@ class ArticleCommentsController < ApplicationController
     return unless @article_comment.user == current_user
 
     blob_signed_ids = JSON.parse(params[:article_comment][:blob_signed_ids])
-    handle_comment_images(blob_signed_ids)
+    handle_comment_images_for_update(blob_signed_ids)
 
     @article = Article.find(params[:article_id])
     @tags = @article.tag_counts_on(:tags)
@@ -70,6 +70,7 @@ class ArticleCommentsController < ApplicationController
   private
 
   def article_comment_params
+    p params[:article_comment]
     params[:article_comment].delete(:blob_signed_ids)
     params.require(:article_comment).permit(:comment, :created_at, :updated_at, comment_images: [])
   end
@@ -135,7 +136,7 @@ class ArticleCommentsController < ApplicationController
     unused_blob_signed_ids.each do |blob_signed_id|
       blob = ActiveStorage::Blob.find_signed(blob_signed_id)
       # blob に関連するアタッチメントを取得
-      attachments = ActiveStorage::Attachment.where(blob_id: blob.id) if blob
+      attachments = ActiveStorage::Attachment.where(blob_id: blob.id) if blob.present?
 
       if attachments
         # 各アタッチメントを purge して関連付けを削除
@@ -149,28 +150,27 @@ class ArticleCommentsController < ApplicationController
     end
   end
 
-  def handle_comment_images(blob_signed_ids)
-    attached_signed_ids = if @article_comment.comment_images.present?
-                            @article_comment.comment_images.map(&:signed_id)
-                          else
-                            []
-                          end
+  def handle_comment_images_for_create(blob_signed_ids)
+    image_urls = extract_s3_urls(params[:article_comment][:comment])
+    used_blob_signed_ids = get_blob_signed_id_from_url(image_urls)
+    comment_images_attach(used_blob_signed_ids) # コメントに使われた画像のアタッチ処理
+
+    unused_blob_signed_ids = blob_signed_ids - used_blob_signed_ids # 使われていない画像のsigned_idの配列を取得
+    unused_blob_delete(unused_blob_signed_ids) # 使われなかった画像のpurge処理
+  end
+
+  def handle_comment_images_for_update(blob_signed_ids)
+    attached_signed_ids = @article_comment.comment_images.map(&:signed_id)
     image_urls = extract_s3_urls(params[:article_comment][:comment])
     used_blob_signed_ids = get_blob_signed_id_from_url(image_urls)
 
-    if attached_signed_ids.present?
-      used_attached_signed_ids = attached_signed_ids & used_blob_signed_ids
-      comment_images_attach(used_blob_signed_ids - used_attached_signed_ids)
+    # 二重にアタッチしないようにするための処理
+    used_attached_signed_ids = attached_signed_ids & used_blob_signed_ids
+    comment_images_attach(used_blob_signed_ids - used_attached_signed_ids)
 
-      unused_blob_signed_ids = calculate_unused_blob_signed_ids(
-        blob_signed_ids,
-        attached_signed_ids,
-        used_blob_signed_ids
-      )
-    else
-      comment_images_attach(used_blob_signed_ids) # 記事本文に使われた画像のアタッチ処理
-      unused_blob_signed_ids = blob_signed_ids - used_blob_signed_ids # 使われていない画像のblob_signed_idの配列を取得
-    end
-    unused_blob_delete(unused_blob_signed_ids) # 使われなかった画像のpurge処理
+    unused_blob_signed_ids = calculate_unused_blob_signed_ids(
+      blob_signed_ids, attached_signed_ids, used_blob_signed_ids
+    )
+    unused_blob_delete_later(unused_blob_signed_ids) # 使われなかった画像のpurge処理
   end
 end
