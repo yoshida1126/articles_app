@@ -53,7 +53,7 @@ services:
     build:
       context: .
       dockerfile: "Dockerfile"
-    command: bundle exec sidekiq -d
+    command: bundle exec sidekiq
     depends_on:
       - redis
     environment:
