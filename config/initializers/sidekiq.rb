@@ -12,7 +12,6 @@ end
 # Sidekiq-cronの設定（定期実行のジョブ設定）
 Sidekiq::Cron::Job.create(
   name: 'Purge Unused Images - every 1 day',
-  # cron: '0 0 * * *',  # 毎日0時に実行
-  cron: '*/1 * * * *',
+  cron: '0 0 * * *',  # 毎日0時に実行
   class: 'PurgeUnusedImagesJob'  # 実行するジョブクラス名
 )
