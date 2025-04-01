@@ -57,7 +57,6 @@ class ArticleCommentsController < ApplicationController
 
     respond_to do |format|
       if @article_comment.update(article_comment_params)
-        @article_comment = ArticleComment.new
         format.html { redirect_to @article }
       else
         @error_comment = @article_comment
@@ -70,9 +69,9 @@ class ArticleCommentsController < ApplicationController
   private
 
   def article_comment_params
-    p params[:article_comment]
     params[:article_comment].delete(:blob_signed_ids)
-    params.require(:article_comment).permit(:comment, :created_at, :updated_at, comment_images: [])
+
+    params.require(:article_comment).permit(:comment, :created_at, :updated_at)
   end
 
   def comment_images_attach(used_blob_signed_ids)
@@ -116,37 +115,12 @@ class ArticleCommentsController < ApplicationController
     used_blob_signed_ids
   end
 
-  def calculate_unused_blob_signed_ids(blob_signed_ids, attached_signed_ids, used_blob_signed_ids)
-    combined_blob_signed_ids = if attached_signed_ids.present?
-                                 blob_signed_ids.concat(attached_signed_ids)
-                               else
-                                 blob_signed_ids
-                               end
-    combined_blob_signed_ids - used_blob_signed_ids
-  end
-
   def unused_blob_delete(unused_blob_signed_ids)
+    return unless unused_blob_signed_ids.present?
+
     unused_blob_signed_ids.each do |blob_signed_id|
       blob = ActiveStorage::Blob.find_signed(blob_signed_id)
       blob.purge_later if blob.present?
-    end
-  end
-
-  def unused_blob_delete_later(unused_blob_signed_ids)
-    unused_blob_signed_ids.each do |blob_signed_id|
-      blob = ActiveStorage::Blob.find_signed(blob_signed_id)
-      # blob に関連するアタッチメントを取得
-      attachments = ActiveStorage::Attachment.where(blob_id: blob.id) if blob.present?
-
-      if attachments
-        # 各アタッチメントを purge して関連付けを削除
-        attachments.each(&:purge)
-
-        # アタッチメントがすべて削除された後、blob を削除 (ファイル自体も削除)
-        blob.purge_later
-      elsif blob.present?
-        blob.purge_later
-      end
     end
   end
 
@@ -164,13 +138,18 @@ class ArticleCommentsController < ApplicationController
     image_urls = extract_s3_urls(params[:article_comment][:comment])
     used_blob_signed_ids = get_blob_signed_id_from_url(image_urls)
 
-    # 二重にアタッチしないようにするための処理
-    used_attached_signed_ids = attached_signed_ids & used_blob_signed_ids
-    comment_images_attach(used_blob_signed_ids - used_attached_signed_ids)
+    if attached_signed_ids.present?
+      # 二重にアタッチしないようにするための処理
+      used_attached_signed_ids = attached_signed_ids & used_blob_signed_ids
+      comment_images_attach(used_blob_signed_ids - used_attached_signed_ids)
 
-    unused_blob_signed_ids = calculate_unused_blob_signed_ids(
-      blob_signed_ids, attached_signed_ids, used_blob_signed_ids
-    )
-    unused_blob_delete_later(unused_blob_signed_ids) # 使われなかった画像のpurge処理
+      combined_blob_signed_ids = blob_signed_ids.concat(attached_signed_ids)
+      unused_blob_signed_ids = combined_blob_signed_ids - used_blob_signed_ids
+    else
+      comment_images_attach(used_blob_signed_ids)
+
+      unused_blob_signed_ids = blob_signed_ids - used_blob_signed_ids
+    end
+    unused_blob_delete(unused_blob_signed_ids) # 使われなかった画像のpurge処理
   end
 end

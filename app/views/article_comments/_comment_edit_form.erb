@@ -4,11 +4,12 @@
     <div class="article-image-upload">
       <label>
         <i class="far fa-image"></i>
-        <%= f.file_field :comment_images, direct_upload: true, id: "artilce-image-field-#{ article_comment.id }", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
+        <%= f.file_field :comment_images, direct_upload: true, id: "article-comment-image-field-#{article_comment.id}", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
             data: { 
-              controller: "article-comment-image-upload",
-              article_comment_image_upload_url_value: rails_direct_uploads_url,
-              action: "input->article-comment-image-upload#imageUpload"
+              controller: "edit-article-comment-image-upload",
+              edit_article_comment_image_upload_url_value: rails_direct_uploads_url,
+              action: "input->edit-article-comment-image-upload#imageUpload",
+              comment_id: article_comment.id
             } 
         %>
       </label>
@@ -38,7 +39,7 @@
   </div>
 </div>
 
-<%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
+<%= f.hidden_field :blob_signed_ids, id: "blob-#{article_comment.id}", value: "[]" %>
 
 <div class="submit-and-cancel-btn">
   <div class="edit-cancel-btn">
