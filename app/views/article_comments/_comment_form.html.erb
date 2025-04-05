@@ -15,7 +15,7 @@
       <div class="article-image-upload">
         <label>
           <i class="far fa-image"></i>
-          <%= f.file_field :comment_images, direct_upload: true, id: "artilce-comment-image-field", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
+          <%= f.file_field :images, direct_upload: true, id: "artilce-comment-image-field", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
               data: { 
                 controller: "article-comment-image-upload",
                 article_comment_image_upload_url_value: rails_direct_uploads_url,
@@ -37,9 +37,9 @@
   <div class="text-area-and-preview">
     <%= f.text_area :comment, id: 'markdown', class: 'form-control article-text-area', maxlength: "1500", placeholder: "コメントを入力",
         data: {
-          controller: "markdown-upload toolbar",
-          markdown_upload_url_value: rails_direct_uploads_url,
-          action: "drop->markdown-upload#dropUpload input->toolbar#input"
+          controller: "drop-upload toolbar",
+          drop_upload_url_value: rails_direct_uploads_url,
+          action: "drop->drop-upload#dropUpload input->toolbar#input"
         }
     %>
     <div id="html", class="html display">

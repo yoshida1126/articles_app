@@ -42,7 +42,7 @@ export default class extends Controller {
     //const url = `https://articles-app-bucket.s3.ap-northeast-1.amazonaws.com/${blob.key}`;
     const url = `/rails/active_storage/blobs/${blob.signed_id}/${blob.filename}`;
     const prefix = (this.isImage(blob.content_type) ? '!' : '');
-    const signedIdsField = this.element.parentNode.parentNode.nextElementSibling
+    const signedIdsField = document.getElementById('blob')
     let signedIds = signedIdsField.value ? JSON.parse(signedIdsField.value) : [];
     signedIds.push(blob.signed_id);
     signedIdsField.value = JSON.stringify(signedIds)
@@ -63,5 +63,3 @@ export default class extends Controller {
     return file.size <= maxSize;
   }
 }
-
-

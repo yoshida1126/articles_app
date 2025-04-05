@@ -93,7 +93,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         fill_in 'article[content]', with: 'Article content'
         fill_in 'article[tag_list]', with: 'article'
         attach_file 'article[image]', 'spec/fixtures/earth.png', visible: false
-        attach_file 'article[article_images][]', 'spec/fixtures/map.png', visible: false
+        attach_file 'article[images][]', 'spec/fixtures/map.png', visible: false
         click_button '投　稿'
       end
 

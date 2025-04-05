@@ -62,7 +62,7 @@ class ArticlesController < ApplicationController
     unused_blob_signed_ids = calculate_unused_blob_signed_ids(
       blob_signed_ids, attached_signed_ids, used_blob_signed_ids
     )
-    unused_blob_delete_later(unused_blob_signed_ids) # 使われなかった画像や、消された画像のpurge処理
+    unused_blob_delete(unused_blob_signed_ids) # 使われなかった画像や、消された画像のpurge処理
 
     resize_and_attach_image if article_params[:image].present?
 
@@ -83,7 +83,9 @@ class ArticlesController < ApplicationController
   private
 
   def article_params
+    params[:article].delete(:images)
     params[:article].delete(:blob_signed_ids)
+
     params.require(:article).permit(:title, :content, :image, :tag_list, article_images: [])
   end
 
@@ -159,24 +161,13 @@ class ArticlesController < ApplicationController
   def unused_blob_delete(unused_blob_signed_ids)
     unused_blob_signed_ids.each do |blob_signed_id|
       blob = ActiveStorage::Blob.find_signed(blob_signed_id)
-
-      # purge_laterを使っているのは、purgeを使う場合、記事へのアタッチがpurgeより後に行われるため
-      blob.purge_later if blob.present?
-    end
-  end
-
-  def unused_blob_delete_later(unused_blob_signed_ids)
-    unused_blob_signed_ids.each do |blob_signed_id|
-      blob = ActiveStorage::Blob.find_signed(blob_signed_id)
       # blob に関連するアタッチメントを取得
       attachments = ActiveStorage::Attachment.where(blob_id: blob.id) if blob.present?
 
-      if attachments
+      if attachments.present?
         # 各アタッチメントを purge して関連付けを削除
-        attachments.each(&:purge)
+        attachments.each(&:purge_later)
 
-        # アタッチメントがすべて削除された後、blob を削除 (ファイル自体も削除)
-        blob.purge_later
       elsif blob.present?
         blob.purge_later
       end

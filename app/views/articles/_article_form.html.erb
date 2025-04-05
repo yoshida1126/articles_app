@@ -22,7 +22,7 @@
     <div class="article-image-upload">
       <label>
         <i class="far fa-image"></i>
-        <%= f.file_field :article_images, direct_upload: true, id: "artilce-image-field", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
+        <%= f.file_field :images, direct_upload: true, id: "artilce-image-field", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
         data: { 
           controller: "article-image-upload",
           article_image_upload_url_value: rails_direct_uploads_url,
@@ -45,9 +45,9 @@
     <div class="text-area-and-preview">
       <%= f.text_area :content, required: true, id: 'markdown', class: 'form-control article-text-area', maxlength: "3000", placeholder: "本文を入力してください。",
        data: {
-        controller: "markdown-upload",
-        markdown_upload_url_value: rails_direct_uploads_url,
-        action: "drop->markdown-upload#dropUpload"
+        controller: "drop-upload",
+        drop_upload_url_value: rails_direct_uploads_url,
+        action: "drop->drop-upload#dropUpload"
        } 
       %>
       <div id="html", class="html display">
