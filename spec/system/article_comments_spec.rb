@@ -21,6 +21,13 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         sleep 0.5
         expect(page).to have_content 'Article Comment'
       end
+
+      it 'コメントに画像を貼れること' do
+        fill_in 'article_comment[comment]', match: :first, with: 'Edit Article Comment'
+        attach_file 'article_comment[images][]', 'spec/fixtures/map.png', visible: false, match: :first
+        click_button '送信する'
+        expect(page).to have_selector "img[alt='map.png']"
+      end
     end
 
     context 'as a logged in user(input wrong article comment)' do
@@ -60,6 +67,13 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         fill_in 'article_comment[comment]', match: :first, with: 'Edit Article Comment'
         click_button '編集'
         expect(page).to have_content 'Edit Article Comment'
+      end
+
+      it '編集するコメントに画像を貼れること' do
+        fill_in 'article_comment[comment]', match: :first, with: 'Edit Article Comment'
+        attach_file 'article_comment[images][]', 'spec/fixtures/map.png', visible: false, match: :first
+        click_button '編集'
+        expect(page).to have_selector "img[alt='map.png']"
       end
     end
 
