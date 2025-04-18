@@ -27,13 +27,13 @@ class ArticleCommentsController < ApplicationController
   def update
     # サービスクラスで画像に関する処理をする
     service = ArticleCommentImageService.new(current_user, params, :update)
-    @article_comment = service.process
+    @article_comment, @params = service.process
     return unless @article_comment.user == current_user
 
     prepare_article_comment_data(:update) # 部分更新後に使われるデータの用意
 
     respond_to do |format|
-      if @article_comment.update(service.article_comment_params)
+      if @article_comment.update(service.sanitized_article_comment_params(@params))
         format.html { redirect_to @article }
       else
         @error_comment = @article_comment

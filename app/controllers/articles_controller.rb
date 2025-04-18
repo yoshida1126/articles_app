@@ -1,5 +1,4 @@
 class ArticlesController < ApplicationController
-  include ArticleParamsPermitter
   before_action :logged_in_user, only: %i[new create edit update destroy]
   before_action :correct_user, only: %i[edit update destroy]
 
@@ -39,9 +38,9 @@ class ArticlesController < ApplicationController
 
   def update
     service = ArticleImageService.new(current_user, params, :update)
-    @article = service.process
+    @article, @params = service.process
 
-    if @article.update(service.article_params)
+    if @article.update(service.sanitized_article_params(@params))
       flash[:notice] = '記事を編集しました。'
       redirect_to current_user, status: :see_other
     else

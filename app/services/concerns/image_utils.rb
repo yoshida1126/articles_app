@@ -1,32 +1,33 @@
 module ImageUtils
     # ヘッダー画像のリサイズ
+    def resize_article_header_image(image, processor_proc: nil)
+        return unless image.present?
 
-    def resize_article_header_image(params)
-        if params[:image]
-          params[:image].tempfile = ImageProcessing::MiniMagick.source(params[:image].tempfile).resize_to_limit(1024,
-                                                                                                                1024).call
-        end
-        params
+        processed = if processor_proc
+                      processor_proc.call(image.tempfile)
+                    else
+                      ImageProcessing::MiniMagick
+                        .source(image.tempfile)
+                        .resize_to_limit(1024, 1024)
+                        .call
+                    end
+        
+        ActionDispatch::Http::UploadedFile.new(
+            filename: image.original_filename,
+            type: image.content_type,
+            tempfile: processed
+        )                                                                                  
     end
 
-    def resize_and_attach_article_header_image
-        # 使わなくなったヘッダー画像の削除
-        @article.image.purge
+    # 以下、記事本文中やコメント本文中の画像に関する処理
 
-        # 新しいヘッダー画像のリサイズ
-        params = resize_article_header_image(article_params)
-
-        #新しいヘッダー画像のアタッチ
-        @article.image.attach(params[:image])
-    end
-
-    # 記事本文中やコメント本文中の画像に関する処理
-
-    def attach_images_to_resource(resource, used_blob_signed_ids)
+    # blob_finder は ActiveStorage::Blob.find_signed を差し替えるための依存性注入です。
+    # テスト時にモック可能なように関数として渡せるようにしています。
+    def attach_images_to_resource(resource, used_blob_signed_ids, blob_finder:)
         return unless used_blob_signed_ids.present?
 
-        used_blob_signed_ids.each do |signed_id|
-            blob = ActiveStorage::Blob.find_signed(signed_id)
+        used_blob_signed_ids.each do |blob_key|
+            blob = blob_finder.call(blob_key)
             resource.attach(blob) if blob.present?
         end
     end
@@ -40,7 +41,7 @@ module ImageUtils
         content.scan(regex)
     end
   
-    def get_blob_signed_id_from_url(image_urls)
+    def get_blob_signed_id_from_url(image_urls,  blob_finder:)
         return [] unless image_urls.present?
       
         used_blob_signed_ids = []
@@ -55,10 +56,8 @@ module ImageUtils
             path = url.match(%r{rails/active_storage/blobs/([^/]+)/})[1]
       
             # ActiveStorage::Blobをパスで検索
-            blob = ActiveStorage::Blob.find_signed(path)
-            if blob
-                used_blob_signed_ids.push(blob.signed_id)
-            end
+            blob = blob_finder.call(path)       
+            used_blob_signed_ids.push(blob.signed_id) if blob.present?
         end
         used_blob_signed_ids
     end
@@ -72,19 +71,32 @@ module ImageUtils
         combined_blob_signed_ids - used_blob_signed_ids
     end
   
-    def unused_blob_delete(unused_blob_signed_ids)
+    # attachments_finder は ActiveStorage::Attachment.where を差し替えるための依存性注入です。
+    # テスト時にモック可能なように関数として渡せるようにしています。
+    # アタッチされていない画像に対しては不要なため、デフォルトは nil にしています。
+    def unused_blob_delete(unused_blob_signed_ids, blob_finder:, attachments_finder: nil)
         return unless unused_blob_signed_ids.present?
       
-        unused_blob_signed_ids.each do |signed_id|
-            blob = ActiveStorage::Blob.find_signed(signed_id)
-            attachments = ActiveStorage::Attachment.where(blob_id: blob.id) if blob.present?
-      
+        unused_blob_signed_ids.each do |blob_key|
+            blob = blob_finder.call(blob_key)
+            next unless blob.present?
+
+            attachments = attachments_finder&.call(blob.id)
+
             if attachments.present?
-                # 各アタッチメントを purge して関連付けを削除
-                attachments.each(&:purge_later)
-            elsif blob.present?
+                # アタッチメントを purge して関連付けを削除
+                attachments&.each(&:purge_later)
+            else
                 blob.purge_later
             end
         end
+    end
+
+    def find_blob_by_blob_key(blob_key)
+        ActiveStorage::Blob.find_signed(blob_key)
+    end
+
+    def find_attachments(blob_id)
+        ActiveStorage::Attachment.where(blob_id: blob_id) 
     end
 end
