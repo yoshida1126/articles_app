@@ -81,7 +81,7 @@ module ImageUtils
             blob = blob_finder.call(blob_key)
             next unless blob.present?
 
-            attachments = attachments_finder&.call(blob.id)
+            attachments = attachments_finder&.call(blob.signed_id)
 
             if attachments.present?
                 # アタッチメントを purge して関連付けを削除
