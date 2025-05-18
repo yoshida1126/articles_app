@@ -59,7 +59,7 @@ URL(https://articles.jp)
 - AWS  
   - VPC  
   - EC2  
-  - Route 53  
+  - Route 53  (現在はコストを抑えるため、Cloudflareに移行しています)
   - S3  
 
 # ⚙️ 機能一覧
