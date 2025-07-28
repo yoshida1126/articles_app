@@ -94,6 +94,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_28_024351) do
     t.integer "favorite_list_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["bookmarking_user_id", "favorite_list_id"], name: "index_fav_list_bookmarks_on_user_id_and_fav_list_id", unique: true
+    t.index ["bookmarking_user_id"], name: "index_favorite_list_bookmarks_on_bookmarking_user_id"
+    t.index ["favorite_list_id"], name: "index_favorite_list_bookmarks_on_favorite_list_id"
   end
 
   create_table "favorites", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
