@@ -13,7 +13,6 @@ class FavoriteArticleListsController < ApplicationController
   end
 
   def new
-    @user = User.find_by(id: params[:user_id])
     @favorite_article_list = FavoriteArticleList.new
   end
 

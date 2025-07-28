@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'favorite_list_bookmarks/create'
+  get 'favorite_list_bookmarks/destroy'
   root 'main_page#home'
   get '/trend_articles', to: 'main_page#trend'
   get '/recentry_articles', to: 'main_page#recentry'

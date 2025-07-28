@@ -1,0 +1,2 @@
+module FavoriteListBookmarksHelper
+end
