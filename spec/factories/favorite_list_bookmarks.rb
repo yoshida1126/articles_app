@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :favorite_list_bookmark do
-    bookmarking_user_id { 1 }
-    favorite_list_id { 1 }
+    association :user
+    association :favorite_article_list
   end
 end
