@@ -15,6 +15,7 @@ import "custom/marked"
 import "custom/article_header_image_preview" 
 import "custom/search_window"
 import "custom/count"
+import "custom/tab"
 import jquery from "jquery" 
 window.$ = jquery 
 import "trix"

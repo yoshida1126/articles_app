@@ -21,7 +21,7 @@ class User < ApplicationRecord
   has_many :favorite_article_lists, dependent: :destroy
 
   has_many :favorite_list_bookmarks, dependent: :destroy
-  has_many :favorite_lists, through: :favorite_list_bookmarks
+  has_many :bookmark_lists, through: :favorite_list_bookmarks, source: :favorite_article_list
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable
@@ -70,6 +70,21 @@ class User < ApplicationRecord
   # 現在のユーザーが他のユーザーをフォローしていればtrueを返す
   def following?(other_user)
     following.include?(other_user)
+  end
+
+  # 他人のお気に入り記事リストをブックマークする
+  def bookmark(article_list)
+    bookmark_lists << article_list
+  end
+
+  # ブックマークを解除する
+  def unbookmark(favorite_list_bookmark)
+    favorite_list_bookmarks.destroy(favorite_list_bookmark)
+  end
+
+  # ユーザーがリストをブックマークしているかどうか
+  def bookmarked?(article_list)
+    favorite_list_bookmarks.where(favorite_article_list_id: article_list.id).exists?
   end
 
   def feed

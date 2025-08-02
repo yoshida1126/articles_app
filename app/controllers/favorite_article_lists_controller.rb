@@ -5,6 +5,12 @@ class FavoriteArticleListsController < ApplicationController
   def index
     @user = User.find_by(id: params[:user_id])
     @favorite_article_lists = @user.favorite_article_lists.paginate(page: params[:page], per_page: 30)
+    @favorite_list_bookmark = FavoriteListBookmark.new
+    favorite_list_bookmarks = @user.favorite_list_bookmarks
+    @bookmarked_lists = []
+    favorite_list_bookmarks.each do |bookmark|
+      @bookmarked_lists << bookmark.favorite_article_list
+    end
   end
 
   def show

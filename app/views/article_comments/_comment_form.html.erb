@@ -16,11 +16,11 @@
         <label>
           <i class="far fa-image"></i>
           <%= f.file_field :images, direct_upload: true, id: "artilce-comment-image-field", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
-              data: { 
-                controller: "article-comment-image-upload",
-                article_comment_image_upload_url_value: rails_direct_uploads_url,
-                action: "input->article-comment-image-upload#imageUpload"
-              } 
+            data: { 
+              controller: "article-comment-image-upload",
+              article_comment_image_upload_url_value: rails_direct_uploads_url,
+              action: "input->article-comment-image-upload#imageUpload"
+            } 
           %>
         </label>
       </div>

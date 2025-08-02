@@ -6,7 +6,6 @@ class FavoritesController < ApplicationController
     # 記事をお気に入りリストに追加する
     @article = Article.find(params.dig(:favorite, :article_id))
     @favorite_article_lists = current_user.favorite_article_lists
-    @user = @article.user
     @favorite = Favorite.new
 
     respond_to do |format|

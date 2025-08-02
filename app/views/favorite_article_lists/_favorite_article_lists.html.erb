@@ -1,21 +1,23 @@
-<% if list.articles.any? %>
-  <li id="article-<%= list.articles.last.id %>">
+<% if list.articles.any? && list.articles.first.image.attached? %>
+  <li>
     <span class="heading-image">
-      <% if list.articles.first.image.attached? %> 
-        <%= link_to user_favorite_article_list_path(@user, list) do %>
-          <%= image_tag list.articles.first.image %>
-        <% end %>
-      <% else %> 
-        <%= link_to user_favorite_article_list_path(@user, list) do %>
-          <div class="no-heading-image">
-            <p>Articles</p>
-          </div>
-        <% end %>
+      <%= link_to user_favorite_article_list_path(@user, list) do %>
+        <%= image_tag list.articles.first.image %>
       <% end %>
     </span>
-    <div class="title">
-      <%= link_to list.list_title, user_favorite_article_list_path(@user, list) %> 
+    <div class="title-and-bookmark">
+      <div class="title">
+        <%= link_to list.list_title, user_favorite_article_list_path(@user, list) %> 
+      </div>
+      <% if current_user && list.user != current_user %>
+        <span class="bookmark-<%= list.id %>">
+          <%= render "favorite_list_bookmarks/bookmark", list: list %>
+        </span>
+      <% end %>
     </div>
+    <% if @is_bookmarked_list %>
+      作成者: <%= link_to list.user.name, user_path(list.user) %>さん
+    <% end %>
   </li>
 <% else %>
   <li>
@@ -29,5 +31,8 @@
     <div class="title">
       <%= link_to list.list_title, user_favorite_article_list_path(@user, list) %> 
     </div>
+    <% if @is_bookmarked_list %>
+      作成者: <%= link_to list.user.name, user_path(list.user) %>さん
+    <% end %>
   </li>
 <% end %>
