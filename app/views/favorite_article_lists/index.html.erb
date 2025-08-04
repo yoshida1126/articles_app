@@ -9,9 +9,14 @@
       <% end %>
     </li>
     <li class="tab">
-      ブックマークしたリスト
+      ブックマークリスト
     </li>
   </ul>
+  <% if current_user && @user == current_user %>
+    <div id="list_option" class="favorite_article_list_option">
+      <%= link_to "新規リスト作成", new_user_favorite_article_list_path(@user) %>
+    </div>
+  <% end %>
 </div>
 <div class="tabbox-contents">
   <div class="tabbox box-show">
@@ -23,11 +28,6 @@
         <% end %>
       </ul>
       <%= render partial: "shared/pagination", locals: { object: @search_articles } %>
-      <% if current_user && @user == current_user %>
-        <div id="list_option" class="favorite_article_list_option">
-          <%= link_to "新しいリストの作成", new_user_favorite_article_list_path(@user) %>
-        </div>
-      <% end %>
     <% else %>
       <% if current_user == @user %>
         <h2 class="favorite-submit-introduction">まだ<%= current_user.name %>さんはお気に入りリストを作成していません。<br>
