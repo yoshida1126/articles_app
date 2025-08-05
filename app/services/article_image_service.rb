@@ -14,11 +14,20 @@ class ArticleImageService
     def process
         case @action
         when :create
-            handle_article_images_for_create
+            if @params[:article][:blob_signed_ids]
+              handle_article_images_for_create
+            else
+                @params = sanitized_article_params(@params)
+                @article = @user.articles.build(@params)
+            end
             # create時は@paramsが不要なため、articleのみ返す
             @article
         when :update
-            handle_article_images_for_update
+            if @params[:article][:blob_signed_ids]
+                handle_article_images_for_update
+            else
+                @article = @user.articles.find(@params[:id])
+            end
             # update時は後続処理でparamsも使うため、両方返す
             return @article, @params
         else
