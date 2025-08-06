@@ -226,11 +226,11 @@ RSpec.describe "Articles", type: :request do
     end 
   end 
 
-  describe "#delete" do 
+  describe "#destroy" do 
     context "as a logged in user" do 
 
       before do 
-        sign_in (user) 
+        sign_in user
       end 
 
       it "記事の削除ができること" do 

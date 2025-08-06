@@ -1,10 +1,20 @@
-<% if list.articles.any? && list.articles.first.image.attached? %>
+<% if list.articles.any? %>
   <li>
-    <span class="heading-image">
+    <% if list.articles.first.image.attached? %>
+      <span class="heading-image">
+        <%= link_to user_favorite_article_list_path(@user, list) do %>
+          <%= image_tag list.articles.first.image %>
+        <% end %>
+      </span>
+    <% else %>
+      <span class="heading-image">
       <%= link_to user_favorite_article_list_path(@user, list) do %>
-        <%= image_tag list.articles.first.image %>
+        <div class="no-heading-image">
+          <p>Articles</p>
+        </div>
       <% end %>
     </span>
+    <% end %>
     <div class="title-and-bookmark">
       <div class="title">
         <%= link_to list.list_title, user_favorite_article_list_path(@user, list) %> 

@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
 
-  describe '#index' do
-    let(:user) { FactoryBot.create(:user, :with_favorite_article_lists) }
+  let(:user) { FactoryBot.create(:user, :with_favorite_article_lists) }
 
+  describe '#index' do
     context 'as a logged in user' do
       before do
         sign_in user
@@ -16,14 +16,12 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
       end
 
       it '新しいリストを作成するリンクがあること' do
-        expect(page).to have_link '新しいリストの作成'
+        expect(page).to have_link '新規リスト作成'
       end
     end
   end
 
   describe '#show' do
-    let(:user) { FactoryBot.create(:user, :with_favorite_article_lists) }
-
     context 'as a logged in user' do
       before do
         sign_in user
@@ -50,7 +48,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
       before do
         sign_in @user
         visit user_favorite_article_lists_path(@user)
-        click_link 'リストを作成'
+        click_link '新規リスト作成'
       end
 
       it 'リストの作成ページにアクセスできること' do
@@ -60,13 +58,11 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
   end
 
   describe '#create' do
-    let(:user) { FactoryBot.create(:user, :with_favorite_article_lists) }
-
     context 'as a logged in user' do
       before do
         sign_in user
         visit user_favorite_article_lists_path(user)
-        click_link 'リストの作成'
+        click_link '新規リスト作成'
         fill_in 'favorite_article_list[list_title]', with: 'List Title'
         click_button '作　成'
       end
@@ -86,8 +82,6 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
   end
 
   describe '#update' do
-    let(:user) { FactoryBot.create(:user, :with_favorite_article_lists) }
-
     context 'as a logged in user' do
       before do
         sign_in user
@@ -95,7 +89,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
         click_link 'Test'
         click_link 'リストを編集'
         fill_in 'favorite_article_list[list_title]', with: 'Edit Title'
-        click_button '編 集'
+        click_button '編　集'
       end
 
       it 'リストの編集に成功すること' do
@@ -113,8 +107,6 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
   end
 
   describe '#destroy' do
-    let(:user) { FactoryBot.create(:user, :with_favorite_article_lists) }
-
     context 'as a logged in user' do
       before do
         sign_in user

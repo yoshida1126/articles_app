@@ -39,6 +39,10 @@ FactoryBot.define do
       other_user.profile_img.attach(io: File.open('spec/fixtures/profile.jpg'), filename: 'profile.jpg',
                                     content_type: 'image/jpeg')
     end
+
+    trait :with_favorite_article_lists do
+      after(:create) { |user| create_list(:favorite_article_list, 1, user: user) }
+    end
   end
 
   factory :invalid_user, class: User do

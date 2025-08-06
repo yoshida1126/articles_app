@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
 
-  describe '#create' do
-    let(:user) { FactoryBot.create(:user, :with_articles, :with_relationships, :with_favorite_article_lists) }
+  let(:user) { FactoryBot.create(:user, :with_articles, :with_relationships, :with_favorite_article_lists) }
 
+  describe '#create' do
     context 'as a logged in user' do
       before do
         sign_in user
@@ -27,8 +27,6 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
   end
 
   describe '#destroy' do
-    let(:user) { FactoryBot.create(:user, :with_articles, :with_relationships, :with_favorite_article_lists) }
-
     context 'as a logged in user' do
       before do
         sign_in user
@@ -39,7 +37,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
         visit user_favorite_article_lists_path(user)
         click_link 'Test'
         click_link 'リストを編集'
-        click_button '削 除'
+        click_button '削 除', match: :first
       end
 
       it 'リストから記事を削除できること' do

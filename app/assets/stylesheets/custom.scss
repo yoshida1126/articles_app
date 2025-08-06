@@ -1534,6 +1534,9 @@ span#count_text {
 }
 
 .article-submit-btn {
+  max-width: 500px;
+  margin-right: auto;
+  margin-left: auto;
   .btn {
     border: 1px solid #99b9c2; 
     background-color: #99b9c2; 
