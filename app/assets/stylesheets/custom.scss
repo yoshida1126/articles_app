@@ -1516,6 +1516,7 @@ label {
 
 .title-field {
   margin: auto;
+  max-width: 500px;
 }
 
 .list-title-field {
@@ -1603,9 +1604,6 @@ span#count_text {
   font-size: 1.5rem;
   margin-top: 20px;
   text-align: center;
-  a {
-    color: #7aa4af;
-  }
 }
 
 p.no-list {
