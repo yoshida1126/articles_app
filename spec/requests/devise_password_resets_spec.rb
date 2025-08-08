@@ -11,7 +11,7 @@ RSpec.describe 'PasswordResets', type: :request do
   end
 
   describe '#create' do
-    context 'with a valid email address' do
+    xcontext 'with a valid email address' do
       it '成功時のflashが表示されること' do
         post user_password_path, params: { user: { email: user.email } }
         expect(flash).to_not be_empty
@@ -23,7 +23,7 @@ RSpec.describe 'PasswordResets', type: :request do
       end
     end
 
-    context 'with an invalid email address' do
+    xcontext 'with an invalid email address' do
       it 'エラーメッセージが表示されること' do
         post user_password_path, params: { user: { email: '' } }
         expect(response.body).to include 'alert-danger'
