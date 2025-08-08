@@ -1599,11 +1599,23 @@ span#count_text {
   text-align: left;
 }
 
-.favorite_article_list_option {
+.new_favorite_list_link {
   width: 200px;
   font-size: 1.5rem;
   margin-top: 20px;
   text-align: center;
+  a {
+    color: #99b9c2;
+  }
+}
+
+.favorite_article_list_option {
+  font-size: 1.5rem;
+  padding-bottom: 15px;
+  text-align: center;
+  a {
+    color: #7aa4af;
+  }
 }
 
 p.no-list {

@@ -16,6 +16,4 @@
     <%= render partial: "edit_favorite_articles", collection: @favorites, as: "favorite" %> 
   </ul>
   <%= render partial: "shared/pagination", locals: { object: @favorites } %>
-<% else %>
-  <p class="no-list">このリストにはまだ記事を登録していません。</p> 
 <% end %>
