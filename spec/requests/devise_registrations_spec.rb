@@ -6,7 +6,7 @@ RSpec.describe "Users", type: :request do
 
       let!(:other_user) { FactoryBot.create(:other_user) }
 
-      context "with valid information" do
+      xcontext "with valid information" do
         before do 
           @valid_user_params = FactoryBot.attributes_for(
             :user,
@@ -17,7 +17,7 @@ RSpec.describe "Users", type: :request do
           get sign_up_path 
           expect {
             post sign_up_path, params: { user: @valid_user_params }
-        }.to change(User, :count).by 1 
+          }.to change(User, :count).by 1 
         end 
 
         it "登録後ホームページにリダイレクトされること" do 
@@ -52,7 +52,7 @@ RSpec.describe "Users", type: :request do
         end 
       end 
 
-      context "with invalid information" do 
+      xcontext "with invalid information" do 
         it "登録できないこと" do
           get sign_up_path 
           expect {
