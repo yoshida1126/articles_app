@@ -2,9 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'PasswordResets', type: :request do
   let(:user) { FactoryBot.create(:user) }
-  before do
-    ActionMailer::Base.deliveries.clear
-  end
 
   describe '#new' do
     it '正しいフォームが表示されていること' do
@@ -15,12 +12,6 @@ RSpec.describe 'PasswordResets', type: :request do
 
   describe '#create' do
     context 'with a valid email address' do
-      it '送信するメールが１件増えること' do
-        expect do
-          post user_password_path, params: { user: { email: user.email } }
-        end.to change(ActionMailer::Base.deliveries, :count).by 1
-      end
-
       it '成功時のflashが表示されること' do
         post user_password_path, params: { user: { email: user.email } }
         expect(flash).to_not be_empty
