@@ -1516,7 +1516,7 @@ label {
 
 .title-field {
   margin: auto;
-  max-width: 500px;
+  max-width: 100%;
 }
 
 .list-title-field {
@@ -1535,6 +1535,50 @@ span#count_text {
 }
 
 .article-submit-btn {
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  .btn {
+    border: 1px solid #99b9c2; 
+    background-color: #99b9c2; 
+    outline: none;
+    &:hover {
+      opacity: .8;
+      border: 1px solid #99b9c2; 
+      background-color: #99b9c2; 
+      outline: none;
+    }
+    &:active {
+      border: 1px solid #99b9c2; 
+      background-color: #99b9c2; 
+      outline: none;
+    }
+  }
+}
+
+.favorite-list-submit-btn {
+  max-width: 500px;
+  margin-right: auto;
+  margin-left: auto;
+  .btn {
+    border: 1px solid #99b9c2; 
+    background-color: #99b9c2; 
+    outline: none;
+    &:hover {
+      opacity: .8;
+      border: 1px solid #99b9c2; 
+      background-color: #99b9c2; 
+      outline: none;
+    }
+    &:active {
+      border: 1px solid #99b9c2; 
+      background-color: #99b9c2; 
+      outline: none;
+    }
+  }
+}
+
+.favorite-list-edit-btn {
   max-width: 500px;
   margin-right: auto;
   margin-left: auto;

@@ -3,11 +3,11 @@
    <h2>リストの作成</h2>
     <%= form_with(model: @favorite_article_list, url: user_favorite_article_lists_path) do |f| %>
       <%= render 'shared/error_messages', object: f.object %>
-        <div class="title-field">
+        <div class="list-title-field">
           <%= f.text_field :list_title, class: "form-control", required: true, placeholder: "リストのタイトルを入力してください。" %> 
         </div> 
 
-        <div class="article-submit-btn">
+        <div class="favorite-list-submit-btn">
           <%= f.submit "作　成", class: "btn btn-primary" %> 
         </div>
     <% end %>
