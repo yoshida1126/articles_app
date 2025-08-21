@@ -1,4 +1,14 @@
 module ApplicationHelper
+
+  def full_title(page_title = '')
+    base_title = "Articles"
+    if page_title.empty?
+      base_title
+    else
+      "#{ page_title } | #{ base_title }"
+    end
+  end
+
   def bootstrap_alert(key, value)
     case key
     when 'alert'

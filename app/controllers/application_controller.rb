@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
     @search = Article.ransack(params[:q])
     return unless params[:q].present?
 
+    @search_word = @search.conditions.first.values.first.value
     @search_articles = @search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
                                                                                         per_page: 32)
   end

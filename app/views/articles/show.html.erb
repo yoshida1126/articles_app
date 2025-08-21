@@ -1,3 +1,4 @@
+<% provide(:title, @article.title) %>
 <div class="article-page"> 
   <span class="article-heading-image">
     <%= image_tag @article.image if @article.image.attached? %>

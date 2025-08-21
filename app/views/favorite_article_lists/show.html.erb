@@ -1,3 +1,4 @@
+<% provide(:title, "#{ @favorite_article_list.list_title }") %>
 <h1><%= @favorite_article_list.list_title %></h1>
 <% if @favorites.any? %>
   <ul id="search-or-tagged-articles" class="articles"> 
