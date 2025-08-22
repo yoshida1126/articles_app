@@ -67,7 +67,22 @@ URL(https://articles.jp)
   - Route 53  (現在はコストを抑えるため、Cloudflareに移行しています)
   - S3  
 
-<img width="906" height="570" alt="Image" src="https://github.com/user-attachments/assets/dc6ad16a-d18f-484e-9edd-630307255746" />
+<img width="917" height="580" alt="Image" src="https://github.com/user-attachments/assets/25e4316a-6849-4abd-9bad-263728c697e0" />
+
+## 使用させて頂いたアイコンの各種リンク
+
+  CircleCI: <a>https://icons8.com/icon/ep4D1m8k13qZ/circleci</a>
+
+  Cloudflare: <a>https://lobehub.com/ja/icons/cloudflare</a>
+
+  Docker: <a>https://www.docker.com/ja-jp/company/newsroom/media-resources/</a>
+
+  GitHub: <a>https://icons8.com/icon/12599/github</a>
+
+  Nginx: <a>https://icons8.com/icon/LhQ8M0RI4YLP/nginx</a>
+
+  Ruby on Rails: <a>https://icons8.com/icon/12eMo7h5rCTp/ruby-on-rails</a>
+
 
 # ⚙️ 機能一覧
 <ins></ins>
