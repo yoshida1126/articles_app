@@ -66,8 +66,8 @@ URL(https://articles.jp)
   - EC2  
   - Route 53  (現在はコストを抑えるため、Cloudflareに移行しています)
   - S3  
-  
-<img width="957" height="591" alt="Image" src="https://github.com/user-attachments/assets/42f42c96-bbc9-4729-ba4f-b8ae03900f78" />
+
+<img width="906" height="570" alt="Image" src="https://github.com/user-attachments/assets/dc6ad16a-d18f-484e-9edd-630307255746" />
 
 # ⚙️ 機能一覧
 <ins></ins>
