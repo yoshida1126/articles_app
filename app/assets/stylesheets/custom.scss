@@ -96,14 +96,14 @@ hr {
 }
 
 #logo {
-    font-family:"ヒラギノ丸ゴ Pro W4","ヒラギノ丸ゴ Pro","Hiragino Maru Gothic Pro","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO";
+    font-family: 'Oooh Baby', Sans-serif;
     float: left;
     margin-right: 10px;
-    font-size: 1.7em;
+    font-size: 2em;
     color: #fff;
     text-transform: uppercase;
     letter-spacing: -1px;
-    padding-top: 7px;
+    padding-top: 5px;
     font-weight: bold;
     &:hover {
       color: #fff;
@@ -873,8 +873,9 @@ div.birthday {
       text-decoration: none;
     }
     .no-heading-image {
+      font-family: 'Oooh Baby', Sans-serif;
       text-align: center;
-      font-size: 2rem;
+      font-size: 2.2rem;
       background-color: #99b9c2;
       width: 200px;
       height: 106px;
