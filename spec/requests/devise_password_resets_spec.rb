@@ -17,7 +17,7 @@ RSpec.describe 'PasswordResets', type: :request do
         expect(flash).to_not be_empty
       end
 
-      it 'ルートパスにリダイレクトされること' do
+      it 'ログイン画面にリダイレクトされること' do
         post user_password_path, params: { user: { email: user.email } }
         expect(response).to redirect_to new_user_session_url
       end
