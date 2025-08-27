@@ -12,8 +12,7 @@
 <% end %>
 
 <% if @favorites.any? %>
-  <h2>リストの整理</h2>
-  <ul id="search-or-tagged-articles" class="articles"> 
+  <ul id="tagged-articles" class="articles"> 
     <%= render partial: "edit_favorite_articles", collection: @favorites, as: "favorite" %> 
   </ul>
   <%= render partial: "shared/pagination", locals: { object: @favorites } %>

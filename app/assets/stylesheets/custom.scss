@@ -836,6 +836,20 @@ div.birthday {
   }
 }
 
+#tagged-articles {
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  margin-top: 30px;
+  display: grid;
+  place-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  justify-content: space-between;
+  column-gap: 10px;
+  li {
+    margin: 0 auto;
+  }
+}
+
 .articles {
   list-style: none;
   padding: 0;
@@ -1671,6 +1685,7 @@ input.favorite_article_delete_btn {
   color: #fff;
   background-color: #8a8a8a;
   border-radius: 4px;
+  border: none;
   margin-top: 5px;
   &:hover {
     opacity: .8;
