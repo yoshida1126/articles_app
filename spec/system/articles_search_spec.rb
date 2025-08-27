@@ -13,8 +13,29 @@ RSpec.describe 'Search', type: :system, js: true do
         find('#search-btn').click
       end
 
-      it '検索結果に検索キーワードを含む記事があること' do
-        expect(page).to have_content(article.title)
+      it '検索結果 1 件 と表示されること' do
+        expect(page).to have_content("検索結果 1 件")
+      end
+    end
+
+    context 'search tag' do
+      before do
+        visit root_path
+      end
+
+      it "タグで検索できること" do
+        fill_in 'q_title_or_content_eq', with: '#test'
+        find('#search-btn').click
+
+        expect(page).to have_content("タグ: testの一覧 (1件)")
+      end
+
+      it "存在しないタグを検索するとルートパスにリダイレクトされること" do
+        fill_in 'q_title_or_content_eq', with: '#article'
+        find('#search-btn').click
+
+        expect(current_path).to eq root_path
+        expect(page).to have_selector 'div.alert-danger'
       end
     end
   end

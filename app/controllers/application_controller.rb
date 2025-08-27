@@ -10,8 +10,16 @@ class ApplicationController < ActionController::Base
     return unless params[:q].present?
 
     @search_word = @search.conditions.first.values.first.value
-    @search_articles = @search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
+
+    if /\A#.+/ =~ @search_word
+      @search_word = @search_word.sub(/^#/, '')
+      @search_word.gsub!(" ", "")
+      @search_word.gsub!("　", "")
+      redirect_to tag_path(@search_word)
+    else
+      @search_articles = @search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
                                                                                         per_page: 32)
+    end
   end
 
   protected
