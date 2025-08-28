@@ -10,8 +10,8 @@ class MainPageController < ApplicationController
                 else
                   current_user.feed
                 end
-    @tags = ActsAsTaggableOn::Tag.most_used(5)
-    return unless @tags.present?
+                
+    @tags = ActsAsTaggableOn::Tag.joins(:taggings).distinct.most_used(5)
 
     @tags.each_with_index do |tag, i|
       instance_variable_set("@tag#{i + 1}", tag)
