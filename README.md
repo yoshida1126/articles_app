@@ -20,7 +20,7 @@
 レスポンシブ対応しているのでスマホからでもご覧いただけます。  
 URL(https://articles.jp)
 
-<img width="1280" alt="Image" src="https://github.com/user-attachments/assets/85b6e565-3680-4863-9075-220ca085207f" />
+<img width="1266" height="678" alt="Image" src="https://github.com/user-attachments/assets/b90b60eb-597a-41d0-8f7d-2d5550898f9f" />
 
 # 🔥 特に注力したポイント
 <ins></ins>
