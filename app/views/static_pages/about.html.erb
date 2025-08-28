@@ -1,0 +1,299 @@
+<div id="about_page">
+<div class="content about-page">
+  <p>以下は開発者のGitHubページのREADMEにも記載してあります。<br>
+    GitHub: <a><a href="https://github.com/yoshida1126/articles_app">https://github.com/yoshida1126/articles_app</a></a><br>
+    <br>
+  </p>
+  <h1>📘 概要</h1>
+  <ins></ins>
+
+  <p>
+    このアプリは、技術記事を投稿・共有するためのWebサービス(ポートフォリオサイト)です。
+    <br><br>
+    ユーザー同士で記事を投稿し合い、コメント・いいね・フォローなどを通じて技術的な交流を図ることができます。
+  </p>
+
+  <p>また、「お気に入りリスト機能」には特にこだわりがあり、
+    <br><br>
+    <strong>
+      他のユーザーがどんな記事を保存しているのかを見ることができる設計
+    </strong>にしています。
+    <br><br>
+    これは、「参考になる記事を見つけても、その投稿者が普段どんな記事を読んでいるか分からない」という
+    <br><br>
+    自身の体験から生まれた発想です。
+  </p>
+
+  <p>
+    加えて、
+    <strong>
+      他のユーザーが作成したリストをブックマークできる
+    </strong>
+    ようにする機能を追加しました。
+  </p>
+
+  <p>
+    これらの仕組みによって、
+    <strong>
+      知識や学びが人を通じて広がる体験
+    </strong>
+    を提供し、
+    <br><br>
+    ただの記事投稿にとどまらない、
+    <strong>
+      コミュニティ的な価値
+    </strong>
+    のあるサービスを目指しました。
+  </p>
+
+  <p>
+    レスポンシブ対応しているのでスマホからでもご覧いただけます。
+    <br><br>
+    <ins></ins>
+  </p>
+
+  <h1>🔥 特に注力したポイント</h1>
+
+  <ins></ins>
+
+  <ul>
+    <li>
+      <p>
+        <strong>
+          画像ファイルの管理における工夫
+        </strong>
+      </p>
+
+      <ul>
+        <li>
+          記事の作成・更新時に使用される画像だけを適切に保存し、不要な画像ファイルは削除されるような仕組みを実装しました。
+        </li>
+        <li>
+          一部、即時処理できない画像の削除に関しては、
+          <strong>
+            Sidekiq を用いたバックグラウンドジョブで非同期的に処理
+          </strong>されるようにしています。
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>
+          Fat Controller を避けるための設計
+        </strong>
+      </p>
+      <ul>
+        <li>
+          上記のような複雑なビジネスロジックはコントローラに直接書かず、
+          <strong>
+            サービスクラスやモジュールに分離
+          </strong>
+          することで、コードの可読性と保守性を高めています。
+        </li>
+      </ul>
+    </li>
+    <li>
+      <p>
+        <strong>
+          テストのしやすさを意識した設計（DIの導入）
+        </strong>
+      </p>
+      <ul>
+        <li>
+          モジュール内のメソッドでは 
+          <strong>
+            <code>
+              Proc
+            </code>
+            を引数として受け取る形にし、依存性注入（DI）を導入
+          </strong>。
+        </li>
+        <li>
+          これにより、ユニットテストではモックを使用して処理の責務に限定したテストが可能となり、テスト容易性と柔軟性を両立しています。
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>💡 UI/UX面での工夫</h2>
+
+  <ul>
+    <li>
+      記事作成時に
+      <strong>
+        リアルタイムプレビュー機能
+      </strong>
+      を実装し、Markdown記法の確認がしやすいよう工夫しました。
+    </li>
+    <li>
+      <strong>
+        プロフィール画像のトリミング機能
+      </strong>
+      を導入し、ユーザーが自分で画像の表示範囲を調整できるようにしました。
+    </li>
+    <li>見た目だけでなく「使いやすさ」「迷わず操作できる導線」を意識し、
+      <strong>
+        開発者自身が使っても快適なUI/UX
+      </strong> 
+      を意識しました。
+      <ins></ins>
+    </li>
+  </ul>
+
+  <h1>使用技術</h1>
+
+  <ins></ins>
+
+  <h3>💻 開発環境 / バックエンド</h3>
+
+  <ul>
+    <li>Ruby 3.2.2<br></li>
+    <li>Ruby on Rails 7.0.4.3<br></li>
+    <li>MySQL 8.1.0<br></li>
+    <li>Nginx</li>
+    <li>Unicorn</li>
+    <li>Redis</li>
+    <li>Sidekiq</li>
+  </ul>
+
+  <h3>🧪 テスト・静的解析</h3>
+
+  <ul>
+    <li>RSpec<br></li>
+    <li>Rubocop<br></li>
+  </ul>
+
+  <h3>🐳 開発環境構築・CI/CD</h3>
+
+  <ul>
+    <li>Docker / Docker Compose<br></li>
+    <li>CircleCI</li>
+  </ul>
+
+  <h3>☁️ インフラ・クラウドサービス（AWS） / インフラ構成図 </h3>
+
+  <ul>
+    <li>AWS<br>
+
+      <ul>
+        <li>VPC<br></li>
+        <li>EC2<br></li>
+        <li>Route 53  (現在はコストを抑えるため、Cloudflareに移行しています)</li>
+        <li>S3<br></li>
+      </ul>
+    </li>
+  </ul>
+
+  <img width="640" alt="Image" src="https://articles-app-bucket.s3.ap-northeast-1.amazonaws.com/3njnrgovin01xo7m588xxrkz7kpt" />
+
+  <p>使用させて頂いたアイコンの各種リンク</p>
+
+  <hr>
+
+  <p>CircleCI: <a><a href="https://icons8.com/icon/ep4D1m8k13qZ/circleci">https://icons8.com/icon/ep4D1m8k13qZ/circleci</a></a></p>
+
+  <p>Cloudflare: <a><a href="https://lobehub.com/ja/icons/cloudflare">https://lobehub.com/ja/icons/cloudflare</a></a></p>
+
+  <p>Docker: <a><a href="https://www.docker.com/ja-jp/company/newsroom/media-resources/">https://www.docker.com/ja-jp/company/newsroom/media-resources/</a></a></p>
+
+  <p>GitHub: <a><a href="https://icons8.com/icon/12599/github">https://icons8.com/icon/12599/github</a></a></p>
+
+  <p>Nginx: <a><a href="https://icons8.com/icon/LhQ8M0RI4YLP/nginx">https://icons8.com/icon/LhQ8M0RI4YLP/nginx</a></a></p>
+
+  <p>Ruby on Rails: <a><a href="https://icons8.com/icon/12eMo7h5rCTp/ruby-on-rails">https://icons8.com/icon/12eMo7h5rCTp/ruby-on-rails</a></a><br>
+  <br></p>
+
+  <h1>⚙️ 機能一覧</h1>
+
+  <ins></ins>
+
+  <ul>
+    <li>
+      <p>
+        <strong>
+          お気に入り記事のリスト機能<
+        </strong>
+      </p>
+
+      <ul>
+        <li>気になる記事を自分の「お気に入りリスト」に保存して管理できます。</li>
+        <li>特徴的なのは、<strong>他ユーザーのリストも閲覧可能</strong>な点で、<br>
+        「このユーザーはどんな技術記事を参考にしているのか？」を知ることができ、<br>
+         <strong>知識の共有やインスピレーションの広がり</strong>を促す設計になっています。</li>
+      </ul>
+    </li>
+    <li><p><strong>他のユーザーが作成したリストのブックマーク機能</strong></p>
+
+      <ul>
+        <li>他のユーザーが作成したリストをブックマークして自分のプロフィールからアクセスしやすくしました。これにより、より一層、学びが人から人へと広がる仕組みを提供できるようにしています。</li>
+      </ul>
+    </li>
+    <li><p><strong>ユーザー登録・ログイン機能（devise）</strong></p>
+
+      <ul>
+        <li>簡単で安全なユーザー認証を実装。</li>
+      </ul>
+    </li>
+    <li><p><strong>投稿機能</strong></p>
+
+      <ul>
+        <li>記事の投稿・編集機能を実装。現在は基本的なCRUD操作のみですが、今後は記事の<strong>下書き保存</strong>機能を追加し、編集を途中で中断できるように改善予定。</li>
+      </ul>
+    </li>
+    <li><p><strong>画像投稿機能</strong></p>
+
+      <ul>
+        <li>プロフィール画像、記事のヘッダー画像、記事に貼る画像を投稿可能。</li>
+        <li>特に記事に貼る画像に関しては、<strong>ダイレクトアップロード</strong>が可能で、<strong>リアルタイムプレビュー</strong>で確認できるようにしています。</li>
+      </ul>
+    </li>
+    <li><p><strong>いいね機能</strong></p>
+
+      <ul>
+        <li>記事への「いいね」機能を実装。今後、<strong>ユーザーごとの「いいね」履歴を表示</strong>する機能を追加して、ユーザーが過去に参考にした記事を振り返りやすくする予定です。</li>
+      </ul>
+    </li>
+    <li><p><strong>検索機能（ransack）</strong></p>
+
+      <ul>
+        <li>現在は<code>ransack</code>を使用して記事を検索できますが、今後、<strong>検索対象が多いというサイトの特性を考慮して</strong>、<code>ElasticSearch</code>に切り替える予定です。</li>
+        <li>ElasticSearchを利用することで、<strong>インデックス型検索による高速かつの高い検索</strong>を実現し、より大規模なデータに対応可能にします。</li>
+      </ul>
+    </li>
+    <li><p><strong>ハッシュタグ機能（acts-as-taggable-on）</strong></p>
+
+      <ul> 
+        <li>記事にタグを追加して、関連性の高い記事を簡単に見つけられるようにしました。</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h1>🧪 テスト</h1>
+
+  <ins></ins>
+
+  <ul>
+    <li><p><strong>使用ツール</strong></p>
+
+      <ul>
+        <li>RSpec（テストフレームワーク）</li>
+        <li>Capybara（システムテスト）</li>
+        <li>FactoryBot / Faker（テストデータ生成）</li>
+      </ul>
+    </li>
+    <li><p><strong>実施しているテストの種類</strong></p>
+
+      <ul>
+        <li><strong>モデルの単体テスト</strong></li>
+        <li>バリデーションや関連付けの確認など、基本的なデータ整合性を担保するテストを記述。</li>
+        <li><strong>システムテスト</strong></li>
+        <li>ユーザーの一連の操作をブラウザ上で再現し、フロー全体の動作を確認。</li>
+        <li><strong>サービス層・モジュールの単体テスト</strong></li>
+        <li>複雑なビジネスロジックはサービスクラス・モジュールに切り出し、それぞれに対して<strong>責務を限定したユニットテスト</strong>を実施。</li>
+        <li>特にモジュールでは <code>Proc</code> を用いた <strong>依存性注入（DI）</strong> を行い、テスト時にはモックを使用することで外部依存を排除。<strong>柔軟性・保守性・テスト容易性の向上</strong>を意識しています。</li>
+        <li><strong>ビューやシステムテストを重視していましたが、最近はユニットテスト（モデル・サービス層）の重要性を認識し、責務を明確にした設計＋テストにシフトしています。</strong></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+</div>

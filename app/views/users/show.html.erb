@@ -22,7 +22,7 @@
     <%= render 'shared/stats' %>
   </section> 
   <section class="favorite-article-list-link"> 
-    <%= link_to "お気に入り記事のリスト一覧", user_favorite_article_lists_path(@user) %>
+    <%= link_to "お気に入り記事リスト一覧", user_favorite_article_lists_path(@user) %>
   </section>
   <% unless current_user == @user %>
     <section class="follow-btn">

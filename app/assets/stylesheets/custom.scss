@@ -133,6 +133,7 @@ hr {
 
 #dropdown-menu {
   background-color: #acc0c5;
+  border: none;
   a {
     &:hover {
       background-color: #96abaf;
@@ -262,6 +263,23 @@ li.link-btn {
   max-width: 80%;
 }
 
+/* about-page */
+
+#about_page {
+  background-color: #f2fcff;
+  border-radius: 10px;
+  max-width: 700px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.about-page {
+  max-width: 640px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin: auto;
+}
+
 /* mail */ 
 
 .app-name {
@@ -279,6 +297,7 @@ li.link-btn {
     justify-content: space-between;
     margin-top: 50px;
     h4 {
+      color: #333333;
       font-weight: bold;
       margin-top: 0;
     }
@@ -314,14 +333,20 @@ li.link-btn {
 /* footer */ 
 
 footer {
+    height: 50px;
     margin-top: 45px;
     padding-top: 5px;
     border-top: 1px solid $gray-medium-light;
-    color: $gray-light;
+    font-size: 2.5rem;
+    font-family: 'Oooh Baby', Sans-serif;
+    font-weight: bold;
+    text-align: center;
     a {
-      color: #555;
+      color: #333333;
       &:hover {
-        color: $gray-darker;
+        color: #333333;
+        text-decoration: none; 
+        opacity: .8;
       }
     }
     ul {
@@ -1170,6 +1195,11 @@ aside {
       font-size: 1.7rem;
       font-weight: lighter;
       line-height: 1.7em;
+
+      h1, h2, h3 {
+        text-align: left;
+      }
+
       p {
         padding: 0;
         padding-top: 15px;
@@ -1285,6 +1315,7 @@ aside {
 
 #dropdown-menu2 {
   background-color: #acc0c5;
+  border: none;
   a {
     color: #fff;
     &:hover {
@@ -1295,6 +1326,7 @@ aside {
 
 ul.article-comment-option {
   background-color: #acc0c5;
+  border: none;
   right: 0;
   left: auto;
   li a {
