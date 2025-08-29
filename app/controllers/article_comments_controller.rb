@@ -2,13 +2,28 @@ class ArticleCommentsController < ApplicationController
   before_action :logged_in_user
 
   def create
-    # サービスクラスで画像に関する処理をする
-    @article_comment = ArticleCommentImageService.new(current_user, params, :create).process
+    key = "user:#{current_user.id}:daily_comment_post:#{params[:article_id]}"
+    count = $redis.get(key).to_i
 
     prepare_article_comment_data(:create) # 部分更新後に使われるデータの用意
 
+    if count >= 5
+      flash.now[:alert] = "１つの記事につき、１日５回までしかコメントはできません。"
+      respond_to do |format|
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
+        }
+      end
+      return
+    end
+
+    # サービスクラスで画像に関する処理をする
+    @article_comment = ArticleCommentImageService.new(current_user, params, :create).process
+
     respond_to do |format|
       if @article_comment.save
+        $redis.incr(key)
+        $redis.expire(key, 24.hours.to_i) unless $redis.ttl(key) > 0
         # 画像をアタッチするとupdated_atが更新されてしまうため、ビュー側で編集済みと表示させないための処理
         @article_comment.update(updated_at: @article_comment.created_at)
         format.html { redirect_to @article, @tags }
