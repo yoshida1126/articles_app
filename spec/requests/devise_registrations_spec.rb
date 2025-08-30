@@ -192,7 +192,7 @@ RSpec.describe "Users", type: :request do
 
           it "正しいエラーメッセージが表示されること" do 
             patch user_path(user), params: { user: invalid_user_params } 
-            expect(response.body).to include "3件のエラーが含まれています。" 
+            expect(response.body).to include "4件のエラーが含まれています。" 
           end 
         end 
 
