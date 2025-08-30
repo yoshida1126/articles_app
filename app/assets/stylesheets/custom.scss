@@ -1523,6 +1523,7 @@ label {
 .content {
   font-family: '游ゴシック体' , 'Yu Gothic', YuGothic, sans-serif;
   font-size: 1.8rem;
+  overflow: wrap;
 
   h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
@@ -1549,6 +1550,7 @@ label {
   }
 
   a {
+    word-wrap: break-word;
     color: #99b9c2;
     border-bottom: 1px solid #99b9c2;
     &:hover {
