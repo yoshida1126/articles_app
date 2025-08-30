@@ -28,7 +28,7 @@ class User < ApplicationRecord
 
   before_save { self.email = email.downcase }
 
-  validates :name, presence: { message: 'を入力してください。' }, length: { maximum: 50 }
+  validates :name, presence: { message: 'を入力してください。' }, length: { minimum: 2, maximum: 32 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+\z/i
   validates :email, presence: { message: 'を入力してください。' }, length: { maximum: 255, message: 'は最大255文字です。' },
                     format: { with: VALID_EMAIL_REGEX, message: 'は無効です。' },

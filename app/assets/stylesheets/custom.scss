@@ -832,8 +832,8 @@ div.birthday {
   margin: auto;
   margin-top: 30px;
   h1 {
-    font-size: 1.7em;
-    color: #333333;
+    font-size: 3rem;
+    color: #333;
   }
   span.article-heading-image { 
     display: block;
@@ -935,13 +935,13 @@ div.birthday {
   }
   .title {
     display: block;
-    width: fit-content;
+    width: 200px;
     font-size: 1.1em;
     font-weight: 530;
     margin-top: 10px;
     margin-bottom: 8px;
     padding-top: 0;
-    color: #060c0d;
+    color: #333;
     a {
       color: #060c0d;
       text-decoration: none;
@@ -950,11 +950,14 @@ div.birthday {
   .article-info {
     display: flex;
     .name {
-      width: fit-content;
+      width: 160px;
       a {
         display: block;
         text-decoration: none;
         color: #777;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
     .timestamp {
@@ -1004,6 +1007,7 @@ aside {
 
 .user-info {
   .name {
+    width: 300px;
     font-size: 1.1em;
     font-weight: 700;
     margin-top: 13px;
@@ -1518,16 +1522,45 @@ label {
 
 .content {
   font-family: '游ゴシック体' , 'Yu Gothic', YuGothic, sans-serif;
-  line-height: 2.5;
-  p {
-    font-size: 1.7rem;
-    font-weight: lighter;
-  }
-  h1, h2 {
-    text-align: left;
+  font-size: 1.8rem;
+
+  h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
     margin-bottom: 0;
-    color: #000;
+    color: #333;
+    text-align: left;
+    line-height: 2;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+
+  p {
+    line-height: 2;
+    font-size: 1.8rem;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    color: #99b9c2;
+    border-bottom: 1px solid #99b9c2;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    padding-left: 20px;
+    line-height: 2;
   }
 }
 
@@ -1563,6 +1596,7 @@ label {
     width: 100%;
   }
   #markdown.edita-width {
+    color: #333;
     width: 50%;
   }
 }
@@ -1832,20 +1866,50 @@ input.favorite_article_delete_btn {
   overflow-wrap: break-word;
   overflow-y: scroll;
   text-align: left;
-  h1, h2, h3 {
+  line-height: 2;
+
+  h1, h2, h3, h4, h5, h6 {
     text-align: left;
-    color: #000;
+    color: #333;
     margin-bottom: 0;
     margin-top: 0;
+    line-height: 2;
   }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+  }
+
   p {
-    font-size: 14px;
+    font-size: 1.8rem;
     margin-bottom: 0;
   }
+
+  a {
+    color: #99b9c2;
+    border-bottom: 1px solid #99b9c2;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    padding-left: 20px;
+    font-size: 1.8rem;
+    line-height: 2;
+  }
+
   div.preview-placeholder {
     color: #9e9c9c;
     padding-top: 3px;
   }
+
   img {
     max-width: 100%;
     object-fit: cover;
@@ -2128,13 +2192,15 @@ input.favorite_article_delete_btn {
       color: #777;
     }
     .title {
+      width: 200px;
       font-size: 1.1em;
       font-weight: 530;
       padding-top: 0;
       color: #060c0d;
-      overflow: wrap;
+      overflow: hidden;
       margin-top: 15px;
       margin-bottom: 8px;
+
     } 
     span.heading-image {
       transition: .1s;
