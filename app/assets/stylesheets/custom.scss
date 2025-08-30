@@ -864,6 +864,12 @@ div.birthday {
   column-gap: 10px;
   li {
     margin: 0 auto;
+    .title {
+      width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }
 
@@ -1795,6 +1801,12 @@ input.favorite_article_delete_btn {
 .title-and-bookmark {
   display: flex;
   justify-content: space-between;
+  .title {
+    width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .tab-background {
