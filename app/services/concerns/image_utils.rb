@@ -99,4 +99,15 @@ module ImageUtils
     def find_attachments(blob_id)
         ActiveStorage::Attachment.where(blob_id: blob_id) 
     end
+
+    def calculate_total_image_size(blob_ids)
+        blob_ids.sum { |blob_id|
+            get_image_size_from_blob_id(blob_id)
+        }
+    end
+
+    def get_image_size_from_blob_id(blob_id)
+        blob = ActiveStorage::Blob.find_signed(blob_id)
+        blob ? blob.byte_size : 0
+    end
 end
