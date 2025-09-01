@@ -49,7 +49,7 @@ class Article < ApplicationRecord
     errors.add('タグ', 'の数は10個以下にしてください。')
   end
 
-  MAX_IMAGE_FILE_SIZE = 1.megabytes
+  MAX_IMAGE_FILE_SIZE = 5.megabytes
 
   def check_image_upload_limit
 

@@ -4,7 +4,7 @@ class ArticleCommentsController < ApplicationController
   def create
     key = "comment_image_usage:#{current_user.id}:#{Date.today}"
     count = $redis.get(key).to_i
-    # MAX_DAILY_COMMENT_IMAGE_BYTES = 2.megabytes
+    MAX_DAILY_COMMENT_IMAGE_BYTES = 2.megabytes
 
     prepare_article_comment_data(:create) # 部分更新後に使われるデータの用意
 
@@ -13,7 +13,7 @@ class ArticleCommentsController < ApplicationController
 
     @total_comment_image_size = count + @comment_image_size
 
-    if @comment_image_size != 0 && @total_comment_image_size > 2.megabytes
+    if @comment_image_size != 0 && @total_comment_image_size >  MAX_DAILY_COMMENT_IMAGE_BYTES
       flash.now[:alert] = "コメントに貼る画像は1日につき2MBまでです。コメントを投稿するには画像を減らしてください。"
       respond_to do |format|
         format.turbo_stream {
