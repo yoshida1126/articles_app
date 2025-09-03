@@ -1,4 +1,5 @@
 require_relative 'boot'
+require_relative '../lib/middleware/rate_limiter'
 
 require 'rails/all'
 
@@ -32,5 +33,7 @@ module ArticlesApp
     config.autoload_paths += %W[#{config.root}/lib]
 
     config.autoload_paths += %W(#{config.root}/app/services/concerns)
+
+    config.middleware.use RateLimiter
   end
 end
