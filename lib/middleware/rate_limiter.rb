@@ -7,6 +7,8 @@ class RateLimiter
   end
 
   def call(env)
+    return @app.call(env) if Rails.env.test?
+
     ip = env['REMOTE_ADDR']
     key = "access:#{ip}"
 
