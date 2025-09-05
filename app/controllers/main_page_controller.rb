@@ -1,10 +1,30 @@
 class MainPageController < ApplicationController
   def home
     to = Time.current.at_end_of_day
-    from = (to - 30.day).at_beginning_of_day
-    @weekly_trend_articles = Article.where(created_at: from...to).includes(:likes).limit(15).sort_by do |article|
-      -article.likes.size
-    end
+    from = (to - 30.days).at_beginning_of_day
+
+    @trend_articles = Article
+    .joins(:likes)
+    .where(created_at: from...to)
+    .group('articles.id')
+    .select('articles.*, COUNT(likes.id) AS likes_count')
+    .reorder(Arel.sql('COUNT(likes.id) DESC, articles.created_at DESC'))
+    .limit(15)
+
+
+    p 'TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST'
+    p @trend_articles.to_sql
+
+    #@trend_articles = Article.where(created_at: from...to)
+    #.includes(:likes)
+    #.select { |article| article.likes.size > 0 }
+    #.sort_by { |article| -article.likes.size }
+    #.first(15)
+
+    #@trend_articles = Article.where(created_at: from...to).includes(:likes).limit(15).sort_by do |article|
+    #  -article.likes.size
+    #end
+
     @articles = if current_user.nil? || current_user.following.blank?
                   Article.limit(15)
                 else

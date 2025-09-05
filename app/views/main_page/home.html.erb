@@ -3,7 +3,7 @@
   <strong><%= link_to "開発概要はこちら➡︎", about_path %></strong>
 </p>
 <div class="home">
-  <% if @weekly_trend_articles.any? %>
+  <% if @trend_articles.any? %>
     <div class="title-and-link">
       <h4>トレンド記事</h4> 
       <div class="articles-link">
@@ -12,7 +12,7 @@
       </div>
     </div>
     <ol class="articles">
-      <%= render partial: "main_page/shared/home_articles", collection: @weekly_trend_articles, as: :article %>
+      <%= render partial: "main_page/shared/home_articles", collection: @trend_articles, as: :article %>
     </ol>
   <% end %>
   <% if @articles.any? %>

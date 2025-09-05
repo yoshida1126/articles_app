@@ -1,5 +1,5 @@
 class RateLimiter
-  LIMIT = 30
+  LIMIT = 100
   WINDOW = 60
 
   def initialize(app)
