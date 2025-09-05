@@ -1,7 +1,7 @@
 class MainPageController < ApplicationController
   def home
     to = Time.current.at_end_of_day
-    from = (to - 6.day).at_beginning_of_day
+    from = (to - 30.day).at_beginning_of_day
     @weekly_trend_articles = Article.where(created_at: from...to).includes(:likes).limit(15).sort_by do |article|
       -article.likes.size
     end
