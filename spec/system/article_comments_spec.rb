@@ -93,6 +93,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
       it 'コメントフォームが空だと編集できないこと' do
         fill_in 'article_comment[comment]', match: :first, with: ''
         click_button '編集'
+        sleep 0.5
         expect(page).to have_selector 'div.alert-danger'
       end
     end
@@ -117,6 +118,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
       end 
 
       it '削除したコメントがコメント欄にないこと' do
+        sleep 0.5
         expect(page).to_not have_content 'Article Comment'
       end
     end
