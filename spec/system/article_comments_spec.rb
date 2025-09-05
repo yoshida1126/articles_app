@@ -42,6 +42,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
       it 'コメントフォームが空だと投稿できないこと' do
         fill_in 'article_comment[comment]', with: ''
         click_button '送信する'
+        sleep 0.5
         expect(page).to have_selector 'div.alert-danger'
       end
     end
@@ -73,6 +74,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         fill_in 'article_comment[comment]', match: :first, with: 'Edit Article Comment'
         attach_file 'article_comment[images][]', 'spec/fixtures/map.png', visible: false, match: :first
         click_button '編集'
+        sleep 0.5
         expect(page).to have_selector "img[alt='map.png']"
       end
     end
