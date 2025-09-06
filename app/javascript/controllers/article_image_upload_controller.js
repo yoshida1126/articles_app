@@ -2,13 +2,13 @@ import { Controller } from "@hotwired/stimulus"
 import { DirectUpload } from "@rails/activestorage"
 
 export default class extends Controller {
-  static values = { url: String };
+  static values = { url: String }
   connect() {
   }
 
   imageUpload(e){
     e.preventDefault();
-    Array.from(e.target.files).forEach(file => this.uploadFile(file));
+    Array.from(e.target.files).forEach(file => this.uploadFile(file, e));
     Array.from(e.target.files).null;
   }
 
@@ -24,21 +24,48 @@ export default class extends Controller {
       return;
     }
 
-    const upload = new DirectUpload(file, this.urlValue);
-    upload.create((error, blob) => {
-      if (error) {
-        console.log(error);
-      } else {
-        const text = this.markdownUrl(blob);
-        const form = document.getElementById('markdown')
-
-        const end = form.value.length;
-        form.focus();
-        form.setSelectionRange(end, end);
-
-        form.setRangeText(text,end,end,"end")
-      }
+    fetch("/upload_article_images_tracker", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        byte_size: file.size
+      })
     })
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(error => {
+          throw new Error(error.alert || "アップロードに失敗しました。");
+        });
+      }
+      return response.json();
+    })
+    .then(data => {
+      const quotaDisplay = document.getElementById("article-upload-remaining");
+      if (quotaDisplay && data.remaining_mb !== undefined) {
+        quotaDisplay.innerText = `(本日の記事画像の残りアップロード容量：${data.remaining_mb} MB)`;
+      }
+
+      const upload = new DirectUpload(file, this.urlValue);
+      upload.create((error, blob) => {
+        if (error) {
+          console.log(error);
+        } else {
+          const text = this.markdownUrl(blob);
+          const form = document.getElementById('markdown');
+
+          const end = form.value.length;
+          form.focus();
+          form.setSelectionRange(end, end);
+          form.setRangeText(text, end, end, "end");
+        }
+      });
+    })
+    .catch(error => {
+      alert(error.message); // 制限超過などを通知
+    });
   }
 
   markdownUrl(blob){
@@ -63,7 +90,7 @@ export default class extends Controller {
   }
 
   isValidFileSize(file) {
-    const maxSize = 1 * 1024 * 1024; // 3MB in bytes
+    const maxSize = 1 * 1024 * 1024;
     return file.size <= maxSize;
   }
 }

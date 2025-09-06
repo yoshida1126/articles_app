@@ -7,6 +7,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :authenticate_user!, only: %i[edit update destroy]
   before_action :correct_user, only: %i[edit update destroy]
   before_action :logged_in_user, only: [:destroy]
+  before_action :check_avatar_change_limit, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -22,9 +23,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # GET /resource/edit
-  # def edit
-  #   super
-  # end
+  def edit
+    key = "profile_update_count:#{current_user.id}:#{Date.today}"
+    seconds_until_end_of_day = (Time.current.in_time_zone("Asia/Tokyo").end_of_day - Time.current).to_i
+
+    if !$redis.exists?(key)
+      $redis.set(key, 0)
+      $redis.expire(key, seconds_until_end_of_day)
+    end
+
+    today_count = $redis.get(key).to_i
+
+    @remaining_avatar_update_count = 5 - today_count
+  end
 
   # PUT /resource
   def update
@@ -82,6 +93,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
     user_path(resource)
   end
 
+  def check_avatar_change_limit
+    return unless params[:user] && params[:user][:profile_img].present?
+
+    key = "profile_update_count:#{current_user.id}:#{Date.today}"
+    seconds_until_end_of_day = (Time.current.in_time_zone("Asia/Tokyo").end_of_day - Time.current).to_i
+
+    if !$redis.exists?(key)
+      $redis.set(key, 0)
+      $redis.expire(key, seconds_until_end_of_day)
+    end
+
+    current_count = $redis.get(key).to_i
+
+    if current_count >= 5
+      redirect_to edit_user_registration_path, alert: "プロフィール画像の変更は1日5回までです。"
+    else
+      $redis.incr(key)
+    end
+  end
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
   #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])

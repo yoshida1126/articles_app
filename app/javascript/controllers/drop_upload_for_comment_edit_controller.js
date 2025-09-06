@@ -24,17 +24,40 @@ export default class extends Controller {
       return;
     }
 
-    const upload = new DirectUpload(file, this.urlValue);
-    upload.create((error, blob) => {
-      if (error) {
-        console.log(error);
-      } else {
-        const text = this.markdownUrl(blob);
-        const start = this.element.selectionStart;
-        const end = this.element.selectionEnd;
-        this.element.setRangeText(text,start,end)
-      }
+    fetch("/upload_comment_images_tracker", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        byte_size: file.size
+      })
     })
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(error => {
+          throw new Error(error.alert || "アップロードに失敗しました。");
+        });
+      }
+      return response.json();
+    })
+    .then(() => {
+      const upload = new DirectUpload(file, this.urlValue);
+      upload.create((error, blob) => {
+        if (error) {
+          console.log(error);
+        } else {
+          const text = this.markdownUrl(blob);
+          const start = this.element.selectionStart;
+          const end = this.element.selectionEnd;
+          this.element.setRangeText(text,start,end)
+        }
+      });
+    })
+    .catch(error => {
+      alert(error.message);
+    });
   }
 
   markdownUrl(blob){
@@ -59,7 +82,7 @@ export default class extends Controller {
   }
 
   isValidFileSize(file) {
-    const maxSize = 1 * 1024 * 1024; // 3MB in bytes
+    const maxSize = 1 * 1024 * 1024;
     return file.size <= maxSize;
   }
 }

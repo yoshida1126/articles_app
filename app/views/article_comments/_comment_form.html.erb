@@ -3,7 +3,7 @@
 <% else %>
   <%= image_tag "profile.jpg", class: "comment-user-img" %>
 <% end %>
-    コメントする
+  コメントする
 <div id="comment-error">
   <% if @error_comment.present? %> 
     <%= render "shared/error_messages", object: @error_comment %>
@@ -37,9 +37,9 @@
   <div class="text-area-and-preview">
     <%= f.text_area :comment, id: 'markdown', class: 'form-control article-text-area', maxlength: "1500", placeholder: "コメントを入力",
         data: {
-          controller: "drop-upload toolbar",
-          drop_upload_url_value: rails_direct_uploads_url,
-          action: "drop->drop-upload#dropUpload input->toolbar#input"
+          controller: "drop-upload-for-comment toolbar",
+          drop_upload_for_comment_url_value: rails_direct_uploads_url,
+          action: "drop->drop-upload-for-comment#dropUpload input->toolbar#input"
         }
     %>
     <div id="html", class="html display">

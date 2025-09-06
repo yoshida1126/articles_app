@@ -6,13 +6,12 @@ export default class extends Controller {
   connect() {
   }
 
-  imageUpload(e){
+  dropUpload(e){
     e.preventDefault();
-    Array.from(e.target.files).forEach(file => this.uploadFile(file, e));
-    Array.from(e.target.files).null;
+    Array.from(e.dataTransfer.files).forEach(file => this.uploadFile(file));
   }
 
-  uploadFile(file, e){
+  uploadFile(file){
 
     if (!this.isValidFileType(file)) {
       alert("アップロード可能な画像形式はJPEG, PNG, GIFです。ファイル形式をご確認ください。");
@@ -49,43 +48,28 @@ export default class extends Controller {
           console.log(error);
         } else {
           const text = this.markdownUrl(blob);
-          //const form = this.getCommentForm(e.target);
-          const form = this.element.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild
-
-          //const signedIdsField = this.element.parentNode.parentNode.parentNode.parentNode.nextElementSibling.nextElementSibling
-          const signedIdsField = document.querySelector("input[id='blob']")
-          this.set_blob_signed_ids(blob, signedIdsField);
-
-          const end = form.value.length;
-          form.focus();
-          form.setSelectionRange(end, end);
-
-          form.setRangeText(text,end,end,"end")
+          const start = this.element.selectionStart;
+          const end = this.element.selectionEnd;
+          this.element.setRangeText(text,start,end)
         }
       });
     })
-      .catch(error => {
-        alert(error.message);
-      });
-    }
+    .catch(error => {
+      alert(error.message);
+    });
+  }
 
   markdownUrl(blob){
     const filename = blob.filename
     //const url = `https://articles-app-bucket.s3.ap-northeast-1.amazonaws.com/${blob.key}`;
     const url = `/rails/active_storage/blobs/${blob.signed_id}/${blob.filename}`;
     const prefix = (this.isImage(blob.content_type) ? '!' : '');
-
-    return `${prefix}[${filename}](${url})\n`;
-  }
-
-  getCommentForm(targetElement) {
-    return targetElement.closest("form"); // フォーム要素を直接取得
-  }
-
-  set_blob_signed_ids(blob, signedIdsField) {
+    const signedIdsField = this.element.parentNode.nextElementSibling;
     let signedIds = signedIdsField.value ? JSON.parse(signedIdsField.value) : [];
     signedIds.push(blob.signed_id);
     signedIdsField.value = JSON.stringify(signedIds)
+
+    return `${prefix}[${filename}](${url})\n`;
   }
 
   isImage(contentType){
@@ -97,7 +81,7 @@ export default class extends Controller {
   }
 
   isValidFileSize(file) {
-    const maxSize = 1 * 1024 * 1024; // 3MB in bytes
+    const maxSize = 1 * 1024 * 1024;
     return file.size <= maxSize;
   }
 }

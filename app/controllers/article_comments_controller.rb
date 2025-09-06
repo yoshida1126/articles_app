@@ -8,26 +8,12 @@ class ArticleCommentsController < ApplicationController
     prepare_article_comment_data(:create) # 部分更新後に使われるデータの用意
 
     article_comment = params[:article_comment][:comment]
-    @comment_image_size = ImageSizeLimitService.new(article_comment).process
-
-    @total_comment_image_size = count + @comment_image_size
-
-    if @comment_image_size != 0 && @total_comment_image_size > 2.megabytes
-      flash.now[:alert] = "コメントに貼る画像は1日につき2MBまでです。コメントを投稿するには画像を減らしてください。"
-      respond_to do |format|
-        format.turbo_stream {
-          render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
-        }
-      end
-      return
-    end
 
     # サービスクラスで画像に関する処理をする
     @article_comment = ArticleCommentImageService.new(current_user, params, :create).process
 
     respond_to do |format|
       if @article_comment.save
-        increment_comment_image_usage(current_user, @total_comment_image_size)
         # 画像をアタッチするとupdated_atが更新されてしまうため、ビュー側で編集済みと表示させないための処理
         @article_comment.update(updated_at: @article_comment.created_at)
         format.html { redirect_to @article, @tags }
@@ -44,23 +30,7 @@ class ArticleCommentsController < ApplicationController
   end
 
   def update
-    key = "comment_image_usage:#{current_user.id}:#{Date.today}"
-    count = $redis.get(key).to_i
-
     article_comment = params[:article_comment][:comment]
-    @comment_image_size = ImageSizeLimitService.new(article_comment).process
-
-    @total_comment_image_size = count + @comment_image_size
-
-    if @comment_image_size != 0 && @total_comment_image_size > 2.megabytes
-      flash.now[:alert] = "コメントに貼る画像は1日につき2MBまでです。コメントを投稿するには画像を減らしてください。"
-      respond_to do |format|
-        format.turbo_stream {
-          render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
-        }
-      end
-      return
-    end
 
     # サービスクラスで画像に関する処理をする
     service = ArticleCommentImageService.new(current_user, params, :update)

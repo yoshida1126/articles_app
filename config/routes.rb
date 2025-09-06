@@ -42,4 +42,8 @@ Rails.application.routes.draw do
   get 'search' => 'searches#search'
   resources :favorites, only: %i[create destroy]
   resources :favorite_list_bookmarks, only: %i[create destroy]
+  
+  get "uploads/quota", to: "uploads#remaining_quota"
+  post '/upload_article_images_tracker', to: 'uploads#track_article_images'
+  post '/upload_comment_images_tracker', to: 'uploads#track_comment_images'
 end

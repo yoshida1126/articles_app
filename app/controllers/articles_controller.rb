@@ -18,22 +18,36 @@ class ArticlesController < ApplicationController
 
   def new
     @article = Article.new
+
+    key = "upload_article_images_quota:#{current_user.id}:#{Date.today}"
+    today_used_size = $redis.get(key).to_i
+
+    @remaining_mb = ((5.megabytes - today_used_size) / 1.megabyte.to_f).round(2)
   end
 
   def create
     key = "user:#{current_user.id}:daily_posts:#{Date.today}"
     count = $redis.get(key).to_i
 
-    if count >= 5
+    if count >= 10
       flash[:alert] = "1日の投稿数は5件までです。"
       redirect_to root_path and return
+    end
+
+    blob_signed_ids = JSON.parse(params[:article][:blob_signed_ids] || "[]")
+    total_size = 0
+
+    blob_signed_ids.each do |s_i|
+      blob = ActiveStorage::Blob.find_signed(s_i)
+      total_size += blob.byte_size
     end
 
     @article = ArticleImageService.new(current_user, params, :create).process
 
     if @article.save
       $redis.incr(key)
-      $redis.expire(key, 24.hour.to_i) unless $redis.ttl(key) > 0
+      seconds_until_end_of_day = (Date.tomorrow.beginning_of_day - Time.current).to_i
+      $redis.expire(key, seconds_until_end_of_day) unless $redis.ttl(key) > 0
       flash[:notice] = '記事を作成しました。'
       redirect_to current_user
     else
@@ -44,9 +58,22 @@ class ArticlesController < ApplicationController
   def edit
     @user = current_user
     @article = @user.articles.find(params[:id])
+
+    key = "upload_article_images_quota:#{current_user.id}:#{Date.today}"
+    today_used_size = $redis.get(key).to_i
+
+    @remaining_mb = ((5.megabytes - today_used_size) / 1.megabyte.to_f).round(2)
   end
 
   def update
+    blob_signed_ids = JSON.parse(params[:article][:blob_signed_ids] || "[]")
+    total_size = 0
+
+    blob_signed_ids.each do |s_i|
+      blob = ActiveStorage::Blob.find_signed(s_i)
+      total_size += blob.byte_size
+    end
+
     service = ArticleImageService.new(current_user, params, :update)
     @article, @params = service.process
 

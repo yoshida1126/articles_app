@@ -23,6 +23,7 @@
     <%= f.text_field :tag_list, value: @article.tag_list.join(" "), class: "form-control" %> 
   </div> 
 
+  <div id="article-upload-remaining">[本日の記事画像の残りアップロード容量：<%= @remaining_mb %> MB]</div>
   <div class="toolbar">
     <div class="article-image-upload">
       <label>

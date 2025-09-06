@@ -19,7 +19,6 @@ class Article < ApplicationRecord
                             message: '1MB以下の画像をアップロードしてください。' },
                     dimension: { width: { min: 375, max: 1024 },
                                  height: { min: 360, max: 1024 } }
-  validate :check_image_upload_limit
 
   def liked?(user)
     likes.where(user_id: user.id).exists?
@@ -47,17 +46,5 @@ class Article < ApplicationRecord
     return unless tag_list.size > MAX_TAG_COUNT
 
     errors.add('タグ', 'の数は10個以下にしてください。')
-  end
-
-  MAX_IMAGE_FILE_SIZE = 5.megabytes
-
-  def check_image_upload_limit
-
-    @total_image_size = ImageSizeLimitService.new(content).process
-
-    if @total_image_size > MAX_IMAGE_FILE_SIZE
-      errors.add(:base, "画像の合計サイズが制限(#{MAX_IMAGE_FILE_SIZE/
-                 1.megabyte}MB) を超えています。記事に貼る画像を減らしてください。")
-    end
   end
 end
