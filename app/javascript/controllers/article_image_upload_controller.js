@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { DirectUpload } from "@rails/activestorage"
 
 export default class extends Controller {
-  static values = { url: String }
+  static values = { url: String, csrfToken: String }
   connect() {
   }
 
@@ -28,8 +28,9 @@ export default class extends Controller {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        "X-CSRF-Token": this.csrfTokenValue
       },
+      credentials: "same-origin", 
       body: JSON.stringify({
         byte_size: file.size
       })
@@ -45,7 +46,7 @@ export default class extends Controller {
     .then(data => {
       const quotaDisplay = document.getElementById("article-upload-remaining");
       if (quotaDisplay && data.remaining_mb !== undefined) {
-        quotaDisplay.innerText = `(本日の記事画像の残りアップロード容量：${data.remaining_mb} MB)`;
+        quotaDisplay.innerText = `本日の記事画像の残りアップロード容量：${data.remaining_mb} MB`;
       }
 
       const upload = new DirectUpload(file, this.urlValue);

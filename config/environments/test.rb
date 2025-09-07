@@ -63,4 +63,11 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # config/environments/test.rb
+
+  # 詳細なログが見たい場合は以下のコメントアウトを外すこと
+  # config.log_level = :debug
+  # config.logger = ActiveSupport::Logger.new(STDOUT)
+  # config.log_formatter = ::Logger::Formatter.new
 end

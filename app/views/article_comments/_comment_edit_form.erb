@@ -8,6 +8,7 @@
             data: { 
               controller: "edit-article-comment-image-upload",
               edit_article_comment_image_upload_url_value: rails_direct_uploads_url,
+              edit_article_comment_image_upload_csrf_token_value: form_authenticity_token,
               action: "input->edit-article-comment-image-upload#imageUpload",
               comment_id: article_comment.id
             } 

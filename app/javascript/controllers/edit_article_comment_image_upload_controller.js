@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { DirectUpload } from "@rails/activestorage"
 
 export default class extends Controller {
-  static values = { url: String };
+  static values = { url: String, csrfToken: String };
   connect() {
   }
 
@@ -28,8 +28,9 @@ export default class extends Controller {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+        "X-CSRF-Token": this.csrfTokenValue
       },
+      credentials: "same-origin", 
       body: JSON.stringify({
         byte_size: file.size
       })
@@ -97,7 +98,7 @@ export default class extends Controller {
   }
 
   isValidFileSize(file) {
-    const maxSize = 1 * 1024 * 1024; // 3MB in bytes
+    const maxSize = 1 * 1024 * 1024;
     return file.size <= maxSize;
   }
 }

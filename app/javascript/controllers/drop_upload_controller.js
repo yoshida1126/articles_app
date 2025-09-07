@@ -30,6 +30,7 @@ export default class extends Controller {
         "Content-Type": "application/json",
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
       },
+      credentials: "same-origin", 
       body: JSON.stringify({
         byte_size: file.size
       })
@@ -45,7 +46,7 @@ export default class extends Controller {
     .then(data => {
       const quotaDisplay = document.getElementById("article-upload-remaining");
       if (quotaDisplay && data.remaining_mb !== undefined) {
-        quotaDisplay.innerText = `(本日の記事画像の残りアップロード容量：${data.remaining_mb} MB)`;
+        quotaDisplay.innerText = `本日の記事画像の残りアップロード容量：${data.remaining_mb} MB`;
       }
 
       const upload = new DirectUpload(file, this.urlValue);

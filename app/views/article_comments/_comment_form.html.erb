@@ -19,6 +19,7 @@
             data: { 
               controller: "article-comment-image-upload",
               article_comment_image_upload_url_value: rails_direct_uploads_url,
+              article_comment_image_upload_csrf_token_value: form_authenticity_token,
               action: "input->article-comment-image-upload#imageUpload"
             } 
           %>
@@ -50,6 +51,7 @@
   </div>
   
   <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
+  <%= hidden_field_tag :stimulus_debug_marker, "", id: "stimulus-debug-marker" %>
 
   <div class="submit-btn">
     <%= f.submit "送信する", class: "btn", remote: true %> 

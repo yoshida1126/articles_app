@@ -29,6 +29,7 @@ export default class extends Controller {
         "Content-Type": "application/json",
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
       },
+      credentials: "same-origin", 
       body: JSON.stringify({
         byte_size: file.size
       })

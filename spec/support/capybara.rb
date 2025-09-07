@@ -2,6 +2,11 @@ require 'capybara/rspec'
 require 'selenium-webdriver'
 
 Capybara.register_driver :chrome_headless do |app|
+
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    'goog:loggingPrefs' => { browser: 'ALL' }
+  )
+
   options = ::Selenium::WebDriver::Chrome::Options.new
 
   options.add_argument('--headless')
@@ -9,10 +14,10 @@ Capybara.register_driver :chrome_headless do |app|
   options.add_argument('--disable-dev-shm-usage')
   options.add_argument('--window-size=1400,1400')
 
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options, desired_capabilities: capabilities)
 end
 
-Capybara.javascript_driver = :chrome_headless
+Capybara.javascript_driver = :chrome
 
 RSpec.configure do |config|
 

@@ -110,7 +110,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         expect(page).to have_content('Article Title')
       end
 
-      xit '投稿した記事の画像が表示されていること' do
+      it '投稿した記事の画像が表示されていること' do
         click_link 'Article Title'
         expect(page).to have_selector "img[alt='map.png']"
       end
@@ -237,7 +237,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
-      xit '編集で追加した記事の画像が表示されていること' do
+      it '編集で追加した記事の画像が表示されていること' do
         click_link 'Article Edit Title'
         sleep 1
         expect(page).to have_selector "img[src$='map.png']"
