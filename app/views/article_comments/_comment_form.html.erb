@@ -39,9 +39,9 @@
   <div class="text-area-and-preview">
     <%= f.text_area :comment, id: 'markdown_for_comment', class: 'form-control comment-text-area', maxlength: "1500", placeholder: "コメントを入力",
         data: {
-          controller: "drop-upload-for-comment toolbar",
+          controller: "drop-upload-for-comment toolbar count-comment-text",
           drop_upload_for_comment_url_value: rails_direct_uploads_url,
-          action: "drop->drop-upload-for-comment#dropUpload input->toolbar#input"
+          action: "drop->drop-upload-for-comment#dropUpload input->toolbar#input keyup->count-comment-text#count"
         }
     %>
     <div id="html", class="html display">
