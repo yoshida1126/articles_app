@@ -61,7 +61,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
         click_link "#{article.title}"
-        sleep 0.5
+        sleep 1
         page.first('.dropdown3').click
         click_link 'コメントを編集'
       end
@@ -88,7 +88,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
         click_link "#{article.title}"
-        sleep 0.5
+        sleep 1
         page.first('.dropdown3').click
         click_link 'コメントを編集'
       end
