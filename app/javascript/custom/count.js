@@ -16,7 +16,7 @@ function count() {
             if(document.getElementsByClassName("limit-length")) {
               countText.classList.remove("limit-length")
             }
-            countText.innerHTML = `${length} ／3000文字`
+            countText.innerHTML = `${length} ／ 3000文字`
         }
     });
 }

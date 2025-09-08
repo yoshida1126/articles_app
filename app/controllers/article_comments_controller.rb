@@ -2,9 +2,6 @@ class ArticleCommentsController < ApplicationController
   before_action :logged_in_user
 
   def create
-    key = "comment_image_usage:#{current_user.id}:#{Date.today}"
-    count = $redis.get(key).to_i
-
     prepare_article_comment_data(:create) # 部分更新後に使われるデータの用意
 
     article_comment = params[:article_comment][:comment]

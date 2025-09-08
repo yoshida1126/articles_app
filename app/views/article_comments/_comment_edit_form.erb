@@ -1,53 +1,56 @@
+<div class="comment-upload-remaining">本日のコメント画像の残りアップロード容量：<%= @remaining_mb %> MB</div>
 <%= form_with model: [@article, article_comment] do |f| %> 
-<div class="toolbar">
-  <%= turbo_frame_tag "articles-img" do %>
-    <div class="article-image-upload">
-      <label>
-        <i class="far fa-image"></i>
-        <%= f.file_field :images, direct_upload: true, id: "article-comment-image-field-#{article_comment.id}", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
-            data: { 
-              controller: "edit-article-comment-image-upload",
-              edit_article_comment_image_upload_url_value: rails_direct_uploads_url,
-              edit_article_comment_image_upload_csrf_token_value: form_authenticity_token,
-              action: "input->edit-article-comment-image-upload#imageUpload",
-              comment_id: article_comment.id
-            } 
-        %>
-      </label>
-    </div>
-  <% end %>
-  <div class="preview-open">
-    <div data-controller="toolbar" data-action="click->toolbar#preview" class="btn preview-btn">
-      <i class="fas fa-book-open"></i>
-    </div>
-    <div data-controller="toolbar" data-action="click->toolbar#edit" class="btn edita display">
-      <i class="fas fa-edit"></i> 
-    </div>
-  </div>
-</div>
-<div class="text-area-and-preview">
-  <%= f.text_area :comment, id: 'markdown', class: 'form-control article-text-area', maxlength: "1500", placeholder: "コメントを入力",
-      data: {
-        controller: "drop-upload-for-comment-edit toolbar",
-        drop_upload_for_comment_edit_url_value: rails_direct_uploads_url,
-        action: "drop->drop-upload-for-comment-edit#dropUpload input->toolbar#input"
-      } 
-  %>
-  <div id="html", class="html display">
-    <div class="preview-placeholder">
-      プレビューが表示されます。
+  <div class="toolbar">
+    <%= turbo_frame_tag "articles-img" do %>
+      <div class="article-image-upload">
+        <label>
+          <i class="far fa-image"></i>
+          <%= f.file_field :images, direct_upload: true, id: "article-comment-image-field-#{article_comment.id}", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
+              data: { 
+                controller: "edit-article-comment-image-upload",
+                edit_article_comment_image_upload_url_value: rails_direct_uploads_url,
+                edit_article_comment_image_upload_csrf_token_value: form_authenticity_token,
+                action: "input->edit-article-comment-image-upload#imageUpload",
+                comment_id: article_comment.id
+              } 
+          %>
+        </label>
+      </div>
+    <% end %>
+    <div class="preview-open">
+      <div data-controller="toolbar" data-action="click->toolbar#preview" class="btn preview-btn">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <div data-controller="toolbar" data-action="click->toolbar#edit" class="btn edita display">
+        <i class="fas fa-edit"></i> 
+      </div>
     </div>
   </div>
-</div>
+  <div class="text-area-and-preview">
+    <%= f.text_area :comment, id: "markdown_for_editing_comment_#{article_comment.id}", class: 'form-control article-text-area', maxlength: "1500", placeholder: "コメントを入力",
+        data: {
+          controller: "drop-upload-for-comment-edit toolbar count-editing-comment-text",
+          drop_upload_for_comment_edit_url_value: rails_direct_uploads_url,
+          action: "drop->drop-upload-for-comment-edit#dropUpload input->toolbar#input keyup->count-editing-comment-text#count"
+        }
+    %>
+    <div id="html", class="html display">
+      <div class="preview-placeholder">
+        プレビューが表示されます。
+      </div>
+    </div>
+  </div>
 
-<%= f.hidden_field :blob_signed_ids, id: "blob-#{article_comment.id}", value: "[]" %>
+  <%= f.hidden_field :blob_signed_ids, id: "blob-#{article_comment.id}", value: "[]" %>
 
-<div class="submit-and-cancel-btn">
-  <div class="edit-cancel-btn">
-    <a href="#" data-controller="article-comment-menu" data-action="click->article-comment-menu#cancel" class="cancel-btn">キャンセル</a>
+  <span class="count_editing_comment" id="count_editing_comment_text">0 ／ 1500文字</span>
+
+  <div class="submit-and-cancel-btn">
+    <div class="edit-cancel-btn">
+      <a href="#" data-controller="article-comment-menu" data-action="click->article-comment-menu#cancel" class="cancel-btn">キャンセル</a>
+    </div>
+    <div class="submit-btn">
+      <%= f.submit "編集", class: "btn" %> 
+    </div>
   </div>
-  <div class="submit-btn">
-    <%= f.submit "編集", class: "btn" %> 
-  </div>
-</div>
 <% end %> 

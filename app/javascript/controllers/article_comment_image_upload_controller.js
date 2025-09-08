@@ -43,7 +43,14 @@ export default class extends Controller {
       }
       return response.json();
     })
-    .then(() => {
+    .then(data => {
+      const Elements = document.querySelectorAll(".comment-upload-remaining");
+      if (Elements && data.remaining_mb !== undefined) {
+        Elements.forEach(element => {
+          element.innerText = `本日のコメント画像の残りアップロード容量：${data.remaining_mb} MB`;
+        });
+      }
+
       const upload = new DirectUpload(file, this.urlValue);
       upload.create((error, blob) => {
         if (error) {
@@ -80,7 +87,7 @@ export default class extends Controller {
   }
 
   getCommentForm(targetElement) {
-    return targetElement.closest("form"); // フォーム要素を直接取得
+    return targetElement.closest("form");
   }
 
   set_blob_signed_ids(blob, signedIdsField) {
@@ -98,7 +105,7 @@ export default class extends Controller {
   }
 
   isValidFileSize(file) {
-    const maxSize = 1 * 1024 * 1024; // 3MB in bytes
+    const maxSize = 1 * 1024 * 1024;
     return file.size <= maxSize;
   }
 }

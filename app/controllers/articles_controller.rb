@@ -14,6 +14,11 @@ class ArticlesController < ApplicationController
     # 以下はログイン時のみ必要な情報
     @favorite_article_lists = current_user.favorite_article_lists
     @favorite = Favorite.new
+
+    key = "upload_comment_images_quota:#{current_user.id}:#{Date.today}"
+    today_used_size = $redis.get(key).to_i
+
+    @remaining_mb = ((2.megabytes - today_used_size) / 1.megabyte.to_f).round(2)
   end
 
   def new

@@ -9,6 +9,7 @@
     <%= render "shared/error_messages", object: @error_comment %>
   <% end %> 
 </div>
+<div class="comment-upload-remaining">本日のコメント画像の残りアップロード容量：<%= @remaining_mb %> MB</div>
 <%= form_with model: [@article, @comment], local: true, remote: true do |f| %> 
   <div class="toolbar">
     <%= turbo_frame_tag "articles-img" do %>
@@ -36,7 +37,7 @@
     </div>
   </div>
   <div class="text-area-and-preview">
-    <%= f.text_area :comment, id: 'markdown', class: 'form-control article-text-area', maxlength: "1500", placeholder: "コメントを入力",
+    <%= f.text_area :comment, id: 'markdown_for_comment', class: 'form-control comment-text-area', maxlength: "1500", placeholder: "コメントを入力",
         data: {
           controller: "drop-upload-for-comment toolbar",
           drop_upload_for_comment_url_value: rails_direct_uploads_url,
@@ -51,7 +52,8 @@
   </div>
   
   <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
-  <%= hidden_field_tag :stimulus_debug_marker, "", id: "stimulus-debug-marker" %>
+
+  <span class="count_comment" id="count_comment_text">0 ／1500文字</span>
 
   <div class="submit-btn">
     <%= f.submit "送信する", class: "btn", remote: true %> 

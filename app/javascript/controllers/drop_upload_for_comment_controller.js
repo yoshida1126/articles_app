@@ -42,7 +42,14 @@ export default class extends Controller {
       }
       return response.json();
     })
-    .then(() => {
+    .then(data => {
+      const Elements = document.querySelectorAll(".comment-upload-remaining");
+      if (Elements && data.remaining_mb !== undefined) {
+        Elements.forEach(element => {
+          element.innerText = `本日のコメント画像の残りアップロード容量：${data.remaining_mb} MB`;
+        });
+      }
+
       const upload = new DirectUpload(file, this.urlValue);
       upload.create((error, blob) => {
         if (error) {
