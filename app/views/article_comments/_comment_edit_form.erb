@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="text-area-and-preview">
-    <%= f.text_area :comment, id: "markdown_for_editing_comment_#{article_comment.id}", class: 'form-control article-text-area', maxlength: "1500", placeholder: "コメントを入力",
+    <%= f.text_area :comment, id: "markdown_for_editing_comment_#{article_comment.id}", class: 'form-control comment-edit-text-area', maxlength: "1500", placeholder: "コメントを入力",
         data: {
           controller: "drop-upload-for-comment-edit toolbar count-editing-comment-text",
           drop_upload_for_comment_edit_url_value: rails_direct_uploads_url,
