@@ -28,10 +28,16 @@ class MainPageController < ApplicationController
 
   def trend
     to = Time.current.at_end_of_day
-    from = (to - 6.day).at_beginning_of_day
-    @weekly_trend_articles = Article.where(created_at: from...to).includes(:likes).limit(100).sort_by do |article|
-      -article.likes.size
-    end
+    from = (to - 30.days).at_beginning_of_day
+
+    @trend_articles = Article
+    .joins(:likes)
+    .where(created_at: from...to)
+    .group('articles.id')
+    .select('articles.*, COUNT(likes.id) AS likes_count')
+    .reorder(Arel.sql('COUNT(likes.id) DESC, articles.created_at DESC'))
+    .limit(15)
+
     render 'articles/index'
   end
 
