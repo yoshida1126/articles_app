@@ -37,7 +37,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        click_link "#{article.title}"
+        click_link "#{article.title}", exact: true
       end
 
       it 'コメントフォームが空だと投稿できないこと' do
@@ -60,13 +60,16 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        click_link "#{article.title}"
-        sleep 1
+        click_link "#{article.title}", exact: true
+
+        expect(page).to have_current_path(article_path(article), wait: 5)
+        expect(page).to have_selector('.dropdown3', wait: 5)
+
         page.first('.dropdown3').click
         click_link 'コメントを編集'
       end
 
-      it '記事のコメントを編集できること' do
+      it 'コメントを編集できること' do
         fill_in 'article_comment[comment]', match: :first, with: 'Edit Article Comment'
         click_button '編集'
         sleep 0.2
@@ -87,8 +90,10 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        click_link "#{article.title}"
-        sleep 1
+        click_link "#{article.title}", exact: true
+        expect(page).to have_current_path(article_path(article), wait: 5)
+        expect(page).to have_selector('.dropdown3', wait: 5)
+
         page.first('.dropdown3').click
         click_link 'コメントを編集'
       end
@@ -113,7 +118,10 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        click_link "#{article.title}"
+        click_link "#{article.title}", exact: true
+        expect(page).to have_current_path(article_path(article), wait: 5)
+        expect(page).to have_selector('.dropdown3', wait: 5)
+
         page.first('.dropdown3').click
         page.accept_confirm do
           click_link 'コメントを削除'
