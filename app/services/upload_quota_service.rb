@@ -14,6 +14,10 @@ class UploadQuotaService
     [@max_size - current, 0].max
   end
 
+  def remaining_mb
+    (remaining / 1.megabyte.to_f).round(2)
+  end
+
   def track!(size)
     ensure_expire!
     if current + size > @max_size

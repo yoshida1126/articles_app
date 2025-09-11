@@ -1,58 +1,39 @@
 class ArticlesController < ApplicationController
   before_action :logged_in_user, only: %i[new create edit update destroy]
   before_action :correct_user, only: %i[edit update destroy]
+  before_action :set_remaining_upload_quota, only: %i[new edit show]
 
   def index; end
 
   def show
-    # 記事のページの情報を取得する
     @article = Article.find(params[:id])
     @tags = @article.tag_counts_on(:tags)
     @comment = ArticleComment.new
+
     return unless current_user
 
     # 以下はログイン時のみ必要な情報
+
     @favorite_article_lists = current_user.favorite_article_lists
     @favorite = Favorite.new
-
-    key = "upload_comment_images_quota:#{current_user.id}:#{Date.today}"
-    today_used_size = $redis.get(key).to_i
-
-    @remaining_mb = ((2.megabytes - today_used_size) / 1.megabyte.to_f).round(2)
   end
 
   def new
     @article = Article.new
-
-    key = "upload_article_images_quota:#{current_user.id}:#{Date.today}"
-    today_used_size = $redis.get(key).to_i
-
-    @remaining_mb = ((5.megabytes - today_used_size) / 1.megabyte.to_f).round(2)
   end
 
   def create
-    key = "user:#{current_user.id}:daily_posts:#{Date.today}"
-    count = $redis.get(key).to_i
+    limit_service = UserPostLimitService.new(current_user)
 
-    if count >= 10
-      flash[:alert] = "1日の投稿数は5件までです。"
+    if limit_service.over_limit?
+      flash[:alert] = "1日の記事投稿は#{UserPostLimitService::DAILY_LIMIT}件までです。"
       redirect_to root_path and return
-    end
-
-    blob_signed_ids = JSON.parse(params[:article][:blob_signed_ids] || "[]")
-    total_size = 0
-
-    blob_signed_ids.each do |s_i|
-      blob = ActiveStorage::Blob.find_signed(s_i)
-      total_size += blob.byte_size
     end
 
     @article = ArticleImageService.new(current_user, params, :create).process
 
     if @article.save
-      $redis.incr(key)
-      seconds_until_end_of_day = (Date.tomorrow.beginning_of_day - Time.current).to_i
-      $redis.expire(key, seconds_until_end_of_day) unless $redis.ttl(key) > 0
+      limit_service.track_post
       flash[:notice] = '記事を作成しました。'
       redirect_to current_user
     else
@@ -63,22 +44,9 @@ class ArticlesController < ApplicationController
   def edit
     @user = current_user
     @article = @user.articles.find(params[:id])
-
-    key = "upload_article_images_quota:#{current_user.id}:#{Date.today}"
-    today_used_size = $redis.get(key).to_i
-
-    @remaining_mb = ((5.megabytes - today_used_size) / 1.megabyte.to_f).round(2)
   end
 
   def update
-    blob_signed_ids = JSON.parse(params[:article][:blob_signed_ids] || "[]")
-    total_size = 0
-
-    blob_signed_ids.each do |s_i|
-      blob = ActiveStorage::Blob.find_signed(s_i)
-      total_size += blob.byte_size
-    end
-
     service = ArticleImageService.new(current_user, params, :update)
     @article, @params = service.process
 
@@ -100,10 +68,14 @@ class ArticlesController < ApplicationController
 
   def correct_user
     # 記事の作成者が、現在ログイン中のユーザーであるかを確認
-    @article = current_user.articles.find_by(id: params[:id])
-    return unless @article.nil?
+    @article = Article.find(params[:id])
+    authorize_resource_owner(@article)
+  end
 
-    flash[:alert] = "#{current_user.name}さんの記事以外は編集できません。"
-    redirect_to root_url, status: :see_other
+  def set_remaining_upload_quota
+    return unless current_user
+
+    type = action_name == 'show' ? :comment : :article
+    @remaining_mb = UploadQuotaService.new(user: current_user, type: type).remaining_mb
   end
 end

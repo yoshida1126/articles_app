@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
   root 'main_page#home'
   get '/trend_articles', to: 'main_page#trend'
-  get '/recentry_articles', to: 'main_page#recentry'
-  get '/tagid/articles', to: 'main_page#trend_tag_articles'
+  get '/recentry_articles', to: 'main_page#recently'
   get '/help', to: 'static_pages#help'
   get '/about', to: 'static_pages#about'
-  get '/users/check', to: 'users#check', as: :user_delete_check
+  get '/users/account_delete_confirmation', to: 'users#account_delete_confirmation', as: :account_delete_confirmation
 
   devise_for :users, controllers: {
     registrations: 'users/registrations',
@@ -39,7 +38,7 @@ Rails.application.routes.draw do
     end
   end
   resources :tags, only: [:show]
-  get 'search' => 'searches#search'
+  get 'search', to: 'searches#search'
   resources :favorites, only: %i[create destroy]
   resources :favorite_list_bookmarks, only: %i[create destroy]
   

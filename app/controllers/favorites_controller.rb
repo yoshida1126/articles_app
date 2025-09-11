@@ -1,6 +1,6 @@
 class FavoritesController < ApplicationController
   before_action :logged_in_user
-  before_action :correct_user, only: [:destroy]
+  # before_action :correct_user, only: :destroy
 
   def create
     # 記事をお気に入りリストに追加する
@@ -25,27 +25,31 @@ class FavoritesController < ApplicationController
 
   def destroy
     # 記事をお気に入りリストから消去する
-    @favorite_article_list = FavoriteArticleList.find(params.dig(:favorite, :favorite_article_list_id))
+    @favorite_article_list = current_user.favorite_article_lists.find_by(id: params.dig(:favorite,
+                                                                                        :favorite_article_list_id))
     @article = Article.find(params.dig(:favorite, :article_id))
     @favorite = Favorite.find(params[:id])
     @favorite_article_list.unfavorite(@favorite)
 
     @favorites = @favorite_article_list.favorites
 
+    flash.now[:notice] = 'お気に入り記事のリストを整理しました。'
+
     respond_to do |format|
-      format.html { redirect_to @favorites }
-      format.turbo_stream { flash.now[:notice] = 'お気に入り記事のリストを整理しました。' }
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.update(
+            "tagged-articles",
+            partial: "favorite_article_lists/edit_favorite_articles",
+            collection: @favorites,
+            as: :favorite
+          ),
+          turbo_stream.update(
+            "flash",
+            partial: "layouts/flash"
+          )
+        ]
+      end
     end
-  end
-
-  private
-
-  def correct_user
-    @favorite_article_list = current_user.favorite_article_lists.find(params.dig(:favorite,
-                                                                                 :favorite_article_list_id))
-    return unless @favorite_article_list.nil?
-
-    flash[:alert] = "#{current_user.name}さんのリスト以外は操作できません。"
-    redirect_to root_url, status: :see_other
   end
 end

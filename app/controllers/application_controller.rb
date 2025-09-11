@@ -22,12 +22,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  protected
-
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
-  end
-
   private
 
   def logged_in_user
@@ -35,5 +29,16 @@ class ApplicationController < ActionController::Base
 
     flash[:alert] = 'ログインしてください。'
     redirect_to login_url, status: :see_other
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+  end
+
+  def authorize_resource_owner(resource)
+    unless resource.user == current_user
+      flash[:alert] = "権限がありません。"
+      redirect_to root_url, status: :see_other
+    end
   end
 end

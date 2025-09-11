@@ -2,40 +2,26 @@ class LikesController < ApplicationController
   before_action :logged_in_user
 
   def create
-    key = "user:#{current_user.id}:like:#{params[:article_id]}"
-    last_liked = $redis.get(key)
+    @article = Article.find_by(id: params[:article_id])
+    limiter = LikeRateLimiterService.new(user_id: current_user.id, article_id: @article.id)
 
-    if last_liked.present?
-      remaining = 3 - (Time.now.to_i - last_liked.to_i)
-      if remaining > 0
-        flash.now[:alert] = "連続で「いいね」はできません。あと#{remaining}秒待ってください。"
-
-        respond_to do |format|
-          format.turbo_stream {
-            render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
-          }
-        end
-        return
+    unless limiter.allowed?
+      flash.now[:alert] = "連続で「いいね」はできません。あと#{limiter.remaining_time}秒待ってください。"
+      return respond_to do |format|
+        format.turbo_stream {
+          render turbo_stream: turbo_stream.update("flash", partial: "layouts/flash")
+        }
       end
     end
 
-    # 記事に対していいねをつける
-    @article = Article.find_by(id: params[:article_id])
     @article_like = Like.new(user_id: current_user.id, article_id: params[:article_id])
+
     respond_to do |format|
-      if URI(request.referer.to_s).path == "/articles/#{@article.id}"
-        if @article_like.save
-          $redis.set(key, Time.now.to_i, ex: 3)
-          format.turbo_stream do
-            render turbo_stream: turbo_stream.update_all('.likes_btn', partial: 'likes/btn',
-                                                                       locals: { article: @article })
-          end
-        end
-      elsif @article_like.save
-        $redis.set(key, Time.now.to_i, ex: 3)
+      if @article_like.save
+        limiter.record_like_time
+        target_class = URI(request.referer.to_s).path == "/articles/#{@article.id}" ? '.likes_btn' : ".likes_btn_#{@article.id}"
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update_all(".likes_btn_#{@article.id}", partial: 'likes/btn',
-                                                                                    locals: { article: @article })
+          render turbo_stream: turbo_stream.update_all(target_class, partial: 'likes/btn', locals: { article: @article })
         end
       end
     end
@@ -45,18 +31,17 @@ class LikesController < ApplicationController
     # 記事のいいねを取り消す
     @article = Article.find_by(id: params[:article_id])
     @article_like = Like.find_by(user_id: current_user.id, article_id: params[:article_id])
+
+    unless @article_like
+      flash[:alert] = "この記事をいいねしていないか、権限がありません。"
+      redirect_to root_path and return
+    end
+
     respond_to do |format|
-      if URI(request.referer.to_s).path == "/articles/#{@article.id}"
-        if @article_like.destroy
-          format.turbo_stream do
-            render turbo_stream: turbo_stream.update_all('.likes_btn', partial: 'likes/btn',
-                                                                       locals: { article: @article })
-          end
-        end
-      elsif @article_like.destroy
+      if @article_like.destroy
+        target_class = URI(request.referer.to_s).path == "/articles/#{@article.id}" ? '.likes_btn' : ".likes_btn_#{@article.id}"
         format.turbo_stream do
-          render turbo_stream: turbo_stream.update_all(".likes_btn_#{@article.id}", partial: 'likes/btn',
-                                                                                    locals: { article: @article })
+          render turbo_stream: turbo_stream.update_all(target_class, partial: 'likes/btn', locals: { article: @article })
         end
       end
     end

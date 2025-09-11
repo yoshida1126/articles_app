@@ -64,9 +64,12 @@ class FavoriteArticleListsController < ApplicationController
 
   def correct_user
     @favorite_article_list = current_user.favorite_article_lists.find_by(id: params[:id])
-    return unless @favorite_article_list.nil?
 
-    flash[:alert] = "#{current_user.name}さんのリスト以外は編集できません。"
-    redirect_to root_url, status: :see_other
+    unless @favorite_article_list
+      flash[:alert] = "リストが存在しないか、権限がありません。"
+      redirect_to root_url, status: :see_other
+      return
+    end
+    authorize_resource_owner(@favorite_article_list)
   end
 end

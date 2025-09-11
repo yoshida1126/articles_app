@@ -41,21 +41,12 @@ class MainPageController < ApplicationController
     render 'articles/index'
   end
 
-  def recentry
+  def recently
     @articles = if current_user.nil? || current_user.following.blank?
                   Article.all.paginate(page: params[:page], per_page: 30)
                 else
                   current_user.feed.paginate(page: params[:page], per_page: 30)
                 end
-    render 'articles/index'
-  end
-
-  def recommend_articles; end
-
-  def trend_tag_articles
-    @tag = ActsAsTaggableOn::Tag
-    @tag1_name = @tag.name
-    @trend1_tag_articles = Article.tagged_with(@tag).paginate(page: params[:page], per_page: 30)
     render 'articles/index'
   end
 end

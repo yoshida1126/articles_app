@@ -4,11 +4,12 @@ class UsersController < ApplicationController
 
   def show
     @articles = @user.articles.paginate(page: params[:page], per_page: 15)
-    key = "user:#{current_user.id}:daily_posts:#{Date.today}"
-    @count = 5 - $redis.get(key).to_i
+
+    limit_service = UserPostLimitService.new(current_user)
+    @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
   end
 
-  def check
+  def account_delete_confirmation
     @user = current_user
   end
 
