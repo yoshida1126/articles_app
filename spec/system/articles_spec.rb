@@ -12,23 +12,24 @@ RSpec.describe 'Articles', type: :system, js: true do
         sign_in user
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
+        click_link 'プロフィール', match: :first, exact: true
       end
 
       it '記事の編集や削除のリンクを表示するケバブメニューがあること' do
-        click_link 'プロフィール', match: :first, exact: true
+        expect(page).to have_link(article.title, exact: true, wait: 5)
         click_link "#{article.title}", exact: true
-        expect(page).to have_css '.dli-more-v'
+        expect(page).to have_css '.dli-more-v', wait: 5
       end
 
       it '記事の編集ページへのリンクがあること' do
-        click_link 'プロフィール', match: :first, exact: true
+        expect(page).to have_link(article.title, exact: true, wait: 5)
         click_link "#{article.title}", exact: true
         click_link 'option'
         expect(page).to have_content '記事を編集'
       end
 
       it '記事を削除するリンクがあること' do
-        click_link 'プロフィール', match: :first, exact: true
+        expect(page).to have_link(article.title, exact: true, wait: 5)
         click_link "#{article.title}", exact: true
         click_link 'option'
         expect(page).to have_content '記事を削除'
@@ -159,15 +160,14 @@ RSpec.describe 'Articles', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        sleep 0.2
-        click_link "#{article.title}"
+        expect(page).to have_link(article.title, exact: true, wait: 5)
+        click_link "#{article.title}", exact: true
         click_link 'option', match: :first, exact: true
         click_link '記事を編集'
       end
 
       it '記事の編集ページにアクセスできること' do
-        sleep 0.2
-        expect(page).to have_content '記事編集フォーム'
+        expect(page).to have_content '記事編集フォーム', wait: 5
       end
     end
 
@@ -204,8 +204,8 @@ RSpec.describe 'Articles', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        sleep 0.5
-        click_link "#{article.title}"
+        expect(page).to have_link(article.title, exact: true, wait: 5)
+        click_link "#{article.title}", exact: true
         click_link 'option', match: :first, exact: true
         click_link '記事を編集'
         fill_in 'article[title]', with: 'Article Edit Title'
@@ -217,30 +217,29 @@ RSpec.describe 'Articles', type: :system, js: true do
       end
 
       it '記事の編集に成功すること' do
-        sleep 0.5
-        expect(page).to have_selector '.alert-success'
+        expect(page).to have_selector '.alert-success', wait: 5
       end
 
       it 'プロフィールページの記事一覧ページに編集した記事のタイトルがあること' do
-        sleep 1
-        expect(page).to have_content 'Article Edit Title'
+        expect(page).to have_content 'Article Edit Title', wait: 5
       end
   
       it '記事のタイトルが変わっていること' do
+        expect(page).to have_link('Article Edit Title', exact: true, wait: 5)
         click_link 'Article Edit Title'
         expect(page).to have_content 'Article Edit content'
       end
 
       it '編集で追加したヘッダー画像があること' do
-        sleep 1
+        expect(page).to have_link('Article Edit Title', exact: true, wait: 5)
         click_link 'Article Edit Title'
-        expect(page).to have_selector "img[src$='earth.png']"
+        expect(page).to have_selector "img[src$='earth.png']", wait: 5
       end
 
       it '編集で追加した記事の画像が表示されていること' do
+        expect(page).to have_link('Article Edit Title', exact: true, wait: 5)
         click_link 'Article Edit Title'
-        sleep 1
-        expect(page).to have_selector "img[src$='map.png']"
+        expect(page).to have_selector "img[src$='map.png']", wait: 5
       end
     end
 
@@ -250,8 +249,8 @@ RSpec.describe 'Articles', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        sleep 0.2
-        click_link "#{article.title}"
+        expect(page).to have_link(article.title, exact: true, wait: 5)
+        click_link "#{article.title}", exact: true
         click_link 'option', match: :first, exact: true
         click_link '記事を編集'
       end
@@ -284,6 +283,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
+        expect(page).to have_link(article.title, exact: true, wait: 5)
         click_link "#{article.title}", exact: true
         click_link 'option'
         @article_title = article.title

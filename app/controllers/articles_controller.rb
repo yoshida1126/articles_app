@@ -23,17 +23,22 @@ class ArticlesController < ApplicationController
   end
 
   def create
+    # ユーザーの1日あたりの記事投稿数を制限するサービスを初期化
     limit_service = UserPostLimitService.new(current_user)
 
+    # 1日の投稿数制限を超えていないかチェック
     if limit_service.over_limit?
       flash[:alert] = "1日の記事投稿は#{UserPostLimitService::DAILY_LIMIT}件までです。"
       redirect_to root_path and return
     end
 
+    # 記事作成時の画像処理などを含むサービスを呼び出して、Articleオブジェクトを生成
     @article = ArticleImageService.new(current_user, params, :create).process
 
     if @article.save
+      # 投稿成功時、投稿数をカウント
       limit_service.track_post
+
       flash[:notice] = '記事を作成しました。'
       redirect_to current_user
     else

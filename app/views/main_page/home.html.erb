@@ -27,65 +27,15 @@
       <%= render partial: "main_page/shared/home_articles", collection: @articles, as: :article %>
     </ol>
   <% end %>
-  <% if @trend1_tag_articles %>
+  <% @trend_tag_sections.each do |trend| %>
     <div class="title-and-link">
-      <h4><%= @tag1_name %></h4> 
+      <h4><%= trend[:name] %></h4> 
       <div class="articles-link">
-        <%= link_to "すべて見る", tag_path(@tag1_name) %>
+        <%= link_to "すべて見る", tag_path(trend[:name]) %>
         <i class="fas fa-angle-right"></i>
       </div>
     </div>
     <ol class="articles">
-      <%= render partial: "main_page/shared/home_articles", collection: @trend1_tag_articles, as: :article %>
+      <%= render partial: "main_page/shared/home_articles", collection: trend[:articles], as: :article %>
     </ol>
   <% end %>
-  <% if @trend2_tag_articles %>
-    <div class="title-and-link">
-      <h4><%= @tag2_name %></h4> 
-      <div class="articles-link">
-        <%= link_to "すべて見る", tag_path(@tag2_name) %>
-        <i class="fas fa-angle-right"></i>
-      </div>
-    </div>
-    <ol class="articles">
-      <%= render partial: "main_page/shared/home_articles", collection: @trend2_tag_articles, as: :article %>
-    </ol>
-  <% end %>
-  <% if @trend3_tag_articles %>
-    <div class="title-and-link">
-      <h4><%= @tag3_name %></h4> 
-      <div class="articles-link">
-        <%= link_to "すべて見る", tag_path(@tag3_name) %>
-        <i class="fas fa-angle-right"></i>
-      </div>
-    </div>
-    <ol class="articles">
-      <%= render partial: "main_page/shared/home_articles", collection: @trend3_tag_articles, as: :article %>
-    </ol>
-  <% end %>
-  <% if @trend4_tag_articles %>
-    <div class="title-and-link">
-      <h4><%= @tag4_name %></h4> 
-      <div class="articles-link">
-        <%= link_to "すべて見る", tag_path(@tag4_name) %>
-        <i class="fas fa-angle-right"></i>
-      </div>
-    </div>
-    <ol class="articles">
-      <%= render partial: "main_page/shared/home_articles", collection: @trend4_tag_articles, as: :article %>
-    </ol>
-  <% end %>
-  <% if @trend5_tag_articles %>
-    <div class="title-and-link">
-      <h4><%= @tag5_name %></h4> 
-      <div class="articles-link">
-        <%= link_to "すべて見る", tag_path(@tag5_name) %>
-        <i class="fas fa-angle-right"></i>
-      </div>
-    </div>
-    <ol class="articles">
-      <%= render partial: "main_page/shared/home_articles", collection: @trend5_tag_articles, as: :article %>
-    </ol>
-  <% end %>
-</div>
-

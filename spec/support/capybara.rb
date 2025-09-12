@@ -1,6 +1,8 @@
 require 'capybara/rspec'
 require 'selenium-webdriver'
 
+Capybara.default_max_wait_time = 10
+
 Capybara.register_driver :chrome_headless do |app|
 
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(

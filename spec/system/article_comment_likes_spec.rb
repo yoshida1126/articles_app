@@ -29,13 +29,12 @@ RSpec.describe 'Likes', type: :system, js: true do
     context 'as a non logged in user' do
       before do
         visit root_path
-        click_link "#{article.title}", match: :first
+        click_link "#{article.title}", exact: true
       end
 
       it 'いいねボタンを押すとログインページにリダイレクトされること' do
-        find_by_id('article-comment-like-btn').click
-        sleep 0.2
-        expect(current_path).to eq login_path
+        find('#article-comment-like-btn').click
+        expect(page).to have_current_path(login_path)
       end
     end
   end
@@ -52,8 +51,7 @@ RSpec.describe 'Likes', type: :system, js: true do
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
         click_link "#{article.title}", exact: true
-        find_by_id('article-comment-like-btn').click
-        sleep 0.2
+        find('#article-comment-like-btn').click
       end
 
       it 'すでにいいねされたボタンがあること' do
@@ -61,7 +59,7 @@ RSpec.describe 'Likes', type: :system, js: true do
       end
 
       it 'いいねを解除できること' do
-        find_by_id('article-comment-unlike-btn').click
+        find('#article-comment-unlike-btn').click
         expect(page).to have_css '#article-comment-like-btn'
       end
     end

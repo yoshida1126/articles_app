@@ -38,6 +38,17 @@ class ArticleImageService
     private
 
     def handle_article_images_for_create
+        # 記事に使用された画像だけをアタッチし、不要な画像を削除するメソッドです。
+        # 画像関連のロジックは app/services/concerns/image_utils.rb に定義されています。
+
+        # 処理の流れ：
+        # 1. フォームから送られた全画像の signed_id を取得
+        # 2. 記事本文内で実際に使用されている画像を抽出
+        # 3. 使用されていない画像を purge（削除）
+
+        # ※ 注意点：
+        # sanitized_article_paramsメソッドでパラメータがフィルタされる前に、
+        # blob_signed_ids を先に取り出しておく必要があります。
         blob_signed_ids = JSON.parse(@params[:article][:blob_signed_ids])
         @params[:article][:image] = resize_article_header_image(@params[:article][:image])
 

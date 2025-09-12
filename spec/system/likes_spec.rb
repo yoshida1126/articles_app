@@ -52,7 +52,6 @@ RSpec.describe 'Likes', type: :system, js: true do
       it 'いいねボタンを押すとログインページにリダイレクトされること' do
         visit root_path
         first('#like-btn').click
-        sleep 0.2
         expect(current_path).to eq login_path
       end
     end
@@ -61,7 +60,6 @@ RSpec.describe 'Likes', type: :system, js: true do
       it 'いいねボタンを押すとログインページにリダイレクトされること' do
         visit "/articles/#{article.id}"
         find('#like-btn').click
-        sleep 0.2
         expect(current_path).to eq login_path
       end
     end
@@ -76,7 +74,6 @@ RSpec.describe 'Likes', type: :system, js: true do
         sign_in user
         visit root_path
         first('#like-btn').click
-        sleep 0.2
       end
 
       it 'すでにいいねされたボタンがあること' do
