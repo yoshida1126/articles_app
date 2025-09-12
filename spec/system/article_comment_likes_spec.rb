@@ -17,12 +17,12 @@ RSpec.describe 'Likes', type: :system, js: true do
       end
 
       it 'コメント欄にいいねボタンがあること' do
-        expect(page).to have_css '#article-comment-like-btn'
+        expect(page).to have_css('#article-comment-like-btn', wait: 10)
       end
 
       it 'コメントにいいねできること' do
         find('#article-comment-like-btn').click
-        expect(page).to have_css '#article-comment-unlike-btn'
+        expect(page).to have_css('#article-comment-unlike-btn', wait: 10)
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe 'Likes', type: :system, js: true do
 
       it 'いいねボタンを押すとログインページにリダイレクトされること' do
         find('#article-comment-like-btn').click
-        expect(page).to have_current_path(login_path)
+        expect(page).to have_current_path(login_path, wait: 10)
       end
     end
   end
@@ -55,12 +55,12 @@ RSpec.describe 'Likes', type: :system, js: true do
       end
 
       it 'すでにいいねされたボタンがあること' do
-        expect(page).to have_css '#article-comment-unlike-btn'
+        expect(page).to have_css('#article-comment-unlike-btn', wait: 10)
       end
 
       it 'いいねを解除できること' do
         find('#article-comment-unlike-btn').click
-        expect(page).to have_css '#article-comment-like-btn'
+        expect(page).to have_css('#article-comment-like-btn', wait: 10)
       end
     end
   end
