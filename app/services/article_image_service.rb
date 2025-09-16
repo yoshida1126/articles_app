@@ -6,7 +6,7 @@ class ArticleImageService
         @user = user
         @params = params
         @action = action
-        # @blob_finder は、URL または signed_id を元に ActiveStorage::Blob を検索するための Proc です。
+        # @blob_finder は、signed_id を元に ActiveStorage::Blob を検索するための Proc です。
         @blob_finder = ->(blob_key) { find_blob_by_blob_key(blob_key) }
         @image_resizer = ->(tempfile) { resize_image(tempfile) }
     end

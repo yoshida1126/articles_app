@@ -39,10 +39,11 @@ class ArticleCommentImageService
         # blob_signed_ids を先に取り出しておく必要があります。
         blob_signed_ids = JSON.parse(@params[:article_comment][:blob_signed_ids])
 
-        @article_comment = @user.article_comments.new(sanitized_article_comment_params(@params))
+        @sanitized_params = sanitized_article_comment_params(@params)
+        @article_comment = @user.article_comments.build(@sanitized_params)
         @article_comment.article = Article.find(@params[:article_id])
 
-        image_urls = extract_s3_urls(@params[:article_comment][:comment])
+        image_urls = extract_s3_urls(@sanitized_params[:comment])
         used_blob_signed_ids = get_blob_signed_id_from_url(image_urls, blob_finder: @blob_finder)
 
         attach_images_to_resource(@article_comment.comment_images, used_blob_signed_ids, blob_finder: @blob_finder)

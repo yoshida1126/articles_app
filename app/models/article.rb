@@ -45,6 +45,6 @@ class Article < ApplicationRecord
   def validate_tag
     return unless tag_list.size > MAX_TAG_COUNT
 
-    errors.add('タグ', 'の数は10個以下にしてください。')
+    errors.add('タグ', "の数は#{MAX_TAG_COUNT}個以下にしてください。")
   end
 end
