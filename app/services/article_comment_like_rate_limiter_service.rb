@@ -1,4 +1,4 @@
-class ArticleCommentLikeRateLimiter
+class ArticleCommentLikeRateLimiterService
   RATE_LIMIT_SECONDS = 3
 
   def initialize(user:, article_comment:)

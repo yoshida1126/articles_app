@@ -55,6 +55,7 @@ group :test do
   gem 'minitest-reporters', '1.6.0'
   gem 'rails-controller-testing', '1.0.5'
   gem 'selenium-webdriver'
+  gem 'timecop'
 end
 
 group :production do

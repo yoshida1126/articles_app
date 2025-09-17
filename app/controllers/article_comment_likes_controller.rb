@@ -46,7 +46,7 @@ class ArticleCommentLikesController < ApplicationController
   end
 
   def check_consecutive_like
-    @rate_limiter = ArticleCommentLikeRateLimiter.new(user: current_user, article_comment: @article_comment)
+    @rate_limiter = ArticleCommentLikeRateLimiterService.new(user: current_user, article_comment: @article_comment)
     unless @rate_limiter.allowed?
       flash.now[:alert] = "連続で「いいね」はできません。あと#{@rate_limiter.remaining_time}秒待ってください。"
       respond_to do |format|
