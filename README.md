@@ -60,14 +60,17 @@ URL(https://articles.jp)
 - Docker / Docker Compose  
 - CircleCI
 
-### ☁️ インフラ・クラウドサービス（AWS）　/　インフラ構成図
+### ☁️ インフラ・クラウドサービス（AWS）
 - AWS  
   - VPC  
   - EC2  
   - Route 53  (現在はコストを抑えるため、Cloudflareに移行しています)
   - S3  
 
+### 🖼️ インフラ構成図 / データモデル(ER図)
+
 <img width="917" height="580" alt="Image" src="https://github.com/user-attachments/assets/25e4316a-6849-4abd-9bad-263728c697e0" />
+<h2>インフラ構成図</h2>
 
 ## 使用させて頂いたアイコンの各種リンク
 
@@ -83,6 +86,8 @@ URL(https://articles.jp)
 
   Ruby on Rails: <a>https://icons8.com/icon/12eMo7h5rCTp/ruby-on-rails</a>
 
+<img width="1112" height="1152" alt="Image" src="https://github.com/user-attachments/assets/5ee33164-6787-4f45-981a-f61f5c8cd810" />
+<h2>ER図</h2>
 
 # ⚙️ 機能一覧
 <ins></ins>
