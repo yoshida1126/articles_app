@@ -17,7 +17,7 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :create) }
 
-            it 'articleモデルのインスタンスが返ってくること' do 
+            it 'Articleモデルのインスタンスが返ってくること' do 
                 result = service.process
                 expect(result).to be_a(Article)
             end
