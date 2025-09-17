@@ -88,7 +88,7 @@ URL(https://articles.jp)
 <br>
 
 ### ER図
-<img width="1112" height="580" alt="Image" src="https://github.com/user-attachments/assets/5ee33164-6787-4f45-981a-f61f5c8cd810" />
+<img width="610" height="580" alt="Image" src="https://github.com/user-attachments/assets/5ee33164-6787-4f45-981a-f61f5c8cd810" />
 
 # ⚙️ 機能一覧
 <ins></ins>
