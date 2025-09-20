@@ -10,7 +10,7 @@ class LikesController < ApplicationController
     end
 
     # 「連続いいね」を防止するレート制限サービスを初期化
-    limiter = LikeRateLimiterService.new(user_id: current_user.id, article_id: @article.id)
+    limiter = LikeRateLimiterService.new(user: current_user, article: @article)
  
     # 連続での「いいね」操作が許可されているかをチェック
     unless limiter.allowed?

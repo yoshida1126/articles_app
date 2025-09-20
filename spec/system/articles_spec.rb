@@ -5,7 +5,7 @@ RSpec.describe 'Articles', type: :system, js: true do
   describe '#show' do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
-    let!(:article) { Article.create(title: 'test', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'user login(article user)' do
       before do
@@ -13,7 +13,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        click_link "#{article.title}", exact: true
+        click_link article.title, match: :first
       end
 
       it '記事の編集や削除のリンクを表示するケバブメニューがあること' do 
@@ -146,7 +146,7 @@ RSpec.describe 'Articles', type: :system, js: true do
   describe '#edit' do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
-    let!(:article) { Article.create(title: 'test', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'as a logged in user' do
       before do
@@ -154,7 +154,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        click_link "#{article.title}", exact: true
+        click_link article.title, match: :first
         click_link 'option', match: :first, exact: true
         click_link '記事を編集'
       end
@@ -189,7 +189,7 @@ RSpec.describe 'Articles', type: :system, js: true do
 
   describe '#update' do
     let(:user) { FactoryBot.create(:user) }
-    let!(:article) { Article.create(title: 'test', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'as a logged in user(input correct article informations)' do
       before do
@@ -197,7 +197,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        click_link "#{article.title}", exact: true
+        click_link article.title, match: :first
         click_link 'option', match: :first, exact: true
         click_link '記事を編集'
         fill_in('article[title]', with: 'Article Edit Title', wait: 10)
@@ -241,7 +241,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        click_link "#{article.title}", exact: true
+        click_link article.title, match: :first
         click_link 'option', match: :first, exact: true
         click_link '記事を編集'
       end
@@ -269,7 +269,7 @@ RSpec.describe 'Articles', type: :system, js: true do
   describe '#destroy' do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
-    let!(:article) { Article.create(title: 'test', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'as a logged in user(correct user)' do
       before do
@@ -277,7 +277,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         visit root_path
         click_link 'プロフィール画像', match: :first, exact: true
         click_link 'プロフィール', match: :first, exact: true
-        click_link "#{article.title}", exact: true
+        click_link article.title, match: :first
         click_link 'option'
       end
 

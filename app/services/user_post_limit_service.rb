@@ -1,4 +1,3 @@
-# app/services/user_post_limit_service.rb
 class UserPostLimitService
   DAILY_LIMIT = 5
 
@@ -12,6 +11,8 @@ class UserPostLimitService
   end
 
   def track_post
+    return if over_limit?
+
     $redis.incr(@key)
     expire_if_needed
   end

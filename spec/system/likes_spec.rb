@@ -95,7 +95,7 @@ RSpec.describe 'Likes', type: :system, js: true do
       before do
         sign_in user
         visit root_path
-        click_link 'Test article', match: :first, exact: true
+        click_link 'Test article', match: :first
         find('#like-btn').click
       end
 
