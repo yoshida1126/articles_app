@@ -2,7 +2,6 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
   before_action :configure_permitted_parameters, only: [:update]
   before_action :authenticate_user!, only: %i[edit update destroy]
   before_action :correct_user, only: %i[edit update destroy]
@@ -73,12 +72,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:account_update, keys: %i[name profile_img birthday gender introduction])
+    devise_parameter_sanitizer.permit(:account_update, keys: %i[name profile_img birthday introduction])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: %i[name profile_img birthday gender introduction])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[name profile_img birthday introduction])
   end
 
   def correct_user

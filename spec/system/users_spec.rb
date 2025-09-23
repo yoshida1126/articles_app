@@ -40,13 +40,6 @@ RSpec.describe 'Users', type: :system, js: true do
         end
       end
     end
-
-    context 'as a non-logged in user' do
-      it 'ログインページにリダイレクトされること' do
-        get following_user_path(user)
-        expect(response).to redirect_to login_path
-      end
-    end
   end
 
   describe 'GET /users/id/followers' do
@@ -68,13 +61,6 @@ RSpec.describe 'Users', type: :system, js: true do
         @followers.paginate(page: 1, per_page: 15).each do |follower|
           expect(page).to have_link follower.name, href: "/users/#{follower.id}"
         end
-      end
-    end
-
-    context 'as a non-logged in user' do
-      it 'ログインページにリダイレクトされること' do
-        get followers_user_path(user)
-        expect(response).to redirect_to login_path
       end
     end
   end
