@@ -1479,6 +1479,18 @@ ul.article-comment-option {
   }
 }
 
+.selection-and-change-count {
+  max-width: 640px;
+  display: flex;
+  justify-content: space-between;
+  p {
+    padding-top: 13px;
+    margin-bottom: 0px;
+    font-size: 14px;
+    font-weight: 350;
+  }
+}
+
 label {
   margin-bottom: 0px;
 }
@@ -1492,6 +1504,11 @@ label {
     opacity: .8;
     color: #fff;
   }
+}
+
+.excess-notice {
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 #header-img-preview {

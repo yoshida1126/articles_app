@@ -3,10 +3,19 @@
   <div class="title-field">
     <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力してください。" %> 
   </div> 
-  <label class="top-image">
-    <span class="btn select-image">ヘッダー画像を選択</span>
-    <%= f.file_field :image, accept: "image/jpeg, image/png, image/gif", style: "display: none;" %>
-  </label>
+  <% if @header_image_change_remaining.to_i > 0 %>
+    <div class="selection-and-change-count">
+      <label class="top-image">
+        <span class="btn select-image">ヘッダー画像を選択</span>
+        <%= f.file_field :image, accept: "image/jpeg, image/png, image/gif", style: "display: none;" %>
+      </label>
+      <p>（※本日の残り変更回数: <strong><%= @header_image_change_remaining %></strong>）</p>
+    </div>
+  <% else %>
+    <p>
+      ※本日の<strong>ヘッダー画像変更回数</strong>を超えています。本記事のヘッダー画像は明日以降に変更可能です。
+    </p>
+  <% end %>
 
   <div id="header-img-preview">
     <% if @article.image.attached? %>

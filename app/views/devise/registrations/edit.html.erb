@@ -38,7 +38,14 @@
       <%= f.password_field :password_confirmation, class: 'form-control' %>
 
       <%= f.label :profile_img, "プロフィール画像" %>
-      <%= f.file_field :profile_img,  id: "profile_image_upload", class: "form-control", accept: "image/jpeg, image/png, image/gif" %>
+      <% if @remaining_avatar_update_count > 0 %>
+        <%= f.file_field :profile_img,  id: "profile_image_upload", class: "form-control", accept: "image/jpeg, image/png, image/gif" %>
+      <% else %>
+        <p class="excess-notice">
+          ※本日の<strong>プロフィール画像の変更回数</strong>を超えています。<br>
+          プロフィール画像は明日以降に変更可能です。
+        </p>
+      <% end %>
 
       <% if @user.profile_img.attached? %>
         <%= image_tag @user.profile_img, id: "target" %>
@@ -46,8 +53,10 @@
         <%= image_tag "profile.jpg", id: "target" %> 
       <% end %>
   
-      <button id="selected-img-trim", type="button">画像をトリミングする</button>
-      <p>※本日のプロフィール画像の編集回数は残り<strong><%= @remaining_avatar_update_count %>回</strong>です。</p>
+      <% if @remaining_avatar_update_count > 0 %>
+        <button id="selected-img-trim", type="button">画像をトリミングする</button>
+        <p>※本日のプロフィール画像の編集回数は残り<strong><%= @remaining_avatar_update_count %>回</strong>です。</p>
+      <% end %>
 
       <div class="account-edit-btn">
         <%= f.submit "編　集", class: "btn btn-primary" %> 
