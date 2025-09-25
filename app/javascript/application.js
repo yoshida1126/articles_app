@@ -9,7 +9,6 @@ Turbo.session.drive = true
 import "custom/menu" 
 import "custom/preview"
 import "custom/preview_for_comment"
-import "custom/image"
 import "custom/image_upload"
 import "custom/profile_image_trimming"
 import "custom/marked"

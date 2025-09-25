@@ -3,7 +3,7 @@
 
 <div class="row"> 
   <div class="col-md-6 col-md-offset-3">
-    <%= form_with(model: @user, url: user_path) do |f| %>
+    <%= form_with model: @user do |f| %>
       <%= render 'devise/shared/error_messages', object: f.object %>
 
       <%= f.label :name %>
@@ -54,7 +54,7 @@
       <% end %>
   
       <% if @remaining_avatar_update_count > 0 %>
-        <button id="selected-img-trim", type="button">画像をトリミングする</button>
+        <button id="selected-img-trim" type="button">画像をトリミングする</button>
         <p>※本日のプロフィール画像の編集回数は残り<strong><%= @remaining_avatar_update_count %>回</strong>です。</p>
       <% end %>
 

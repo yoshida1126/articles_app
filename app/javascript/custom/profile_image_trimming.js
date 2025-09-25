@@ -32,24 +32,37 @@ function profile_image_trimming() {
       document.body.removeChild(overlay);
       $('body').css('overflow-y', 'auto');
       modal.style.display = "none";
-      var resultImgUrl = cropper.getCroppedCanvas().toDataURL();
+      var resultImgUrl = cropper.getCroppedCanvas({ width: 200,height: 200 }).toDataURL('image/jpeg', 0.7);
       target.setAttribute("src",resultImgUrl);
       origin_Url = resultImgUrl; // 元画像のURLをトリミング後の画像ファイルのURLに変える
       var uploador = document.getElementById("profile_image_upload")
-      var croppedCanvas = cropper.getCroppedCanvas();
+      var croppedCanvas = cropper.getCroppedCanvas({ width: 200, height: 200 });
 
       // 送信する画像ファイルをトリミングした画像ファイルに挿し替える
       croppedCanvas.toBlob(function(imgBlob) {
-        var croppedImgFile = new File([imgBlob], 'profile_img.jpg', {type: "image/jpg"});
+
+        if (imgBlob.size > 1048576) {
+          alert("トリミング後の画像サイズが1MBを超えています。画像を小さくするか、品質を下げてください。");
+          return;
+        }
+
+        var croppedImgFile = new File([imgBlob], 'profile_img.jpg', {type: "image/jpeg"});
         var dt = new DataTransfer();
         dt.items.add(croppedImgFile);
         document.getElementById("profile_image_upload").files = dt.files;
-      });
+      }, 'image/jpeg', 0.7);
     });
 
     document.querySelector('input[type="file"]').addEventListener('change', function(e) {
       if(e.target.files[0]) {
         var file = e.target.files[0]; 
+
+        if (file.size > 1 * 1024 * 1024) {
+          alert("1MB以下の画像をアップロードしてください。");
+          e.target.value = '';
+          return;
+        }
+
         var file_url = URL.createObjectURL(file)
 
         cropper.replace(file_url);
@@ -96,7 +109,7 @@ function profile_image_trimming() {
       // inputタグをリセットする
       document.getElementById("profile_image_upload").value = '';
       // トリミングする画像を元の画像に戻す(処理を中断しないと元の画像が一瞬表示されるためsetTimeoutを使っている)
-      ajsetTimeout(function() { cropper.replace(origin_Url) }, 300);
+      setTimeout(function() { cropper.replace(origin_Url) }, 300);
     });
 
     $('.modal-dialog').on('click', function(e) {

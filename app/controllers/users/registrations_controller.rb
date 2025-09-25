@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  include ImageUtils
+
   before_action :configure_sign_up_params, only: [:create]
-  before_action :configure_permitted_parameters, only: [:update]
   before_action :authenticate_user!, only: %i[edit update destroy]
   before_action :correct_user, only: %i[edit update destroy]
   before_action :logged_in_user, only: [:destroy]
-  before_action :check_avatar_change_limit, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -23,26 +23,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/edit
   def edit
-    key = "profile_update_count:#{current_user.id}:#{Date.today}"
-    seconds_until_end_of_day = (Time.current.in_time_zone("Asia/Tokyo").end_of_day - Time.current).to_i
-
-    if !$redis.exists?(key)
-      $redis.set(key, 0)
-      $redis.expire(key, seconds_until_end_of_day)
-    end
-
-    today_count = $redis.get(key).to_i
-
-    @remaining_avatar_update_count = 5 - today_count
+    set_remaining_avatar_update_count
   end
 
   # PUT /resource
   def update
-    super
-    return unless params[:user][:profile_img].present?
+    @user = current_user
 
-    @user.profile_img.purge
-    resource.profile_img.attach(params[:user][:profile_img])
+    if update_resource(@user, user_params)
+      check_avatar_change_limit
+      redirect_to root_path, notice: "アカウント情報を更新しました。"
+    else
+      set_remaining_avatar_update_count
+      render 'edit', status: :unprocessable_entity
+    end
   end
 
   # DELETE /resource
@@ -71,8 +65,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:account_update, keys: %i[name profile_img birthday introduction])
+  def user_params
+    # devise_parameter_sanitizer.permit(:account_update, keys: %i[name email birthday introduction password password_confirmation profile_img])
+    params.require(:user).permit(
+      :name,
+      :email,
+      :birthday,
+      :introduction,
+      :password,
+      :password_confirmation,
+      :profile_img
+    )
   end
 
   # If you have extra params to permit, append them to the sanitizer.
@@ -110,6 +113,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       $redis.incr(key)
     end
+  end
+
+  def set_remaining_avatar_update_count
+    key = "profile_update_count:#{current_user.id}:#{Date.today}"
+    seconds_until_end_of_day = (Time.current.in_time_zone("Asia/Tokyo").end_of_day - Time.current).to_i
+
+    if !$redis.exists?(key)
+      $redis.set(key, 0)
+      $redis.expire(key, seconds_until_end_of_day)
+    end
+
+    today_count = $redis.get(key).to_i
+    @remaining_avatar_update_count = 5 - today_count
   end
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params

@@ -28,14 +28,19 @@ class User < ApplicationRecord
 
   before_save { self.email = email.downcase }
 
-  validates :name, presence: { message: 'を入力してください。' }, length: { minimum: 2, maximum: 32 }
+  validates :name, presence: { message: 'を入力してください。' },
+                   length: { minimum: 2, maximum: 32, allow_blank: true }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+\z/i
-  validates :email, presence: { message: 'を入力してください。' }, length: { maximum: 255, message: 'は最大255文字です。' },
-                    format: { with: VALID_EMAIL_REGEX, message: 'は無効です。' },
+  validates :email, presence: { message: 'を入力してください。' },
+                    length: { maximum: 255, message: 'は最大255文字です。' },
+                    format: { with: VALID_EMAIL_REGEX, message: 'は無効です。', allow_blank: true },
                     uniqueness: { message: 'はすでに使われています。' }
   validates :password, length: { minimum: 6, message: 'は6文字以上を設定してください。' }, allow_nil: true
 
   validates :introduction, length: { maximum: 100 }
+
+  validates :profile_img, size: { less_than: 1.megabytes,
+                                  message: '1MB以下の画像をアップロードしてください。' }
 
   with_options presence: true do
     with_options on: :create do
