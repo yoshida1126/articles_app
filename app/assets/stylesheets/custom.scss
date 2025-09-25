@@ -1483,26 +1483,27 @@ ul.article-comment-option {
   max-width: 640px;
   display: flex;
   justify-content: space-between;
+  
   p {
     padding-top: 13px;
     margin-bottom: 0px;
     font-size: 14px;
     font-weight: 350;
   }
-}
 
-label {
-  margin-bottom: 0px;
-}
+  label {
+    margin-bottom: 0px;
+  }
 
-.select-image {
-  margin-top: 10px;
-  border-radius: 8px;
-  background-color: #99b9c2;
-  color: #fff;
-  &:hover {
-    opacity: .8;
+  .select-image {
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: #99b9c2;
     color: #fff;
+    &:hover {
+      opacity: .8;
+      color: #fff;
+    }
   }
 }
 

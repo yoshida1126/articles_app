@@ -16,9 +16,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     super
-    return unless params[:profile_img].present?
+    return unless params[:user][:profile_img].present?
 
-    resource.profile_img.attach(params[:profile_img])
+    resource.profile_img.attach(params[:user][:profile_img])
   end
 
   # GET /resource/edit
@@ -39,10 +39,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # PUT /resource
   def update
     super
-    return unless params[:profile_img].present?
+    return unless params[:user][:profile_img].present?
 
     @user.profile_img.purge
-    resource.profile_img.attach(params[:profile_img])
+    resource.profile_img.attach(params[:user][:profile_img])
   end
 
   # DELETE /resource

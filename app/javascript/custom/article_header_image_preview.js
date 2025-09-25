@@ -14,10 +14,10 @@ function header_image_preview () {
         oldPreview.remove();
     };
 
-    const p = document.querySelector("p");
+    const placeholder = document.getElementById("header-image-placeholder");
 
-    if (p) {
-        p.remove();
+    if (placeholder) {
+        placeholder.remove();
     } 
 
     const file = e.target.files[0];
