@@ -1,6 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+
+    connect() {
+      // ページ読み込み時に初期実行
+      this.input()
+    }
+
     preview() {
         const edita = this.element.nextElementSibling;
         const html = this.element.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling;
@@ -71,6 +77,17 @@ export default class extends Controller {
         smartypants: false,
       }); 
       const html = marked.parse(markdown);
-      this.element.nextElementSibling.innerHTML = html;
+      const placeholder = this.element.nextElementSibling.firstElementChild
+      const content = this.element.nextElementSibling.lastElementChild
+
+      if (markdown.length == 0) {
+          placeholder.style.display = "block";
+          content.innerHTML = "";
+        } else {
+          placeholder.style.display = "none";
+
+          content.innerHTML = html;
+        }
+      
     }
 }

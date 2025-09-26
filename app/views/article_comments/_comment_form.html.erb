@@ -28,10 +28,10 @@
       </div>
     <% end %>
     <div class="preview-open">
-      <div data-controller="toolbar"  data-action="click->toolbar#preview" class="btn preview-btn">
+      <div data-controller="preview-for-comment"  data-action="click->preview-for-comment#preview" class="btn preview-btn">
         <i class="fas fa-book-open"></i>
       </div>
-      <div data-controller="toolbar" data-action="click->toolbar#edit" class="btn edita display">
+      <div data-controller="preview-for-comment" data-action="click->preview-for-comment#edit" class="btn edita display">
         <i class="fas fa-edit"></i> 
       </div>
     </div>
@@ -39,15 +39,16 @@
   <div class="text-area-and-preview">
     <%= f.text_area :comment, id: 'markdown_for_comment', class: 'form-control comment-text-area', maxlength: "1500", placeholder: "コメントを入力",
         data: {
-          controller: "drop-upload-for-comment toolbar count-comment-text",
+          controller: "drop-upload-for-comment preview-for-comment count-comment-text",
           drop_upload_for_comment_url_value: rails_direct_uploads_url,
-          action: "drop->drop-upload-for-comment#dropUpload input->toolbar#input keyup->count-comment-text#count"
+          action: "drop->drop-upload-for-comment#dropUpload input->preview-for-comment#input keyup->count-comment-text#count"
         }
     %>
     <div id="html", class="html display">
       <div class="preview-placeholder">
         プレビューが表示されます。
       </div>
+      <div class="preview-content"></div>
     </div>
   </div>
   

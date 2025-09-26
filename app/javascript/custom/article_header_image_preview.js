@@ -14,13 +14,19 @@ function header_image_preview () {
         oldPreview.remove();
     };
 
+    const file = e.target.files[0];
     const placeholder = document.getElementById("header-image-placeholder");
 
-    if (placeholder) {
-        placeholder.remove();
-    } 
+    if (file.size > 1 * 1024 * 1024) {
+      alert("1MB以下の画像をアップロードしてください。");
+      e.target.value = '';
+      placeholder.style.display = "block";
+      return;
+    }
 
-    const file = e.target.files[0];
+    if (placeholder) {
+        placeholder.style.display = "none";
+    } 
 
     const blob = window.URL.createObjectURL(file) 
 
