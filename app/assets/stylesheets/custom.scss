@@ -505,10 +505,6 @@ input, textarea {
   @include box_sizing;
 }
 
-input {
-  height: auto !important;
-}
-
 #error_explanation {
   color: red;
   ul {
@@ -1766,6 +1762,9 @@ label {
       border-radius: 8px;
       border: solid #99b9c2 2px;
       outline: none;
+      text-align: center;
+      width: 200px;
+      height: 25px;
     }
   }
   .favorite-submit-btn {
@@ -1776,6 +1775,7 @@ label {
     background-color: #99b9c2;
     color: #fff;
     width: 200px;
+    height: 25px;
     &:hover {
       opacity: .8;
     }
