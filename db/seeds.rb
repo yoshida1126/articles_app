@@ -6,13 +6,25 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-user = User.create!(
-  name: 'Example User',
-  email: 'example@example.org',
-  password: 'foobar',
-  password_confirmation: 'foobar',
-  confirmed_at: Time.zone.now
-)
+require 'dotenv'
+Dotenv.load
+
+admin_user = User.find_or_create_by!(email: ENV['ADMIN_MAIL']) do |user|
+  user.admin = true,
+  user.name = 'Admin User',
+  user.password = ENV['ADMIN_PASS'],
+  user.password_confirmation = ENV['ADMIN_PASS'],
+  user.confirmed_at = Time.zone.now
+end
+admin_user.profile_img.attach(io: File.open('app/assets/images/admin-profile.png'),
+                        filename: 'admin-profile.png')
+
+user = User.find_or_create_by!(email: 'example@example.org') do |user|
+  user.name = 'Example User',
+  user.password = 'foobar',
+  user.password_confirmation = 'foobar',
+  user.confirmed_at = Time.zone.now
+end
 user.profile_img.attach(io: File.open('app/assets/images/profile.jpg'),
                         filename: 'profile.jpg')
 
@@ -20,26 +32,37 @@ user.profile_img.attach(io: File.open('app/assets/images/profile.jpg'),
   name = Faker::Name.name
   email = "example-#{n + 1}@example.org"
   password = 'password'
-  user = User.create!(
-    name: name,
-    email: email,
-    introduction: Faker::Lorem.sentence(word_count: 2),
-    password: password,
-    password_confirmation: password,
-    confirmed_at: Time.zone.now
-  )
+  user = User.find_or_create_by!(email: email) do |user|
+    user.name = name,
+    user.introduction = Faker::Lorem.sentence(word_count: 2),
+    user.password = password,
+    user.password_confirmation = password,
+    user.confirmed_at = Time.zone.now
+  end
 end
 
 users = User.order(:created_at).take(6)
 array = %w[テスト テスト記事 記事]
+
 array.each do |tag|
   5.times do
     title = 'test'
-    tag_list = ActsAsTaggableOn::Tag.new
-    tag_list.name = tag
-    tag_list.save
     content = Faker::Lorem.sentence(word_count: 5)
-    users.each { |user| user.articles.create!(title: title, tag_list: tag_list, content: content) }
+
+    users.each do |user|
+      article = user.articles.find_or_initialize_by(title: title)
+
+      if article.new_record?
+        article.content = content
+        article.tag_list = tag
+        article.save!
+      else
+        unless article.tag_list.include?(tag)
+          article.tag_list.add(tag)
+          article.save!
+        end
+      end
+    end
   end
 end
 
@@ -47,5 +70,11 @@ users = User.all
 user = users.first
 following = users[2..50]
 followers = users[3..40]
-following.each { |followed| user.follow(followed) }
-followers.each { |follower| follower.follow(user) }
+
+following.each do |followed|
+  user.follow(followed) unless user.following?(followed)
+end
+
+followers.each do |follower|
+  follower.follow(user) unless follower.following?(user)
+end

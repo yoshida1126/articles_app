@@ -60,6 +60,9 @@ class ArticleCommentsController < ApplicationController
 
   def correct_user
     @article_comment = ArticleComment.find(params[:id])
+
+    return if current_user.admin
+
     authorize_resource_owner(@article_comment)
   end
 

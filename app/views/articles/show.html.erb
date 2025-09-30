@@ -23,15 +23,17 @@
       </div>
     </section>
     <div class="select-operation"> 
-      <% if @article.user == current_user %> 
+      <% if @article.user == current_user || current_user.admin %> 
         <section class="article-edit">
           <div class="dropdown">
             <a href="#" id="option" class="dropdown-toggle"> 
               <span class="dli-more-v"></span>
             </a>
             <ul id="dropdown-menu2" class="dropdown-menu dropdown-menu-right article-option">
-              <li><%= link_to "記事を編集", edit_article_path(@article), data: { turbo: false } %></li> 
-              <li class="divider"></li>
+              <% if @article.user == current_user %>
+                <li><%= link_to "記事を編集", edit_article_path(@article), data: { turbo: false } %></li> 
+                <li class="divider"></li>
+              <% end %>
               <li><%= link_to "記事を削除", @article, data: { "turbo-method": :delete,
                       turbo_confirm: "本当に削除しますか？" } %> 
               </li>

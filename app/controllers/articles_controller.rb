@@ -81,8 +81,11 @@ class ArticlesController < ApplicationController
   private
 
   def correct_user
-    # 記事の作成者が、現在ログイン中のユーザーであるかを確認
+    # 記事の作成者が、現在ログイン中のユーザー、または管理者かを確認
     @article = Article.find(params[:id])
+
+    return if current_user.admin
+    
     authorize_resource_owner(@article)
   end
 

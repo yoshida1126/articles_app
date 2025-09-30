@@ -25,15 +25,17 @@
         <% else %>
           <%= article_comment.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
         <% end %>
-        <% if article_comment.user == current_user %> 
+        <% if article_comment.user == current_user || current_user.admin %> 
           <section class="article-edit">
             <div class="dropdown">
               <a href="#" data-controller="article-comment-menu" data-action="click->article-comment-menu#menu" id="option3-<%= article_comment.id %>"  class="dropdown-toggle dropdown3"> 
                 <span class="dli-more-v"></span>
               </a>
               <ul id="dropdown-menu3-<%= article_comment.id %>" class="dropdown-menu article-comment-option">
-                <li><a href="#" data-controller="article-comment-menu" data-action="click->article-comment-menu#edit">コメントを編集</a></li>
-                <li class="divider"></li>
+                <% if article_comment.user == current_user %>
+                  <li><a href="#" data-controller="article-comment-menu" data-action="click->article-comment-menu#edit">コメントを編集</a></li>
+                  <li class="divider"></li>
+                <% end %>
                 <li><%= link_to "コメントを削除", article_article_comment_path(article_comment.article, article_comment), data: { "turbo-method": :delete,
                         turbo_confirm: "本当に削除しますか？" } %> 
                 </li>

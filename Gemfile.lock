@@ -141,6 +141,10 @@ GEM
       devise (>= 4.9.0)
       rails-i18n
     diff-lcs (1.6.1)
+    dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     e2mmap (0.1.0)
     erubi (1.13.1)
     et-orbi (1.2.11)
@@ -496,6 +500,7 @@ DEPENDENCIES
   debug
   devise
   devise-i18n
+  dotenv-rails
   factory_bot_rails
   faker (= 2.21.0)
   guard (= 2.18.0)
