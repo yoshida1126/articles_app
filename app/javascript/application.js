@@ -13,6 +13,7 @@ import "custom/marked"
 import "custom/article_header_image_preview" 
 import "custom/search_window"
 import "custom/tab"
+import "custom/time_range_switcher"
 import jquery from "jquery" 
 window.$ = jquery 
 import "trix"

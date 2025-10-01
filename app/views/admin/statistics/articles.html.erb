@@ -1,0 +1,33 @@
+<label for="time_range_selector">表示期間:</label>
+<select id="time_range_selector">
+  <option value="day" <%= 'selected' if @range == 'day' %>>日</option>
+  <option value="week" <%= 'selected' if @range == 'week' %>>週</option>
+  <option value="month" <%= 'selected' if @range == 'month' %>>月</option>
+  <option value="year" <%= 'selected' if @range == 'year' %>>年</option>
+</select>
+
+<table>
+  <thead>
+    <tr>
+      <th>期間</th>
+      <th>記事投稿数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @post_counts.each do |period, count| %>
+      <tr>
+        <td>
+          <%=
+            case @range
+            when 'week'
+              period.to_s.insert(4, "-W")
+            else
+              period.to_s
+            end
+          %>
+        </td>
+        <td><%= count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

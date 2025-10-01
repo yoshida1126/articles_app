@@ -88,6 +88,47 @@ hr {
   margin-top: 5px;
 }
 
+/* admin page */
+
+.statistics-section {
+  display: flex;
+  justify-content: space-between;
+  max-width: 800px;
+  margin-top: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  a {
+    text-decoration: none;
+    color: inherit;
+    &:hover {
+      text-decoration: none;
+      color: inherit;
+      opacity: .8;
+    }
+  }
+  i {
+    font-size: 5rem;
+  }
+  .user-block, .article-block, .comment-block {
+    display: flex;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    height: 100px;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    .statistics-name-and-number {
+      padding-left: 30px;
+    }
+    .item-count {
+      font-size: 2.5rem;
+    }
+  }
+  .article-block, .comment-block {
+    margin-left: 20px;
+  }
+}
+
 /* header */ 
 
 .navbar-inverse {

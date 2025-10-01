@@ -1,2 +1,33 @@
-<h1>Admin::Dashboard#index</h1>
-<p>Find me in app/views/admin/dashboard/index.html.erb</p>
+<h1>Dashbord</h1>
+<div class="statistics-section">
+  <a href="admin/statistics/users">
+    <div class="user-block">
+      <i class="fas fa-users"></i>
+      <div class="statistics-name-and-number">
+        <p>ユーザー数</p>
+        <strong class="item-count"><%= @user_count %></strong>
+      </div>
+    </div>
+  </a>
+
+  <a href="admin/statistics/articles">
+    <div class="article-block">
+      <i class="fas fa-edit"></i> 
+        <div class="statistics-name-and-number">
+          <p>記事の総数</p>
+          <strong class="item-count"><%= @article_count %></strong>
+        </div>
+    </div>
+  </a>
+
+  <a href="admin/statistics/comments">
+    <div class="comment-block">
+      <i class="fas fa-comments"></i>
+      <div class="statistics-name-and-number">
+        <p>コメントの総数</p>
+        <strong class="item-count"><%= @comment_count %></strong>
+      </div>
+    </div>
+  </a>
+</div>
+
