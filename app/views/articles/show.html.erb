@@ -23,7 +23,7 @@
       </div>
     </section>
     <div class="select-operation"> 
-      <% if @article.user == current_user || current_user&.admin %> 
+      <% if @article.user == current_user || current_user&.admin? %> 
         <section class="article-edit">
           <div class="dropdown">
             <a href="#" id="option" class="dropdown-toggle"> 

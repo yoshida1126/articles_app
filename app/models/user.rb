@@ -62,6 +62,10 @@ class User < ApplicationRecord
     result
   end
 
+  def admin?
+    self.admin
+  end
+
   # ユーザーをフォローする
   def follow(other_user)
     following << other_user unless self == other_user

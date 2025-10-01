@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    root 'dashboard#index'
+    resources :articles
+    resources :users
+  end
+
   root 'main_page#home'
   get '/trend_articles', to: 'main_page#trend'
   get '/recentry_articles', to: 'main_page#recently'
