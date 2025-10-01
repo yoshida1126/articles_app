@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
   namespace :admin do
     root 'dashboard#index'
-    # get 'statistics', to: 'statistics#index'
-    resources :articles
-    resources :users
     resources :statistics, only: [:index] do
     collection do
       get 'articles'
