@@ -39,7 +39,7 @@
 
       <%= f.label :profile_img, "プロフィール画像" %>
       <% if @remaining_avatar_update_count > 0 %>
-        <%= f.file_field :profile_img,  id: "profile_image_upload", class: "form-control", accept: "image/jpeg, image/png, image/gif" %>
+        <%= f.file_field :profile_img,  id: "profile_image_upload", accept: "image/jpeg, image/png, image/gif" %>
       <% else %>
         <p class="excess-notice">
           ※本日の<strong>プロフィール画像の変更回数</strong>を超えています。<br>
