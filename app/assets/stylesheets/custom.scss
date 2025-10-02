@@ -339,14 +339,14 @@ li.link-btn {
 .home {
   margin: auto;
   .title-and-link {
-    font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
     h4 {
       color: #333333;
-      font-weight: bold;
+      font-weight: 530;
       margin-top: 0;
     }
     .articles-link {
@@ -544,6 +544,15 @@ input, textarea {
   width: 100%;
   margin-bottom: 15px;
   @include box_sizing;
+}
+
+#profile_image_upload {
+  margin-top: 10px;
+  border: none;
+  outline: none;
+  &:focus {
+    outline: none;
+  }
 }
 
 #error_explanation {
@@ -984,7 +993,6 @@ div.birthday {
     display: block;
     width: 200px;
     font-size: 1.1em;
-    font-weight: 530;
     margin-top: 10px;
     margin-bottom: 8px;
     padding-top: 0;
