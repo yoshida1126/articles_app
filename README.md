@@ -20,7 +20,7 @@
 レスポンシブ対応しているのでスマホからでもご覧いただけます。  
 URL(https://articles.jp)
 
-<img width="1280" height="678" alt="Image" src="https://github.com/user-attachments/assets/67c39498-bdaa-410e-bdf5-1ad827c6b040" />
+<img width="1280" height="678" alt="Image" src="https://github.com/user-attachments/assets/2a8ee628-6dc9-4923-896d-1696a9ec20a2" />
 
 # 🔥 特に注力したポイント
 <ins></ins>
@@ -89,7 +89,7 @@ URL(https://articles.jp)
 <br>
 
 ### ER図
-<img width="610" height="580" alt="Image" src="https://github.com/user-attachments/assets/5ee33164-6787-4f45-981a-f61f5c8cd810" />
+<img width="610" height="580" alt="Image" src="https://github.com/user-attachments/assets/41e0abc6-6b1b-483f-b3ef-8232a39dd6ba" />
 
 # ⚙️ 機能一覧
 <ins></ins>
