@@ -15,6 +15,7 @@ $gray-medium-light: #eaeaea;
 
 body {
     padding-top: 50px;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
 }
 
 section {
@@ -215,7 +216,6 @@ hr {
 }
 
 li.link-btn {
-  font-family:"ヒラギノ丸ゴ Pro W4","ヒラギノ丸ゴ Pro","Hiragino Maru Gothic Pro","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO";
   height: 30px;
   margin-left: 15px;
   margin-top: 10px;
@@ -331,6 +331,7 @@ li.link-btn {
 
 .site-info {
   margin-top: 50px;
+  font-size: 1.55rem;
   a {
     color: #99b9c2;
   }
@@ -339,7 +340,6 @@ li.link-btn {
 .home {
   margin: auto;
   .title-and-link {
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -419,8 +419,7 @@ aside {
       overflow-wrap: break-word;
       max-width: 250px;
       color: gray;
-      font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       margin: 0;
     }
   }
@@ -828,7 +827,7 @@ div.birthday {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* 半透明の黒色 */
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 1049;
 }
 
@@ -883,6 +882,7 @@ div.birthday {
   margin-top: 30px;
   h1 {
     font-size: 3rem;
+    font-weight: 400;
     color: #333;
   }
   span.article-heading-image { 
@@ -901,7 +901,6 @@ div.birthday {
 }
 
 .search-tag-result {
-  font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
   font-weight: bold;
   margin-top: 40px;
 }
@@ -1256,11 +1255,9 @@ aside {
       margin-right: 10px;
       margin-left: 10px;
       margin-bottom: 10px;
-      font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
       font-size: 1.7rem;
-      font-weight: lighter;
+      font-weight: 300;
       line-height: 1.7em;
-
       h1, h2, h3 {
         text-align: left;
       }
@@ -1600,7 +1597,6 @@ label {
 }
 
 .content {
-  font-family: '游ゴシック体' , 'Yu Gothic', YuGothic, sans-serif;
   font-size: 1.8rem;
   overflow: wrap;
 
@@ -2035,7 +2031,6 @@ input.favorite_article_delete_btn {
 /* search */ 
 
 .search-result {
-  font-family: '游ゴシック体', 'Yu Gothic', YuGothic, sans-serif;
   font-weight: bold;
   margin-top: 40px;
 }
@@ -2309,7 +2304,6 @@ input.favorite_article_delete_btn {
     .title {
       width: 200px;
       font-size: 1.1em;
-      font-weight: 530;
       padding-top: 0;
       color: #060c0d;
       overflow: hidden;
