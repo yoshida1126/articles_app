@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_09_30_070810) do
+ActiveRecord::Schema[7.0].define(version: 2025_10_03_041942) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -97,6 +97,15 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_30_070810) do
     t.index ["favorite_article_list_id"], name: "index_favorites_on_favorite_article_list_id"
   end
 
+  create_table "feedbacks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "subject"
+    t.text "body"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
+  end
+
   create_table "likes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "article_id", null: false
@@ -177,6 +186,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_09_30_070810) do
   add_foreign_key "favorite_list_bookmarks", "users"
   add_foreign_key "favorites", "articles"
   add_foreign_key "favorites", "favorite_article_lists"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "likes", "articles"
   add_foreign_key "likes", "users"
   add_foreign_key "taggings", "tags"

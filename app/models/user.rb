@@ -23,6 +23,8 @@ class User < ApplicationRecord
   has_many :favorite_list_bookmarks, dependent: :destroy
   has_many :bookmark_lists, through: :favorite_list_bookmarks, source: :favorite_article_list
 
+  has_many :feedbacks, dependent: :destroy
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :confirmable
 
