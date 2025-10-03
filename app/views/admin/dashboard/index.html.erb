@@ -14,7 +14,7 @@
     <div class="article-block">
       <i class="fas fa-edit"></i> 
         <div class="statistics-name-and-number">
-          <p>記事の総数</p>
+          <p>記事数</p>
           <strong class="item-count"><%= @article_count %></strong>
         </div>
     </div>
@@ -24,17 +24,37 @@
     <div class="comment-block">
       <i class="fas fa-comments"></i>
       <div class="statistics-name-and-number">
-        <p>コメントの総数</p>
+        <p>コメント数</p>
         <strong class="item-count"><%= @comment_count %></strong>
+      </div>
+    </div>
+  </a>
+
+  <a href="admin/statistics/favorite_article_lists">
+    <div class="list-block">
+      <i class="fas fa-list"></i>
+      <div class="statistics-name-and-number">
+        <p>お気に入りリスト数</p>
+        <strong class="item-count"><%= @favorite_article_list_count %></strong>
+      </div>
+    </div>
+  </a>
+
+  <a href="admin/statistics/tags">
+    <div class="tag-block">
+      <i class="fas fa-tag"></i>
+      <div class="statistics-name-and-number">
+        <p>タグ数</p>
+        <strong class="item-count"><%= @tag_count %></strong>
       </div>
     </div>
   </a>
 
   <a href="admin/feedbacks">
     <div class="feedback-block">
-      <i class="fas fa-comments"></i>
+      <i class="fas fa-user-edit"></i>
       <div class="statistics-name-and-number">
-        <p>寄せられたフィードバックの総数</p>
+        <p>フィードバック数</p>
         <strong class="item-count"><%= @feedback_count %></strong>
       </div>
     </div>

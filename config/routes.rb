@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
   namespace :admin do
-    resources :feedbacks, only: %i[index destroy]
     root 'dashboard#index'
     resources :statistics, only: [:index] do
-    collection do
-      get 'articles'
-      get 'comments'
-      get 'users'
+      collection do
+        get 'articles'
+        get 'comments'
+        get 'users'
+        get 'favorite_article_lists'
+        get 'tags'
+      end
     end
-  end
+    resources :feedbacks, only: %i[index destroy]
   end
 
   root 'main_page#home'

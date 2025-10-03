@@ -1,7 +1,6 @@
-<h1>フィードバック一覧</h1>
-
-<% @feedbacks.each do |feedback| %>
-    <%= feedback.user.name %>
-    <%= feedback.subject %>
-    <%= feedback.body %>
-<% end %>
+<div class="feedbacks">
+  <h2>フィードバック一覧</h2>
+  <div id="feedbacks-list">
+    <%= render "admin/feedbacks/feedback" %>
+  </div>
+</div>

@@ -38,4 +38,10 @@ class Admin::StatisticsController < Admin::BaseController
 
   def comments
   end
+
+  def favorite_article_lists
+  end
+
+  def tags
+  end
 end
