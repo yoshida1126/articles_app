@@ -93,6 +93,7 @@ hr {
 
 .statistics-section {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   max-width: 800px;
   margin-top: 30px;
@@ -110,7 +111,7 @@ hr {
   i {
     font-size: 5rem;
   }
-  .user-block, .article-block, .comment-block {
+  .user-block, .article-block, .comment-block, .feedback-block {
     display: flex;
     background-color: #f3f3f3;
     border-radius: 10px;

@@ -1,1 +1,22 @@
 <h1>フィードバック送信フォーム</h1>
+
+<%= form_with(model: @feedback) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>  
+
+  <%= f.text_field :subject, class: 'form-control', maxlength: "50", required: true, placeholder: "件名を入力" %>
+
+  <div class="text-area-and-preview">
+    <%= f.text_area :body, id: 'markdown_for_comment', class: 'form-control comment-text-area', maxlength: "1500", placeholder: "フィードバックを入力",
+        data: {
+          controller: "count-comment-text",
+          action: "keyup->count-comment-text#count"
+        }
+    %>
+  </div>
+
+  <span class="count_comment" id="count_comment_text">0 ／1500文字</span>
+
+  <div class="submit-btn">
+    <%= f.submit "送信する", class: "btn", remote: true %> 
+  </div>
+<% end %> 

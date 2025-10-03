@@ -1,1 +1,7 @@
 <h1>フィードバック一覧</h1>
+
+<% @feedbacks.each do |feedback| %>
+    <%= feedback.user.name %>
+    <%= feedback.subject %>
+    <%= feedback.body %>
+<% end %>
