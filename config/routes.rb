@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   namespace :admin do
+    resources :feedbacks, only: %i[index destroy]
     root 'dashboard#index'
     resources :statistics, only: [:index] do
     collection do
@@ -56,4 +57,6 @@ Rails.application.routes.draw do
   get "uploads/quota", to: "uploads#remaining_quota"
   post '/upload_article_images_tracker', to: 'uploads#track_article_images'
   post '/upload_comment_images_tracker', to: 'uploads#track_comment_images'
+
+  resources :feedbacks, only: %i[new create]
 end
