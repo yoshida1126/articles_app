@@ -180,6 +180,34 @@ hr {
   }
 }
 
+/* feedback page for user */
+
+.feedback-text-area {
+  width: 100%;
+  textarea.form-control {
+    resize: none;
+    height: 280px;
+  }
+}
+
+.feedback-submit-btn {
+  .btn {
+    background-color: #99b9c2;
+    border: none;
+    outline: none;
+    &:hover {
+      opacity: .8;
+      border: none;
+      outline: none;
+    }
+    &:active {
+      background-color: #99b9c2;
+      border: none;
+      outline: none;
+    }
+  }
+}
+
 /* header */ 
 
 .navbar-inverse {
@@ -431,27 +459,20 @@ li.link-btn {
 /* footer */ 
 
 footer {
-    height: 50px;
+    display: flex;
+    justify-content: space-evenly;
     margin-top: 45px;
+    margin-bottom: 20px;
     padding-top: 5px;
     border-top: 1px solid $gray-medium-light;
-    font-size: 2.5rem;
-    font-family: 'Oooh Baby', Sans-serif;
-    text-align: center;
+    font-size: 1.5rem;
+    font-weight: lighter;
     a {
-      color: #333333;
+      color: #777;
       &:hover {
-        color: #333333;
+        color: #777;
         text-decoration: none; 
         opacity: .8;
-      }
-    }
-    ul {
-      float: right; 
-      list-style: none;
-      li {
-        float: left; 
-        margin-left: 15px; 
       }
     }
 }

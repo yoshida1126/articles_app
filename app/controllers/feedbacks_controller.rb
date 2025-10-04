@@ -9,7 +9,7 @@ class FeedbacksController < ApplicationController
     @feedback = current_user.feedbacks.build(feedback_params)
 
     if @feedback.save
-      flash[:notice] = 'フィードバックを送信しました。'
+      flash[:notice] = "フィードバックをお寄せいただきありがとうございます。"
       redirect_to root_path
     else
       render 'feedbacks/new', status: :unprocessable_entity

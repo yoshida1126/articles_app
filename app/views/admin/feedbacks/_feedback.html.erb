@@ -14,7 +14,7 @@
       </div>
       <div class="time-and-destroy-link">
         <%= feedback.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
-        <%= link_to "❌", admin_feedback_path(feedback), data: { "turbo-method": :delete,
+        <%= link_to '<i class="fas fa-trash"></i>'.html_safe, admin_feedback_path(feedback), data: { "turbo-method": :delete,
                                                                turbo_confirm: "本当に削除しますか？" } %> 
       </div>
     </div>
