@@ -96,7 +96,7 @@ RSpec.describe "Articles", type: :request do
       it "投稿できないこと" do
         expect {
           post articles_path, params: { article: @invalid_article_params }
-        }.to_not change(User, :count)
+        }.to_not change(Article, :count)
       end 
     end  
   end 

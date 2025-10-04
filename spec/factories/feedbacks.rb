@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :feedback do
-    subject { "MyString" }
-    body { "MyText" }
+    subject { "test feedback" }
+    body { "feedback feedback" }
   end
 end

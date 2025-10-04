@@ -27,6 +27,10 @@ FactoryBot.define do
     trait :with_favorite_article_lists do
       after(:create) { |user| create_list(:favorite_article_list, 1, user: user) }
     end
+
+    trait :with_feedback do
+      after(:create) { |user| create_list(:feedback, 1, user: user) }
+    end
   end
 
   factory :other_user, class: User do
@@ -50,5 +54,14 @@ FactoryBot.define do
     email { 'address@invalid' }
     password { 'test' }
     password_confirmation { 'test' }
+  end
+
+  factory :admin_user, class: User do
+    admin { true }
+    name { 'admin-user' }
+    email { 'admin@admin.org' }
+    password { 'adminpass' }
+    password_confirmation { 'adminpass' }
+    confirmed_at { Time.now }
   end
 end
