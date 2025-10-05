@@ -1,6 +1,4 @@
 class Admin::StatisticsController < Admin::BaseController
-  def index
-  end
 
   def users
   end
