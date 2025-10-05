@@ -196,6 +196,7 @@ hr {
     border: none;
     outline: none;
     &:hover {
+      background-color: #99b9c2;
       opacity: .8;
       border: none;
       outline: none;
@@ -204,6 +205,9 @@ hr {
       background-color: #99b9c2;
       border: none;
       outline: none;
+    }
+    &:focus {
+      background-color: #99b9c2;
     }
   }
 }
