@@ -1494,6 +1494,33 @@ ul.article-comment-option {
   display: block;
 }
 
+.draft-toggle {
+  display: inline-flex;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.draft-toggle .toggle-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: white;
+  color: #777;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.draft-toggle .toggle-button:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+.draft-toggle .toggle-button.active {
+  background-color: #99b9c2;
+  color: white;
+}
+
 .article-text-field {
   display: flex;
 }

@@ -13,6 +13,7 @@ class TrendTagService
     # 各タグに関連する記事を1回のクエリで取得（N+1回避のため includes(:tags) を使用）
     # タグ付けされた記事をまとめて取得し、最大で 15 * タグ数 分取得
     articles = Article
+      .published
       .joins(:tags)
       .where(tags: { name: tag_names })
       .includes(:tags)

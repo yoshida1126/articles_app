@@ -1,8 +1,30 @@
 <%= form_with(model: @article) do |f| %> 
   <%= render 'shared/error_messages', object: f.object %> 
+
+  <div data-controller="draft-toggle" class="draft-toggle">
+    <button
+      type="button"
+      class="toggle-button"
+      data-action="click->draft-toggle#selectDraft"
+      data-draft-toggle-value="true"
+    >
+      下書き
+    </button>
+    <button
+      type="button"
+      class="toggle-button"
+      data-action="click->draft-toggle#selectDraft"
+      data-draft-toggle-value="false"
+    >
+      公開
+    </button>
+    <%= f.hidden_field :draft, value: true, data: { draft_toggle_target: "input" } %>
+  </div>
+
   <div class="title-field">
     <%= f.text_field :title, class: "form-control", required: true, placeholder: "タイトルを入力してください。" %> 
   </div> 
+
   <label class="select-header-image">
     <span class="btn select-image">ヘッダー画像を選択</span>
     <%= f.file_field :image, accept: "image/jpeg, image/png, image/gif", style: "display: none;" %>
@@ -66,8 +88,6 @@
   <span class="count" id="count_text">0 ／ 3000文字</span>
 
   <div class="article-submit-btn">
-    <%= f.submit "投　稿", class: "btn btn-primary" %> 
+    <%= f.submit "投　稿", type: "submit", class: "btn btn-primary" %> 
   </div>
 <% end %> 
-
-

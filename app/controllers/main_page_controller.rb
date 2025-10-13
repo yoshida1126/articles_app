@@ -2,7 +2,7 @@ class MainPageController < ApplicationController
   before_action :prepare_period_data, :fetch_trend_articles, only: [:home, :trend]
 
   def home
-    @articles = current_user&.following.present? ? current_user.feed : Article.limit(15)
+    @articles = current_user&.following.present? ? current_user.feed : Article.published.limit(15)
     # 最も使用されているタグを上位5件取得（重複除外）           
     @tags = ActsAsTaggableOn::Tag.joins(:taggings).distinct.most_used(5)
     # トレンドタグごとの記事一覧を取得（記事数が一定以上のタグのみを対象）
