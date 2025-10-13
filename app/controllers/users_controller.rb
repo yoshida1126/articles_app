@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   before_action :unconfirmed_account_check, only: [:show]
 
   def show
-    @articles = @user.articles.paginate(page: params[:page], per_page: 15)
+    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
 
     limit_service = UserPostLimitService.new(current_user)
     @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count

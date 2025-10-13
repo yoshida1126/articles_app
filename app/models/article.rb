@@ -10,6 +10,7 @@ class Article < ApplicationRecord
   validates :tag_list, presence: { message: 'を入力してください。' }
   validate :validate_tag
   default_scope -> { order(created_at: :desc) }
+  scope :published, -> { where(draft: false) }
   validates :user_id, presence: true
   validates :title, presence: true, length: { maximum: 50 }
   validates :content, presence: true
