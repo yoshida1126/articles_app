@@ -36,12 +36,22 @@
   <% end %>
   </aside>
   <div class="col-sm-8"> 
-    <% if @user.articles.any? %> 
-      <h4>投稿記事</h4> 
-      <ol id="profile-page-articles", class="articles">
+    <% if @user == current_user %>
+      <div class="article-type">
+        <div class="article-tab selected" data-target="published">投稿記事</div>
+        <div class="article-tab" data-target="drafts">下書き記事</div>
+      </div>
+    <% else %>
+      <h4>投稿記事</h4>
+    <% end %>
+    <div id="article-contents">
+      <ol id="published", class="articles active">
         <%= render @articles %> 
       </ol>
-    <% end %>
+      <ol id="drafts", class="articles">
+        <%= render partial: 'articles/draft', collection: @drafts, as: :draft %>
+      </ol>
+    </div>
   </div>
   <div class="pagination">
     <%= render partial: "shared/pagination", locals: { object: @articles } %>

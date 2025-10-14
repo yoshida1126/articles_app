@@ -16,7 +16,7 @@ export default class extends Controller {
   }
 
   updateButtons(activeValue) {
-    const buttons = this.element.querySelectorAll("button")
+    const buttons = this.element.querySelectorAll('button')
     buttons.forEach((btn) => {
       const isActive = btn.dataset.draftToggleValue === String(activeValue)
       btn.classList.toggle("active", isActive)

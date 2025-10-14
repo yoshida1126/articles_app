@@ -6,7 +6,7 @@ class ArticlesController < ApplicationController
   def index; end
 
   def show
-    @article = Article.find(params[:id])
+    @article = Article.published.find(params[:id])
     @tags = @article.tag_counts_on(:tags)
     @comment = ArticleComment.new
 

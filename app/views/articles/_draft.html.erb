@@ -1,0 +1,39 @@
+<li id="draft-<%= draft.id %>"> 
+  <span class="heading-image">
+    <%= link_to edit_article_path(draft) do %>
+      <% if draft.image.attached? %> 
+        <%= image_tag draft.image %>
+      <% else %> 
+        <div class="no-heading-image">
+          <p>Articles</p>
+        </div>
+      <% end %>
+    <% end %>
+  </span>
+  <span class="title title-responsive">
+    <%= link_to edit_article_path(draft) do %>
+      <%= draft.title %>
+    <% end %>
+  </span>
+  <div class="article-info">
+    <div class="user-profile-img">
+      <%= link_to current_user do %>
+        <% if current_user.profile_img.attached? %>
+          <%= image_tag current_user.profile_img %>
+        <% else %>
+          <%= image_tag "profile.jpg" %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="name-and-timestamp">
+      <div class="name">
+        <%= link_to current_user do %>
+          <%= current_user.name %>
+        <% end %> 
+      </div>  
+      <span class="timestamp"> 
+        <%= draft.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
+      </span> 
+    </div>
+  </div>
+</li>
