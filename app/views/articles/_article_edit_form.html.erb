@@ -1,5 +1,26 @@
 <%= form_with(model: @article) do |f| %> 
   <%= render 'shared/error_messages', object: f.object %> 
+
+  <div data-controller="draft-toggle" class="draft-toggle" data-draft-toggle-article-value="<%= @article.draft %>">
+    <button
+      type="button"
+      class="toggle-button"
+      data-action="click->draft-toggle#selectDraft"
+      data-draft-toggle-value="true"
+    >
+      下書き
+    </button>
+    <button
+      type="button"
+      class="toggle-button"
+      data-action="click->draft-toggle#selectDraft"
+      data-draft-toggle-value="false"
+    >
+      公開
+    </button>
+    <%= f.hidden_field :draft, value: true, data: { draft_toggle_target: "input" } %>
+  </div>
+
   <div class="title-field">
     <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力してください。" %> 
   </div> 

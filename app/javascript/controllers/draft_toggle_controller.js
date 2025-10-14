@@ -2,11 +2,13 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
-  static targets = ["input"]
+  static targets = ["input"];
+  static values = { article: Boolean }
 
   connect() {
-    this.updateButtons(true)
-    this.inputTarget.value = true
+    const isDraft = this.articleValue
+    this.updateButtons(isDraft)
+    this.inputTarget.value = isDraft
   }
 
   selectDraft(event) {

@@ -1,7 +1,7 @@
 <%= form_with(model: @article) do |f| %> 
   <%= render 'shared/error_messages', object: f.object %> 
 
-  <div data-controller="draft-toggle" class="draft-toggle">
+  <div data-controller="draft-toggle" class="draft-toggle" data-draft-toggle-article-value="<%= @article.draft %>">
     <button
       type="button"
       class="toggle-button"
