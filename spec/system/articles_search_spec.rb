@@ -5,6 +5,7 @@ RSpec.describe 'Search', type: :system, js: true do
   describe '#search' do
     let(:user) { FactoryBot.create(:user) }
     let!(:article) { Article.create(draft: false, title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:draft) { Article.create(draft: true, title: 'draft article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'search article' do
       before do
@@ -14,7 +15,15 @@ RSpec.describe 'Search', type: :system, js: true do
       end
 
       it '検索結果 1 件 と表示されること' do
+        fill_in 'q_title_or_content_eq', with: 'test article'
+        find('#search-btn').click
         expect(page).to have_content("検索結果 1 件")
+      end
+
+      it '下書き記事は検索結果に含まれないこと' do
+        fill_in 'q_title_or_content_eq', with: 'draft article'
+        find('#search-btn').click
+        expect(page).to have_content("検索結果 0 件")
       end
     end
 
@@ -24,6 +33,13 @@ RSpec.describe 'Search', type: :system, js: true do
       end
 
       it "タグで検索できること" do
+        fill_in 'q_title_or_content_eq', with: '#test'
+        find('#search-btn').click
+
+        expect(page).to have_content("タグ: testの一覧 (1件)")
+      end
+
+      it "下書き記事は検索結果に含まれないこと" do
         fill_in 'q_title_or_content_eq', with: '#test'
         find('#search-btn').click
 

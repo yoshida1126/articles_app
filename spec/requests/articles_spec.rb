@@ -5,6 +5,7 @@ RSpec.describe "Articles", type: :request do
   let(:user) { FactoryBot.create(:user) } 
   let(:other_user) { FactoryBot.create(:other_user) }
   let!(:article) { Article.create(draft: false, title: "test", content: "test", tag_list: "test", user_id: user.id) }
+  let!(:draft) { Article.create(draft: true, title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   describe "#show" do 
 
@@ -13,19 +14,29 @@ RSpec.describe "Articles", type: :request do
         sign_in user 
       end 
 
-      it "記事のページにアクセスできること" do 
+      it "投稿した記事の詳細ページにアクセスできること" do 
         get "/articles/#{article.id}"
         expect(response).to have_http_status(:success)
-      end 
+      end
+
+      it "下書き記事の詳細ページにアクセスできること" do
+        get "/articles/#{draft.id}"
+        expect(response).to have_http_status(:success)
+      end
     end 
 
     context "as a non logged in user" do 
-      it "記事のページにアクセスできること"do 
+      it "投稿した記事の詳細ページにアクセスできること"do 
         get "/articles/#{article.id}"
         expect(response).to have_http_status(:ok)
       end
+
+      it "下書き記事の詳細ページにアクセスできないこと（ルートパスにリダイレクト）" do
+        get "/articles/#{draft.id}"
+        expect(response).to redirect_to root_path
+      end
     end 
-  end 
+  end
 
   describe "#new" do
 
@@ -59,9 +70,15 @@ RSpec.describe "Articles", type: :request do
   describe "#create" do 
 
     context "with valid information(as a logged in user)" do 
-      before do 
+      before do
         @valid_article_params = {
           draft: false,
+          title: "test",
+          content: "test",
+          tag_list: "test"
+        }
+        @valid_draft_params = {
+          draft: true,
           title: "test",
           content: "test",
           tag_list: "test"
@@ -76,11 +93,22 @@ RSpec.describe "Articles", type: :request do
         }.to change(Article, :count).by 1
       end 
 
-      it "記事の投稿後プロフィールページの投稿記事のタブをクリックした状態でリダイレクトされること" do 
+      it "記事の投稿後プロフィールページに投稿記事のタブをクリックした状態でリダイレクトされること" do 
         post articles_path, params: { article: @valid_article_params }
         expect(response).to redirect_to "/users/#{user.id}?tab=published" 
-      end 
-    end 
+      end
+
+      it "下書き記事の保存に成功すること" do
+        expect {
+          post articles_path, params: { article: @valid_draft_params }
+        }.to change(Article, :count).by 1
+      end
+
+      it "下書き記事の保存後プロフィールページに下書き記事のタブをクリックした状態でリダイレクトされること" do
+        post articles_path, params: { article: @valid_draft_params }
+        expect(response).to redirect_to "/users/#{user.id}?tab=drafts" 
+      end
+    end
 
     context "with invalid information(as a logged in user)" do
       
@@ -146,25 +174,41 @@ RSpec.describe "Articles", type: :request do
           content: "test test",
           tag: "test"
         }
-        get "/articles/#{article.id}/edit"
+        @valid_draft_params = {
+          draft: true,
+          title: "test",
+          content: "test",
+          tag_list: "test"
+        }
       end 
 
       it "記事の編集に成功すること" do 
+        get "/articles/#{article.id}/edit"
         patch "/articles/#{article.id}", params: { article: @valid_article_params }
         article.reload 
         expect(article.title).to eq @valid_article_params[:title]
         expect(article.content).to eq @valid_article_params[:content]
       end 
 
-      it "記事の編集後プロフィールページの投稿記事のタブをクリックした状態でリダイレクトされること" do 
+      it "記事の編集後プロフィールページに投稿記事のタブをクリックした状態でリダイレクトされること" do
+        get "/articles/#{article.id}/edit"
         patch "/articles/#{article.id}", params: { article: @valid_article_params }
         expect(response).to redirect_to "/users/#{user.id}?tab=published" 
       end
       
-      it "成功時のフラッシュメッセージが表示されること" do 
+      it "成功時のフラッシュメッセージが表示されること" do
+        get "/articles/#{article.id}/edit"
         patch "/articles/#{article.id}", params: { article: @valid_article_params }
         expect(flash).to be_any 
-      end 
+      end
+
+      it "下書き記事の編集に成功すること" do
+        get "/articles/#{draft.id}/edit"
+        patch "/articles/#{article.id}", params: { article: @valid_draft_params }
+        draft.reload 
+        expect(draft.title).to eq @valid_draft_params[:title]
+        expect(draft.content).to eq @valid_draft_params[:content]
+      end
     end 
 
     context "with invalid information(as a logged in user)" do 
