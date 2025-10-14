@@ -5,7 +5,7 @@ class TagsController < ApplicationController
 
     redirect_to request.referer, alert: '存在しないタグです。' unless @tag.present?
 
-    @tagged_articles = Article.tagged_with(params[:id])
+    @tagged_articles = Article.published.tagged_with(params[:id])
 
     @total_articles_count = @tagged_articles.count
 

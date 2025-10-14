@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   def home; end
 
   def search
-    @search = Article.ransack(params[:q])
+    @search = Article.published.ransack(params[:q])
     return unless params[:q].present?
 
     @search_word = @search.conditions.first.values.first.value
