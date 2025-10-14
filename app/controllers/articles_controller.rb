@@ -8,9 +8,7 @@ class ArticlesController < ApplicationController
   def show
     @article = Article.find(params[:id])
 
-    if @article.draft? && @article.user == current_user
-      redirect_to root_path, alert: "下書き中の記事は公開ページでは閲覧できません。"
-    elsif @article.draft? && @article.user != current_user
+    if @article.draft? && @article.user != current_user
       redirect_to root_path, alert: "指定された記事は存在しません。"
     end
 

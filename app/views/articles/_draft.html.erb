@@ -1,6 +1,6 @@
 <li id="draft-<%= draft.id %>"> 
   <span class="heading-image">
-    <%= link_to edit_article_path(draft) do %>
+    <%= link_to article_path(draft) do %>
       <% if draft.image.attached? %> 
         <%= image_tag draft.image %>
       <% else %> 
@@ -11,15 +11,11 @@
     <% end %>
   </span>
   <span class="title title-responsive">
-    <%= link_to edit_article_path(draft) do %>
+    <%= link_to article_path(draft) do %>
       <%= draft.title %>
     <% end %>
   </span>
   <span class="timestamp"> 
     <%= draft.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
   </span> 
-  <span class="draft-delete">
-    <%= link_to '<i class="fas fa-trash"></i>'.html_safe, draft, data: { "turbo-method": :delete,
-                                                turbo_confirm: "本当に削除しますか？" } %> 
-  </span>
 </li>
