@@ -11,7 +11,7 @@ RSpec.describe TrendTagService, type: :service do
                 tags = ['test1', 'test2', 'test3', 'test4', 'test5']
                 tags.each do |tag|
                     10.times do
-                        Article.create(title: "test", content: "test", tag_list: tag, user_id: user.id)
+                        Article.create(draft: false, title: "test", content: "test", tag_list: tag, user_id: user.id)
                     end
                 end
                 trend_tags = ActsAsTaggableOn::Tag.joins(:taggings).distinct.most_used(5)
@@ -35,12 +35,12 @@ RSpec.describe TrendTagService, type: :service do
             before do
                 tags = ['test2', 'test3', 'test4', 'test5']
                 9.times do
-                    Article.create(title: "test", content: "test", tag_list: "test1", user_id: user.id)
+                    Article.create(draft: false, title: "test", content: "test", tag_list: "test1", user_id: user.id)
                 end
 
                 tags.each do |tag|
                     10.times do
-                        Article.create(title: "test", content: "test", tag_list: tag, user_id: user.id)
+                        Article.create(draft: false, title: "test", content: "test", tag_list: tag, user_id: user.id)
                     end
                 end
                 trend_tags = ActsAsTaggableOn::Tag.joins(:taggings).distinct.most_used(5)

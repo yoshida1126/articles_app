@@ -5,7 +5,7 @@ RSpec.describe 'Articles', type: :system, js: true do
   describe '#show' do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
-    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(draft: false, title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'user login(article user)' do
       before do
@@ -89,6 +89,7 @@ RSpec.describe 'Articles', type: :system, js: true do
       before do
         sign_in user
         visit 'articles/new'
+        click_button "公開"
         fill_in('article[title]', with: 'Article Title')
         fill_in 'article[content]', with: 'Article content'
         fill_in 'article[tag_list]', with: 'article'
@@ -125,6 +126,7 @@ RSpec.describe 'Articles', type: :system, js: true do
       end
 
       it 'タイトルを入力していないと投稿できないこと' do
+        click_button "公開"
         fill_in('article[title]', with: '')
         fill_in 'article[content]', with: 'Article content'
         fill_in 'article[tag_list]', with: 'article'
@@ -133,6 +135,7 @@ RSpec.describe 'Articles', type: :system, js: true do
       end
 
       it '記事の内容が空だと投稿できないこと' do
+        click_button "公開"
         fill_in('article[title]', with: 'Article Title')
         fill_in 'article[content]', with: ''
         fill_in 'article[tag_list]', with: 'article'
@@ -141,6 +144,7 @@ RSpec.describe 'Articles', type: :system, js: true do
       end
 
       it 'タグを付けないと投稿できないこと' do
+        click_button "公開"
         fill_in('article[title]', with: 'Article Title')
         fill_in 'article[content]', with: 'Article Content'
         fill_in 'article[tag_list]', with: ''
@@ -153,7 +157,7 @@ RSpec.describe 'Articles', type: :system, js: true do
   describe '#edit' do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
-    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(draft: false, title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'as a logged in user' do
       before do
@@ -198,7 +202,7 @@ RSpec.describe 'Articles', type: :system, js: true do
 
   describe '#update' do
     let(:user) { FactoryBot.create(:user) }
-    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(draft: false, title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'as a logged in user(input correct article informations)' do
       before do
@@ -219,6 +223,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         expect(page).to have_link('記事を編集', visible: true)
         click_link '記事を編集'
 
+        click_button "公開"
         fill_in('article[title]', with: 'Article Edit Title')
         fill_in 'article[content]', with: 'Article Edit content'
         fill_in 'article[tag_list]', with: 'article'
@@ -300,7 +305,7 @@ RSpec.describe 'Articles', type: :system, js: true do
   describe '#destroy' do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
-    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(draft: false, title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'as a logged in user(correct user)' do
       before do

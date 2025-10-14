@@ -4,7 +4,7 @@ RSpec.describe "Articles", type: :request do
 
   let(:user) { FactoryBot.create(:user) } 
   let(:other_user) { FactoryBot.create(:other_user) }
-  let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
+  let!(:article) { Article.create(draft: false, title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   describe "#show" do 
 
@@ -60,7 +60,8 @@ RSpec.describe "Articles", type: :request do
 
     context "with valid information(as a logged in user)" do 
       before do 
-        @valid_article_params = { 
+        @valid_article_params = {
+          draft: false,
           title: "test",
           content: "test",
           tag_list: "test"
@@ -75,16 +76,17 @@ RSpec.describe "Articles", type: :request do
         }.to change(Article, :count).by 1
       end 
 
-      it "記事の投稿後プロフィールページにリダイレクトされること" do 
+      it "記事の投稿後プロフィールページの投稿記事のタブをクリックした状態でリダイレクトされること" do 
         post articles_path, params: { article: @valid_article_params }
-        expect(response).to redirect_to "/users/#{user.id}" 
+        expect(response).to redirect_to "/users/#{user.id}?tab=published" 
       end 
     end 
 
     context "with invalid information(as a logged in user)" do
       
       before do 
-        @invalid_article_params = { 
+        @invalid_article_params = {
+          draft: false,
           title: "",
           content: "",
           tag: ""
@@ -139,6 +141,7 @@ RSpec.describe "Articles", type: :request do
       before do 
         sign_in (user)
         @valid_article_params = { 
+          draft: false,
           title: "test test", 
           content: "test test",
           tag: "test"
@@ -153,9 +156,9 @@ RSpec.describe "Articles", type: :request do
         expect(article.content).to eq @valid_article_params[:content]
       end 
 
-      it "記事の編集後プロフィールページにリダイレクトされること" do 
+      it "記事の編集後プロフィールページの投稿記事のタブをクリックした状態でリダイレクトされること" do 
         patch "/articles/#{article.id}", params: { article: @valid_article_params }
-        expect(response).to redirect_to "/users/#{user.id}" 
+        expect(response).to redirect_to "/users/#{user.id}?tab=published" 
       end
       
       it "成功時のフラッシュメッセージが表示されること" do 
@@ -167,7 +170,8 @@ RSpec.describe "Articles", type: :request do
     context "with invalid information(as a logged in user)" do 
       before do 
         sign_in (user)
-        @invalid_article_params = { 
+        @invalid_article_params = {
+          draft: false,
           title: "", 
           content: "",
           tag: ""
@@ -185,7 +189,8 @@ RSpec.describe "Articles", type: :request do
 
     context "as a non logged in user" do 
       before do 
-        @valid_article_params = { 
+        @valid_article_params = {
+          draft: false,
           title: "test test", 
           content: "test test",
           tag: "test"
@@ -212,6 +217,7 @@ RSpec.describe "Articles", type: :request do
       before do 
         sign_in other_user
         @valid_article_params = { 
+          draft: false,
           title: "test test", 
           content: "test test " 
         }

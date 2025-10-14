@@ -68,6 +68,8 @@ class ArticlesController < ApplicationController
     service = ArticleImageService.new(current_user, params, :update)
     @article, @params = service.process
 
+    was_draft = @article.draft?
+
     if HeaderImageRateLimiterService.exceeded?(current_user.id, @params[:article][:image])
       redirect_to root_path, alert: "ヘッダー画像の変更は1日#{HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY}回までです。" and return
     end
@@ -75,8 +77,15 @@ class ArticlesController < ApplicationController
     if @article.update(service.sanitized_article_params(@params))
       # 本日のヘッダー画像変更回数をインクリメント
       HeaderImageRateLimiterService.increment(current_user.id) if @params[:article][:image].present?
-      flash[:notice] = '記事を編集しました。'
-      redirect_to current_user, status: :see_other
+      
+      if was_draft && !@article.draft?
+        # 下書き → 公開になった場合
+        redirect_to user_path(@article.user, tab: 'published'), notice: '記事を投稿しました'
+      elsif @article.draft?
+        redirect_to user_path(@article.user, tab: 'drafts'), notice: '下書き記事を編集しました'
+      else
+        redirect_to user_path(@article.user, tab: 'published'), notice: '記事を編集しました'
+      end
     else
       render 'articles/edit', status: :unprocessable_entity
     end
