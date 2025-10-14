@@ -6,7 +6,14 @@ class ArticlesController < ApplicationController
   def index; end
 
   def show
-    @article = Article.published.find(params[:id])
+    @article = Article.find(params[:id])
+
+    if @article.draft? && @article.user == current_user
+      redirect_to root_path, alert: "下書き中の記事は公開ページでは閲覧できません。"
+    elsif @article.draft? && @article.user != current_user
+      redirect_to root_path, alert: "指定された記事は存在しません。"
+    end
+
     @tags = @article.tag_counts_on(:tags)
     @comment = ArticleComment.new
 
@@ -39,8 +46,11 @@ class ArticlesController < ApplicationController
       # 投稿成功時、投稿数をカウント
       limit_service.track_post
 
-      flash[:notice] = '記事を作成しました。'
-      redirect_to current_user
+      if @article.draft?
+        redirect_to user_path(current_user.id, tab: 'drafts'), notice: '下書きを保存しました'
+      else
+        redirect_to user_path(current_user.id, tab: 'published'), notice: '記事を投稿しました'
+      end
     else
       render 'articles/new', status: :unprocessable_entity
     end

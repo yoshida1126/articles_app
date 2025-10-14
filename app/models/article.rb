@@ -26,6 +26,10 @@ class Article < ApplicationRecord
     likes.where(user_id: user.id).exists?
   end
 
+  def draft?
+    self.draft
+  end
+
   def self.searchable_attributes
     %w[title content]
   end
