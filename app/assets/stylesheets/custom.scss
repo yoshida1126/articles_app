@@ -1528,10 +1528,12 @@ ul.article-comment-option {
 
 .draft-toggle {
   display: inline-flex;
+  align-items: center;
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 6px;
   overflow: hidden;
+  height: 38px;
 }
 
 .draft-toggle .toggle-button {
@@ -1551,6 +1553,73 @@ ul.article-comment-option {
 .draft-toggle .toggle-button.active {
   background-color: #99b9c2;
   color: white;
+}
+
+#publish-options {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #777;
+  font-size: 14px;
+
+  span:first-child {
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  label {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    gap: 0.5rem;
+
+    span {
+      padding-left: 20px;
+    }
+
+    &:last-child {
+      padding-left: 20px;
+    }
+  }
+
+  input[type="radio"] {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+    margin: 0;
+  }
+
+  label::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #99b9c2;
+    border-radius: 50%;
+    box-sizing: border-box;
+    position: absolute;
+  }
+
+  input[type="radio"]:checked + span::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #99b9c2;
+    border-radius: 50%;
+  }
+
+  label:last-child input[type="radio"]:checked + span::after {
+    left: 24px;
+  }
 }
 
 .article-text-field {
@@ -2543,6 +2612,73 @@ input.favorite_article_delete_btn {
 
   .html {
     margin-bottom: 30px;
+  }
+
+  #publish-options-mobile {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding-right: 10px;
+    margin-bottom: 20px;
+    color: #777;
+    font-size: 14px;
+
+    span:first-child {
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    label {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      gap: 0.5rem;
+
+      span {
+        padding-left: 20px;
+      }
+
+      &:last-child {
+        padding-left: 10px;
+      }
+    }
+
+    input[type="radio"] {
+      opacity: 0;
+      position: absolute;
+      pointer-events: none;
+      margin: 0;
+    }
+
+    label::before {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #99b9c2;
+      border-radius: 50%;
+      box-sizing: border-box;
+      position: absolute;
+    }
+
+    input[type="radio"]:checked + span::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      background-color: #99b9c2;
+      border-radius: 50%;
+    }
+
+    label:last-child input[type="radio"]:checked + span::after {
+      left: 14px;
+    }
   }
 
   // 記事編集ページ

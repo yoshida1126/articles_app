@@ -6,7 +6,7 @@ function header_image_preview () {
 
   if (!preview) return null; 
 
-  const fileField = document.querySelector('input[type="file"][name="article[image]"]');
+  const fileField = document.querySelector('input[type="file"][name="article_draft[image]"]');
 
   fileField.addEventListener('change', function(e) {
     const oldPreview = document.querySelector('.preview');

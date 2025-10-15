@@ -92,11 +92,4 @@ class ArticlesController < ApplicationController
     
     authorize_resource_owner(@article)
   end
-
-  def set_remaining_upload_quota
-    return unless current_user
-
-    type = action_name == 'show' ? :comment : :article
-    @remaining_mb = UploadQuotaService.new(user: current_user, type: type).remaining_mb
-  end
 end

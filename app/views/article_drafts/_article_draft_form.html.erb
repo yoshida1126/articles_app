@@ -1,10 +1,10 @@
-<%= form_with(model: @article) do |f| %> 
+<%= form_with model: @draft, url: save_draft_article_drafts_path, method: :post do |f| %> 
   <%= render 'shared/error_messages', object: f.object %> 
 
-  <div data-controller="draft-toggle" class="draft-toggle" data-draft-toggle-article-value="<%= @article.published %>">
+  <div data-controller="draft-toggle" class="draft-toggle">
     <button
       type="button"
-      class="toggle-button"
+      class="toggle-button active"
       data-action="click->draft-toggle#selectDraft"
       data-draft-toggle-value="false"
     >
@@ -18,7 +18,30 @@
     >
       公開
     </button>
-    <%= f.hidden_field :published, value: false, data: { draft_toggle_target: "input" } %>
+
+    <div id="publish-options" style="display: none;">
+      <span>公開範囲：</span>
+      <label>
+        <input type="radio" name="visibility_pc" value="public" checked>
+        <span>全体に公開</span>
+      </label>
+      <label>
+        <input type="radio" name="visibility_pc" value="private">
+        <span>自分だけが見られる</span>
+      </label>
+    </div>
+  </div>
+
+  <div id="publish-options-mobile" style="display: none;">
+    <span>公開範囲：</span>
+    <label>
+      <input type="radio" name="visibility_mobile" value="public" checked>
+      <span>全体に公開</span>
+    </label>
+    <label>
+      <input type="radio" name="visibility_mobile" value="private">
+      <span>自分だけが見られる</span>
+    </label>
   </div>
 
   <div class="title-field">
@@ -36,7 +59,7 @@
 
   <div id="add-tags">
     <%= f.label :tag_list, "タグ(半角のスペースで区切って入力してください。)", class: "form-label" %> 
-    <%= f.text_field :tag_list, value: @article.tag_list.join(" "), class: "form-control" %> 
+    <%= f.text_field :tag_list, value: @draft.tag_list.join(" "), class: "form-control" %> 
   </div> 
 
   <div id="article-upload-remaining">本日の記事画像の残りアップロード容量：<%= @remaining_mb %> MB</div>
@@ -84,6 +107,8 @@
   </div>
 
   <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
+
+  <%= hidden_field_tag 'article[published]', '', id: 'published-input' %>
 
   <span class="count" id="count_text">0 ／ 3000文字</span>
 

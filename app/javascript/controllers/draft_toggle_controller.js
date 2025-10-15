@@ -1,27 +1,104 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-
-  static targets = ["input"];
-  static values = { article: Boolean }
-
   connect() {
-    const isDraft = this.articleValue
-    this.updateButtons(isDraft)
-    this.inputTarget.value = isDraft
+    this.input = document.getElementById("published-input")
+    this.form = document.getElementById("article-draft-form")
+    this.publishOptions = document.getElementById("publish-options")
+    this.mobileOptions = document.getElementById("publish-options-mobile")
+
+    this.updatePublishOptionsDisplay()
+    this.syncVisibilityRadioWithHiddenField()
+
+    window.addEventListener("resize", () => {
+      this.updatePublishOptionsDisplay()
+      this.syncVisibilityRadioWithHiddenField()
+    })
+
+    const radios = [
+      ...document.querySelectorAll('input[name="visibility_pc"]'),
+      ...document.querySelectorAll('input[name="visibility_mobile"]')
+    ]
+    radios.forEach(radio => {
+      radio.addEventListener('change', () => this.handleVisibilityChange())
+    })
   }
 
   selectDraft(event) {
-    const value = event.target.dataset.draftToggleValue === "true"
-    this.inputTarget.value = value
-    this.updateButtons(value)
+    const isPublished = event.currentTarget.dataset.draftToggleValue === "true"
+
+    const newAction = isPublished
+      ? "/article_drafts"
+      : "/article_drafts/save_draft"
+
+    if (this.form) {
+      this.form.action = newAction
+    }
+
+    this.toggleActive(event.currentTarget)
+    this.updatePublishOptionsDisplay(isPublished)
+
+    if (isPublished) {
+      this.syncVisibilityRadioWithHiddenField()
+    } else {
+      this.input.value = ""
+    }
   }
 
-  updateButtons(activeValue) {
-    const buttons = this.element.querySelectorAll('button')
-    buttons.forEach((btn) => {
-      const isActive = btn.dataset.draftToggleValue === String(activeValue)
-      btn.classList.toggle("active", isActive)
+  toggleActive(activeButton) {
+    const buttons = this.element.querySelectorAll(".toggle-button")
+    buttons.forEach(btn => btn.classList.remove("active"))
+    activeButton.classList.add("active")
+  }
+
+  updatePublishOptionsDisplay() {
+    const isMobile = window.innerWidth <= 768;
+
+    const activeToggle = document.querySelector('.toggle-button.active');
+    const isPublished = activeToggle?.dataset.draftToggleValue === "true";
+
+    if (this.publishOptions) {
+      this.publishOptions.style.display = isPublished && !isMobile ? "inline-flex" : "none";
+    }
+
+    if (this.mobileOptions) {
+      this.mobileOptions.style.display = isPublished && isMobile ? "block" : "none";
+    }
+
+    const visibility = this.input?.value === "false" ? "private" : "public";
+
+    const targets = document.querySelectorAll(
+      `input[name="${isMobile ? 'visibility_mobile' : 'visibility_pc'}"]`
+    );
+
+    targets.forEach(radio => {
+      radio.checked = radio.value === visibility;
+    });
+  }
+
+
+  handleVisibilityChange() {
+    const isMobile = window.innerWidth <= 768
+    const selected = document.querySelector(
+      `input[name="${isMobile ? 'visibility_mobile' : 'visibility_pc'}"]:checked`
+    )
+
+    if (selected && this.input) {
+      const value = selected.value === "public" ? "true" : "false"
+      this.input.value = value
+    }
+  }
+
+  syncVisibilityRadioWithHiddenField() {
+    const isMobile = window.innerWidth <= 768
+    const visibility = this.input.value === "false" ? "private" : "public"
+
+    const targets = document.querySelectorAll(
+      `input[name="${isMobile ? 'visibility_mobile' : 'visibility_pc'}"]`
+    )
+
+    targets.forEach(radio => {
+      radio.checked = radio.value === visibility
     })
   }
 }

@@ -45,12 +45,27 @@ Rails.application.routes.draw do
   end
   get '/users/:id', to: 'users#show'
   resources :relationships, only: %i[create destroy]
+
   resources :articles, only: %i[index show new create edit update destroy] do
     resource :likes, only: %i[create destroy]
     resources :article_comments, only: %i[create destroy edit update] do
       resource :article_comment_likes, only: %i[create destroy]
     end
   end
+
+  resources :article_drafts, only: [:new, :edit] do
+    member do
+      get :preview, as: :preview
+      patch :update_draft, as: :update_draft
+      patch :update
+      post  :commit, as: :commit
+    end
+
+    collection do
+      post :save_draft, as: :save_draft
+    end
+  end
+
   resources :tags, only: [:show]
   get 'search', to: 'searches#search'
   resources :favorites, only: %i[create destroy]

@@ -14,14 +14,6 @@ class Article < ApplicationRecord
   scope :published, -> { where(published: true) }
   scope :unpublished, -> { where(published: false) }
   validates :user_id, presence: true
-  validates :title, presence: true, length: { maximum: 50 }
-  validates :content, presence: true
-  validates :image, content_type: { in: %w[image/jpeg image/png image/gif],
-                                    message: 'アップロード可能な画像形式はJPEG, PNG, GIFです。ファイル形式をご確認ください。' },
-                    size: { less_than: 1.megabytes,
-                            message: '1MB以下の画像をアップロードしてください。' },
-                    dimension: { width: { min: 375, max: 1024 },
-                                 height: { min: 360, max: 1024 } }
 
   def liked?(user)
     likes.where(user_id: user.id).exists?
@@ -45,13 +37,5 @@ class Article < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     []
-  end
-
-  MAX_TAG_COUNT = 10
-
-  def validate_tag
-    return unless tag_list.size > MAX_TAG_COUNT
-
-    errors.add('タグ', "の数は#{MAX_TAG_COUNT}個以下にしてください。")
   end
 end
