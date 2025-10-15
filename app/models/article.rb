@@ -2,6 +2,7 @@ class Article < ApplicationRecord
   has_one_attached :image # 記事のヘッダー画像
   has_many_attached :article_images # 記事本文に使う画像
   belongs_to :user
+  has_one :article_draft, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :article_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_10_15_024153) do
+ActiveRecord::Schema[7.0].define(version: 2025_10_15_064801) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -57,6 +57,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_15_024153) do
     t.index ["article_id"], name: "index_article_comments_on_article_id"
     t.index ["user_id", "article_id", "created_at"], name: "index_article_comments_on_user_id_and_article_id_and_created_at"
     t.index ["user_id"], name: "index_article_comments_on_user_id"
+  end
+
+  create_table "article_drafts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.bigint "article_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_article_drafts_on_article_id"
+    t.index ["user_id"], name: "index_article_drafts_on_user_id"
   end
 
   create_table "articles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -180,6 +191,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_10_15_024153) do
   add_foreign_key "article_comment_likes", "users"
   add_foreign_key "article_comments", "articles"
   add_foreign_key "article_comments", "users"
+  add_foreign_key "article_drafts", "articles"
+  add_foreign_key "article_drafts", "users"
   add_foreign_key "articles", "users"
   add_foreign_key "favorite_article_lists", "articles"
   add_foreign_key "favorite_article_lists", "users"
