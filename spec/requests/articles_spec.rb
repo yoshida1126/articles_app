@@ -4,8 +4,8 @@ RSpec.describe "Articles", type: :request do
 
   let(:user) { FactoryBot.create(:user) } 
   let(:other_user) { FactoryBot.create(:other_user) }
-  let!(:article) { Article.create(draft: false, title: "test", content: "test", tag_list: "test", user_id: user.id) }
-  let!(:draft) { Article.create(draft: true, title: "test", content: "test", tag_list: "test", user_id: user.id) }
+  let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
+  let!(:draft) { Article.create(published: false, title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   describe "#show" do 
 
@@ -72,13 +72,12 @@ RSpec.describe "Articles", type: :request do
     context "with valid information(as a logged in user)" do 
       before do
         @valid_article_params = {
-          draft: false,
           title: "test",
           content: "test",
           tag_list: "test"
         }
         @valid_draft_params = {
-          draft: true,
+          published: false,
           title: "test",
           content: "test",
           tag_list: "test"
@@ -103,18 +102,12 @@ RSpec.describe "Articles", type: :request do
           post articles_path, params: { article: @valid_draft_params }
         }.to change(Article, :count).by 1
       end
-
-      it "下書き記事の保存後プロフィールページに下書き記事のタブをクリックした状態でリダイレクトされること" do
-        post articles_path, params: { article: @valid_draft_params }
-        expect(response).to redirect_to "/users/#{user.id}?tab=drafts" 
-      end
     end
 
     context "with invalid information(as a logged in user)" do
       
       before do 
         @invalid_article_params = {
-          draft: false,
           title: "",
           content: "",
           tag: ""
@@ -169,13 +162,12 @@ RSpec.describe "Articles", type: :request do
       before do 
         sign_in (user)
         @valid_article_params = { 
-          draft: false,
           title: "test test", 
           content: "test test",
           tag: "test"
         }
         @valid_draft_params = {
-          draft: true,
+          published: false,
           title: "test",
           content: "test",
           tag_list: "test"
@@ -215,7 +207,6 @@ RSpec.describe "Articles", type: :request do
       before do 
         sign_in (user)
         @invalid_article_params = {
-          draft: false,
           title: "", 
           content: "",
           tag: ""
@@ -234,7 +225,6 @@ RSpec.describe "Articles", type: :request do
     context "as a non logged in user" do 
       before do 
         @valid_article_params = {
-          draft: false,
           title: "test test", 
           content: "test test",
           tag: "test"
@@ -261,7 +251,6 @@ RSpec.describe "Articles", type: :request do
       before do 
         sign_in other_user
         @valid_article_params = { 
-          draft: false,
           title: "test test", 
           content: "test test " 
         }

@@ -4,7 +4,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
 
   describe '#create' do
     let!(:user) { FactoryBot.create(:user) }
-    let!(:article) { Article.create(draft: false, title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'as a logged in user(input correct article comment)' do
       before do
@@ -67,7 +67,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
 
   describe '#update' do
     let!(:user) { FactoryBot.create(:user) }
-    let!(:article) { Article.create(draft: false, title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
     let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
 
     context 'as a logged in user(input correct article comment)' do
@@ -136,7 +136,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
 
   describe '#destroy' do
     let!(:user) { FactoryBot.create(:user) }
-    let!(:article) { Article.create(draft: false, title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
     let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
 
     context 'as a logged in user' do

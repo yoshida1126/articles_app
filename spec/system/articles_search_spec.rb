@@ -4,8 +4,8 @@ RSpec.describe 'Search', type: :system, js: true do
   
   describe '#search' do
     let(:user) { FactoryBot.create(:user) }
-    let!(:article) { Article.create(draft: false, title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
-    let!(:draft) { Article.create(draft: true, title: 'draft article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:draft) { Article.create(published: false, title: 'draft article', content: 'test', tag_list: 'test', user_id: user.id) }
 
     context 'search article' do
       before do

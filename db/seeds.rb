@@ -55,20 +55,18 @@ array.each do |tag|
       if article.new_record?
         article.content = content
         article.tag_list = tag
-        article.draft = false
+        article.published = true
         article.save!
       else
         unless article.tag_list.include?(tag)
           article.tag_list.add(tag)
-          article.draft = false
+          article.published = true
           article.save!
         end
       end
     end
   end
 end
-
-Article.where(draft: true, title: 'test').update_all(draft: false)
 
 users = User.all
 user = users.first

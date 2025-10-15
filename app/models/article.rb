@@ -10,8 +10,8 @@ class Article < ApplicationRecord
   validates :tag_list, presence: { message: 'を入力してください。' }
   validate :validate_tag
   default_scope -> { order(created_at: :desc) }
-  scope :published, -> { where(draft: false) }
-  scope :draft, -> { where(draft: true) }
+  scope :published, -> { where(published: true) }
+  scope :unpublished, -> { where(published: false) }
   validates :user_id, presence: true
   validates :title, presence: true, length: { maximum: 50 }
   validates :content, presence: true
@@ -26,8 +26,8 @@ class Article < ApplicationRecord
     likes.where(user_id: user.id).exists?
   end
 
-  def draft?
-    self.draft
+  def published?
+    self.published
   end
 
   def self.searchable_attributes

@@ -4,7 +4,7 @@ module ArticleParams
             params[:article].delete(:images)
             params[:article].delete(:blob_signed_ids)
 
-            params.require(:article).permit(:draft, :title, :content, :image, :tag_list, article_images: [])
+            params.require(:article).permit(:published, :title, :content, :image, :tag_list, article_images: [])
         end
     end
 end

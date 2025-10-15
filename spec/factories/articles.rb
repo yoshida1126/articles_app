@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :article do
-    draft { false }
     title { 'Test article' }
     content { 'article' }
     association :user
@@ -9,7 +8,6 @@ FactoryBot.define do
   end
 
   factory :other_article, class: Article do
-    draft { false }
     title { 'Other article' }
     content { 'oter test' }
     association :user

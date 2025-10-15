@@ -8,7 +8,7 @@ class ArticlesController < ApplicationController
   def show
     @article = Article.find(params[:id])
 
-    if @article.draft? && @article.user != current_user
+    if !@article.published? && @article.user != current_user
       redirect_to root_path, alert: "指定された記事は存在しません。"
     end
 
@@ -44,11 +44,7 @@ class ArticlesController < ApplicationController
       # 投稿成功時、投稿数をカウント
       limit_service.track_post
 
-      if @article.draft?
-        redirect_to user_path(current_user.id, tab: 'drafts'), notice: '下書きを保存しました'
-      else
-        redirect_to user_path(current_user.id, tab: 'published'), notice: '記事を投稿しました'
-      end
+      redirect_to user_path(current_user.id, tab: 'published'), notice: '記事を投稿しました'
     else
       render 'articles/new', status: :unprocessable_entity
     end
@@ -66,8 +62,6 @@ class ArticlesController < ApplicationController
     service = ArticleImageService.new(current_user, params, :update)
     @article, @params = service.process
 
-    was_draft = @article.draft?
-
     if HeaderImageRateLimiterService.exceeded?(current_user.id, @params[:article][:image])
       redirect_to root_path, alert: "ヘッダー画像の変更は1日#{HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY}回までです。" and return
     end
@@ -75,15 +69,8 @@ class ArticlesController < ApplicationController
     if @article.update(service.sanitized_article_params(@params))
       # 本日のヘッダー画像変更回数をインクリメント
       HeaderImageRateLimiterService.increment(current_user.id) if @params[:article][:image].present?
-      
-      if was_draft && !@article.draft?
-        # 下書き → 公開になった場合
-        redirect_to user_path(@article.user, tab: 'published'), notice: '記事を投稿しました'
-      elsif @article.draft?
-        redirect_to user_path(@article.user, tab: 'drafts'), notice: '下書き記事を編集しました'
-      else
-        redirect_to user_path(@article.user, tab: 'published'), notice: '記事を編集しました'
-      end
+
+      redirect_to user_path(@article.user, tab: 'published'), notice: '記事を編集しました'
     else
       render 'articles/edit', status: :unprocessable_entity
     end
