@@ -10,9 +10,11 @@ class Article < ApplicationRecord
   acts_as_taggable_on :tags
   validates :tag_list, presence: { message: 'を入力してください。' }
   validate :validate_tag
+
   default_scope -> { order(created_at: :desc) }
   scope :published, -> { where(published: true) }
   scope :unpublished, -> { where(published: false) }
+
   validates :user_id, presence: true
 
   def liked?(user)
@@ -37,5 +39,13 @@ class Article < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     []
+  end
+
+  MAX_TAG_COUNT = 10
+
+  def validate_tag
+    return unless tag_list.size > MAX_TAG_COUNT
+
+    errors.add('タグ', "の数は#{MAX_TAG_COUNT}個以下にしてください。")
   end
 end

@@ -39,6 +39,9 @@ export default class extends Controller {
     this.updatePublishOptionsDisplay(isPublished)
 
     if (isPublished) {
+      if (!this.input.value) {
+        this.input.value = "true"
+      }
       this.syncVisibilityRadioWithHiddenField()
     } else {
       this.input.value = ""

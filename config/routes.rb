@@ -66,12 +66,11 @@ Rails.application.routes.draw do
       get :preview, as: :preview
       patch :update_draft, as: :update_draft
       patch :update
-      post  :commit, as: :commit
-
     end
 
     collection do
       post :save_draft, as: :save_draft
+      post  :commit, as: :commit
     end
   end
 

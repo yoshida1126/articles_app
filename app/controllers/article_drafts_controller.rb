@@ -1,6 +1,6 @@
 class ArticleDraftsController < ApplicationController
   before_action :logged_in_user, only: %i[new commit edit update destroy]
-  before_action :correct_user, only: %i[preview commit edit update_draft update destroy]
+  before_action :correct_user, only: %i[preview edit update_draft update destroy]
   before_action :set_remaining_upload_quota, only: %i[new edit]
 
   def preview
@@ -11,6 +11,17 @@ class ArticleDraftsController < ApplicationController
   end
 
   def save_draft
+    # 画像処理などを含むサービスを呼び出して、ArticleDraftオブジェクトを生成
+    @draft = ArticleImageService.new(current_user, params, :save_draft).process
+
+    if @draft.save
+      redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
+    else
+      render 'article_drafts/new', status: :unprocessable_entity
+    end
+  end
+
+  def commit
     # ユーザーの1日あたりの記事投稿数を制限するサービスを初期化
     limit_service = UserPostLimitService.new(current_user)
 
@@ -20,20 +31,17 @@ class ArticleDraftsController < ApplicationController
       redirect_to root_path and return
     end
 
-    # 画像処理などを含むサービスを呼び出して、ArticleDraftオブジェクトを生成
-    @draft = ArticleImageService.new(current_user, params, :create).process
+    # 画像処理などを含むサービスを呼び出して、Articleオブジェクトを生成
+    @article = ArticleImageService.new(current_user, params, :commit).process
 
-    if @draft.save
-      # 下書き保存成功時、下書きの数をカウント
+    if @article.save
+      # 記事投稿成功時、下書きの数をカウント
       limit_service.track_post
 
-      redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
+      redirect_to current_user, notice: '新しい記事を投稿しました'
     else
       render 'article_drafts/new', status: :unprocessable_entity
     end
-  end
-
-  def commit
   end
 
   def edit

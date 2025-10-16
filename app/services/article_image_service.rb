@@ -13,15 +13,23 @@ class ArticleImageService
 
     def process
         case @action
-        when :create
+        when :save_draft
             if @params[:article_draft][:blob_signed_ids]
-              handle_article_images_for_create
+              handle_article_images_for_save_draft_and_commit
             else
                 @params = sanitized_article_draft_params(@params)
                 @draft = @user.article_drafts.build(@params)
             end
             # create時は@paramsが不要なため、articleのみ返す
             @draft
+        when :commit
+            if @params[:article_draft][:blob_signed_ids]
+                handle_article_images_for_save_draft_and_commit
+            else
+                @params = sanitized_article_draft_params(@params)
+                @draft = @user.article_drafts.build(@params)
+            end
+            build_from_draft
         when :update
             if @params[:article][:blob_signed_ids]
                 handle_article_images_for_update
@@ -37,7 +45,7 @@ class ArticleImageService
 
     private
 
-    def handle_article_images_for_create
+    def handle_article_images_for_save_draft_and_commit
         # 記事に使用された画像だけをアタッチし、不要な画像を削除するメソッドです。
         # 画像関連のロジックは app/services/concerns/image_utils.rb に定義されています。
 
@@ -65,6 +73,25 @@ class ArticleImageService
         unused_blob_signed_ids = blob_signed_ids - used_blob_signed_ids
         # 使われなかった画像のpurge処理
         unused_blob_delete(unused_blob_signed_ids, blob_finder: @blob_finder)
+    end
+
+    def build_from_draft
+        @article = @user.articles.build(
+            title: @draft.title,
+            content: @draft.content,
+            tag_list: @draft.tag_list,
+            published: @params[:article][:published]
+        )
+
+        @article.image.attach(@draft.image.blob) if @draft.image.attached?
+
+        @draft.article_images.each do |image|
+            @article.article_images.attach(image.blob)
+        end
+
+        @draft.destroy
+
+        @article
     end
 
     def handle_article_images_for_update
