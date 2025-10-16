@@ -1,6 +1,6 @@
 class ArticleImageService
     include ImageUtils
-    include ArticleParams::ArticleParamsPermitter
+    include ArticleDraftParams::ArticleDraftParamsPermitter
 
     def initialize(user, params, action)
         @user = user
@@ -17,7 +17,7 @@ class ArticleImageService
             if @params[:article_draft][:blob_signed_ids]
               handle_article_images_for_create
             else
-                @params = sanitized_article_params(@params)
+                @params = sanitized_article_draft_params(@params)
                 @draft = @user.article_drafts.build(@params)
             end
             # create時は@paramsが不要なため、articleのみ返す
@@ -52,7 +52,7 @@ class ArticleImageService
         blob_signed_ids = JSON.parse(@params[:article_draft][:blob_signed_ids])
         @params[:article_draft][:image] = resize_article_header_image(@params[:article_draft][:image])
 
-        @sanitized_params = sanitized_article_params(@params)
+        @sanitized_params = sanitized_article_draft_params(@params)
         @draft = @user.article_drafts.build(@sanitized_params)
 
         # 画像が保存されている場所のURLを取得

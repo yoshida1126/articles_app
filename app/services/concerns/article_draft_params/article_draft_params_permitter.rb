@@ -1,6 +1,6 @@
-module ArticleParams
-    module ArticleParamsPermitter
-        def sanitized_article_params(params)
+module ArticleDraftParams
+    module ArticleDraftParamsPermitter
+        def sanitized_article_draft_params(params)
             params[:article_draft].delete(:images)
             params[:article_draft].delete(:blob_signed_ids)
 
