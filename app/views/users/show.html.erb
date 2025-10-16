@@ -39,16 +39,20 @@
     <% if @user == current_user %>
       <div class="article-type">
         <div class="article-tab <%= 'selected' if @tab == :published %>" data-path-suffix="">投稿記事</div>
+        <div class="article-tab <%= 'selected' if @tab == :private %>" data-path-suffix="/private_articles">非公開記事</div>
         <div class="article-tab <%= 'selected' if @tab == :drafts %>" data-path-suffix="/drafts">下書き記事</div>
       </div>
     <% else %>
       <h4>投稿記事</h4>
     <% end %>
     <div id="article-contents">
-      <ol id="published", class="articles active">
+      <ol id="published" class="articles active">
         <%= render @articles %> 
       </ol>
-      <ol id="drafts", class="articles">
+      <ol id="private_articles" class="articles">
+        <%= render partial: 'articles/private_articles', collection: @private_articles, as: :private_article %>
+      </ol>
+      <ol id="drafts" class="articles">
         <%= render partial: 'article_drafts/draft', collection: @drafts, as: :draft %>
       </ol>
     </div>
@@ -56,8 +60,10 @@
   <div class="pagination">
     <% if @tab == :drafts %>
       <%= render partial: "shared/pagination", locals: { object: @drafts } %>
-    <% else %>
+    <% elsif @tab == :published %>
       <%= render partial: "shared/pagination", locals: { object: @articles } %>
+    <% else %>
+      <%= render partial: "shared/pagination", locals: { object: @private_articles } %>
     <% end %>
   </div>
 </div> 

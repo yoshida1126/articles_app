@@ -1,13 +1,28 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: %i[show following followers]
-  before_action :unconfirmed_account_check, only: [:show, :drafts]
+  before_action :unconfirmed_account_check, only: [:show, :private_articles, :drafts]
 
   def show
+    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
+    @private_articles = @user.articles.unpublished.paginate(page: params[:page], per_page: 15)
+    @articles_count = @articles.count
+
+    limit_service = UserPostLimitService.new(current_user)
+    @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
+    @tab = :published
+    render :show
+  end
+
+  def private_articles
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
 
     limit_service = UserPostLimitService.new(current_user)
     @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
+
+    @private_articles = @user.articles.unpublished.paginate(page: params[:page], per_page: 15)
+    @tab = :private
+    render :show
   end
 
   def drafts
@@ -16,8 +31,7 @@ class UsersController < ApplicationController
 
     limit_service = UserPostLimitService.new(current_user)
     @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
-    
-    @user = User.find(params[:id])
+
     @drafts = @user.article_drafts.paginate(page: params[:page], per_page: 15)
     @tab = :drafts
     render :show

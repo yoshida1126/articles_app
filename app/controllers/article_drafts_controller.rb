@@ -38,7 +38,11 @@ class ArticleDraftsController < ApplicationController
       # 記事投稿成功時、下書きの数をカウント
       limit_service.track_post
 
-      redirect_to current_user, notice: '新しい記事を投稿しました'
+      if @article.published == false
+        redirect_to private_articles_user_path(current_user), notice: '未公開記事として投稿しました'
+      else
+        redirect_to current_user, notice: '新しい記事を投稿しました'
+      end
     else
       render 'article_drafts/new', status: :unprocessable_entity
     end

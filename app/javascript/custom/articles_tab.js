@@ -1,7 +1,7 @@
-document.addEventListener("turbo:load", tab_switcher);
-document.addEventListener("turbo:render", tab_switcher);
+document.addEventListener("turbo:load", tabSwitcher);
+document.addEventListener("turbo:render", tabSwitcher);
 
-function tab_switcher() {
+function tabSwitcher() {
   const tabs = document.querySelectorAll(".article-tab");
   const contents = document.querySelectorAll("#article-contents .articles");
 
@@ -9,13 +9,11 @@ function tab_switcher() {
 
   const currentPath = window.location.pathname;
 
-  const isDraftPage = currentPath.endsWith('/drafts');
-
-  const activeTab = isDraftPage ? "drafts" : "published";
+  const activeTab = getActiveTabFromPath(currentPath);
 
   tabs.forEach(tab => {
-    const target = tab.dataset.pathSuffix === "/drafts" ? "drafts" : "published";
-    tab.classList.toggle("selected", target === activeTab);
+    const targetTab = tab.dataset.pathSuffix?.replace("/", "") || "published";
+    tab.classList.toggle("selected", targetTab === activeTab);
 
     tab.addEventListener("click", () => {
       const userId = getUserIdFromPath(currentPath);
@@ -34,4 +32,10 @@ function tab_switcher() {
 function getUserIdFromPath(path) {
   const match = path.match(/^\/users\/(\d+)/);
   return match ? match[1] : null;
+}
+
+function getActiveTabFromPath(path) {
+  if (path.endsWith("/drafts")) return "drafts";
+  if (path.endsWith("/private_articles")) return "private_articles";
+  return "published";
 }
