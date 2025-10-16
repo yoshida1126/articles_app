@@ -14,14 +14,14 @@ class ArticleImageService
     def process
         case @action
         when :create
-            if @params[:article][:blob_signed_ids]
+            if @params[:article_draft][:blob_signed_ids]
               handle_article_images_for_create
             else
                 @params = sanitized_article_params(@params)
-                @article = @user.articles.build(@params)
+                @draft = @user.article_drafts.build(@params)
             end
             # create時は@paramsが不要なため、articleのみ返す
-            @article
+            @draft
         when :update
             if @params[:article][:blob_signed_ids]
                 handle_article_images_for_update
@@ -49,18 +49,18 @@ class ArticleImageService
         # ※ 注意点：
         # sanitized_article_paramsメソッドでパラメータがフィルタされる前に、
         # blob_signed_ids を先に取り出しておく必要があります。
-        blob_signed_ids = JSON.parse(@params[:article][:blob_signed_ids])
-        @params[:article][:image] = resize_article_header_image(@params[:article][:image])
+        blob_signed_ids = JSON.parse(@params[:article_draft][:blob_signed_ids])
+        @params[:article_draft][:image] = resize_article_header_image(@params[:article_draft][:image])
 
         @sanitized_params = sanitized_article_params(@params)
-        @article = @user.articles.build(@sanitized_params)
+        @draft = @user.article_drafts.build(@sanitized_params)
 
         # 画像が保存されている場所のURLを取得
         image_urls = extract_s3_urls(@sanitized_params[:content])
         # URLを元に使われている画像のblob_signed_idの配列を取得
         used_blob_signed_ids = get_blob_signed_id_from_url(image_urls, blob_finder: @blob_finder)
         # 記事本文に使われた画像のアタッチ処理
-        attach_images_to_resource(@article.article_images, used_blob_signed_ids, blob_finder: @blob_finder)
+        attach_images_to_resource(@draft.article_images, used_blob_signed_ids, blob_finder: @blob_finder)
         # 使われていない画像のblob_signed_idの配列を取得
         unused_blob_signed_ids = blob_signed_ids - used_blob_signed_ids
         # 使われなかった画像のpurge処理

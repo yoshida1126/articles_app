@@ -28,7 +28,7 @@ export default class extends Controller {
     const isPublished = event.currentTarget.dataset.draftToggleValue === "true"
 
     const newAction = isPublished
-      ? "/article_drafts"
+      ? "/article_drafts/commit"
       : "/article_drafts/save_draft"
 
     if (this.form) {
@@ -62,7 +62,7 @@ export default class extends Controller {
     }
 
     if (this.mobileOptions) {
-      this.mobileOptions.style.display = isPublished && isMobile ? "block" : "none";
+      this.mobileOptions.style.display = isPublished && isMobile ? "inline-flex" : "none";
     }
 
     const visibility = this.input?.value === "false" ? "private" : "public";

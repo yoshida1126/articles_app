@@ -1,4 +1,4 @@
-<%= form_with model: @draft, url: save_draft_article_drafts_path, method: :post do |f| %> 
+<%= form_with model: @draft, url: save_draft_article_drafts_path, id: "article-draft-form", method: :post do |f| %> 
   <%= render 'shared/error_messages', object: f.object %> 
 
   <div data-controller="draft-toggle" class="draft-toggle">
@@ -113,6 +113,6 @@
   <span class="count" id="count_text">0 ／ 3000文字</span>
 
   <div class="article-submit-btn">
-    <%= f.submit "投　稿", type: "submit", class: "btn btn-primary" %> 
+    <%= f.submit "送　信", type: "submit", class: "btn btn-primary" %> 
   </div>
 <% end %> 
