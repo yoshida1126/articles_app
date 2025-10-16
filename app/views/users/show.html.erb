@@ -54,6 +54,10 @@
     </div>
   </div>
   <div class="pagination">
-    <%= render partial: "shared/pagination", locals: { object: @articles } %>
+    <% if @tab == :drafts %>
+      <%= render partial: "shared/pagination", locals: { object: @drafts } %>
+    <% else %>
+      <%= render partial: "shared/pagination", locals: { object: @articles } %>
+    <% end %>
   </div>
 </div> 

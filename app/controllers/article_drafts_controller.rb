@@ -20,16 +20,16 @@ class ArticleDraftsController < ApplicationController
       redirect_to root_path and return
     end
 
-    # 記事作成時の画像処理などを含むサービスを呼び出して、ArticleDraftオブジェクトを生成
+    # 画像処理などを含むサービスを呼び出して、ArticleDraftオブジェクトを生成
     @draft = ArticleImageService.new(current_user, params, :create).process
 
     if @draft.save
-      # 投稿成功時、下書きの数をカウント
+      # 下書き保存成功時、下書きの数をカウント
       limit_service.track_post
 
-      redirect_to user_path(current_user.id, tab: 'dratfs'), notice: '下書きを保存しました'
+      redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
     else
-      render 'articles/new', status: :unprocessable_entity
+      render 'article_drafts/new', status: :unprocessable_entity
     end
   end
 
@@ -47,7 +47,7 @@ class ArticleDraftsController < ApplicationController
 
   def destroy
     @draft.destroy
-    redirect_to user_path(current_user.id, tab: 'drafts'), notice: '下書きを削除しました'
+    redirect_to drafts_user_path(current_user), notice: '下書きを削除しました'
   end
 
   private

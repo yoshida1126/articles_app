@@ -61,12 +61,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :article_drafts, only: [:new, :edit] do
+  resources :article_drafts, only: [:new, :edit, :destroy] do
     member do
       get :preview, as: :preview
       patch :update_draft, as: :update_draft
       patch :update
       post  :commit, as: :commit
+
     end
 
     collection do

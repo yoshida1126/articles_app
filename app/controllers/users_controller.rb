@@ -13,6 +13,10 @@ class UsersController < ApplicationController
   def drafts
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
+
+    limit_service = UserPostLimitService.new(current_user)
+    @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
+    
     @user = User.find(params[:id])
     @drafts = @user.article_drafts.paginate(page: params[:page], per_page: 15)
     @tab = :drafts
