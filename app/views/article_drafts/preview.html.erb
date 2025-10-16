@@ -1,0 +1,56 @@
+<% provide(:title, @draft.title) %>
+<div class="article-page"> 
+  <span class="article-heading-image">
+    <%= image_tag @draft.image if @draft.image.attached? %>
+  </span>
+  <h1 class="article-title"><%= @draft.title %></h1> 
+  <div class="row">
+    <section class="article-information"> 
+      <%= link_to @draft.user do %>
+        <div class="article-profile-img">
+          <%= image_tag @draft.user.profile_img if @draft.user.profile_img.attached? %>
+        </div>
+      <% end %>
+      <div class="name-and-time">
+        <%= link_to @draft.user do %>
+          <div class="user-name"><%= link_to @draft.user.name, @draft.user %></div>
+        <% end %>
+        <% unless @draft.created_at.strftime("%Y年%-m月%-d日 %-H:%-M:%-S") == @draft.updated_at.strftime("%Y年%-m月%-d日 %-H:%-M:%-S") %>
+          <span class="timestamp"><%= @draft.updated_at.strftime("%Y年%-m月%-d日 %-H:%-M") %> (最後の編集)</span>
+        <% else %>
+          <span class="timestamp"><%= @draft.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %> </span>
+        <% end %>
+      </div>
+    </section>
+    <div class="select-operation"> 
+      <section class="article-edit">
+        <div class="dropdown">
+          <a href="#" id="option" class="dropdown-toggle"> 
+            <span class="dli-more-v"></span>
+          </a>
+          <ul id="dropdown-menu2" class="dropdown-menu dropdown-menu-right article-option">
+            <li><%= link_to "下書きを編集", edit_article_draft_path(@draft), data: { turbo: false } %></li> 
+            <li class="divider"></li>
+            <li><%= link_to "下書きを削除", @draft, data: { "turbo-method": :delete,
+                                                          turbo_confirm: "本当に削除しますか？" } %> 
+            </li>
+          </ul> 
+        </div>
+      </section>
+    </div>
+  </div> 
+  <% if @tags.present? %> 
+    <div class="tags">
+      <ul>
+        <i class="fas fa-tag"></i>
+        <% @tags.each do |tag| %>
+          <li class="tag">
+            <%= link_to tag, tag_path(tag.name) %>
+          </li>
+        <% end %> 
+      </ul>
+    </div >
+  <% end %> 
+  <div class="content">
+    <%= markdown(@draft.content) %>
+  </div>

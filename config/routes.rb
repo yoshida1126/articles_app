@@ -43,6 +43,14 @@ Rails.application.routes.draw do
     end
     resources :favorite_article_lists, only: %i[index show new create edit update destroy]
   end
+
+  resources :users, only: [:show] do
+    member do
+      get :drafts
+    end
+  end
+
+
   get '/users/:id', to: 'users#show'
   resources :relationships, only: %i[create destroy]
 

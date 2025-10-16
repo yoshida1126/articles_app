@@ -2,52 +2,36 @@ document.addEventListener("turbo:load", tab_switcher);
 document.addEventListener("turbo:render", tab_switcher);
 
 function tab_switcher() {
-  if (document.getElementsByClassName("article-type")) {
-    const tabs = document.querySelectorAll('.article-type .article-tab');
-    const contents = document.querySelectorAll('#article-contents .articles');
+  const tabs = document.querySelectorAll(".article-tab");
+  const contents = document.querySelectorAll("#article-contents .articles");
 
-    const params = new URLSearchParams(window.location.search);
-    const initialTab = params.get('tab') || 'published';
+  if (!tabs.length || !contents.length) return;
 
-    tabs.forEach(tab => {
-      if (tab.getAttribute('data-target') === initialTab) {
-        tab.classList.add('selected');
-      } else {
-        tab.classList.remove('selected');
-      }
+  const currentPath = window.location.pathname;
+
+  const isDraftPage = currentPath.endsWith('/drafts');
+
+  const activeTab = isDraftPage ? "drafts" : "published";
+
+  tabs.forEach(tab => {
+    const target = tab.dataset.pathSuffix === "/drafts" ? "drafts" : "published";
+    tab.classList.toggle("selected", target === activeTab);
+
+    tab.addEventListener("click", () => {
+      const userId = getUserIdFromPath(currentPath);
+      if (!userId) return;
+
+      const pathSuffix = tab.dataset.pathSuffix || "";
+      window.location.href = `/users/${userId}${pathSuffix}`;
     });
+  });
 
-    contents.forEach(content => {
-      if (content.id === initialTab) {
-        content.classList.add('active');
-      } else {
-        content.classList.remove('active');
-      }
-    });
+  contents.forEach(content => {
+    content.classList.toggle("active", content.id === activeTab);
+  });
+}
 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-
-        // タブの切り替え
-        tabs.forEach(t => t.classList.remove('selected'));
-
-        tab.classList.add('selected');
-
-
-        // コンテンツの切り替え
-        const target = tab.getAttribute('data-target');
-
-        contents.forEach(content => {
-          content.classList.remove('active');
-          if (content.id === target) {
-            content.classList.add('active');
-          }
-        });
-
-        const newUrl = new URL(window.location);
-        newUrl.searchParams.set('tab', target);
-        window.history.pushState(null, '', newUrl.toString());
-      });
-    });
-  }
+function getUserIdFromPath(path) {
+  const match = path.match(/^\/users\/(\d+)/);
+  return match ? match[1] : null;
 }

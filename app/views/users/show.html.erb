@@ -38,8 +38,8 @@
   <div class="col-sm-8"> 
     <% if @user == current_user %>
       <div class="article-type">
-        <div class="article-tab selected" data-target="published">投稿記事</div>
-        <div class="article-tab" data-target="drafts">下書き記事</div>
+        <div class="article-tab <%= 'selected' if @tab == :published %>" data-path-suffix="">投稿記事</div>
+        <div class="article-tab <%= 'selected' if @tab == :drafts %>" data-path-suffix="/drafts">下書き記事</div>
       </div>
     <% else %>
       <h4>投稿記事</h4>
@@ -49,7 +49,7 @@
         <%= render @articles %> 
       </ol>
       <ol id="drafts", class="articles">
-        <%= render partial: 'articles/draft', collection: @drafts, as: :draft %>
+        <%= render partial: 'article_drafts/draft', collection: @drafts, as: :draft %>
       </ol>
     </div>
   </div>

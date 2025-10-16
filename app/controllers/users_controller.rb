@@ -1,14 +1,22 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: %i[show following followers]
-  before_action :unconfirmed_account_check, only: [:show]
+  before_action :unconfirmed_account_check, only: [:show, :drafts]
 
   def show
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
-
-    @drafts = @user.article_drafts.paginate(page: params[:page], per_page: 15)
+    @articles_count = @articles.count
 
     limit_service = UserPostLimitService.new(current_user)
     @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
+  end
+
+  def drafts
+    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
+    @articles_count = @articles.count
+    @user = User.find(params[:id])
+    @drafts = @user.article_drafts.paginate(page: params[:page], per_page: 15)
+    @tab = :drafts
+    render :show
   end
 
   def account_delete_confirmation
