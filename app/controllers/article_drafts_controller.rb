@@ -53,9 +53,16 @@ class ArticleDraftsController < ApplicationController
   private
 
   def correct_user
-    # 記事の作成者が、現在ログイン中のユーザーかを確認
-    @draft = ArticleDraft.find(params[:id])
+    @draft = ArticleDraft.find_by(id: params[:id])
 
-    authorize_resource_owner(@draft)
+    if @draft
+      authorize_resource_owner(@draft)
+      return
+    end
+
+    @article = Article.find(params[:id])
+    authorize_resource_owner(@article)
+
+    @draft = @article.article_draft || @article.build_article_draft
   end
 end

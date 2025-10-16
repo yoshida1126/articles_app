@@ -54,7 +54,7 @@ Rails.application.routes.draw do
   get '/users/:id', to: 'users#show'
   resources :relationships, only: %i[create destroy]
 
-  resources :articles, only: %i[index show new create edit update destroy] do
+  resources :articles, only: %i[index show destroy] do
     resource :likes, only: %i[create destroy]
     resources :article_comments, only: %i[create destroy edit update] do
       resource :article_comment_likes, only: %i[create destroy]
