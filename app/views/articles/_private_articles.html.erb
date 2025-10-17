@@ -1,6 +1,6 @@
 <li id="article-<%= private_article.id %>"> 
   <span class="heading-image">
-    <%= link_to preview_article_draft_path(private_article) do %>
+    <%= link_to private_article do %>
       <% if private_article.image.attached? %> 
         <%= image_tag private_article.image %>
       <% else %> 
@@ -11,7 +11,7 @@
     <% end %>
   </span>
   <span class="title title-responsive">
-    <%= link_to preview_article_draft_path(private_article) do %>
+    <%= link_to private_article do %>
       <%= private_article.title %>
     <% end %>
   </span>

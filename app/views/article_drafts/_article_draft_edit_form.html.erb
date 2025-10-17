@@ -1,0 +1,152 @@
+<%= form_with model: @draft, url: update_draft_article_draft_path, id: "article-draft-edit-form", method: :patch do |f| %> 
+  <%= render 'shared/error_messages', object: f.object %> 
+
+  <div data-controller="draft-toggle-for-edit" data-draft-id="<%= @draft.id %>" id="draft-toggle" class="draft-toggle">
+    <button
+      type="button"
+      class="toggle-button active"
+      data-action="click->draft-toggle-for-edit#selectDraft"
+      data-draft-toggle-value="false"
+    >
+      下書き
+    </button>
+    <% if @draft.article %>
+      <button
+        type="button"
+        class="toggle-button"
+        data-action="click->draft-toggle-for-edit#selectDraft"
+        data-draft-toggle-value="true"
+      >
+        更新
+      </button>
+
+      <div id="publish-options" style="display: none;">
+        <span>公開範囲：</span>
+        <label>
+          <input type="radio" name="visibility_pc" value="public" checked>
+          <span>全体に公開</span>
+        </label>
+        <label>
+          <input type="radio" name="visibility_pc" value="private">
+          <span>自分だけが見られる</span>
+        </label>
+      </div>
+    <% else %>
+      <button
+        type="button"
+        class="toggle-button"
+        data-action="click->draft-toggle-for-edit#selectDraft"
+        data-draft-toggle-value="true"
+      >
+        公開
+      </button>
+
+      <div id="publish-options" style="display: none;">
+        <span>公開範囲：</span>
+        <label>
+          <input type="radio" name="visibility_pc" value="public" checked>
+          <span>全体に公開</span>
+        </label>
+        <label>
+          <input type="radio" name="visibility_pc" value="private">
+          <span>自分だけが見られる</span>
+        </label>
+      </div>
+    <% end %>
+  </div>
+
+  <div id="publish-options-mobile" style="display: none;">
+    <span>公開範囲：</span>
+    <label>
+      <input type="radio" name="visibility_mobile" value="public" checked>
+      <span>全体に公開</span>
+    </label>
+    <label>
+      <input type="radio" name="visibility_mobile" value="private">
+      <span>自分だけが見られる</span>
+    </label>
+  </div>
+
+  <div class="title-field">
+    <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力してください。" %> 
+  </div> 
+  <% if @header_image_change_remaining.to_i > 0 %>
+    <div class="selection-and-change-count">
+      <label class="top-image">
+        <span class="btn select-image">ヘッダー画像を選択</span>
+        <%= f.file_field :image, accept: "image/jpeg, image/png, image/gif", style: "display: none;" %>
+      </label>
+      <p>（※本日の残り変更回数: <strong><%= @header_image_change_remaining %></strong>）</p>
+    </div>
+  <% else %>
+    <p>
+      ※本日の<strong>ヘッダー画像変更回数</strong>を超えています。本記事のヘッダー画像は明日以降に変更可能です。
+    </p>
+  <% end %>
+
+  <div id="header-img-preview">
+    <% if @draft.image.attached? %>
+      <div class="preview">
+        <%= image_tag @draft.image %>
+      </div>
+    <% else %> 
+      <p id="header-image-placeholder">ここにヘッダー画像のプレビューが表示されます。</p>
+    <% end %>
+  </div>
+
+  <div id="add-tags">
+    <%= f.label :tag_list, "タグ(半角のスペースで区切って入力してください。)", class: "form-label" %> 
+    <%= f.text_field :tag_list, value: @draft.tag_list.join(" "), class: "form-control" %> 
+  </div> 
+
+  <div id="article-upload-remaining">[本日の記事画像の残りアップロード容量：<%= @remaining_mb %> MB]</div>
+  <div class="toolbar">
+    <div class="article-image-upload">
+      <label>
+        <i class="far fa-image"></i>
+        <%= f.file_field :content, id: "artilce-image-field", accept: "image/jpeg, image/png, image/gif", style: "display: none;", multiple: true, 
+        data: { 
+          controller: "article-image-upload",
+          article_image_upload_url_value: rails_direct_uploads_url,
+          article_image_upload_csrf_token_value: form_authenticity_token,
+          action: "input->article-image-upload#imageUpload"
+        } 
+        %>
+      </label>
+    </div>
+    <div class="preview-open">
+      <div id="preview-btn", class="btn preview-btn">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <div id="edita", class="btn edita display">
+        <i class="fas fa-edit"></i> 
+      </div>
+    </div>
+  </div>
+  <div id="article-text-field">
+    <div class="text-area-and-preview">
+      <%= f.text_area :content, required: true, id: 'markdown', class: 'form-control article-text-area', maxlength: "3000", placeholder: "本文を入力してください。",
+       data: {
+        controller: "drop-upload count-article-text",
+        drop_upload_url_value: rails_direct_uploads_url,
+        action: "drop->drop-upload#dropUpload keyup->count-article-text#count"
+       }
+      %>
+      <div id="html", class="html display">
+        <div class="preview-placeholder">
+          プレビューが表示されます。
+        </div>
+        <div class="preview-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
+  <%= hidden_field_tag 'article[published]', '', id: 'published-input' %>
+
+  <span class="count" id="count_text">0 ／3000文字</span>
+
+  <div class="article-edit-btn">
+    <%= f.submit "編　集", class: "btn btn-primary" %> 
+  </div>
+<% end %> 

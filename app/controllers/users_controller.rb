@@ -33,6 +33,7 @@ class UsersController < ApplicationController
     @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
 
     @drafts = @user.article_drafts.paginate(page: params[:page], per_page: 15)
+
     @tab = :drafts
     render :show
   end

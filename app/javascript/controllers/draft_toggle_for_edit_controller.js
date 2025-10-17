@@ -1,0 +1,108 @@
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  connect() {
+    this.input = document.getElementById("published-input")
+    this.form = document.getElementById("article-draft-edit-form")
+    this.publishOptions = document.getElementById("publish-options")
+    this.mobileOptions = document.getElementById("publish-options-mobile")
+
+    this.updatePublishOptionsDisplay()
+    this.syncVisibilityRadioWithHiddenField()
+
+    window.addEventListener("resize", () => {
+      this.updatePublishOptionsDisplay()
+      this.syncVisibilityRadioWithHiddenField()
+    })
+
+    const radios = [
+      ...document.querySelectorAll('input[name="visibility_pc"]'),
+      ...document.querySelectorAll('input[name="visibility_mobile"]')
+    ]
+    radios.forEach(radio => {
+      radio.addEventListener('change', () => this.handleVisibilityChange())
+    })
+  }
+
+  selectDraft(event) {
+    const isPublished = event.currentTarget.dataset.draftToggleValue === "true"
+    const draftId = document.getElementById('draft-toggle').dataset.draftId;
+
+    const newAction = isPublished
+      ? `/article_drafts/${draftId}`
+      : `/article_drafts/${draftId}/update_draft`
+
+    if (this.form) {
+      this.form.action = newAction
+    }
+
+    this.toggleActive(event.currentTarget)
+    this.updatePublishOptionsDisplay(isPublished)
+
+    if (isPublished) {
+      if (!this.input.value) {
+        this.input.value = "true"
+      }
+      this.syncVisibilityRadioWithHiddenField()
+    } else {
+      this.input.value = ""
+    }
+  }
+
+  toggleActive(activeButton) {
+    const buttons = this.element.querySelectorAll(".toggle-button")
+    buttons.forEach(btn => btn.classList.remove("active"))
+    activeButton.classList.add("active")
+  }
+
+  updatePublishOptionsDisplay() {
+    const isMobile = window.innerWidth <= 768;
+
+    const activeToggle = document.querySelector('.toggle-button.active');
+    const isPublished = activeToggle?.dataset.draftToggleValue === "true";
+
+    if (this.publishOptions) {
+      this.publishOptions.style.display = isPublished && !isMobile ? "inline-flex" : "none";
+    }
+
+    if (this.mobileOptions) {
+      this.mobileOptions.style.display = isPublished && isMobile ? "inline-flex" : "none";
+    }
+
+    const visibility = this.input?.value === "false" ? "private" : "public";
+
+    const targets = document.querySelectorAll(
+      `input[name="${isMobile ? 'visibility_mobile' : 'visibility_pc'}"]`
+    );
+
+    targets.forEach(radio => {
+      radio.checked = radio.value === visibility;
+    });
+  }
+
+
+  handleVisibilityChange() {
+    const isMobile = window.innerWidth <= 768
+    const selected = document.querySelector(
+      `input[name="${isMobile ? 'visibility_mobile' : 'visibility_pc'}"]:checked`
+    )
+
+    if (selected && this.input) {
+      const value = selected.value === "public" ? "true" : "false"
+      this.input.value = value
+    }
+  }
+
+  syncVisibilityRadioWithHiddenField() {
+    const isMobile = window.innerWidth <= 768
+    const visibility = this.input.value === "false" ? "private" : "public"
+
+    const targets = document.querySelectorAll(
+      `input[name="${isMobile ? 'visibility_mobile' : 'visibility_pc'}"]`
+    )
+
+    targets.forEach(radio => {
+      radio.checked = radio.value === visibility
+    })
+  }
+}

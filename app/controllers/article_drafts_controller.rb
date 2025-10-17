@@ -1,10 +1,9 @@
 class ArticleDraftsController < ApplicationController
-  before_action :logged_in_user, only: %i[new commit edit update destroy]
+  before_action :logged_in_user, only: %i[preview new commit edit update destroy]
   before_action :correct_user, only: %i[preview edit update_draft update destroy]
   before_action :set_remaining_upload_quota, only: %i[new edit]
 
-  def preview
-  end
+  def preview; end
 
   def new
     @draft = ArticleDraft.new
@@ -32,29 +31,77 @@ class ArticleDraftsController < ApplicationController
     end
 
     # 画像処理などを含むサービスを呼び出して、Articleオブジェクトを生成
-    @article = ArticleImageService.new(current_user, params, :commit).process
+    @article, @draft = ArticleImageService.new(current_user, params, :commit).process
 
-    if @article.save
-      # 記事投稿成功時、下書きの数をカウント
+    ActiveRecord::Base.transaction do
+      @draft.save!
+      @article.save!
       limit_service.track_post
-
-      if @article.published == false
-        redirect_to private_articles_user_path(current_user), notice: '未公開記事として投稿しました'
-      else
-        redirect_to current_user, notice: '新しい記事を投稿しました'
-      end
-    else
-      render 'article_drafts/new', status: :unprocessable_entity
     end
+
+    if @article.published == false
+      redirect_to private_articles_user_path(current_user), notice: '未公開記事として投稿しました'
+    else
+      redirect_to current_user, notice: '新しい記事を投稿しました'
+    end
+
+  rescue ActiveRecord::RecordInvalid
+    render 'article_drafts/new', status: :unprocessable_entity
   end
 
   def edit
+    @user = current_user
+
+    remaining = HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY - HeaderImageRateLimiterService.count_for_today(current_user.id)
+    @header_image_change_remaining = remaining > 0 ? remaining : 0
   end
 
   def update_draft
+    service = ArticleImageService.new(current_user, params, :update_draft)
+    @draft, @params = service.process
+
+    if HeaderImageRateLimiterService.exceeded?(current_user.id, @params[:article_draft][:image])
+      redirect_to root_path, alert: "ヘッダー画像の変更は1日#{HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY}回までです。" and return
+    end
+
+    if @draft.update(service.sanitized_article_draft_params(@params))
+      # 本日のヘッダー画像変更回数をインクリメント
+      HeaderImageRateLimiterService.increment(current_user.id) if @params[:article_draft][:image].present?
+
+      redirect_to drafts_user_path(current_user), notice: '下書きを編集しました'
+    else
+      render 'article_drafts/edit', status: :unprocessable_entity
+    end
   end
 
   def update
+    service = ArticleImageService.new(current_user, params, :update)
+    @draft, @params = service.process
+
+    @article = @draft.article
+
+    @article.published = params[:article][:published]
+
+    if HeaderImageRateLimiterService.exceeded?(current_user.id, @params[:article_draft][:image])
+      redirect_to root_path, alert: "ヘッダー画像の変更は1日#{HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY}回までです。" and return
+    end
+
+    ActiveRecord::Base.transaction do
+      @draft.update!(service.sanitized_article_draft_params(@params))
+      @article.update!(service.sanitized_article_draft_params(@params))
+    end
+
+    # 本日のヘッダー画像変更回数をインクリメント
+    HeaderImageRateLimiterService.increment(current_user.id) if @params[:article_draft][:image].present?
+
+    if @article.published == false
+      redirect_to private_articles_user_path(current_user), notice: '未公開記事として編集しました'
+    else
+      redirect_to current_user, notice: '記事を編集しました'
+    end
+
+  rescue ActiveRecord::RecordInvalid
+    render 'article_drafts/edit', status: :unprocessable_entity
   end
 
   def destroy
@@ -65,16 +112,7 @@ class ArticleDraftsController < ApplicationController
   private
 
   def correct_user
-    @draft = ArticleDraft.find_by(id: params[:id])
-
-    if @draft
+      @draft = current_user.article_drafts.find(params[:id])
       authorize_resource_owner(@draft)
-      return
-    end
-
-    @article = Article.find(params[:id])
-    authorize_resource_owner(@article)
-
-    @draft = @article.article_draft || @article.build_article_draft
   end
 end

@@ -20,7 +20,7 @@ class ArticleImageService
                 @params = sanitized_article_draft_params(@params)
                 @draft = @user.article_drafts.build(@params)
             end
-            # create時は@paramsが不要なため、articleのみ返す
+            # create時は@paramsが不要なため、draftのみ返す
             @draft
         when :commit
             if @params[:article_draft][:blob_signed_ids]
@@ -30,14 +30,23 @@ class ArticleImageService
                 @draft = @user.article_drafts.build(@params)
             end
             build_from_draft
-        when :update
-            if @params[:article][:blob_signed_ids]
-                handle_article_images_for_update
+        when :update_draft
+            if @params[:article_draft][:blob_signed_ids]
+                handle_article_images_for_update_draft
             else
-                @article = @user.articles.find(@params[:id])
+                @draft = @user.article_drafts.find(@params[:id])
             end
             # update時は後続処理でparamsも使うため、両方返す
-            return @article, @params
+            return @draft, @params
+        when :update
+            if @params[:article_draft][:blob_signed_ids]
+                handle_article_images_for_update_draft
+            else
+                @draft = @user.article_drafts.find(@params[:id])
+            end
+            sync_header_image_from_draft
+            # update時は後続処理でparamsも使うため、両方返す
+            return @draft, @params
         else
             raise "Unknown action: #{@action}"
         end
@@ -75,6 +84,37 @@ class ArticleImageService
         unused_blob_delete(unused_blob_signed_ids, blob_finder: @blob_finder)
     end
 
+    def handle_article_images_for_update_draft
+        blob_signed_ids = JSON.parse(@params[:article_draft][:blob_signed_ids])
+        @draft = @user.article_drafts.find(@params[:id])
+
+        # ヘッダー画像が設定されている場合のみ、リサイズ処理を行う
+        # 記事更新時にヘッダー画像が消えてしまうことを防ぐため、nil が入らないようにサービスクラス側でも確認しています。
+        if @params[:article_draft][:image].present?
+            @params[:article_draft][:image] = resize_article_header_image(@params[:article_draft][:image])
+        end
+
+        attached_signed_ids = @draft.article_images.map(&:signed_id)
+
+        # 画像が保存されている場所のURLを取得
+        image_urls = extract_s3_urls(@params[:article_draft][:content])
+        # URLを元に使われている画像のblob_signed_idの配列を取得
+        used_blob_signed_ids = get_blob_signed_id_from_url(image_urls, blob_finder: @blob_finder)
+        # 編集後にも使われているアタッチ済みの画像を抽出
+        used_attached_signed_ids = attached_signed_ids & used_blob_signed_ids
+        # 記事の編集により追加された画像のアタッチ処理
+        attach_images_to_resource(@draft.article_images, used_blob_signed_ids - used_attached_signed_ids, blob_finder: @blob_finder)
+
+        # 使われなかった画像や、消された画像の抽出処理
+        unused_blob_signed_ids = calculate_unused_blob_signed_ids(
+            blob_signed_ids, attached_signed_ids, used_blob_signed_ids
+        )
+        # attachments_finder は、signed_id を元に ActiveStorage::Attachment を検索するための Proc です。
+        attachments_finder = ->(blob_id) { find_attachments(blob_id) }
+        # 使われなかった画像や、消された画像のpurge処理
+        unused_blob_delete(unused_blob_signed_ids, blob_finder: @blob_finder, attachments_finder: attachments_finder)
+    end
+
     def build_from_draft
         @article = @user.articles.build(
             title: @draft.title,
@@ -89,39 +129,20 @@ class ArticleImageService
             @article.article_images.attach(image.blob)
         end
 
-        @draft.destroy
+        @draft.article = @article
 
-        @article
+        return @article, @draft
     end
 
-    def handle_article_images_for_update
-        blob_signed_ids = JSON.parse(@params[:article][:blob_signed_ids])
-        @article = @user.articles.find(@params[:id])
+    def sync_header_image_from_draft
+        return unless @draft.image.attached? || @params[:article_draft][:image].nil?
 
-        # ヘッダー画像が設定されている場合のみ、リサイズ処理を行う
-        # 記事更新時にヘッダー画像が消えてしまうことを防ぐため、nil が入らないようにサービスクラス側でも確認しています。
-        if @params[:article][:image].present?
-            @params[:article][:image] = resize_article_header_image(@params[:article][:image])
+        draft_blob = @draft.image.blob
+        article_blob = @draft.article.image.blob
+
+        if article_blob != draft_blob
+            @draft.article.image.detach if @draft.article.image.attached?
+            @draft.article.image.attach(draft_blob)
         end
-
-        attached_signed_ids = @article.article_images.map(&:signed_id)
-
-        # 画像が保存されている場所のURLを取得
-        image_urls = extract_s3_urls(@params[:article][:content])
-        # URLを元に使われている画像のblob_signed_idの配列を取得
-        used_blob_signed_ids = get_blob_signed_id_from_url(image_urls, blob_finder: @blob_finder)
-        # 編集後にも使われているアタッチ済みの画像を抽出
-        used_attached_signed_ids = attached_signed_ids & used_blob_signed_ids
-        # 記事の編集により追加された画像のアタッチ処理
-        attach_images_to_resource(@article.article_images, used_blob_signed_ids - used_attached_signed_ids, blob_finder: @blob_finder)
-
-        # 使われなかった画像や、消された画像の抽出処理
-        unused_blob_signed_ids = calculate_unused_blob_signed_ids(
-            blob_signed_ids, attached_signed_ids, used_blob_signed_ids
-        )
-        # attachments_finder は、signed_id を元に ActiveStorage::Attachment を検索するための Proc です。
-        attachments_finder = ->(blob_id) { find_attachments(blob_id) }
-        # 使われなかった画像や、消された画像のpurge処理
-        unused_blob_delete(unused_blob_signed_ids, blob_finder: @blob_finder, attachments_finder: attachments_finder)
     end
 end
