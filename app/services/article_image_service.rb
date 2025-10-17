@@ -120,7 +120,8 @@ class ArticleImageService
             title: @draft.title,
             content: @draft.content,
             tag_list: @draft.tag_list,
-            published: @params[:article][:published]
+            published: @params[:article][:published],
+            draft: @draft
         )
 
         @article.image.attach(@draft.image.blob) if @draft.image.attached?
@@ -138,7 +139,7 @@ class ArticleImageService
         return unless @draft.image.attached? || @params[:article_draft][:image].nil?
 
         draft_blob = @draft.image.blob
-        article_blob = @draft.article.image.blob
+        article_blob = @draft.article&.image&.blob
 
         if article_blob != draft_blob
             @draft.article.image.detach if @draft.article.image.attached?

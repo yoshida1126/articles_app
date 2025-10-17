@@ -85,6 +85,12 @@ class ArticleDraftsController < ApplicationController
     @draft.editing = false
     @article = @draft.article
 
+    if @article.nil?
+      @article = current_user.articles.build(
+        article_draft: @draft
+      )
+    end
+
     @article.published = params[:article][:published]
 
     if HeaderImageRateLimiterService.exceeded?(current_user.id, @params[:article_draft][:image])
@@ -110,7 +116,28 @@ class ArticleDraftsController < ApplicationController
   end
 
   def destroy
-    @draft.destroy
+    if @draft.article
+      @article = @draft.article
+      @draft.destroy
+
+      @draft = current_user.article_drafts.build(
+        title: @article.title,
+        content: @article.content,
+        tag_list: @article.tag_list,
+        article: @article
+      )
+
+      @draft.image.attach(@draft.image.blob) if @article.image.attached?
+
+      @article.article_images.each do |image|
+         @draft.article_images.attach(image.blob)
+      end
+
+      @draft.save!
+    else
+      @draft.destroy
+    end
+
     redirect_to drafts_user_path(current_user), notice: '下書きを削除しました'
   end
 
