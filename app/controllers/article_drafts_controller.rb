@@ -13,6 +13,8 @@ class ArticleDraftsController < ApplicationController
     # 画像処理などを含むサービスを呼び出して、ArticleDraftオブジェクトを生成
     @draft = ArticleImageService.new(current_user, params, :save_draft).process
 
+    @draft.editing = true
+
     if @draft.save
       redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
     else
@@ -60,6 +62,8 @@ class ArticleDraftsController < ApplicationController
     service = ArticleImageService.new(current_user, params, :update_draft)
     @draft, @params = service.process
 
+    @draft.editing = true
+
     if HeaderImageRateLimiterService.exceeded?(current_user.id, @params[:article_draft][:image])
       redirect_to root_path, alert: "ヘッダー画像の変更は1日#{HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY}回までです。" and return
     end
@@ -78,6 +82,7 @@ class ArticleDraftsController < ApplicationController
     service = ArticleImageService.new(current_user, params, :update)
     @draft, @params = service.process
 
+    @draft.editing = false
     @article = @draft.article
 
     @article.published = params[:article][:published]

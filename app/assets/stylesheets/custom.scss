@@ -1149,6 +1149,9 @@ aside {
     cursor: pointer;
     position: relative;
   }
+  .selected {
+    pointer-events: none;
+  }
   .selected::after {
     content: "";
     position: absolute;

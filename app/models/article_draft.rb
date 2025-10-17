@@ -9,6 +9,7 @@ class ArticleDraft < ApplicationRecord
   validate :validate_tag
 
   default_scope -> { order(created_at: :desc) }
+  scope :editing, -> { where(editing: true) }
 
   validates :user_id, presence: true
   validates :title, presence: true, length: { maximum: 50 }
