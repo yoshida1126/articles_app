@@ -59,11 +59,11 @@
               <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete } %></li>
             </ul>
             <li class="responsive-link-btn">
-              <%= link_to "投　稿", new_article_draft_path, class: "btn btn-custom", data: { turbo: false } %>
+              <%= link_to "投　稿", new_user_article_draft_path(current_user), class: "btn btn-custom", data: { turbo: false } %>
             </li>
           </div>
           <li class="link-btn">
-            <%= link_to "投　稿", new_article_draft_path, class: "btn btn-custom", data: { turbo: false }  %>
+            <%= link_to "投　稿", new_user_article_draft_path(current_user), class: "btn btn-custom", data: { turbo: false }  %>
           </li>
         <% else %>   
           <div class="non-logged-in-menu">   

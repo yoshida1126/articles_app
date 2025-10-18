@@ -23,6 +23,7 @@ class ArticleImageService
             # create時は@paramsが不要なため、draftのみ返す
             @draft
         when :commit
+            @published = @params[:article][:published]
             if @params[:article_draft][:blob_signed_ids]
                 handle_article_images_for_save_draft_and_commit
             else
@@ -120,7 +121,7 @@ class ArticleImageService
             title: @draft.title,
             content: @draft.content,
             tag_list: @draft.tag_list,
-            published: @params[:article][:published] == "true",
+            published: @published == "true",
             article_draft: @draft
         )
 

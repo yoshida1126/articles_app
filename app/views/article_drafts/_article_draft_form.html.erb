@@ -1,7 +1,7 @@
-<%= form_with model: @draft, url: save_draft_article_drafts_path, id: "article-draft-form", method: :post do |f| %> 
+<%= form_with model: @draft, url: save_draft_user_article_drafts_path(current_user), id: "article-draft-form", method: :post do |f| %> 
   <%= render 'shared/error_messages', object: f.object %> 
 
-  <div data-controller="draft-toggle" class="draft-toggle">
+  <div data-controller="draft-toggle" data-user-id="<%= current_user.id %>" id="draft-toggle" class="draft-toggle">
     <button
       type="button"
       class="toggle-button active"

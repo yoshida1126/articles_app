@@ -28,15 +28,15 @@ class ArticlesController < ApplicationController
     flash[:notice] = '記事を削除しました。'
     redirect_to current_user, status: :see_other
   end
+end
 
-  private
+private
 
-  def correct_user
-    # 記事の作成者が、現在ログイン中のユーザー、または管理者かを確認
-    @article = Article.find(params[:id])
+def correct_user
+  # 記事の作成者が、現在ログイン中のユーザー、または管理者かを確認
+  @article = Article.find(params[:id])
 
-    return if current_user.admin
+  return if current_user.admin
     
-    authorize_resource_owner(@article)
-  end
+  authorize_resource_owner(@article)
 end

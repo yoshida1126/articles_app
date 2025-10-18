@@ -1,5 +1,6 @@
 class ArticleDraftsController < ApplicationController
   before_action :logged_in_user, only: %i[preview new commit edit update destroy]
+  before_action :authorize_user!, only: %i[new save_draft commit]
   before_action :correct_user, only: %i[preview edit update_draft update destroy]
   before_action :set_remaining_upload_quota, only: %i[new edit]
 
@@ -10,9 +11,11 @@ class ArticleDraftsController < ApplicationController
   end
 
   def save_draft
+
     # 画像処理などを含むサービスを呼び出して、ArticleDraftオブジェクトを生成
     @draft = ArticleImageService.new(current_user, params, :save_draft).process
 
+    @draft.user = current_user
     @draft.editing = true
 
     if @draft.save
@@ -23,6 +26,7 @@ class ArticleDraftsController < ApplicationController
   end
 
   def commit
+
     # ユーザーの1日あたりの記事投稿数を制限するサービスを初期化
     limit_service = UserPostLimitService.new(current_user)
 
@@ -42,7 +46,7 @@ class ArticleDraftsController < ApplicationController
     end
 
     if @article.published == false
-      redirect_to private_articles_user_path(current_user), notice: '未公開記事として投稿しました'
+      redirect_to private_articles_user_path(current_user), notice: '非公開記事として投稿しました'
     else
       redirect_to current_user, notice: '新しい記事を投稿しました'
     end
@@ -59,6 +63,7 @@ class ArticleDraftsController < ApplicationController
   end
 
   def update_draft
+
     service = ArticleImageService.new(current_user, params, :update_draft)
     @draft, @params = service.process
 
@@ -109,9 +114,9 @@ class ArticleDraftsController < ApplicationController
     HeaderImageRateLimiterService.increment(current_user.id) if @params[:article_draft][:image].present?
 
     if !from_published && !to_published
-      notice = '未公開記事を編集しました'
+      notice = '非公開記事を編集しました'
     elsif from_published && !to_published
-      notice = '未公開記事として編集しました'
+      notice = '非公開記事として編集しました'
     elsif !from_published && to_published
       notice = '新しい記事を投稿しました'
     else
@@ -154,8 +159,18 @@ class ArticleDraftsController < ApplicationController
 
   private
 
+  def authorize_user!
+    @user = User.find_by(id: params[:user_id])
+    unless @user == current_user
+      redirect_to root_path, notice: "他のユーザーの記事は作成できません" and return
+    end
+  end
+
   def correct_user
-      @draft = current_user.article_drafts.find(params[:id])
-      authorize_resource_owner(@draft)
+    @draft = current_user.article_drafts.find_by(id: params[:id])
+    unless @draft
+      redirect_to root_path, notice: "指定された下書きは存在しません" and return
+    end
+    authorize_resource_owner(@draft)
   end
 end

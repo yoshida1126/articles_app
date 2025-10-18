@@ -49,6 +49,19 @@ Rails.application.routes.draw do
       get :private_articles
       get :drafts
     end
+
+    resources :article_drafts, except: [:index, :show] do
+      member do
+        get :preview
+        patch :update_draft
+        patch :update
+      end
+
+      collection do
+        post :save_draft
+        post :commit
+      end
+    end
   end
 
 
@@ -59,19 +72,6 @@ Rails.application.routes.draw do
     resource :likes, only: %i[create destroy]
     resources :article_comments, only: %i[create destroy edit update] do
       resource :article_comment_likes, only: %i[create destroy]
-    end
-  end
-
-  resources :article_drafts, only: [:new, :edit, :destroy] do
-    member do
-      get :preview, as: :preview
-      patch :update_draft, as: :update_draft
-      patch :update
-    end
-
-    collection do
-      post :save_draft, as: :save_draft
-      post  :commit, as: :commit
     end
   end
 

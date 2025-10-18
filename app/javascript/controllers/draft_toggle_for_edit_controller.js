@@ -26,11 +26,12 @@ export default class extends Controller {
 
   selectDraft(event) {
     const isPublished = event.currentTarget.dataset.draftToggleValue === "true"
+    const userId = document.getElementById('draft-toggle').dataset.userId;
     const draftId = document.getElementById('draft-toggle').dataset.draftId;
 
     const newAction = isPublished
-      ? `/article_drafts/${draftId}`
-      : `/article_drafts/${draftId}/update_draft`
+      ? `/users/${userId}/article_drafts/${draftId}`
+      : `/users/${userId}/article_drafts/${draftId}/update_draft`
 
     if (this.form) {
       this.form.action = newAction

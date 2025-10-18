@@ -29,9 +29,9 @@
             <span class="dli-more-v"></span>
           </a>
           <ul id="dropdown-menu2" class="dropdown-menu dropdown-menu-right article-option">
-            <li><%= link_to "下書きを編集", edit_article_draft_path(@draft), data: { turbo: false } %></li> 
+            <li><%= link_to "下書きを編集", edit_user_article_draft_path(current_user, @draft), data: { turbo: false } %></li> 
             <li class="divider"></li>
-            <li><%= link_to "下書きを削除", @draft, data: { "turbo-method": :delete,
+            <li><%= link_to "下書きを削除", user_article_draft_path(current_user, @draft), data: { "turbo-method": :delete,
                                                           turbo_confirm: "本当に削除しますか？" } %> 
             </li>
           </ul> 

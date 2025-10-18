@@ -1,6 +1,6 @@
 <li id="draft-<%= draft.id %>"> 
   <span class="heading-image">
-    <%= link_to preview_article_draft_path(draft) do %>
+    <%= link_to preview_user_article_draft_path(current_user, draft) do %>
       <% if draft.image.attached? %> 
         <%= image_tag draft.image %>
       <% else %> 
@@ -11,7 +11,7 @@
     <% end %>
   </span>
   <span class="title title-responsive">
-    <%= link_to preview_article_draft_path(draft) do %>
+    <%= link_to preview_user_article_draft_path(current_user, draft) do %>
       <%= draft.title %>
     <% end %>
   </span>

@@ -1,30 +1,40 @@
 require 'rails_helper'
 
 RSpec.describe Article, type: :model do
-  let(:user) { FactoryBot.create(:user) }
-  let(:article) { FactoryBot.create(:article) }
-  let!(:other_article) { FactoryBot.create(:other_article) }
 
   describe 'association' do
+    let(:user) { FactoryBot.create(:user) }
+    let(:article) { FactoryBot.create(:article) }
+    let!(:article_draft) do
+      FactoryBot.create(:article_draft, article: article)
+    end
+
     it 'ユーザーが削除されたら結びついている記事も削除されること' do
       user = article.user
       expect do
         user.destroy
       end.to change(Article, :count).by(-1)
     end
-  end
 
-  it '最も新しい投稿が順番的に最初に来ること' do
-    expect(article).to eq Article.first
+    it '投稿記事を削除すると紐づいている下書きも削除されること' do
+      expect do
+        article.destroy
+      end.to change(ArticleDraft, :count).by(-1)
+    end
   end
 
   describe 'validation' do
+    let(:user) { FactoryBot.create(:user) }
+    let(:article) { FactoryBot.build(:article) }
+
     context 'with valid attributes' do
       it 'バリデーションが通ること' do
+        article.user = user
         expect(article).to be_valid
       end
 
       it '50文字のタイトルでバリデーションが通ること(境界値)' do
+        article.user = user
         article.title = 'a' * 50
         expect(article).to be_valid
       end

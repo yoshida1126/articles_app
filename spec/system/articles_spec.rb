@@ -5,7 +5,9 @@ RSpec.describe 'Articles', type: :system, js: true do
   describe '#show' do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
-    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article_draft) { FactoryBot.create(:article_draft)}
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id, article_draft: article_draft) }
+    
 
     context 'user login(article user)' do
       before do
@@ -62,11 +64,13 @@ RSpec.describe 'Articles', type: :system, js: true do
         expect(page).to_not have_css('#option')
       end
     end
+  end
 
   describe '#destroy' do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
-    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
+    let!(:article_draft) { FactoryBot.create(:article_draft)}
+    let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id, article_draft: article_draft) }
 
     context 'as a logged in user(correct user)' do
       before do
