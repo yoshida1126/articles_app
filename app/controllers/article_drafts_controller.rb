@@ -91,7 +91,10 @@ class ArticleDraftsController < ApplicationController
       )
     end
 
-    @article.published = params[:article][:published]
+    from_published = @article.published
+    to_published = params[:article][:published] == "true"
+
+    @article.published = to_published
 
     if HeaderImageRateLimiterService.exceeded?(current_user.id, @params[:article_draft][:image])
       redirect_to root_path, alert: "ヘッダー画像の変更は1日#{HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY}回までです。" and return
@@ -105,11 +108,19 @@ class ArticleDraftsController < ApplicationController
     # 本日のヘッダー画像変更回数をインクリメント
     HeaderImageRateLimiterService.increment(current_user.id) if @params[:article_draft][:image].present?
 
-    if @article.published == false
-      redirect_to private_articles_user_path(current_user), notice: '未公開記事として編集しました'
+    if !from_published && !to_published
+      notice = '未公開記事を編集しました'
+    elsif from_published && !to_published
+      notice = '未公開記事として編集しました'
+    elsif !from_published && to_published
+      notice = '新しい記事を投稿しました'
     else
-      redirect_to current_user, notice: '記事を編集しました'
+      notice = '記事を編集しました'
     end
+
+    path = to_published ? current_user : private_articles_user_path(current_user)
+
+    redirect_to path, notice: notice
 
   rescue ActiveRecord::RecordInvalid
     render 'article_drafts/edit', status: :unprocessable_entity

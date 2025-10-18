@@ -120,8 +120,8 @@ class ArticleImageService
             title: @draft.title,
             content: @draft.content,
             tag_list: @draft.tag_list,
-            published: @params[:article][:published],
-            draft: @draft
+            published: @params[:article][:published] == "true",
+            article_draft: @draft
         )
 
         @article.image.attach(@draft.image.blob) if @draft.image.attached?
