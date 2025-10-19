@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
 
-  let(:user) { FactoryBot.create(:user, :with_articles, :with_relationships, :with_favorite_article_lists) }
+  let(:user) { FactoryBot.create(:user, :with_relationships, :with_favorite_article_lists) }
+  let!(:article) { FactoryBot.create(:article, user: user) }
+  let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user:user) }
 
   describe '#create' do
     context 'as a logged in user' do

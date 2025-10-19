@@ -26,7 +26,6 @@ class ArticleDraftsController < ApplicationController
   end
 
   def commit
-
     # ユーザーの1日あたりの記事投稿数を制限するサービスを初期化
     limit_service = UserPostLimitService.new(current_user)
 
@@ -159,17 +158,10 @@ class ArticleDraftsController < ApplicationController
 
   private
 
-  def authorize_user!
-    @user = User.find_by(id: params[:user_id])
-    unless @user == current_user
-      redirect_to root_path, notice: "他のユーザーの記事は作成できません" and return
-    end
-  end
-
   def correct_user
     @draft = current_user.article_drafts.find_by(id: params[:id])
     unless @draft
-      redirect_to root_path, notice: "指定された下書きは存在しません" and return
+      redirect_to root_path, alert: "不正なアクセスです" and return
     end
     authorize_resource_owner(@draft)
   end

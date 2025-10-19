@@ -5,6 +5,8 @@ RSpec.describe 'Layouts', type: :system do
 
   describe 'header' do
     context 'as a logged in user' do
+      let(:user) { FactoryBot.create(:user) }
+
       before do
         sign_in user
         visit root_path
@@ -32,7 +34,7 @@ RSpec.describe 'Layouts', type: :system do
 
         it '投稿ボタンをクリックすると記事投稿ページに遷移すること' do
           click_link '投　稿', match: :first
-          expect(page).to have_current_path new_article_path
+          expect(page).to have_current_path new_user_article_draft_path(user)
         end
 
         it 'ARTICLESをクリックするとルートパスに遷移すること' do

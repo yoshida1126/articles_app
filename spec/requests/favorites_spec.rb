@@ -5,6 +5,7 @@ RSpec.describe "FavoriteArticleLists", type: :request do
     let(:user) { FactoryBot.create(:user, :with_favorite_article_lists) }
     let!(:favorite_article_list) { user.favorite_article_lists.first }
     let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
+    let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
 
      describe "#create" do
         before do 

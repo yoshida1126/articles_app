@@ -5,5 +5,6 @@ FactoryBot.define do
     association :user
     created_at { Time.zone.now }
     tag_list { 'article' }
+    editing { true }
   end
 end

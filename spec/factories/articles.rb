@@ -7,6 +7,14 @@ FactoryBot.define do
     tag_list { 'article' }
   end
 
+  factory :private_article do
+    title { 'Test article' }
+    content { 'article' }
+    created_at { Time.zone.now }
+    tag_list { 'article' }
+    published { false }
+  end
+
   factory :other_article, class: Article do
     title { 'Other article' }
     content { 'oter test' }

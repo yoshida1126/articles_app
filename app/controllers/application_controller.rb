@@ -50,6 +50,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def authorize_user!
+    if params[:user_id]
+      @user = User.find_by(id: params[:user_id])
+    else
+      @user = User.find_by(id: params[:id])
+    end
+
+    unless @user == current_user
+      redirect_to root_path, notice: "不正なアクセスです" and return
+    end
+  end
+
   def set_remaining_upload_quota
     return unless current_user
 
