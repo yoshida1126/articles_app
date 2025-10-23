@@ -1,4 +1,10 @@
 <%= form_with model: @draft, url: update_draft_user_article_draft_path(current_user), id: "article-draft-edit-form", method: :patch do |f| %> 
+  <% content_for :form_submit_button do %>
+    <%= f.submit '送信する' , class: "btn btn-primary"%>
+  <% end %>
+
+  <%= render '/layouts/header' %>
+
   <%= render 'shared/error_messages', object: f.object %> 
 
   <div data-controller="draft-toggle-for-edit" data-user-id="<%= current_user.id %>" data-draft-id="<%= @draft.id %>" id="draft-toggle" class="draft-toggle">
@@ -145,8 +151,4 @@
   <%= hidden_field_tag 'article[published]', '', id: 'published-input' %>
 
   <span class="count" id="count_text">0 ／3000文字</span>
-
-  <div class="article-edit-btn">
-    <%= f.submit "編　集", class: "btn btn-primary" %> 
-  </div>
 <% end %> 

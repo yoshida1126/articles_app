@@ -28,7 +28,9 @@
   </head>
 
   <body>
-    <%= render 'layouts/header' %>
+    <% unless controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
+      <%= render 'layouts/header' %>
+    <% end %>
     <div class="container">
       <div id="flash">
         <% flash.each do |key, value| %>

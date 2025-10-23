@@ -83,7 +83,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[images][]', 'spec/fixtures/map.png', visible: false
-        click_button '送　信'
+        click_button '送信する'
       end
 
       it '下書きの保存に成功すること' do
@@ -120,7 +120,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[images][]', 'spec/fixtures/map.png', visible: false
-        click_button '送　信'
+        click_button '送信する'
       end
 
       it '記事の投稿に成功すること' do
@@ -154,7 +154,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[images][]', 'spec/fixtures/map.png', visible: false
-        click_button '送　信'
+        click_button '送信する'
       end
 
       it '非公開記事の投稿に成功すること' do
@@ -255,7 +255,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
-        click_button '編　集'
+        click_button '送信する'
       end
 
       it '記事の編集に成功すること' do
@@ -313,7 +313,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
-        click_button '編　集'
+        click_button '送信する'
       end
 
       it '下書きの編集に成功すること' do
@@ -362,7 +362,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
-        click_button '編　集'
+        click_button '送信する'
       end
 
       it '記事の公開に成功すること' do
@@ -408,7 +408,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
-        click_button '編　集'
+        click_button '送信する'
       end
 
       it '記事の更新に成功すること' do
@@ -455,7 +455,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
-        click_button '編　集'
+        click_button '送信する'
       end
 
       it '記事の更新に成功すること' do
@@ -501,7 +501,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
-        click_button '編　集'
+        click_button '送信する'
       end
 
       it '記事の更新に成功すること' do

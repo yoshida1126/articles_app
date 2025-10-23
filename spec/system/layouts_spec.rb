@@ -33,7 +33,7 @@ RSpec.describe 'Layouts', type: :system do
         end
 
         it '投稿ボタンをクリックすると記事投稿ページに遷移すること' do
-          click_link '投　稿', match: :first
+          click_link '投稿する', match: :first
           expect(page).to have_current_path new_user_article_draft_path(user)
         end
 

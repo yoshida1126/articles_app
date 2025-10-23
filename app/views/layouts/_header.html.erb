@@ -3,24 +3,26 @@
     <nav>
       <%= link_to "Articles", root_path, id: "logo" %>
       <ul id="navbar-menu" class="nav navbar-nav navbar-right">
-        <%= search_form_for @search, url: search_path, method: :get do |f| %>
-          <%= button_tag type: "submit", id: "search-btn", class:"btn-default" do %> 
-            <i class="fas fa-search"></i> 
-          <% end %> 
-          <%= f.search_field :title_or_content_eq, placeholder: 'キーワード検索', value: "", class: "search-window", required: "required" %>
-        <% end %> 
-        <div id="search-window-open">
-          <a><i class="fas fa-search"></i></a>
-        </div>
-        <div id="responsive-search-window" class="display">
-          <%= search_form_for @search, url: search_path, id: "search-window", class: "display", method: :get do |f| %>
-            <%= button_tag type: "submit", id: "responsive-search-btn", class:"btn-default" do %> 
+        <% unless controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
+          <%= search_form_for @search, url: search_path, method: :get do |f| %>
+            <%= button_tag type: "submit", id: "search-btn", class:"btn-default" do %> 
               <i class="fas fa-search"></i> 
             <% end %> 
-            <%= f.search_field :title_or_content_eq, placeholder: 'キーワード検索', value: "", class: "responsive-search-window", required: "required" %> 
-          <% end %>
-          <button type="button"id="search-window-close" class="display"><span class="dli-close"></span></button>
-        </div>
+            <%= f.search_field :title_or_content_eq, placeholder: 'キーワード検索', value: "", class: "search-window", required: "required" %>
+          <% end %> 
+          <div id="search-window-open">
+            <a><i class="fas fa-search"></i></a>
+          </div>
+          <div id="responsive-search-window" class="display">
+            <%= search_form_for @search, url: search_path, id: "search-window", class: "display", method: :get do |f| %>
+              <%= button_tag type: "submit", id: "responsive-search-btn", class:"btn-default" do %> 
+                <i class="fas fa-search"></i> 
+              <% end %> 
+              <%= f.search_field :title_or_content_eq, placeholder: 'キーワード検索', value: "", class: "responsive-search-window", required: "required" %> 
+            <% end %>
+            <button type="button"id="search-window-close" class="display"><span class="dli-close"></span></button>
+          </div>
+        <% end %>
         <% if user_signed_in? %>
           <li class="dropdown">
             <a href="#" id="account" class="dropdown-toggle"> 
@@ -58,13 +60,25 @@
               <li class="divider"></li>
               <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete } %></li>
             </ul>
-            <li class="responsive-link-btn">
-              <%= link_to "投　稿", new_user_article_draft_path(current_user), class: "btn btn-custom", data: { turbo: false } %>
-            </li>
+            <% unless controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
+              <li class="responsive-link-btn">
+                <div class="btn-custom">
+                  <%= link_to "投稿する", new_user_article_draft_path(current_user), data: { turbo: false } %>
+                </div>
+              </li>
+            <% end %>
           </div>
-          <li class="link-btn">
-            <%= link_to "投　稿", new_user_article_draft_path(current_user), class: "btn btn-custom", data: { turbo: false }  %>
-          </li>
+          <% if controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
+            <div class="article-submit-btn">
+              <%= yield :form_submit_button if content_for?(:form_submit_button) %>
+            </div>
+          <% else %>
+            <li class="link-btn">
+              <div class="btn-custom">
+                <%= link_to "投稿する", new_user_article_draft_path(current_user), data: { turbo: false }  %>
+              </div>
+            </li>
+          <% end %>
         <% else %>   
           <div class="non-logged-in-menu">   
             <li><%= link_to "ログイン", login_path %></li>
