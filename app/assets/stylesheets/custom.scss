@@ -222,9 +222,10 @@ hr {
 }
 
 #logo {
+  display: flex;
   float: left;
   height: 50px;
-  align-content: center;
+  align-items: center;
   a {
     display:block;
     font-family: 'Oooh Baby', Sans-serif;
@@ -233,7 +234,6 @@ hr {
     color: #fff;
     text-transform: uppercase;
     letter-spacing: -1px;
-    font-weight: bold;
     &:hover {
       color: #fff;
       text-decoration: none; 
@@ -310,8 +310,7 @@ hr {
 
 .header-profile-img {
   width: 33px;
-  height: 50px;
-  align-content: center;
+  height: 33px;
   transition: .1s;
   &:hover {
     opacity: .7;
@@ -325,11 +324,14 @@ hr {
 }
 
 li.link-btn {
-  height: 50px;
+  height: fit-content;
   margin-left: 25px;
   align-content: center;
   text-align: center;
   .btn-custom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 150px;
     height: 36px;
     border: 2px solid #88aeb8;
@@ -354,6 +356,9 @@ li.link-btn {
   }
   a {
     display: block;
+    width: 100%;
+    height: 100%;
+    padding-top: 6px;
     &:hover {
       text-decoration: none;
     }
@@ -374,7 +379,6 @@ li.link-btn {
   display: flex;
   width: 300px;
   height: 30px;
-  margin-top: 10px;
   margin-right: 20px;
   border-radius: 4px;
   background-color: #fff;
@@ -432,12 +436,13 @@ li.link-btn {
 #navbar-menu {
   display: flex;
   max-width: 80%;
+  height: 50px;
+  align-items: center;
 }
 
 .article-submit-btn {
   width: 150px;
-  height: 50px;
-  align-content: center;
+  height: fit-content;
   text-align: center;
   margin-left: 25px;
   .btn {
@@ -2344,12 +2349,11 @@ input.favorite_article_delete_btn {
   }
 
   #search-window-open {
-    height: 50px;
+    height: fit-content;
     display: block;
     margin-right: 15px;
     font-size: 20px;
     cursor: pointer;
-    align-content: center;
     a {
       color: #fff;
       text-decoration: none;
@@ -2437,6 +2441,7 @@ input.favorite_article_delete_btn {
   #responsive-menu {
     display: flex;
     float: right;
+    align-items: center;
   }
 
   .navbar-nav {
@@ -2445,11 +2450,12 @@ input.favorite_article_delete_btn {
   }
 
   .responsive-link-btn {
-    height: 50px;
+    height: fit-content;
     margin-left: 15px;
-    align-content: center;
     text-align: center;
     .btn-custom {
+      display: flex;
+      justify-content: center;
       width: 100px;
       height: 36px;
       border: 2px solid #88aeb8;
@@ -2460,7 +2466,7 @@ input.favorite_article_delete_btn {
       letter-spacing: 5px;
       text-indent: 5px;
       font-weight: bold;
-      align-content: center;
+      align-items: center;
       &:hover {
         border: 2px solid #88aeb8;
         background-color: #6f97a0;
@@ -2474,6 +2480,9 @@ input.favorite_article_delete_btn {
     }
     a {
       display: block;
+      width: 100%;
+      height: 100%;
+      padding-top: 6px;
       &:hover {
         text-decoration: none;
       }
@@ -2487,6 +2496,7 @@ input.favorite_article_delete_btn {
   }
 
   .article-submit-btn {
+    width: 100px;
     margin-left: 15px;
   }
 
@@ -2552,7 +2562,6 @@ input.favorite_article_delete_btn {
   .header-profile-img {
     width: 33px;
     height: 33px;
-    margin-top: 8px;
     padding-top: 0;
     transition: .1s;
     &:hover {
