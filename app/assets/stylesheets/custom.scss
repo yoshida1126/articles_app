@@ -260,9 +260,8 @@ hr {
 
 .non-logged-in-menu {
   display: flex;
-  height: 50px;
+  height: fit-content;
   li {
-    align-content: center;
     margin-right: 10px;
     &:hover {
       opacity: .8;
