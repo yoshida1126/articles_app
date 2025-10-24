@@ -452,6 +452,7 @@ li.link-btn {
     outline: none;
     transition: all 0.2s ease;
     letter-spacing: 5px;
+    text-indent: 5px;
     font-weight: bold;
     &:hover {
       border: 2px solid #88aeb8;
@@ -2463,8 +2464,8 @@ input.favorite_article_delete_btn {
       background-color: #99b9c2;
       outline: none;
       transition: all 0.2s ease;
-      letter-spacing: 5px;
-      text-indent: 5px;
+      letter-spacing: 2px;
+      text-indent: 2px;
       font-weight: bold;
       align-items: center;
       &:hover {
@@ -2498,6 +2499,10 @@ input.favorite_article_delete_btn {
   .article-submit-btn {
     width: 100px;
     margin-left: 15px;
+    .btn {
+      letter-spacing: 2px;
+      text-indent: 2px;
+    }
   }
 
   .select-operation {
