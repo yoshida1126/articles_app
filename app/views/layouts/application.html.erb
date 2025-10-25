@@ -40,7 +40,9 @@
         <% end %>
       </div>
       <%= yield %>
-      <%= render 'layouts/footer' %> 
+      <% unless controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
+        <%= render 'layouts/footer' %> 
+      <% end %>
     </div>
   </body>
 </html>

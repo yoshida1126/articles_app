@@ -15,6 +15,7 @@ import "custom/search_window"
 import "custom/articles_list_tab"
 import "custom/time_range_switcher"
 import "custom/articles_tab"
+import "custom/form_leave_confirmation"
 import jquery from "jquery" 
 window.$ = jquery 
 import "trix"
