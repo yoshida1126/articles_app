@@ -25,4 +25,10 @@ module ApplicationHelper
       end
     end
   end
+
+  def show_header?
+    return false if controller_name == 'article_drafts' && ['new', 'edit'].include?(action_name)
+    return false if controller_name == 'article_drafts' && ['save_draft', 'commit', 'update_draft', 'update'].include?(action_name) && @draft&.errors&.any?
+    true
+  end
 end

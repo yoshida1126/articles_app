@@ -28,9 +28,7 @@
   </head>
 
   <body>
-    <% unless controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
-      <%= render 'layouts/header' %>
-    <% end %>
+    <%= render 'layouts/header' if show_header? %>
     <div class="container">
       <div id="flash">
         <% flash.each do |key, value| %>
@@ -40,9 +38,7 @@
         <% end %>
       </div>
       <%= yield %>
-      <% unless controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
-        <%= render 'layouts/footer' %> 
-      <% end %>
+      <%= render 'layouts/footer' if show_header? %> 
     </div>
   </body>
 </html>

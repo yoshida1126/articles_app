@@ -5,7 +5,7 @@
         <%= link_to "Articles", root_path %>
       </div>
       <ul id="navbar-menu" class="nav navbar-nav navbar-right">
-        <% unless controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
+        <% if show_header? %>
           <%= search_form_for @search, url: search_path, method: :get do |f| %>
             <%= button_tag type: "submit", id: "search-btn", class:"btn-default" do %> 
               <i class="fas fa-search"></i> 
@@ -62,7 +62,7 @@
               <li class="divider"></li>
               <li><%= link_to "ログアウト", logout_path, data: { turbo_method: :delete } %></li>
             </ul>
-            <% unless controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
+            <% if show_header? %>
               <li class="responsive-link-btn">
                 <div class="btn-custom">
                   <%= link_to "投稿する", new_user_article_draft_path(current_user), data: { turbo: false } %>
@@ -70,16 +70,16 @@
               </li>
             <% end %>
           </div>
-          <% if controller_name == 'article_drafts' && action_name.in?(%w[new edit]) %>
-            <div class="article-submit-btn">
-              <%= yield :form_submit_button if content_for?(:form_submit_button) %>
-            </div>
-          <% else %>
+          <% if show_header? %>
             <li class="link-btn">
               <div class="btn-custom">
                 <%= link_to "投稿する", new_user_article_draft_path(current_user), data: { turbo: false }  %>
               </div>
             </li>
+          <% else %>
+            <div class="article-submit-btn">
+              <%= yield :form_submit_button if content_for?(:form_submit_button) %>
+            </div>
           <% end %>
         <% else %>   
           <div class="non-logged-in-menu">   
