@@ -21,6 +21,7 @@ class ArticleDraftsController < ApplicationController
     if @draft.save
       redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
     else
+      @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
       render 'article_drafts/new', status: :unprocessable_entity
     end
   end
@@ -51,6 +52,7 @@ class ArticleDraftsController < ApplicationController
     end
 
   rescue ActiveRecord::RecordInvalid
+    @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
     render 'article_drafts/new', status: :unprocessable_entity
   end
 
@@ -78,6 +80,7 @@ class ArticleDraftsController < ApplicationController
 
       redirect_to drafts_user_path(current_user), notice: '下書きを編集しました'
     else
+      @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
       render 'article_drafts/edit', status: :unprocessable_entity
     end
   end
@@ -127,6 +130,7 @@ class ArticleDraftsController < ApplicationController
     redirect_to path, notice: notice
 
   rescue ActiveRecord::RecordInvalid
+    @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
     render 'article_drafts/edit', status: :unprocessable_entity
   end
 

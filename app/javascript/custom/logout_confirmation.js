@@ -9,9 +9,6 @@ function logout_confirmation () {
   logout.addEventListener('click', logoutClickHandler);
 }
 
-  /* if (logout.dataset.bound === "true") return;
-  logout.dataset.bound = "true"; */
-
 function logoutClickHandler(event) {
   const leave = confirm("ログアウトしますか？再度ログインが必要になります。");
   if (!leave) event.preventDefault();
