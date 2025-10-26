@@ -80,7 +80,11 @@ class ArticleDraftsController < ApplicationController
 
       redirect_to drafts_user_path(current_user), notice: '下書きを編集しました'
     else
+      remaining = HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY - HeaderImageRateLimiterService.count_for_today(current_user.id)
+      @header_image_change_remaining = remaining > 0 ? remaining : 0
+
       @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
+
       render 'article_drafts/edit', status: :unprocessable_entity
     end
   end
@@ -130,7 +134,11 @@ class ArticleDraftsController < ApplicationController
     redirect_to path, notice: notice
 
   rescue ActiveRecord::RecordInvalid
+    remaining = HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY - HeaderImageRateLimiterService.count_for_today(current_user.id)
+    @header_image_change_remaining = remaining > 0 ? remaining : 0
+
     @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
+    
     render 'article_drafts/edit', status: :unprocessable_entity
   end
 

@@ -137,7 +137,7 @@ class ArticleImageService
     end
 
     def sync_header_image_from_draft
-        return unless @draft.image.attached? || @params[:article_draft][:image].nil?
+        return unless @draft.article && @draft.image.attached? || @params[:article_draft][:image].nil?
 
         draft_blob = @draft.image.blob
         article_blob = @draft.article&.image&.blob
