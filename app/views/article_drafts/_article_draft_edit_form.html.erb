@@ -5,7 +5,7 @@
 
   <%= render '/layouts/header' %>
 
-  <%= render 'shared/error_messages', object: f.object %> 
+  <%= render 'flash', object: f.object %> 
 
   <div data-controller="draft-toggle-for-edit" data-user-id="<%= current_user.id %>" data-draft-id="<%= @draft.id %>" id="draft-toggle" class="draft-toggle">
     <button
@@ -74,7 +74,10 @@
   </div>
 
   <div class="title-field">
-    <%= f.text_field :title, class: "form-control", placeholder: "タイトルを入力してください。" %> 
+    <%= f.text_field :title, class: "form-control#{' is-invalid' if @draft.errors[:title].any?}", placeholder: "タイトルを入力してください。" %> 
+    <% @draft.errors.full_messages_for(:title).each do |msg| %>
+      <div class="invalid-feedback"><%= msg %></div>
+    <% end %>
   </div> 
   <% if @header_image_change_remaining.to_i > 0 %>
     <div class="selection-and-change-count">
@@ -102,7 +105,10 @@
 
   <div id="add-tags">
     <%= f.label :tag_list, "タグ(半角のスペースで区切って入力してください。)", class: "form-label" %> 
-    <%= f.text_field :tag_list, value: @draft.tag_list.join(" "), class: "form-control" %> 
+    <%= f.text_field :tag_list, value: @draft.tag_list.join(" "), class: "form-control#{' is-invalid' if @draft.errors[:tag_list].any?}" %>
+    <% @draft.errors.full_messages_for(:tag_list).each do |msg| %>
+      <div class="invalid-feedback"><%= msg %></div>
+    <% end %>
   </div> 
 
   <div id="article-upload-remaining">[本日の記事画像の残りアップロード容量：<%= @remaining_mb %> MB]</div>
@@ -131,7 +137,7 @@
   </div>
   <div id="article-text-field">
     <div class="text-area-and-preview">
-      <%= f.text_area :content, required: true, id: 'markdown', class: 'form-control article-text-area', maxlength: "3000", placeholder: "本文を入力してください。",
+      <%= f.text_area :content, id: 'markdown', class: "form-control article-text-area#{' is-invalid' if @draft.errors[:content].any?}", maxlength: "3000", placeholder: "本文を入力してください。",
        data: {
         controller: "drop-upload count-article-text",
         drop_upload_url_value: rails_direct_uploads_url,
@@ -151,4 +157,8 @@
   <%= hidden_field_tag 'article[published]', '', id: 'published-input' %>
 
   <span class="count" id="count_text">0 ／3000文字</span>
+
+  <% @draft.errors.full_messages_for(:content).each do |msg| %>
+    <div class="invalid-feedback"><%= msg %></div>
+  <% end %>
 <% end %> 

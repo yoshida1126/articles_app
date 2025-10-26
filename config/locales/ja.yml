@@ -1,6 +1,11 @@
 ---
 ja:
   activerecord:
+    attributes:
+      article_draft:
+        title: タイトル
+        tag_list: タグ
+        content: 本文
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'

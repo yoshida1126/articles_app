@@ -1,0 +1,7 @@
+<% if object.errors.any? %>
+  <div id="error_explanation">
+    <div class="alert alert-danger article-flash"> 
+      <%= object.errors.count %>件のエラーが含まれています。
+    </div>
+  </div>
+<% end %>

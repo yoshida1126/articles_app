@@ -35,5 +35,9 @@ module ArticlesApp
     config.autoload_paths += %W(#{config.root}/app/services/concerns)
 
     config.middleware.use RateLimiter
+
+    ActionView::Base.field_error_proc = Proc.new do |html_tag, _instance|
+      html_tag.html_safe
+    end
   end
 end

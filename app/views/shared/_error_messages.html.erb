@@ -4,9 +4,9 @@
       <%= object.errors.count %>件のエラーが含まれています。
     </div>
     <ul>
-    <% object.errors.full_messages.each do |msg| %> 
-      <li><%= msg %></li>
-    <% end %> 
+      <% object.errors.full_messages.each do |msg| %> 
+        <li><%= msg %></li>
+      <% end %> 
     </ul>
   </div>
 <% end %>
