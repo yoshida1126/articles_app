@@ -7,7 +7,13 @@
 
   <%= render 'flash', object: f.object %> 
 
-  <div data-controller="draft-toggle" data-user-id="<%= current_user.id %>" id="draft-toggle" class="draft-toggle">
+  <div
+    data-controller="draft-toggle"
+    data-user-id="<%= current_user.id %>"
+    data-draft-toggle-initial-value="<%= params.dig(:article, :published) || 'false' %>"
+    id="draft-toggle"
+    class="draft-toggle"
+  >
     <button
       type="button"
       class="toggle-button active"
@@ -120,7 +126,7 @@
 
   <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
 
-  <%= hidden_field_tag 'article[published]', '', id: 'published-input' %>
+  <%= hidden_field_tag 'article[published]', params.dig(:article, :published), id: 'published-input' %>
 
   <span class="count" id="count_text">0 ／ 3000文字</span>
 

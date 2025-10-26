@@ -7,6 +7,8 @@ export default class extends Controller {
     this.publishOptions = document.getElementById("publish-options")
     this.mobileOptions = document.getElementById("publish-options-mobile")
 
+    this.setInitialToggleState()
+
     this.updatePublishOptionsDisplay()
     this.syncVisibilityRadioWithHiddenField()
 
@@ -22,6 +24,22 @@ export default class extends Controller {
     radios.forEach(radio => {
       radio.addEventListener('change', () => this.handleVisibilityChange())
     })
+  }
+
+  setInitialToggleState() {
+    const value = this.input?.value
+    const buttons = this.element.querySelectorAll(".toggle-button")
+
+    buttons.forEach(btn => {
+      if (btn.dataset.draftToggleValue === "true") {
+        btn.classList.toggle("active", value === "true" || value === "false")
+      } else {
+        btn.classList.toggle("active", value === "")
+      }
+    })
+
+    const isPublished = value === "true" || value === "false"
+    this.updatePublishOptionsDisplay(isPublished)
   }
 
   selectDraft(event) {
