@@ -2361,6 +2361,12 @@ input.favorite_article_delete_btn {
     margin-right: 10px;
   }
 
+  #logo {
+    a {
+      font-weight: lighter;
+    }
+  }
+
   #article_search {
     display: none;
   }
