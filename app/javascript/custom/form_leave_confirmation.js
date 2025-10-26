@@ -1,9 +1,12 @@
 document.addEventListener('turbo:load', () => {
+
   const submitBtns = document.getElementsByClassName('article-submit-btn');
   if (submitBtns.length === 0) return;
 
+  if (window._formDirtyListenerInitialized) return;
+
   let isFormDirty = false;
- 
+
   document.addEventListener('input', (e) => {
     if (e.target.matches('input, textarea, select')) {
       isFormDirty = true;
@@ -41,4 +44,6 @@ document.addEventListener('turbo:load', () => {
       e.returnValue = '';
     }
   });
+
+  window._formDirtyListenerInitialized = true;
 });
