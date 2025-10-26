@@ -288,13 +288,14 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
 
       it '編集元の記事のタイトルが変わってないこと' do
-        visit user_path(user)
+        find('.article-type .article-tab', text: '投稿記事').click
 
         expect(page).to_not have_content('Article Edit Title')
       end
 
       it '編集元の記事の内容が変わってないこと' do
-        visit article_path(article)
+        find('.article-type .article-tab', text: '投稿記事').click
+        click_link 'test article'
 
         expect(page).to_not have_content('Article Edit content')
       end
