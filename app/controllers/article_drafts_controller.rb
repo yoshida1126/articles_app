@@ -145,16 +145,14 @@ class ArticleDraftsController < ApplicationController
   def destroy
     if @draft.article
       @article = @draft.article
-      @draft.destroy
 
-      @draft = current_user.article_drafts.build(
-        title: @article.title,
-        content: @article.content,
-        tag_list: @article.tag_list,
-        article: @article
-      )
-
+      @draft.title = @article.title
       @draft.image.attach(@article.image.blob) if @article.image.attached?
+      @draft.tag_list = @article.tag_list
+      @draft.content = @article.content
+      @draft.editing = false
+
+      @draft.article_images.detach
 
       @article.article_images.each do |image|
          @draft.article_images.attach(image.blob)
