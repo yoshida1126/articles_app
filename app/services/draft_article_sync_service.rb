@@ -43,6 +43,8 @@ class DraftArticleSyncService
         article_draft: @draft
       )
       from_published = nil
+
+      @draft.article.image.attach(@draft.image&.blob)
     else
       from_published = @article.published
     end

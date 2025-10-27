@@ -46,7 +46,7 @@ class ArticleImageService
             else
                 @draft = @user.article_drafts.find(@params[:id])
             end
-            sync_header_image_from_draft
+            sync_header_image_from_draft if @draft.article
             # update時は後続処理でparamsも使うため、両方返す
             return @draft, @params
         else
@@ -141,7 +141,7 @@ class ArticleImageService
         return unless @draft.image.attached?
 
         draft_blob = @draft.image.blob
-        article_blob = @draft.article&.image&.blob
+        article_blob = @draft.article.image.blob
 
         if article_blob != draft_blob
             @draft.article.image.detach if @draft.article.image.attached?
