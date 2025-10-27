@@ -64,15 +64,14 @@ class ArticleDraftsController < ApplicationController
   end
 
   def update_draft
+    if HeaderImageRateLimiterService.exceeded?(current_user.id, params[:article_draft][:image])
+      redirect_to root_path, alert: "ヘッダー画像の変更は1日#{HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY}回までです。" and return
+    end
 
     service = ArticleImageService.new(current_user, params, :update_draft)
     @draft, @params = service.process
 
-    @draft.editing = true
-
-    if HeaderImageRateLimiterService.exceeded?(current_user.id, @params[:article_draft][:image])
-      redirect_to root_path, alert: "ヘッダー画像の変更は1日#{HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY}回までです。" and return
-    end
+    @draft = DraftArticleSyncService.new(draft: @draft, action: :update_draft).call
 
     if @draft.update(service.sanitized_article_draft_params(@params))
       # 本日のヘッダー画像変更回数をインクリメント
@@ -90,78 +89,25 @@ class ArticleDraftsController < ApplicationController
   end
 
   def update
-    service = ArticleImageService.new(current_user, params, :update)
-    @draft, @params = service.process
-
-    @draft.editing = false
-    @article = @draft.article
-
-    if @article.nil?
-      @article = current_user.articles.build(
-        article_draft: @draft
-      )
-    end
-
-    from_published = @article.published
-    to_published = params[:article][:published] == "true"
-
-    @article.published = to_published
-
-    if HeaderImageRateLimiterService.exceeded?(current_user.id, @params[:article_draft][:image])
+    if HeaderImageRateLimiterService.exceeded?(current_user.id, params[:article_draft][:image])
       redirect_to root_path, alert: "ヘッダー画像の変更は1日#{HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY}回までです。" and return
     end
 
-    ActiveRecord::Base.transaction do
-      @draft.update!(service.sanitized_article_draft_params(@params))
-      @article.update!(service.sanitized_article_draft_params(@params))
-    end
+    @article, @draft, notice_or_errors, status = DraftArticleSyncService.new(draft: @draft, action: :update, user: current_user, params: params).call
 
-    # 本日のヘッダー画像変更回数をインクリメント
-    HeaderImageRateLimiterService.increment(current_user.id) if @params[:article_draft][:image].present?
-
-    if !from_published && !to_published
-      notice = '非公開記事を編集しました'
-    elsif from_published && !to_published
-      notice = '非公開記事として編集しました'
-    elsif !from_published && to_published
-      notice = '新しい記事を投稿しました'
+    if status == :failure
+      remaining = HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY - HeaderImageRateLimiterService.count_for_today(current_user.id)
+      @header_image_change_remaining = remaining > 0 ? remaining : 0
+      @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
+      render 'article_drafts/edit', status: :unprocessable_entity
     else
-      notice = '記事を編集しました'
+      path = @article.published ? current_user : private_articles_user_path(current_user)
+      redirect_to path, notice: notice_or_errors
     end
-
-    path = to_published ? current_user : private_articles_user_path(current_user)
-
-    redirect_to path, notice: notice
-
-  rescue ActiveRecord::RecordInvalid
-    remaining = HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY - HeaderImageRateLimiterService.count_for_today(current_user.id)
-    @header_image_change_remaining = remaining > 0 ? remaining : 0
-
-    @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
-    
-    render 'article_drafts/edit', status: :unprocessable_entity
   end
 
   def destroy
-    if @draft.article
-      @article = @draft.article
-
-      @draft.title = @article.title
-      @draft.image.attach(@article.image.blob) if @article.image.attached?
-      @draft.tag_list = @article.tag_list
-      @draft.content = @article.content
-      @draft.editing = false
-
-      @draft.article_images.detach
-
-      @article.article_images.each do |image|
-         @draft.article_images.attach(image.blob)
-      end
-
-      @draft.save!
-    else
-      @draft.destroy
-    end
+    DraftArticleSyncService.new(draft: @draft, action: :destroy).call
 
     redirect_to drafts_user_path(current_user), notice: '下書きを削除しました'
   end

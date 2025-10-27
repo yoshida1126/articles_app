@@ -32,9 +32,11 @@ document.addEventListener('turbo:load', () => {
 
   document.addEventListener('turbo:submit-end', (event) => {
     const { success } = event.detail;
-  
-    if (success) {
-      isFormDirty = false;
+
+    isFormDirty = false;
+
+    if (!success) {
+      isFormDirty = true;
     }
   });
 

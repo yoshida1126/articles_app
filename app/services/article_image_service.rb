@@ -1,6 +1,7 @@
 class ArticleImageService
     include ImageUtils
     include ArticleDraftParams::ArticleDraftParamsPermitter
+    include ArticleParams::ArticleParamsPermitter
 
     def initialize(user, params, action)
         @user = user

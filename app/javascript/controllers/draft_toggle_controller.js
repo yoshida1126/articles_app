@@ -40,6 +40,18 @@ export default class extends Controller {
 
     const isPublished = value === "true" || value === "false"
     this.updatePublishOptionsDisplay(isPublished)
+
+    const userId = document.getElementById('draft-toggle').dataset.userId;
+    const draftId = document.getElementById('draft-toggle').dataset.draftId;
+
+    if (this.form) {
+      const activeToggle = this.element.querySelector('.toggle-button.active');
+      const isPublished = activeToggle?.dataset.draftToggleValue === "true";
+
+      this.form.action = isPublished
+        ? `/users/${userId}/article_drafts/commit`
+        : `/users/${userId}/article_drafts/save_draft`
+    }
   }
 
   selectDraft(event) {
