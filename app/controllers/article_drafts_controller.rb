@@ -154,7 +154,7 @@ class ArticleDraftsController < ApplicationController
         article: @article
       )
 
-      @draft.image.attach(@draft.image.blob) if @article.image.attached?
+      @draft.image.attach(@article.image.blob) if @article.image.attached?
 
       @article.article_images.each do |image|
          @draft.article_images.attach(image.blob)
