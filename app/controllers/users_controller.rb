@@ -6,7 +6,6 @@ class UsersController < ApplicationController
   def show
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @private_articles = @user.articles.unpublished.paginate(page: params[:page], per_page: 15)
-    @articles_count = @articles.count
 
     limit_service = UserPostLimitService.new(current_user)
     @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count

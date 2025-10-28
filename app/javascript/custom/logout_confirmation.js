@@ -3,13 +3,18 @@ document.addEventListener("turbo:render", logout_confirmation);
 
 function logout_confirmation () {
   let logout = document.getElementById('logout');
-  if (!logout) return;
+  let logout_mobile = document.getElementById('logout-mobile')
+  if (!logout && !logout_mobile) return;
 
-  logout.removeEventListener('click', logoutClickHandler);
-  logout.addEventListener('click', logoutClickHandler);
+  [logout, logout_mobile].forEach((el) => {
+    if (!el) return;
+
+    el.removeEventListener('click', logoutClickHandler);
+    el.addEventListener('click', logoutClickHandler);
+  });
 }
 
 function logoutClickHandler(event) {
-  const leave = confirm("ログアウトしますか？再度ログインが必要になります。");
+  const leave = confirm("ログアウトしますか？\n再度ログインが必要になります。");
   if (!leave) event.preventDefault();
 }
