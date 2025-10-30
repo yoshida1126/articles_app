@@ -108,6 +108,10 @@
   </div>
   <div id="article-text-field">
     <div class="text-area-and-preview">
+      <div id="line-numbers">
+        1
+        2
+      </div>
       <%= f.text_area :content, id: 'markdown', class: "form-control article-text-area#{' is-invalid' if @draft.errors[:content].any?}", maxlength: "3000", placeholder: "本文を入力してください。",
        data: {
         controller: "drop-upload count-article-text",
