@@ -60,6 +60,8 @@ export default class extends Controller {
           const start = this.element.selectionStart;
           const end = this.element.selectionEnd;
           this.element.setRangeText(text,start,end)
+
+          this.element.dispatchEvent(new Event('input', { bubbles: true }));
         }
       });
     })

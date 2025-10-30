@@ -2020,6 +2020,9 @@ label {
      border-left: none;
     }
   } 
+  .article-text-area {
+    padding-left: 6px;
+  }
   .comment-text-area, .comment-edit-text-area {
     border-left: 1px solid #ccc;
     border-top-left-radius: 0px;
@@ -2034,9 +2037,10 @@ label {
     border-bottom-right-radius: 0px;
   }
   #line-numbers {
+    width: 18px;
     text-align: center;
     background-color: #7777771c;
-    padding-top: 7px;
+    padding-top: 6px;
     line-height: 1.428571429;
     color: #777;
     border-left: 1px solid #ccc;

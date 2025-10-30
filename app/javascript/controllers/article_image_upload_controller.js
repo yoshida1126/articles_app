@@ -61,6 +61,8 @@ export default class extends Controller {
           form.focus();
           form.setSelectionRange(end, end);
           form.setRangeText(text, end, end, "end");
+
+          form.dispatchEvent(new Event('input', { bubbles: true }));
         }
       });
     })

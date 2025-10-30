@@ -55,12 +55,14 @@ export default class extends Controller {
           console.log(error);
         } else {
           const text = this.markdownUrl(blob);
-          const form = document.getElementById('markdown');
+          const form = this.element
 
           const end = form.value.length;
           form.focus();
           form.setSelectionRange(end, end);
           form.setRangeText(text, end, end, "end");
+
+          form.dispatchEvent(new Event('input', { bubbles: true }));
         }
       });
     })

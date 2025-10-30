@@ -3,7 +3,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   connect() {
-    // ページ読み込み時に初期実行
     this.count()
   }
 
