@@ -98,10 +98,10 @@
     </div>
     <% end %>
     <div class="preview-open">
-      <div id="preview-btn", class="btn preview-btn">
+      <div id="preview-btn" class="btn preview-btn" data-controller="line-number" data-action="click->line-number#lineCount">
         <i class="fas fa-book-open"></i>
       </div>
-      <div id="editor-btn", class="btn editor-btn display">     
+      <div id="editor-btn" class="btn editor-btn display" data-controller="line-number" data-action="click->line-number#lineCount">     
         <i class="fas fa-edit"></i> 
       </div>
     </div>
@@ -116,7 +116,7 @@
             controller: "drop-upload count-article-text line-number",
             drop_upload_url_value: rails_direct_uploads_url,
             action: "drop->drop-upload#dropUpload input->count-article-text#count input->line-number#lineCount resize@window->line-number#lineCount scroll->line-number#scrollSynch"
-          } 
+          }
         %>
       </div>
       <div id='html', class='html display'>

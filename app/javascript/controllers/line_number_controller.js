@@ -7,7 +7,7 @@ export default class extends Controller {
   }
 
   lineCount() {
-    const text = this.element.value;
+    const text = document.getElementById('markdown').value;
 
     const lines = text.split('\n');
 
@@ -43,8 +43,9 @@ export default class extends Controller {
   scrollSynch() {
     const mirror = document.getElementById('mirror');
     const lineNumbers = document.getElementById('line-numbers')
+    const text = document.getElementById('markdown');
 
-    mirror.scrollTop = this.element.scrollTop
-    lineNumbers.scrollTop = this.element.scrollTop;
+    mirror.scrollTop = text.scrollTop
+    lineNumbers.scrollTop = text.scrollTop;
   }
 }
