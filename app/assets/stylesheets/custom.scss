@@ -1830,7 +1830,7 @@ ul.article-comment-option {
   }
 }
 
-#edita {
+#editor-btn {
   padding-bottom: 4px;
   color: whitesmoke;
   transition: all 0.2s ease;
@@ -1843,7 +1843,7 @@ ul.article-comment-option {
   }
 }
 
-.edita {
+.editor-btn {
   padding-bottom: 4px;
   color: whitesmoke;
   border: none;
@@ -1973,7 +1973,7 @@ label {
   }
 }
 
-#markdown.display {
+#editor-container.display {
   display: none;
 }
 
@@ -1989,7 +1989,7 @@ label {
   display: none;
 }
 
-.edita.display {
+.editor-btn.display {
   display: none;
 }
 
@@ -2000,6 +2000,39 @@ label {
 .html.preview-width {
   width: 100%;
   margin-bottom: 15px;
+  border-left: 1px solid #ccc;
+  border-bottom-left-radius: 5px;
+}
+
+#editor-container {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 350px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#editor-container.editor-width {
+  width: 50%;
+  border-bottom-right-radius: 0px;
+}
+
+.comment-editor {
+  width: 100%;
+  height: 350px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.comment-editor.display {
+  display: none;
 }
 
 .text-area-and-preview {
@@ -2007,34 +2040,14 @@ label {
   justify-content: center;
   .article-text-area, .comment-text-area, .comment-edit-text-area {
     width: 100%;
-    height: 350px;
+    height: 100%;
     resize: none;
-    border-top: none;
-    border-left: none;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
     box-shadow: none;
-    &:focus {
-     border: 1px solid #ccc;
-     border-top: none;
-     border-left: none;
-    }
+    border: none;
+    border-radius: none;
   } 
   .article-text-area {
     padding-left: 6px;
-  }
-  .comment-text-area, .comment-edit-text-area {
-    border-left: 1px solid #ccc;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 5px;
-    &:focus {
-      border-left: 1px solid #ccc;
-    }
-  }
-  .edita-width {
-    color: #333;
-    width: 50%;
-    border-bottom-right-radius: 0px;
   }
   #line-numbers {
     width: 18px;
@@ -2043,10 +2056,18 @@ label {
     padding-top: 6px;
     line-height: 1.428571429;
     color: #777;
-    border-left: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    border-bottom-left-radius: 4px;
-    margin-bottom: 15px;
+  }
+  #mirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #333;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    pointer-events: none;
   }
 }
 

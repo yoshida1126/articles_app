@@ -8,62 +8,29 @@ export default class extends Controller {
     }
 
     preview() {
-        const edita = this.element.nextElementSibling;
+        const editor_btn = this.element.nextElementSibling;
         const html = this.element.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling;
-        const markdown = this.element.parentNode.parentNode.nextElementSibling.firstElementChild;
+        const editor = this.element.parentNode.parentNode.nextElementSibling.firstElementChild;
 
-        if(window.matchMedia('(max-width: 767px)').matches) {
-            markdown.classList.add("display") 
-            this.element.classList.add("display")
-            this.element.classList.toggle("img")
-            edita.classList.remove("display")
-            html.classList.remove("display")
-            html.classList.add("preview-width")
-          } else if (window.matchMedia('(min-width:768px)').matches) {
-              this.element.classList.add("display")
-              this.element.classList.toggle("img")
-              edita.classList.remove("display")
-              html.classList.remove("display")
-              markdown.classList.add("edita-width")
-          }
+        editor.classList.add("display") 
+        this.element.classList.add("display")
+        this.element.classList.toggle("img")
+        editor_btn.classList.remove("display")
+        html.classList.remove("display")
+        html.classList.add("preview-width")
     }
 
     edit() {
-        const preview = this.element.previousElementSibling;
+        const preview_btn = this.element.previousElementSibling;
         const html = this.element.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling;
-        const markdown = this.element.parentNode.parentNode.nextElementSibling.firstElementChild;
+        const editor = this.element.parentNode.parentNode.nextElementSibling.firstElementChild;
 
-        if(window.matchMedia('(max-width: 767px)').matches) {
-          if (this.element.parentNode.parentNode.nextElementSibling.firstElementChild.classList.contains("edita-width") == true) {
-            markdown.classList.remove("edita-width")
-            preview.classList.remove("display")
-            preview.classList.toggle("img")
-            this.element.classList.add("display")
-            html.classList.add("display")
-          }
-          else {
-            markdown.classList.remove("display") 
-            preview.classList.remove("display")
-            preview.classList.toggle("img")
-            this.element.classList.add("display")
-            html.classList.add("display")
-            html.classList.remove("preview-width")
-          }
-        } else if (window.matchMedia('(min-width:768px)').matches) {
-            if (this.element.parentNode.parentNode.nextElementSibling.firstElementChild.nextElementSibling.classList.contains("preview-width") == true) {
-              html.classList.remove("preview-width")
-              markdown.classList.remove("display")
-              preview.classList.remove("display")
-              this.element.classList.add("display")
-              html.classList.add("display")
-            }
-            else {
-              preview.classList.remove("display")
-              this.element.classList.add("display")
-              html.classList.add("display")
-              markdown.classList.remove("edita-width")
-            }
-        }
+        editor.classList.remove("display")
+        preview_btn.classList.remove("display")
+        preview_btn.classList.toggle("img")
+        this.element.classList.add("display")
+        html.classList.add("display")
+        html.classList.remove("preview-width")
     }
 
     input() {
@@ -77,8 +44,8 @@ export default class extends Controller {
         smartypants: false,
       }); 
       const html = marked.parse(markdown);
-      const placeholder = this.element.nextElementSibling.firstElementChild
-      const content = this.element.nextElementSibling.lastElementChild
+      const placeholder = this.element.parentNode.nextElementSibling.firstElementChild
+      const content = this.element.parentNode.nextElementSibling.lastElementChild
 
       if (markdown.length == 0) {
           placeholder.style.display = "block";
