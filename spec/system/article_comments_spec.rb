@@ -32,7 +32,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
 
       it 'コメントに画像を貼れること' do
         expect(page).to have_field('article_comment[comment]', visible: true)
-        fill_in 'article_comment[comment]', with: 'Edit Article Comment'
+        fill_in 'article_comment[comment]', with: 'Article Comment'
 
         attach_file 'article_comment[images][]', 'spec/fixtures/map.png', visible: false, match: :first
 

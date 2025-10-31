@@ -3,8 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
     connect() {
-      // ページ読み込み時に初期実行
-      this.input()
+      this.input();
     }
 
     preview() {
@@ -34,7 +33,12 @@ export default class extends Controller {
     }
 
     input() {
+      if (!this.element.value || this.element.value === '') {
+        return;
+      }
+
       const markdown = this.element.value;
+
       marked.setOptions({ 
         breaks: true,
         gfm: true,
@@ -54,7 +58,6 @@ export default class extends Controller {
           placeholder.style.display = "none";
 
           content.innerHTML = html;
-        }
-      
+        }   
     }
 }

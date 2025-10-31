@@ -137,20 +137,24 @@
       <div id="preview-btn", class="btn preview-btn">
         <i class="fas fa-book-open"></i>
       </div>
-      <div id="edita", class="btn edita display">
+      <div id="editor-btn", class="btn editor-btn display">
         <i class="fas fa-edit"></i> 
       </div>
     </div>
   </div>
   <div id="article-text-field">
     <div class="text-area-and-preview">
-      <%= f.text_area :content, id: 'markdown', class: "form-control article-text-area#{' is-invalid' if @draft.errors[:content].any?}", maxlength: "3000", placeholder: "本文を入力してください。",
-       data: {
-        controller: "drop-upload count-article-text",
-        drop_upload_url_value: rails_direct_uploads_url,
-        action: "drop->drop-upload#dropUpload input->count-article-text#count"
-       }
-      %>
+      <div id='editor-container'>
+        <div id='line-numbers'></div>
+        <div id='mirror'></div>
+        <%= f.text_area :content, id: 'markdown', class: "form-control article-text-area#{' is-invalid' if @draft.errors[:content].any?}", maxlength: "3000", placeholder: "本文を入力してください。",
+          data: {
+            controller: "drop-upload count-article-text line-number",
+            drop_upload_url_value: rails_direct_uploads_url,
+            action: "drop->drop-upload#dropUpload input->count-article-text#count input->line-number#lineCount resize@window->line-number#lineCount scroll->line-number#scrollSynch"
+           }
+        %>
+      </div>
       <div id="html", class="html display">
         <div class="preview-placeholder">
           プレビューが表示されます。

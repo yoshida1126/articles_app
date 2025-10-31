@@ -58,7 +58,7 @@ export default class extends Controller {
         } else {
           const text = this.markdownUrl(blob);
           //const form = this.getCommentForm(e.target);
-          const form = this.element.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild
+          const form = this.element.parentNode.parentNode.parentNode.parentNode.nextElementSibling.firstElementChild.firstElementChild
 
           //const signedIdsField = this.element.parentNode.parentNode.parentNode.parentNode.nextElementSibling.nextElementSibling
           const signedIdsField = document.querySelector("input[id='blob']")

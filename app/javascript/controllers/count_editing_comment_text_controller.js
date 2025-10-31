@@ -3,13 +3,12 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
 
   connect() {
-    // ページ読み込み時に初期実行
     this.count()
   }
 
   count() {
     let length = this.element.value.length
-    let countText = this.element.parentNode.nextElementSibling.nextElementSibling
+    let countText = this.element.parentNode.parentNode.nextElementSibling.nextElementSibling
     let max = 1500
     let ratio = length / max
 

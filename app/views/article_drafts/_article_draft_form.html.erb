@@ -115,7 +115,7 @@
           data: {
             controller: "drop-upload count-article-text line-number",
             drop_upload_url_value: rails_direct_uploads_url,
-            action: "drop->drop-upload#dropUpload input->count-article-text#count input->line-number#lineCount resize->line-number#lineCount"
+            action: "drop->drop-upload#dropUpload input->count-article-text#count input->line-number#lineCount resize@window->line-number#lineCount scroll->line-number#scrollSynch"
           } 
         %>
       </div>
