@@ -21,7 +21,12 @@ export default class extends Controller {
       const newDiv = document.createElement('div');
       const count = document.createElement('div');
 
-      newDiv.innerHTML = line === '' ? '&nbsp;' : line;
+      if (line.trim() === '') {
+        newDiv.classList.add('empty-line');
+      } else {
+        newDiv.textContent = line;
+      }
+
       outputDiv.appendChild(newDiv);
 
       count.textContent = i + 1;

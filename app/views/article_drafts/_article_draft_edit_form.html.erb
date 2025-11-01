@@ -155,6 +155,10 @@
            }
         %>
       </div>
+      <div id="diff-view" data-controller="article-diff" data-original-value="<%= @draft.content.to_json %>">
+        <div class='line-numbers'></div>
+        <div class="diff" data-article-diff-target="output"></div>
+      </div>
       <div id="html", class="html display">
         <div class="preview-placeholder">
           プレビューが表示されます。

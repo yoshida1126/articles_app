@@ -2086,6 +2086,43 @@ label {
     padding: 6px;
     padding-left: 24px;
     word-wrap: break-word;
+    .empty-line {
+      height: 20px;
+      visibility: hidden;
+    }
+  }
+}
+
+#diff-view {
+  position: relative;
+  width: 50%;
+  height: 350px;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-bottom-right-radius: 5px;
+  margin-bottom: 15px;
+  .diff {
+    height: 100%;
+    padding: 6px;
+    padding-left: 24px;
+    overflow-y: scroll;
+    word-wrap: break-word;
+    ins {
+      background-color: #a4fca4;
+      text-decoration: none;
+    }
+    del {
+      background-color: #fca4a4;
+      text-decoration: none;
+    }
+  }
+  .line-numbers {
+    position: absolute;
+    width: 18px;
+    height: 50%;
+    top: 0;
+    left: 0;
+    overflow-y: scroll;
   }
 }
 
