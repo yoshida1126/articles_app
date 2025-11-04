@@ -59,6 +59,8 @@ class ArticleDraftsController < ApplicationController
   def edit
     @user = current_user
 
+    @article = @draft&.article
+
     remaining = HeaderImageRateLimiterService::MAX_UPDATES_PER_DAY - HeaderImageRateLimiterService.count_for_today(current_user.id)
     @header_image_change_remaining = remaining > 0 ? remaining : 0
   end

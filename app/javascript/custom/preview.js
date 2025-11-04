@@ -58,12 +58,14 @@ function markdown() {
           editor_btn.classList.toggle("display")
           html.classList.toggle("display")
           html.classList.toggle("preview-width")
+          toggle_diff_btn();
         } else if (window.matchMedia('(min-width:768px)').matches) {
-            preview_btn.classList.toggle("display")
-            preview_btn.classList.toggle("img")
-            editor_btn.classList.toggle("display")
-            html.classList.toggle("display")
-            editor.classList.toggle("editor-width")
+          preview_btn.classList.toggle("display")
+          preview_btn.classList.toggle("img")
+          editor_btn.classList.toggle("display")
+          html.classList.toggle("display")
+          editor.classList.toggle("editor-width")
+          toggle_diff_btn();
         }
       });
 
@@ -75,6 +77,7 @@ function markdown() {
             preview_btn.classList.toggle("img")
             editor_btn.classList.toggle("display")
             html.classList.toggle("display")
+            toggle_diff_btn();
           }
           else {
             editor.classList.toggle("display") 
@@ -83,6 +86,7 @@ function markdown() {
             editor_btn.classList.toggle("display")
             html.classList.toggle("display")
             html.classList.toggle("preview-width")
+            toggle_diff_btn();
           }
         } else if (window.matchMedia('(min-width:768px)').matches) {
             if (document.querySelector(".preview-width") !== null) {
@@ -91,15 +95,25 @@ function markdown() {
               preview_btn.classList.toggle("display")
               editor_btn.classList.toggle("display")
               html.classList.toggle("display")
+              toggle_diff_btn();
             }
             else {
               preview_btn.classList.toggle("display")
               editor_btn.classList.toggle("display")
               html.classList.toggle("display")
               editor.classList.toggle("editor-width")
+              toggle_diff_btn();
             }
         }
       });
+    }
+
+    function toggle_diff_btn() {
+      if (document.getElementById("diff-btn")) {
+        let diff_btn = document.getElementById("diff-btn")
+        diff_btn.classList.toggle("display")
+        diff_btn.classList.toggle("img")
+      }
     }
   }
 }

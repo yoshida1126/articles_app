@@ -17,6 +17,7 @@ import "custom/time_range_switcher"
 import "custom/articles_tab"
 import "custom/form_leave_confirmation"
 import "custom/logout_confirmation"
+import "custom/diff_view"
 import jquery from "jquery" 
 window.$ = jquery 
 import "trix"
