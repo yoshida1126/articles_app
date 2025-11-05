@@ -28,6 +28,9 @@ export default class extends Controller {
       const lines = text.split(/(?<=\n)/);
       
       lines.forEach ((line, i, arr) => {
+        console.log(JSON.stringify(op));
+        console.log(JSON.stringify(line));
+
         if ((skipNext && op === 0 && line === '\n') || line === "") {
           if (line != "") skipNext = false;
           return;
@@ -69,6 +72,7 @@ export default class extends Controller {
               }
             } else if (line.length > 0 && line.endsWith('\n')) {
               lastAddedDiv.textContent = line;
+              lastAddedDiv.classList.remove('blank-line');
               if (isNextLine) {
                 const next_div = document.createElement('div');
                 next_div.className = 'diff-line';
@@ -81,6 +85,7 @@ export default class extends Controller {
               }
             } else if (!(line.includes('\n'))) {
               lastAddedDiv.textContent = line;
+              lastAddedDiv.classList.remove('blank-line');
             }
           } else {
             if (line === '\n') {
