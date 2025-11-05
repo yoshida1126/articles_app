@@ -31,7 +31,7 @@ export default class extends Controller {
         console.log(JSON.stringify(op));
         console.log(JSON.stringify(line));
 
-        if ((skipNext && op === 0 && line === '\n') || line === "") {
+        if ((skipNext && (op === 0 || op === -1) && line === '\n') || line === "") {
           if (line != "") skipNext = false;
           return;
         }
@@ -51,7 +51,11 @@ export default class extends Controller {
         }
 
         if (op === -1) {
-          div.textContent = line;
+          if (line === '\n') {
+            div.classList.add('blank-line');
+          } else {
+            div.textContent = line;
+          }
           div.classList.add('removed');
         }
         
@@ -60,6 +64,7 @@ export default class extends Controller {
 
           if (lastAddedDiv) {
             if (line === '\n') {
+              lastAddedDiv.classList.add('blank-line');
               if (isNextLine) {
                 const next_div = document.createElement('div');
                 next_div.className = 'diff-line';
@@ -89,14 +94,18 @@ export default class extends Controller {
             }
           } else {
             if (line === '\n') {
-              const next_div = document.createElement('div');
-              next_div.className = 'diff-line';
-              next_div.classList.add('added');
-              next_div.classList.add('blank-line');
-              this.outputTarget.appendChild(next_div);
+              div.classList.add('blank-line');
+              if (isNextLine) {
+                const next_div = document.createElement('div');
+                next_div.className = 'diff-line';
+                next_div.classList.add('added');
+                next_div.classList.add('blank-line');
+                this.outputTarget.appendChild(div);
+                this.outputTarget.appendChild(next_div);
 
-              lastAddedDiv = next_div;
-              return;
+                lastAddedDiv = next_div;
+                return;
+              }
             } else if (line.length > 0 && line.endsWith('\n')) {
               div.textContent = line;
               if (isNextLine) {
