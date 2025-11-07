@@ -2133,28 +2133,20 @@ label {
   .diff {
     height: 100%;
     padding: 6px;
-    padding-left: 24px;
     overflow-y: scroll;
     word-wrap: break-word;
-    .diff-line.removed {
-      background-color: #ffecec;
-      color: #b30000;
+    .diff-line {
+      white-space: pre-wrap;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.428571429;
     }
-    .diff-line.added {
+    .added {
       background-color: #e6ffed;
-      color: #006400;
     }
-    .diff-line.blank-line {
-      height: 20px;
+    .removed {
+      background-color: #ffecec;
     }
-  }
-  .line-numbers {
-    position: absolute;
-    width: 18px;
-    height: 100%;
-    top: 0;
-    left: 0;
-    overflow-y: scroll;
   }
 }
 

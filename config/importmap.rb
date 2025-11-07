@@ -13,4 +13,4 @@ pin '@rails/actiontext', to: 'actiontext.js'
 pin 'cropperjs', to: 'cropperjs.js' # @1.6.2
 pin 'vue', to: 'vue--dist--vue.esm-browser.js.js' # @3.4.31]
 pin 'bootstrap', to: 'bootstrap.min.js', preload: true
-pin "diff-match-patch", to: "https://ga.jspm.io/npm:diff-match-patch@1.0.5/index.js"
+pin "diff", to: "https://cdn.jsdelivr.net/npm/diff@8.0.2/+esm"
