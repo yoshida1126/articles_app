@@ -5,9 +5,11 @@ export default class extends Controller {
   static targets = ["original", "output"]
 
   connect() {
-    this.textarea = document.getElementById("markdown")
-    this.textarea.addEventListener("input", () => this.diff())
-    this.diff()
+    if (document.getElementById('diff-view')) {
+      this.textarea = document.getElementById("markdown")
+      this.textarea.addEventListener("input", () => this.diff())
+      this.diff()
+    }
   }
 
   escapeHTML(str) {
@@ -16,7 +18,7 @@ export default class extends Controller {
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+      .replace(/'/g, "&#039;")
   }
 
   diff() {
@@ -37,16 +39,6 @@ export default class extends Controller {
         div.classList.add('diff-line')
 
         const escapedLine = this.escapeHTML(line)
-
-        /*if (part.added) {
-          div.innerHTML = escapedLine
-          div.classList.add('added')
-        } else if (part.removed) {
-          div.innerHTML = escapedLine
-          div.classList.add('removed')
-        } else {
-          div.innerHTML = escapedLine
-        }*/
 
         if (part.added) {
           div.innerHTML = `+ ${escapedLine}`

@@ -134,6 +134,12 @@
       </label>
     </div>
     <div class="toolbar-icon">
+      <div id="scroll-synch" data-controller="scroll-synch" data-action="click->scroll-synch#toggle">
+        <span>スクロール同期</span>
+        <label class="toggle-button-1">
+          <input id="scroll-synch-checkbox" type="checkbox" checked data-scroll-synch-target="synch">
+        </label>
+      </div>
       <div id="diff-btn" class="btn diff-btn" data-controller="line-number" data-action="click->line-number#lineCount">
         <i class="fas fa-exchange-alt"></i>
       </div>
@@ -163,15 +169,11 @@
       </div>
       <div id="diff-view" class="diff-view display" data-controller="article-diff">
         <script type="application/json" data-article-diff-target="original">
-          <% if @article %>
-            <%= @article.content.to_json.html_safe %>
-          <% else %>
-            <%= @draft.content.to_json.html_safe %>
-          <% end %>
+          <%=  @article ? @article.content.to_json.html_safe : @draft.content.to_json.html_safe %>
         </script>
-        <div class="diff" data-article-diff-target="output"></div>
+        <div id="diff" class="diff" data-article-diff-target="output"></div>
       </div>
-      <div id="html", class="html display">
+      <div id="html" class="html display">
         <div class="preview-placeholder">
           プレビューが表示されます。
         </div>

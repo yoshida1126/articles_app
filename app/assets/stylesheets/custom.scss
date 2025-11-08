@@ -1795,10 +1795,63 @@ ul.article-comment-option {
 }
 
 .toolbar-icon {
+  display: flex;
+  justify-content: space-between;
   margin-left: auto;
-  padding-bottom: 2px;
   .fa-book-open {
     font-size: 1.5rem;
+  }
+}
+
+#scroll-synch {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+  &:hover span {
+    color: #e7e7e7;
+  }
+
+  span {
+    height: 100%;
+    line-height: 30px;
+    padding-right: 5px;
+    color: #fff;
+    font-size: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .toggle-button-1 {
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    height: 15px;
+    border-radius: 50px;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: background-color .4s;
+  }
+
+  .toggle-button-1:has(:checked) {
+    background-color: #537b85;
+  }
+
+  .toggle-button-1::after {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #fff;
+    content: '';
+    transition: left .4s;
+  }
+
+  .toggle-button-1:has(:checked)::after {
+    left: 15px;
+  }
+
+  .toggle-button-1 input {
+    display: none;
   }
 }
 
@@ -2961,6 +3014,10 @@ input.favorite_article_delete_btn {
     label:last-child input[type="radio"]:checked + span::after {
       left: 14px;
     }
+  }
+
+  #scroll-synch {
+    display: none;
   }
 
   // 記事編集ページ
