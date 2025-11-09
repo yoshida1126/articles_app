@@ -13,12 +13,7 @@ export default class extends Controller {
     this.lineNumbers = document.getElementById("line-numbers")
     this.diffView = document.getElementById("diff")
 
-    this.mirror.addEventListener("scroll", (e) => this.synchScroll(e))
-    this.preview.addEventListener("scroll", (e) => this.synchScroll(e))
-
-    if (this.diffView) {
-      this.diffView.addEventListener("scroll", (e) => this.synchScroll(e))
-    }
+    this.text.addEventListener("scroll", (e) => this.synchScroll(e))
   }
 
   synchScroll(event) {
@@ -29,20 +24,7 @@ export default class extends Controller {
 
     const source = event.target
 
-    const ratio = source.scrollTop / (source.scrollHeight - source.clientHeight)
-
-    const targets = [this.text, this.mirror, this.preview, this.lineNumbers].filter(Boolean)
-
-    for (const el of targets) {
-      if (el === source) continue
-      const newTop = ratio * (el.scrollHeight - el.clientHeight)
-      el.scrollTop = newTop
-    }
-
-    if (this.diffView && source !== this.diffView) {
-      const newTop = ratio * (this.diffView.scrollHeight - this.diffView.clientHeight)
-      this.diffView.scrollTop = newTop
-    }
+    this.alignScrollPositions(source)
 
     this.isSyncing = false
   }
@@ -50,8 +32,22 @@ export default class extends Controller {
   toggle() {
     this.synchTarget.checked = !this.synchTarget.checked
 
-    this.scrollEvent && this.scrollEvent()
-
     this.synchTarget.dispatchEvent(new Event("change", { bubbles: true }))
+
+    if (this.synchTarget.checked) {
+      this.alignScrollPositions(this.text)
+    }
+  }
+
+  alignScrollPositions(source) {
+    const ratio = source.scrollTop / (source.scrollHeight - source.clientHeight)
+    const clampedRatio = Math.min(Math.max(ratio, 0), 1)
+
+    const targets = [this.mirror, this.preview, this.diffView, this.lineNumbers].filter(Boolean)
+    for (const el of targets) {
+      if (el.scrollHeight <= el.clientHeight) continue
+      const newTop = clampedRatio * (el.scrollHeight - el.clientHeight)
+      el.scrollTop = newTop
+    }
   }
 }
