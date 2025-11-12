@@ -31,23 +31,72 @@ export default class extends Controller {
 
     this.outputTarget.innerHTML = ''
 
+    let lastAddedDiv = null;
+    let previousText = null;
+
     diffs.forEach(part => {
       const lines = part.value.split(/(?<=\n)/)
 
-      lines.forEach(line => {
+      lines.forEach((line, i) => {
         const div = document.createElement('div')
         div.classList.add('diff-line')
 
         const escapedLine = this.escapeHTML(line)
 
         if (part.added) {
-          div.innerHTML = `+ ${escapedLine}`
-          div.classList.add('added')
+          if (lastAddedDiv) {
+            if (i === 0) {
+              if (previousText + '\n' === line) {
+                lastAddedDiv.textContent = escapedLine
+                this.outputTarget.appendChild(lastAddedDiv)
+              } else {
+                lastAddedDiv.innerHTML = `- ${previousText}`
+                lastAddedDiv.classList.add('removed')
+                this.outputTarget.appendChild(lastAddedDiv)
+
+                div.innerHTML = `+ ${escapedLine}`
+                div.classList.add('added')
+                this.outputTarget.appendChild(div)
+              }
+              lastAddedDiv = document.createElement('div')
+              lastAddedDiv.classList.add('diff-line')
+              lastAddedDiv.classList.add('added')
+
+              if (line.includes('\n')) {
+                lastAddedDiv.textContent = '+'
+                this.outputTarget.appendChild(lastAddedDiv)
+              }
+            } else {
+              lastAddedDiv.textContent = `+ ${escapedLine}`
+              this.outputTarget.appendChild(lastAddedDiv)
+
+              lastAddedDiv = document.createElement('div')
+              lastAddedDiv.classList.add('diff-line')
+              lastAddedDiv.classList.add('added')
+
+              if (line.includes('\n')) {
+                lastAddedDiv.textContent = '+'
+                this.outputTarget.appendChild(lastAddedDiv)
+              }
+            }
+            return
+          } else {
+            div.innerHTML = `+ ${escapedLine}`
+            div.classList.add('added')
+          }
         } else if (part.removed) {
-          div.innerHTML = `- ${escapedLine}`
-          div.classList.add('removed')
+          if (!(line.endsWith('\n'))) {
+            previousText = escapedLine
+
+            lastAddedDiv = document.createElement('div')
+            lastAddedDiv.classList.add('diff-line')
+            return
+          } else {
+            div.innerHTML = `- ${escapedLine}`
+            div.classList.add('removed')
+          }
         } else {
-          div.innerHTML = `  ${escapedLine}`
+          div.innerHTML = `${escapedLine}`
         }
         this.outputTarget.appendChild(div)
       })
