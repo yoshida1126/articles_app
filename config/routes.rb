@@ -59,6 +59,7 @@ Rails.application.routes.draw do
 
       collection do
         post :save_draft
+        post :autosave_draft
         post :commit
       end
     end

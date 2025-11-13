@@ -3,7 +3,13 @@
   <span class="article-heading-image">
     <%= image_tag @draft.image if @draft.image.attached? %>
   </span>
-  <h1 class="article-title"><%= @draft.title %></h1> 
+  <h1 class="article-title">
+    <% if @draft.title == '' %>
+      タイトル未定
+    <% else %>
+      <%= @draft.title %>
+    <% end %>
+  </h1> 
   <div class="row">
     <section class="article-information"> 
       <%= link_to @draft.user do %>

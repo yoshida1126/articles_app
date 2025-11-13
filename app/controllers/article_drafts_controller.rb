@@ -1,6 +1,6 @@
 class ArticleDraftsController < ApplicationController
   before_action :logged_in_user, only: %i[preview new commit edit update destroy]
-  before_action :authorize_user!, only: %i[new save_draft commit]
+  before_action :authorize_user!, only: %i[new save_draft autosave_draft commit]
   before_action :correct_user, only: %i[preview edit update_draft update destroy]
   before_action :set_remaining_upload_quota, only: %i[new edit]
 
@@ -11,18 +11,52 @@ class ArticleDraftsController < ApplicationController
   end
 
   def save_draft
+    if params[:id].present?
+      correct_user
+      service = ArticleImageService.new(current_user, params, :update_draft)
+      @draft, @params = service.process
 
-    # 画像処理などを含むサービスを呼び出して、ArticleDraftオブジェクトを生成
-    @draft = ArticleImageService.new(current_user, params, :save_draft).process
+      @draft = DraftArticleSyncService.new(draft: @draft, action: :update_draft).call
 
-    @draft.user = current_user
-    @draft.editing = true
+      @draft.assign_attributes(service.sanitized_article_draft_params(@params))
+    else
+      # 画像処理などを含むサービスを呼び出して、ArticleDraftオブジェクトを生成
+      @draft = ArticleImageService.new(current_user, params, :save_draft).process
 
-    if @draft.save
+      @draft.user = current_user
+      @draft.editing = true
+    end
+
+    if @draft.save(validate: false)
       redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
     else
       @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
       render 'article_drafts/new', status: :unprocessable_entity
+    end
+  end
+
+  def autosave_draft
+    if params[:id]
+      service = ArticleImageService.new(current_user, params, :update_draft)
+      @draft, @params = service.process
+
+      @draft = DraftArticleSyncService.new(draft: @draft, action: :update_draft).call
+      @draft.assign_attributes(service.sanitized_article_draft_params(@params))      
+    else
+      @draft = ArticleImageService.new(current_user, params, :save_draft).process
+      @draft.user = current_user
+      @draft.editing = true
+    end
+
+    if @draft.save(validate: false)
+      render json: {
+        status: 'ok',
+        id: @draft.id,
+        updated_at: @draft.updated_at
+      }
+    else
+      render json: { status: 'error', errors: @draft.errors.full_messages },
+      status: :unprocessable_entity
     end
   end
 
@@ -75,7 +109,9 @@ class ArticleDraftsController < ApplicationController
 
     @draft = DraftArticleSyncService.new(draft: @draft, action: :update_draft).call
 
-    if @draft.update(service.sanitized_article_draft_params(@params))
+    @draft.assign_attributes(service.sanitized_article_draft_params(@params))
+
+    if @draft.save(validate: false)
       # 本日のヘッダー画像変更回数をインクリメント
       HeaderImageRateLimiterService.increment(current_user.id) if @params[:article_draft][:image].present?
 

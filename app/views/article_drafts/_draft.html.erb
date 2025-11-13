@@ -12,7 +12,11 @@
   </span>
   <span class="title title-responsive">
     <%= link_to preview_user_article_draft_path(current_user, draft) do %>
-      <%= draft.title %>
+      <% if draft.title == '' %>
+        タイトル未定
+      <% else %>
+        <%= draft.title %>
+      <% end %>
     <% end %>
   </span>
   <span class="timestamp"> 
