@@ -11,6 +11,8 @@ class DraftArticleSyncService
 
   def call
     case @action
+    when :autosave_draft
+      handle_update_draft
     when :update_draft
       handle_update_draft
     when :update

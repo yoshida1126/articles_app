@@ -1,4 +1,5 @@
-<%= form_with model: @draft, url: save_draft_user_article_drafts_path(current_user), id: "article-draft-form", method: :post do |f| %>
+<%= form_with model: @draft, url: save_draft_user_article_drafts_path(current_user), method: 'post', id: "article-draft-form" do |f| %>
+
   <% content_for :form_submit_button do %>
     <%= f.submit '送信する', class: "btn btn-primary" %>
   <% end %>
@@ -74,7 +75,9 @@
 
     <label class="select-header-image">
       <span class="btn select-image">ヘッダー画像を選択</span>
-      <%= f.file_field :image, accept: "image/jpeg, image/png, image/gif", style: "display: none;" %>
+      <%= f.file_field :image, id: "header", accept: "image/jpeg, image/png, image/gif", style: "display: none;",
+        data: { action: "input->draft-asynch-save#processInput" }
+      %>
     </label>
 
     <div id="header-img-preview">
@@ -145,10 +148,9 @@
       </div>
     </div>
 
-    <%= f.hidden_field :id, id: "draft-id-field", value: @draft&.id %>
+    <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
+    <%= f.hidden_field :draft_id, id: 'draft-id', value: @draft&.id %>
   </div>
-
-  <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
 
   <%= hidden_field_tag 'article[published]', params.dig(:article, :published), id: 'published-input' %>
 

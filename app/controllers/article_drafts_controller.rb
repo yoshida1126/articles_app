@@ -11,53 +11,39 @@ class ArticleDraftsController < ApplicationController
   end
 
   def save_draft
-    if params[:id].present?
-      correct_user
+    if params[:article_draft][:draft_id].present?
       service = ArticleImageService.new(current_user, params, :update_draft)
       @draft, @params = service.process
-
-      @draft = DraftArticleSyncService.new(draft: @draft, action: :update_draft).call
-
       @draft.assign_attributes(service.sanitized_article_draft_params(@params))
     else
-      # 画像処理などを含むサービスを呼び出して、ArticleDraftオブジェクトを生成
       @draft = ArticleImageService.new(current_user, params, :save_draft).process
-
       @draft.user = current_user
       @draft.editing = true
     end
 
-    if @draft.save(validate: false)
-      redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
-    else
-      @remaining_mb = UploadQuotaService.new(user: current_user, type: :article).remaining_mb
-      render 'article_drafts/new', status: :unprocessable_entity
-    end
+    @draft.save(validate: false)
+    redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
   end
 
   def autosave_draft
-    if params[:id]
-      service = ArticleImageService.new(current_user, params, :update_draft)
+    if params[:id].present?
+      service = ArticleImageService.new(current_user, params, :autosave_draft)
       @draft, @params = service.process
 
-      @draft = DraftArticleSyncService.new(draft: @draft, action: :update_draft).call
+      @draft = DraftArticleSyncService.new(draft: @draft, action: :autosave_draft).call
       @draft.assign_attributes(service.sanitized_article_draft_params(@params))      
     else
-      @draft = ArticleImageService.new(current_user, params, :save_draft).process
+      @draft = ArticleImageService.new(current_user, params, :autosave_draft).process
       @draft.user = current_user
       @draft.editing = true
     end
 
-    if @draft.save(validate: false)
-      render json: {
-        status: 'ok',
-        id: @draft.id,
-        updated_at: @draft.updated_at
-      }
-    else
-      render json: { status: 'error', errors: @draft.errors.full_messages },
-      status: :unprocessable_entity
-    end
+    @draft.save(validate: false)
+    render json: {
+      status: 'ok',
+      id: @draft.id,
+      updated_at: @draft.updated_at
+    }
   end
 
   def commit

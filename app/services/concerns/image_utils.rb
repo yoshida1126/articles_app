@@ -28,7 +28,10 @@ module ImageUtils
 
         used_blob_signed_ids.each do |blob_key|
             blob = blob_finder.call(blob_key)
-            resource.attach(blob) if blob.present?
+
+            next if resource.attachments.any? { |att| att.blob_id == blob.id }
+
+            resource.attach(blob) if blob.present? 
         end
     end
   
@@ -81,7 +84,7 @@ module ImageUtils
             blob = blob_finder.call(blob_key)
             next unless blob.present?
 
-            attachments = attachments_finder&.call(blob.signed_id)
+            attachments = attachments_finder&.call(blob.id)
 
             if attachments.present?
                 # アタッチメントを purge して関連付けを削除

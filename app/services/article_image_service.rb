@@ -15,17 +15,23 @@ class ArticleImageService
     def process
         case @action
         when :save_draft
-            if @params[:article_draft][:blob_signed_ids]
-              handle_article_images_for_save_draft_and_commit
+            if @params[:article_draft][:draft_id].present?
+                handle_article_images_for_update_draft
             else
-                @params = sanitized_article_draft_params(@params)
-                @draft = @user.article_drafts.build(@params)
+                handle_article_images_for_save_draft_and_commit
             end
-            # create時は@paramsが不要なため、draftのみ返す
-            @draft
+            return @params[:article_draft][:draft_id].present? ? [@draft, @params] : @draft
+        when :autosave_draft
+            if @params[:article_draft][:blob_signed_ids].present?
+                handle_article_images_for_autosave_draft
+            else
+                draft_id = @params[:article_draft][:draft_id].present? ? @params[:article_draft][:draft_id] : @params[:id]
+                @draft = @user.article_drafts.find(draft_id)
+            end
+            return @params[:id].present? ? [@draft, @params] : @draft
         when :commit
             @published = @params[:article][:published]
-            if @params[:article_draft][:blob_signed_ids]
+            if @params[:article_draft][:blob_signed_ids].present?
                 handle_article_images_for_save_draft_and_commit
             else
                 @params = sanitized_article_draft_params(@params)
@@ -33,15 +39,16 @@ class ArticleImageService
             end
             build_from_draft
         when :update_draft
-            if @params[:article_draft][:blob_signed_ids]
+            if @params[:article_draft][:blob_signed_ids].present?
                 handle_article_images_for_update_draft
             else
-                @draft = @user.article_drafts.find(@params[:id])
+                draft_id = @params[:article_draft][:draft_id].present? ? @params[:article_draft][:draft_id] : @params[:id]
+                @draft = @user.article_drafts.find(draft_id)
             end
             # update時は後続処理でparamsも使うため、両方返す
             return @draft, @params
         when :update
-            if @params[:article_draft][:blob_signed_ids]
+            if @params[:article_draft][:blob_signed_ids].present?
                 handle_article_images_for_update_draft
             else
                 @draft = @user.article_drafts.find(@params[:id])
@@ -86,9 +93,39 @@ class ArticleImageService
         unused_blob_delete(unused_blob_signed_ids, blob_finder: @blob_finder)
     end
 
+    def handle_article_images_for_autosave_draft
+        if @params[:id].present?
+            blob_signed_ids = JSON.parse(@params[:article_draft][:blob_signed_ids])
+            @draft = @user.article_drafts.find(@params[:id])
+
+            # ヘッダー画像が設定されている場合のみ、リサイズ処理を行う
+            # 記事更新時にヘッダー画像が消えてしまうことを防ぐため、nil が入らないようにサービスクラス側でも確認しています。
+            if @params[:article_draft][:image].present?
+                @params[:article_draft][:image] = resize_article_header_image(@params[:article_draft][:image])
+            end
+        else
+            @sanitized_params = sanitized_article_draft_params(@params)
+            @draft = @user.article_drafts.build(@sanitized_params)
+
+            @params[:article_draft][:image] = resize_article_header_image(@params[:article_draft][:image])
+        end
+
+        attached_signed_ids = @draft.article_images.map(&:signed_id)
+
+        # 画像が保存されている場所のURLを取得
+        image_urls = extract_s3_urls(@params[:article_draft][:content])
+        # URLを元に使われている画像のblob_signed_idの配列を取得
+        used_blob_signed_ids = get_blob_signed_id_from_url(image_urls, blob_finder: @blob_finder)
+        # 編集後にも使われているアタッチ済みの画像を抽出
+        used_attached_signed_ids = attached_signed_ids & used_blob_signed_ids
+        # 記事の編集により追加された画像のアタッチ処理
+        attach_images_to_resource(@draft.article_images, used_blob_signed_ids - used_attached_signed_ids, blob_finder: @blob_finder)
+    end
+
     def handle_article_images_for_update_draft
         blob_signed_ids = JSON.parse(@params[:article_draft][:blob_signed_ids])
-        @draft = @user.article_drafts.find(@params[:id])
+        draft_id = @params[:article_draft][:draft_id].present? ? @params[:article_draft][:draft_id] : @params[:id]
+        @draft = @user.article_drafts.find(draft_id)
 
         # ヘッダー画像が設定されている場合のみ、リサイズ処理を行う
         # 記事更新時にヘッダー画像が消えてしまうことを防ぐため、nil が入らないようにサービスクラス側でも確認しています。
