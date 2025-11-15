@@ -29,8 +29,6 @@ module ImageUtils
         used_blob_signed_ids.each do |blob_key|
             blob = blob_finder.call(blob_key)
 
-            next if resource.attachments.any? { |att| att.blob_id == blob.id }
-
             resource.attach(blob) if blob.present? 
         end
     end

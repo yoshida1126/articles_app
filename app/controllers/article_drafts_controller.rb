@@ -1,13 +1,36 @@
 class ArticleDraftsController < ApplicationController
   before_action :logged_in_user, only: %i[preview new commit edit update destroy]
   before_action :authorize_user!, only: %i[new save_draft autosave_draft commit]
-  before_action :correct_user, only: %i[preview edit update_draft update destroy]
+  before_action :correct_user, only: %i[preview autosave_draft edit update_draft update destroy]
   before_action :set_remaining_upload_quota, only: %i[new edit]
 
-  def preview; end
+  def preview
+    @tags = @draft.tag_counts_on(:tags)
+  end
 
   def new
     @draft = ArticleDraft.new
+  end
+
+  def autosave_draft
+    service = ArticleImageService.new(current_user, params, :autosave_draft)
+
+    if params[:id].present?
+      @draft, @params = service.process
+      @draft = DraftArticleSyncService.new(draft: @draft, action: :autosave_draft).call
+      @draft.assign_attributes(service.sanitized_article_draft_params(@params))      
+    else
+      @draft = service.process
+      @draft.user = current_user
+      @draft.editing = true
+    end
+
+    @draft.save(validate: false)
+    render json: {
+      status: 'ok',
+      id: @draft.id,
+      updated_at: @draft.updated_at
+    }
   end
 
   def save_draft
@@ -25,27 +48,6 @@ class ArticleDraftsController < ApplicationController
     redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
   end
 
-  def autosave_draft
-    if params[:id].present?
-      service = ArticleImageService.new(current_user, params, :autosave_draft)
-      @draft, @params = service.process
-
-      @draft = DraftArticleSyncService.new(draft: @draft, action: :autosave_draft).call
-      @draft.assign_attributes(service.sanitized_article_draft_params(@params))      
-    else
-      @draft = ArticleImageService.new(current_user, params, :autosave_draft).process
-      @draft.user = current_user
-      @draft.editing = true
-    end
-
-    @draft.save(validate: false)
-    render json: {
-      status: 'ok',
-      id: @draft.id,
-      updated_at: @draft.updated_at
-    }
-  end
-
   def commit
     # ユーザーの1日あたりの記事投稿数を制限するサービスを初期化
     limit_service = UserPostLimitService.new(current_user)
@@ -56,11 +58,8 @@ class ArticleDraftsController < ApplicationController
       redirect_to root_path and return
     end
 
-    # 画像処理などを含むサービスを呼び出して、Articleオブジェクトを生成
-    @article, @draft = ArticleImageService.new(current_user, params, :commit).process
-
     ActiveRecord::Base.transaction do
-      @draft.save!
+      @article = ArticleImageService.new(current_user, params, :commit).process
       @article.save!
       limit_service.track_post
     end
@@ -139,6 +138,8 @@ class ArticleDraftsController < ApplicationController
   private
 
   def correct_user
+    return unless params[:id].present?
+
     @draft = current_user.article_drafts.find_by(id: params[:id])
     unless @draft
       redirect_to root_path, alert: "不正なアクセスです" and return

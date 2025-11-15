@@ -4,7 +4,7 @@
     <%= image_tag @draft.image if @draft.image.attached? %>
   </span>
   <h1 class="article-title">
-    <% if @draft.title == '' %>
+    <% if @draft.title == '' || @draft.title.nil? %>
       タイトル未定
     <% else %>
       <%= @draft.title %>
@@ -14,7 +14,7 @@
     <section class="article-information"> 
       <%= link_to @draft.user do %>
         <div class="article-profile-img">
-          <%= image_tag @draft.user.profile_img if @draft.user.profile_img.attached? %>
+          <%= image_tag @draft.user.profile_img.attached? ? @draft.user.profile_img : "profile.jpg" %>
         </div>
       <% end %>
       <div class="name-and-time">
@@ -58,5 +58,7 @@
     </div >
   <% end %> 
   <div class="content">
-    <%= markdown(@draft.content) %>
+    <% if @draft.content.present? %>
+      <%= markdown(@draft.content) %>
+    <% end %>
   </div>

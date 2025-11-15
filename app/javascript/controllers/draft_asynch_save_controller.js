@@ -44,7 +44,10 @@ export default class extends Controller {
         payload.article_draft.title = this.titleField.value
       }
       if (fieldId === "header") {
-        payload.article_draft.image = this.headerImgField.files[0]
+        const formData = new FormData()
+        formData.append('image', this.headerImgField.files[0])
+
+        payload.article_draft.image = formData
       }
       if (fieldId === "tag-list") {
         payload.article_draft.tag_list = this.tagListField.value

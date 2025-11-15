@@ -4,7 +4,7 @@
     <section class="user-info"> 
       <%= link_to @user do %>
         <div class="profile_img">
-          <%= image_tag @user.profile_img if @user.profile_img.attached? %>
+          <%= image_tag @user.profile_img.attached? ? @user.profile_img : "profile.jpg" %>
         </div>
         <div class="name">
           <%= link_to @user.name, @user %>
@@ -29,7 +29,7 @@
               <div class="user-info">
                 <div class="user-profile-image">
                   <a href="/users/<%= user.id %>">
-                    <%= image_tag user.profile_img if user.profile_img.attached? %>
+                    <%= image_tag user.profile_img.attached? ? user.profile_img : "profile.jpg" %>
                   </a>
                 </div>
                 <div class="name">

@@ -8,7 +8,7 @@
     <section class="article-information"> 
       <%= link_to @article.user do %>
         <div class="article-profile-img">
-          <%= image_tag @article.user.profile_img if @article.user.profile_img.attached? %>
+          <%= image_tag @article.user.profile_img.attached? ? @article.user.profile_img : "profile.jpg" %>
         </div>
       <% end %>
       <div class="name-and-time">
