@@ -137,7 +137,9 @@ class ArticleImageService
             # 記事本文に使われた画像のアタッチ処理
             attach_images_to_resource(@draft.article_images, used_blob_signed_ids, blob_finder: @blob_finder)
         end
-        purge_article_images(blob_signed_ids, attached_signed_ids, used_blob_signed_ids) if @action != :autosave_draft 
+        return if @action == :autosave_draft || (@action == :update_draft && @draft.article.present?)
+
+        purge_article_images(blob_signed_ids, attached_signed_ids, used_blob_signed_ids)
     end
 
     def purge_article_images(blob_signed_ids, attached_signed_ids, used_blob_signed_ids)

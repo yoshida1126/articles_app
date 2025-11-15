@@ -86,7 +86,7 @@ module ImageUtils
 
             if attachments.present?
                 # アタッチメントを purge して関連付けを削除
-                attachments&.each(&:purge_later)
+                 attachments&.each(&:purge_later)
             else
                 blob.purge_later
             end
