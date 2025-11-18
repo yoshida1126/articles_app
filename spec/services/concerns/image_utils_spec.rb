@@ -202,22 +202,22 @@ RSpec.describe ImageUtils do
         end
         # モックの blob
         let(:mock_blob1) do
-            instance_double('ActiveStorage::Blob', signed_id: 'abc123').tap do |blob|
+            instance_double('ActiveStorage::Blob', id: 1, signed_id: 'abc123').tap do |blob|
                 allow(blob).to receive(:purge_later)
             end
         end       
         let(:mock_blob2) do
-            instance_double('ActiveStorage::Blob', signed_id: 'def123').tap do |blob|
+            instance_double('ActiveStorage::Blob', id: 2, signed_id: 'def123').tap do |blob|
                 allow(blob).to receive(:purge_later)
             end
         end
 
-        # attachments_finderがsigned_idで呼ばれたら、mock_attachmentsを返すようにする
+        # attachments_finderがidで呼ばれたら、mock_attachmentsを返すようにする
         let(:attachments_finder) do
-            ->(key) {
-                case key
-                when 'abc123' then attachments1
-                when 'def123' then attachments2
+            ->(id) {
+                case id
+                when 1 then attachments1
+                when 2 then attachments2
                 else
                     nil
                 end

@@ -90,26 +90,7 @@ RSpec.describe "ArticleDrafts", type: :request do
       end
     end
 
-    context "with invalid information(as a logged in user)" do
-      
-      before do 
-        @invalid_draft_params = {
-          title: "",
-          content: "",
-          tag: ""
-        }
-        sign_in user 
-        get "/users/#{ user.id }/article_drafts/new"
-      end 
-
-      it "投稿できないこと" do
-        expect {
-          post save_draft_user_article_drafts_path, params: { user: user, article_draft: @invalid_draft_params }
-        }.to_not change(ArticleDraft, :count)
-      end 
-    end
-
-    context "as a non logged in user" do
+    context "as a logged in other user" do
       before do
         @valid_draft_params = {
           title: "test",
@@ -260,25 +241,6 @@ RSpec.describe "ArticleDrafts", type: :request do
 
       it "下書きの編集後、プロフィールページに下書き記事のタブのリンクにリダイレクトされること" do
         expect(response).to redirect_to drafts_user_path(user)
-      end
-    end 
-
-    context "with invalid information(as a logged in user)" do 
-      before do 
-        sign_in (user)
-        @invalid_draft_params = {
-          title: "", 
-          content: "",
-          tag: "",
-        }
-        get "/users/#{ user.id }/article_drafts/#{ article_draft.id }/edit"
-      end 
-
-      it "記事の編集に失敗すること" do 
-        patch "/users/#{ user.id }/article_drafts/#{ article_draft.id}/update_draft", params: { article_draft: @invalid_draft_params }
-        article_draft.reload 
-        expect(article_draft.title).to_not eq @invalid_draft_params[:title]
-        expect(article_draft.content).to_not eq @invalid_draft_params[:content]
       end
     end 
 

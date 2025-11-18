@@ -14,7 +14,7 @@ RSpec.describe 'Layouts', type: :system do
 
       describe 'Account' do
         before do
-          click_link 'プロフィール画像'
+          click_link 'プロフィール画像', match: :first, exact: true
         end
 
         it 'プロフィールをクリックするとプロフィールページに遷移すること' do

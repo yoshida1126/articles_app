@@ -40,8 +40,6 @@ class ArticleImageService
             remaining_mb = @service.remaining_mb
             max_size = @service.max_size
 
-            Rails.logger.debug "#{ remaining_mb }, #{ max_size }"
-
             return @draft, @params, remaining_mb, max_size
         when :update
             handle_images_for_update_draft
@@ -57,9 +55,7 @@ class ArticleImageService
     private
 
     def handle_images_for_autosave_draft
-        if @params[:article_draft][:blob_signed_ids].present?
-            blob_signed_ids = JSON.parse(@params[:article_draft][:blob_signed_ids])
-        end
+        blob_signed_ids = @params[:article_draft][:blob_signed_ids].present? ? JSON.parse(@params[:article_draft][:blob_signed_ids]) : []
 
         if @params[:article_draft][:image].present?
             resized = resize_article_header_image(@params[:article_draft][:image])
@@ -71,7 +67,7 @@ class ArticleImageService
 
         load_or_build_draft
 
-        attach_article_images if @params[:article_draft][:content].present?
+        attach_article_images(blob_signed_ids) if @params[:article_draft][:content].present?
     end
 
     def handle_images_for_save_draft_and_commit
@@ -86,7 +82,8 @@ class ArticleImageService
         # ※ 注意点：
         # sanitized_article_paramsメソッドでパラメータがフィルタされる前に、
         # blob_signed_ids を先に取り出しておく必要があります。
-        blob_signed_ids = JSON.parse(@params[:article_draft][:blob_signed_ids])
+        blob_signed_ids = @params[:article_draft][:blob_signed_ids].present? ? JSON.parse(@params[:article_draft][:blob_signed_ids]) : []
+
         @params[:article_draft][:image] = resize_article_header_image(@params[:article_draft][:image])
 
         @sanitized_params = sanitized_article_draft_params(@params)
@@ -96,7 +93,7 @@ class ArticleImageService
     end
 
     def handle_images_for_update_draft
-        blob_signed_ids = @params[:article_draft][:blob_signed_ids].present? ? JSON.parse(@params[:article_draft][:blob_signed_ids]) : nil
+        blob_signed_ids = @params[:article_draft][:blob_signed_ids].present? ? JSON.parse(@params[:article_draft][:blob_signed_ids]) : []
         draft_id = @params[:article_draft][:draft_id].present? ? @params[:article_draft][:draft_id] : @params[:id]
         @draft = @user.article_drafts.find(draft_id)
 
@@ -105,9 +102,13 @@ class ArticleImageService
         if @params[:article_draft][:image].present?
             resized = resize_article_header_image(@params[:article_draft][:image])
 
-            attachable = @service.track!(resized.size)
+            if @action == :update_draft
+              attachable = @service.track!(resized.size)
 
-            @params[:article_draft][:image] = resized if (attachable)
+              @params[:article_draft][:image] = resized if (attachable)
+            else
+                @params[:article_draft][:image] = resized
+            end
         end
 
         attach_article_images(blob_signed_ids) if @params[:article_draft][:content].present?
@@ -122,7 +123,7 @@ class ArticleImageService
         end
     end
 
-    def attach_article_images(blob_signed_ids = nil)
+    def attach_article_images(blob_signed_ids)
         if @params[:article_draft][:draft_id].present? || @params[:id].present?
             attached_signed_ids = @draft.article_images.map(&:signed_id)
 

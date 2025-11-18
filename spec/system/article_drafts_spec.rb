@@ -71,6 +71,71 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
     end
   end
 
+  describe '#autosave_draft' do
+    let(:user) { FactoryBot.create(:user) }
+
+    context 'autosave from new draft path' do
+      before do
+        sign_in user
+        visit new_user_article_draft_path(user)
+        fill_in 'article_draft[title]', with: 'Article Autosave Title'
+        fill_in 'article_draft[content]', with: "Article content\n"
+        fill_in 'article_draft[tag_list]', with: 'autosavearticle'
+        attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
+        attach_file 'article_draft[images][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
+        page.accept_confirm do
+          visit drafts_user_path(user)
+        end
+      end
+
+      it '下書き一覧にオートセーブされた下書きのタイトルがあること' do
+        expect(page).to have_content('Article Autosave Title')
+      end
+
+      it 'オートセーブされた下書きの内容が失われていないこと' do
+        click_link 'Article Autosave Title'
+
+        expect(page).to have_content('Article Autosave Title')
+        expect(page).to have_content('autosavearticle')
+        expect(page).to have_selector("img[src$='earth.png']")
+        expect(page).to have_selector("img[alt='map.png']")
+      end
+    end
+
+    context 'autosave from edit draft path' do
+      let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user: user) }
+      let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
+
+      before do
+        sign_in user
+        visit new_user_article_draft_path(user)
+        fill_in 'article_draft[title]', with: 'Article Autosave Title'
+        fill_in 'article_draft[content]', with: "Article content\n"
+        fill_in 'article_draft[tag_list]', with: 'autosavearticle'
+        attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
+        attach_file 'article_draft[images][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
+        page.accept_confirm do
+          visit drafts_user_path(user)
+        end
+      end
+
+      it '下書き一覧にオートセーブされた下書きのタイトルがあること' do
+        expect(page).to have_content('Article Autosave Title')
+      end
+
+      it 'オートセーブされた下書きの内容が失われていないこと' do
+        click_link 'Article Autosave Title'
+
+        expect(page).to have_content('Article Autosave Title')
+        expect(page).to have_content('autosavearticle')
+        expect(page).to have_selector("img[src$='earth.png']")
+        expect(page).to have_selector("img[alt='map.png']")
+      end
+    end
+  end
+
   describe '#save_draft' do
     let(:user) { FactoryBot.create(:user) }
 
@@ -83,6 +148,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[images][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
         click_button '送信する'
       end
 
@@ -120,6 +186,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[images][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
         click_button '送信する'
       end
 
@@ -154,6 +221,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[images][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
         click_button '送信する'
       end
 
@@ -255,6 +323,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
         click_button '送信する'
       end
 
@@ -314,6 +383,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
         click_button '送信する'
       end
 
@@ -363,6 +433,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
         click_button '送信する'
       end
 
@@ -409,6 +480,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
         click_button '送信する'
       end
 
@@ -456,6 +528,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
         click_button '送信する'
       end
 
@@ -502,6 +575,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         fill_in 'article_draft[tag_list]', with: 'article'
         attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
         attach_file 'article_draft[content][]', 'spec/fixtures/map.png', visible: false
+        expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.51MB / 10MB')
         click_button '送信する'
       end
 

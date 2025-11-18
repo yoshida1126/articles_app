@@ -95,9 +95,6 @@ class DraftArticleSyncService
         @article.update!(service.sanitized_article_params(@params))
       end
 
-      # 本日のヘッダー画像変更回数をインクリメント
-      HeaderImageRateLimiterService.increment(@user.id) if @params[:article_draft][:image].present?
-
       [@article, @draft, generate_notice_message(from_published, to_published), :success]
     rescue ActiveRecord::RecordInvalid => e
       [@article, @draft, e.record.errors.full_messages, :failure]
