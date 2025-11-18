@@ -1,9 +1,12 @@
 class UploadQuotaService
-  def initialize(user:, type:)
+  def initialize(user:)
     @user = user
-    @type = type
-    @key = "#{prefix}:#{user.id}:#{Date.today}"
-    @max_size = type == :article ? 5.megabytes : 2.megabytes
+    @key = "upload_images_quota:#{user.id}:#{Date.today}"
+    @max_size = 10.megabytes
+  end
+
+  def max_size
+    (@max_size / 1.megabyte.to_f).round(0)
   end
 
   def current
@@ -15,7 +18,8 @@ class UploadQuotaService
   end
 
   def remaining_mb
-    (remaining / 1.megabyte.to_f).round(2)
+    remaining_mb = (remaining / 1.megabyte.to_f)
+    remaining_mb.round(1) == 10.0  ? remaining_mb.round(0) : remaining_mb.round(2)
   end
 
   def track!(size)
@@ -29,10 +33,6 @@ class UploadQuotaService
   end
 
   private
-
-  def prefix
-    @type == :article ? "upload_article_images_quota" : "upload_comment_images_quota"
-  end
 
   def ensure_expire!
     if !$redis.exists?(@key) || $redis.ttl(@key) < 0

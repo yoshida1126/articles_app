@@ -20,15 +20,10 @@
   <section class="favorite-article-list-link"> 
     <%= link_to "お気に入り記事リスト一覧", user_favorite_article_lists_path(@user) %>
   </section>
-  <% unless current_user == @user %>
+  <% if current_user != @user %>
     <section class="follow-btn">
       <%= render 'follow_form' if current_user %> 
     </section> 
-  <% else %>
-    <p class="post-limit">
-      （本日の残り投稿回数: 
-      <strong><%= @count %></strong>）
-    </p>
   <% end %>
   </aside>
   <div class="col-sm-8"> 

@@ -62,10 +62,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def set_remaining_upload_quota
+  def set_upload_quota_data
     return unless current_user
 
-    type = action_name == 'show' ? :comment : :article
-    @remaining_mb = UploadQuotaService.new(user: current_user, type: type).remaining_mb
+    service = UploadQuotaService.new(user: current_user)
+    @max_size = service.max_size
+    @remaining_mb = service.remaining_mb
   end
 end

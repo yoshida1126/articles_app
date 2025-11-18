@@ -82,8 +82,7 @@ Rails.application.routes.draw do
   resources :favorite_list_bookmarks, only: %i[create destroy]
   
   get "uploads/quota", to: "uploads#remaining_quota"
-  post '/upload_article_images_tracker', to: 'uploads#track_article_images'
-  post '/upload_comment_images_tracker', to: 'uploads#track_comment_images'
+  post '/upload_images_tracker', to: 'uploads#track_images'
 
   resources :feedbacks, only: %i[new create]
 end

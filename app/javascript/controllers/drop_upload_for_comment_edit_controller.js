@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { DirectUpload } from "@rails/activestorage"
+import { updateSizeBar } from "../services/file_size_bar"
 
-// Connects to data-controller="markdown-upload"
 export default class extends Controller {
   static values = { url: String };
   connect() {
@@ -24,7 +24,7 @@ export default class extends Controller {
       return;
     }
 
-    fetch("/upload_comment_images_tracker", {
+    fetch("/upload_images_tracker", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,13 +44,6 @@ export default class extends Controller {
       return response.json();
     })
     .then(data => {
-      const Elements = document.querySelectorAll(".comment-upload-remaining");
-      if (Elements && data.remaining_mb !== undefined) {
-        Elements.forEach(element => {
-          element.innerText = `本日のコメント画像の残りアップロード容量：${data.remaining_mb} MB`;
-        });
-      }
-
       const upload = new DirectUpload(file, this.urlValue);
       upload.create((error, blob) => {
         if (error) {
@@ -62,6 +55,15 @@ export default class extends Controller {
           this.element.setRangeText(text,start,end)
 
           this.element.dispatchEvent(new Event('input', { bubbles: true }));
+
+          if (data.remaining_mb !== undefined && data.max_size !== undefined) {
+            const elements = document.querySelectorAll('[id^="comment-file-size-bar-container"]')
+            const element = Array.from(elements).map(el => Array.from(el.children))
+
+            element.forEach(displays => {
+              updateSizeBar(displays[1], displays[0], data.remaining_mb, data.max_size)
+            })
+          }
         }
       });
     })

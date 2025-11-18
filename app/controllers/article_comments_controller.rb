@@ -1,6 +1,7 @@
 class ArticleCommentsController < ApplicationController
   before_action :logged_in_user
   before_action :correct_user, only: %i[edit update destroy]
+  before_action :set_upload_quota_data, only: %i[create update]
 
   def create
     prepare_article_comment_data(:create) # 部分更新後に使われるデータの用意
@@ -70,6 +71,5 @@ class ArticleCommentsController < ApplicationController
     @article = Article.find(params[:article_id])
     @tags = @article.tag_counts_on(:tags)
     @comment = ArticleComment.new if action === :create
-    @remaining_mb = UploadQuotaService.new(user: current_user, type: :comment).remaining_mb
   end
 end

@@ -436,9 +436,51 @@ li.link-btn {
 
 #navbar-menu {
   display: flex;
-  max-width: 80%;
+  width: fit-content;
+  min-width: 0;
   height: 50px;
   align-items: center;
+}
+
+#file-size-bar-container, [id^="comment-file-size-bar-container"] {
+  position: relative;
+  width: 250px;
+  height: 25px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  #file-size-bar, .comment-file-size-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, #5a8f99, #7fb3bd);
+    transition: width 0.3s, background 0.3s;
+    border-radius: 10px;
+  }
+  #file-size-text, .comment-file-size-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 2;
+  }
+}
+
+[id^="comment-file-size-bar-container"] {
+  width: 200px;
+  height: 20px;
+  margin-left: auto;
+  .comment-file-size-text {
+    font-weight: lighter;
+  }
 }
 
 .article-submit-btn {
@@ -446,6 +488,7 @@ li.link-btn {
   height: fit-content;
   text-align: center;
   margin-left: 25px;
+  margin-right: 25px;
   .btn {
     border: 2px solid #88aeb8;
     border-radius: 10px;
@@ -1751,47 +1794,49 @@ ul.article-comment-option {
   display: flex;
 }
 
-#article-upload-remaining {
-  margin-top: 30px;
-}
-
 .toolbar {
   display: flex;
   background-color: #99b9c2;
+  margin-top: 40px;
   height: 30px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-    button {
-      background-color: transparent;
-      border: none;
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    outline: none;
+    padding: 0;
+    appearance: none;
+  }
+  img {
+    cursor: pointer;
+    display: block;
+  }
+  .article-image-upload {
+    height: 30px;
+    transition: all 0.2s ease;
+    .fa-image {
+      color: whitesmoke;
       cursor: pointer;
       border-radius: 5px;
-      outline: none;
-      padding: 0;
-      appearance: none;
+      font-size: 2rem;
+      padding-top: 5.5px;
+      padding-left: 7px;
+      padding-right: 7px;
+      padding-bottom: 6px;
     }
-    img {
-      cursor: pointer;
-      display: block;
+    &:hover {
+      background-color: #96abaf;
+      border-radius: 5px;
     }
-    .article-image-upload {
-      height: 30px;
-      transition: all 0.2s ease;
-      .fa-image {
-        color: whitesmoke;
-        cursor: pointer;
-        border-radius: 5px;
-        font-size: 2rem;
-        padding-top: 5.5px;
-        padding-left: 7px;
-        padding-right: 7px;
-        padding-bottom: 6px;
-      }
-      &:hover {
-        background-color: #96abaf;
-        border-radius: 5px;
-      }
-    }
+  }
+}
+.comment-toolbar {
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0;
 }
 
 .toolbar-icon {
@@ -2240,7 +2285,7 @@ label {
 
 .count {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
   font-size: 1.3rem;
 }
 
@@ -2253,11 +2298,11 @@ label {
 }
 
 .limit-length {
-  color: red;
+  color: #c45d5d;
 }
 
 .warning {
-  color: orange;
+  color: #d8a55b;
 }
 
 .favorite-list-submit-btn {
@@ -2740,8 +2785,8 @@ input.favorite_article_delete_btn {
   }
 
   .article-submit-btn {
-    width: 100px;
-    margin-left: 15px;
+    margin-right: 0;
+    margin-left: 5px;
     .btn {
       letter-spacing: 2px;
       text-indent: 2px;
@@ -2944,6 +2989,17 @@ input.favorite_article_delete_btn {
   }
 
   // 記事投稿ページ
+
+  #responsive-menu.form-responsive-menu {
+    display: none;
+  }
+
+  #file-size-bar-container {
+    margin-left: 15px;
+    #file-size-text {
+      font-weight: lighter;
+    }
+  }
 
   .html {
     margin-bottom: 30px;

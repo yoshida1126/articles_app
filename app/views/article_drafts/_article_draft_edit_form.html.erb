@@ -81,35 +81,27 @@
   </div>
 
   <div
-    data-controller="draft-asynch-save"
-    data-draft-asynch-save-user-id-value="<%= current_user.id %>"
-    data-draft-asynch-save-draft-id-value="<%= @draft&.id %>"
-    data-draft-asynch-save-csrf-token-value="<%= form_authenticity_token %>"
+    data-controller="draft-async-save"
+    data-draft-async-save-user-id-value="<%= current_user.id %>"
+    data-draft-async-save-draft-id-value="<%= @draft&.id %>"
+    data-draft-async-save-csrf-token-value="<%= form_authenticity_token %>"
   >
 
     <div class="title-field">
       <%= f.text_field :title, id: 'title', class: "form-control#{' is-invalid' if @draft.errors[:title].any?}", placeholder: "タイトルを入力してください。",
-        data: { action: "input->draft-asynch-save#processInput" }
+        data: { action: "input->draft-async-save#processInput" }
       %> 
       <% @draft.errors.full_messages_for(:title).each do |msg| %>
         <div class="invalid-feedback"><%= msg %></div>
       <% end %>
     </div> 
-    <% if @header_image_change_remaining.to_i > 0 %>
-      <div class="selection-and-change-count">
-        <label class="top-image">
-          <span class="btn select-image">ヘッダー画像を選択</span>
-          <%= f.file_field :image, id: 'header', accept: "image/jpeg, image/png, image/gif", style: "display: none;",
-            data: { action: "onchange->draft-asynch-save#processInput" }
-          %>
-        </label>
-        <p>（※本日の残り変更回数: <strong><%= @header_image_change_remaining %></strong>）</p>
-      </div>
-    <% else %>
-      <p>
-        ※本日の<strong>ヘッダー画像変更回数</strong>を超えています。本記事のヘッダー画像は明日以降に変更可能です。
-      </p>
-    <% end %>
+
+    <label id="header-select" class="select-header-image">
+      <span class="btn select-image">ヘッダー画像を選択</span>
+      <%= f.file_field :image, id: 'header', accept: "image/jpeg, image/png, image/gif", style: "display: none;",
+        data: { action: "input->draft-async-save#processInput" }
+      %>
+    </label>
 
     <div id="header-img-preview">
       <% if @draft.image.attached? %>
@@ -124,14 +116,13 @@
     <div id="add-tags">
       <%= f.label :tag_list, "タグ(半角のスペースで区切って入力してください。)", class: "form-label" %> 
       <%= f.text_field :tag_list, value: @draft.tag_list.join(" "), id: 'tag-list', class: "form-control#{' is-invalid' if @draft.errors[:tag_list].any?}",
-        data: { action: "input->draft-asynch-save#processInput" }
+        data: { action: "input->draft-async-save#processInput" }
       %>
       <% @draft.errors.full_messages_for(:tag_list).each do |msg| %>
         <div class="invalid-feedback"><%= msg %></div>
       <% end %>
     </div> 
 
-    <div id="article-upload-remaining">[本日の記事画像の残りアップロード容量：<%= @remaining_mb %> MB]</div>
     <div class="toolbar">
       <div class="article-image-upload">
         <label>
@@ -176,7 +167,7 @@
             data: {
               controller: "drop-upload count-article-text line-number",
               drop_upload_url_value: rails_direct_uploads_url,
-              action: "input->draft-asynch-save#processInput drop->drop-upload#dropUpload input->count-article-text#count input->line-number#lineCount resize@window->line-number#lineCount scroll->line-number#scrollSynch"
+              action: "input->draft-async-save#processInput drop->drop-upload#dropUpload input->count-article-text#count input->line-number#lineCount resize@window->line-number#lineCount scroll->line-number#scrollSynch"
              }
           %>
         </div>

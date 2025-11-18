@@ -15,8 +15,13 @@ class ArticleImageService
     def process
         case @action
         when :autosave_draft
+            @service = UploadQuotaService.new(user: @user)
             handle_images_for_autosave_draft
-            return @params[:id].present? ? [@draft, @params] : @draft
+
+            remaining_mb = @service.remaining_mb
+            max_size = @service.max_size
+
+            return @draft, remaining_mb, max_size
         when :save_draft
             if @params[:article_draft][:draft_id].present?
                 handle_images_for_update_draft
@@ -25,32 +30,24 @@ class ArticleImageService
             end
             return @params[:article_draft][:draft_id].present? ? [@draft, @params] : @draft
         when :commit
-            @published = @params[:article][:published]
+            handle_images_for_save_draft_and_commit
 
+            return @draft, @params
+        when :update_draft
+            @service = UploadQuotaService.new(user: @user)
             handle_images_for_update_draft
 
-            @draft.editing = false
-            @draft.save!
-            @draft.reload
-            
-            build_from_draft
-        when :update_draft
-            if @params[:article_draft][:blob_signed_ids].present?
-                handle_images_for_update_draft
-            else
-                draft_id = @params[:article_draft][:draft_id].present? ? @params[:article_draft][:draft_id] : @params[:id]
-                @draft = @user.article_drafts.find(draft_id)
-            end
-            # update時は後続処理でparamsも使うため、両方返す
-            return @draft, @params
+            remaining_mb = @service.remaining_mb
+            max_size = @service.max_size
+
+            Rails.logger.debug "#{ remaining_mb }, #{ max_size }"
+
+            return @draft, @params, remaining_mb, max_size
         when :update
-            if @params[:article_draft][:blob_signed_ids].present?
-                handle_images_for_update_draft
-            else
-                @draft = @user.article_drafts.find(@params[:id])
-            end
+            handle_images_for_update_draft
+
             sync_header_image_from_draft if @draft.article
-            # update時は後続処理でparamsも使うため、両方返す
+
             return @draft, @params
         else
             raise "Unknown action: #{@action}"
@@ -65,7 +62,11 @@ class ArticleImageService
         end
 
         if @params[:article_draft][:image].present?
-            @params[:article_draft][:image] = resize_article_header_image(@params[:article_draft][:image])
+            resized = resize_article_header_image(@params[:article_draft][:image])
+
+            attachable = @service.track!(resized.size)
+
+            @params[:article_draft][:image] = resized if (attachable)
         end
 
         load_or_build_draft
@@ -95,17 +96,21 @@ class ArticleImageService
     end
 
     def handle_images_for_update_draft
-        blob_signed_ids = JSON.parse(@params[:article_draft][:blob_signed_ids])
+        blob_signed_ids = @params[:article_draft][:blob_signed_ids].present? ? JSON.parse(@params[:article_draft][:blob_signed_ids]) : nil
         draft_id = @params[:article_draft][:draft_id].present? ? @params[:article_draft][:draft_id] : @params[:id]
         @draft = @user.article_drafts.find(draft_id)
 
         # ヘッダー画像が設定されている場合のみ、リサイズ処理を行う
         # 記事更新時にヘッダー画像が消えてしまうことを防ぐため、nil が入らないようにサービスクラス側でも確認しています。
         if @params[:article_draft][:image].present?
-            @params[:article_draft][:image] = resize_article_header_image(@params[:article_draft][:image])
+            resized = resize_article_header_image(@params[:article_draft][:image])
+
+            attachable = @service.track!(resized.size)
+
+            @params[:article_draft][:image] = resized if (attachable)
         end
 
-        attach_article_images(blob_signed_ids)
+        attach_article_images(blob_signed_ids) if @params[:article_draft][:content].present?
     end
 
     def load_or_build_draft

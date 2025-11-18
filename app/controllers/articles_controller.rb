@@ -1,7 +1,7 @@
 class ArticlesController < ApplicationController
   before_action :logged_in_user, only: %i[destroy]
   before_action :correct_user, only: %i[destroy]
-  before_action :set_remaining_upload_quota, only: %i[show]
+  before_action :set_upload_quota_data, only: %i[show]
 
   def index; end
 

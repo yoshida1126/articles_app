@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { DirectUpload } from "@rails/activestorage"
+import { updateSizeBar } from "../services/file_size_bar"
 
-// Connects to data-controller="markdown-upload"
 export default class extends Controller {
   static values = { url: String };
   connect() {
@@ -24,7 +24,7 @@ export default class extends Controller {
       return;
     }
 
-    fetch("/upload_article_images_tracker", {
+    fetch("/upload_images_tracker", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,10 +44,6 @@ export default class extends Controller {
       return response.json();
     })
     .then(data => {
-      const quotaDisplay = document.getElementById("article-upload-remaining");
-      if (quotaDisplay && data.remaining_mb !== undefined) {
-        quotaDisplay.innerText = `本日の記事画像の残りアップロード容量：${data.remaining_mb} MB`;
-      }
 
       const upload = new DirectUpload(file, this.urlValue);
       upload.create((error, blob) => {
@@ -63,6 +59,13 @@ export default class extends Controller {
           form.setRangeText(text, end, end, "end");
 
           form.dispatchEvent(new Event('input', { bubbles: true }));
+
+          if (data.remaining_mb !== undefined && data.max_size !== undefined) {
+            const quotaDisplay = document.getElementById("file-size-text")
+            const ratioDisplay = document.getElementById("file-size-bar")
+
+            updateSizeBar(quotaDisplay, ratioDisplay, data.remaining_mb, data.max_size)
+          }
         }
       });
     })

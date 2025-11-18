@@ -3,7 +3,7 @@ class DraftArticleSyncService
 
   def initialize(draft:, action:, user: nil, params: [])
     @draft = draft
-    @article = draft.article
+    @article = draft&.article
     @action = action
     @user = user
     @params = params
@@ -15,6 +15,8 @@ class DraftArticleSyncService
       handle_update_draft
     when :update_draft
       handle_update_draft
+    when :commit
+      @params[:article_draft][:draft_id].present? ? handle_update : handle_commit
     when :update
       handle_update
     when :destroy
@@ -27,9 +29,45 @@ class DraftArticleSyncService
   private
 
   def handle_update_draft
+    service = ArticleImageService.new(@user, @params, :update_draft)
+    @draft, @params, remaining_mb, max_size = service.process
+
     @draft.editing = true
 
-    @draft
+    @draft.assign_attributes(service.sanitized_article_draft_params(@params))
+
+    return @action == :autosave_draft ? [@draft, remaining_mb, max_size] : @draft
+  end
+
+  def handle_commit
+    service = ArticleImageService.new(@user, @params, :commit)
+    @draft, @params = service.process
+
+    @draft.editing = false
+
+    to_published = @params[:article][:published] == 'true'
+
+    @article = @user.articles.build(
+      article_draft: @draft
+    )
+    from_published = nil
+
+    @draft.article.image.attach(@draft.image&.blob)
+
+    begin
+      ActiveRecord::Base.transaction do
+        @params = service.sanitized_article_draft_params(@params)
+        @draft.assign_attributes(@params)
+        @article.assign_attributes(@params)
+
+        @draft.save!
+        @article.save!
+      end
+
+      [@article, @draft, generate_notice_message(from_published, to_published), :success]
+    rescue ActiveRecord::RecordInvalid => e
+      [@article, @draft, e.record.errors.full_messages, :failure]
+    end
   end
 
   def handle_update

@@ -9,9 +9,8 @@
     <%= render "shared/error_messages", object: @error_comment %>
   <% end %> 
 </div>
-<div class="comment-upload-remaining">本日のコメント画像の残りアップロード容量：<%= @remaining_mb %> MB</div>
 <%= form_with model: [@article, @comment], local: true, remote: true do |f| %> 
-  <div class="toolbar">
+  <div class="toolbar comment-toolbar">
     <%= turbo_frame_tag "articles-img" do %>
       <div class="article-image-upload">
         <label>
@@ -27,6 +26,15 @@
         </label>
       </div>
     <% end %>
+    <div
+      id="comment-file-size-bar-container"
+      data-controller="header"
+      data-header-remaining-value="<%= @remaining_mb %>"
+      data-header-max-value="<%= @max_size %>"
+    >
+      <div class="comment-file-size-bar" data-header-target="bar"></div>
+      <span class="comment-file-size-text" data-header-target="quota"></span>
+    </div>
     <div class="preview-open">
       <div data-controller="preview-for-comment"  data-action="click->preview-for-comment#preview" class="btn preview-btn">
         <i class="fas fa-book-open"></i>

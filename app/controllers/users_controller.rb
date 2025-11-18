@@ -7,8 +7,6 @@ class UsersController < ApplicationController
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @private_articles = @user.articles.unpublished.paginate(page: params[:page], per_page: 15)
 
-    limit_service = UserPostLimitService.new(current_user)
-    @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
     @tab = :published
     render :show
   end
@@ -16,9 +14,6 @@ class UsersController < ApplicationController
   def private_articles
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
-
-    limit_service = UserPostLimitService.new(current_user)
-    @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
 
     @private_articles = @user.articles.unpublished.paginate(page: params[:page], per_page: 15)
     @tab = :private
@@ -28,9 +23,6 @@ class UsersController < ApplicationController
   def drafts
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
-
-    limit_service = UserPostLimitService.new(current_user)
-    @count = UserPostLimitService::DAILY_LIMIT - limit_service.current_count
 
     @drafts = @user.article_drafts.editing.paginate(page: params[:page], per_page: 15)
 
