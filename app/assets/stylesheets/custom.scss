@@ -514,18 +514,16 @@ li.link-btn {
 /* about-page */
 
 #about_page {
-  background-color: #f2fcff;
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #f3f3f3;
   border-radius: 10px;
-  max-width: 700px;
-  margin: auto;
-  margin-top: 50px;
 }
 
 .about-page {
   max-width: 640px;
-  padding-top: 30px;
-  padding-bottom: 30px;
   margin: auto;
+  padding: 30px 10px;
 }
 
 /* mail */ 
