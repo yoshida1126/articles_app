@@ -10,6 +10,16 @@ class Article < ApplicationRecord
   acts_as_taggable_on :tags
   validates :tag_list, presence: { message: 'を入力してください。' }
   validate :validate_tag
+  validates :user_id, presence: true
+  validates :title, presence: true, length: { maximum: 50 }
+  validates :content, presence: true
+  validates :image, content_type: { in: %w[image/jpeg image/png image/gif],
+                                    message: 'アップロード可能な画像形式はJPEG, PNG, GIFです。ファイル形式をご確認ください。' },
+                    size: { less_than: 1.megabytes,
+                            message: '1MB以下の画像をアップロードしてください。' },
+                    dimension: { width: { min: 375, max: 1024 },
+                                 height: { min: 360, max: 1024 } }
+
 
   default_scope -> { order(created_at: :desc) }
   scope :published, -> { where(published: true) }

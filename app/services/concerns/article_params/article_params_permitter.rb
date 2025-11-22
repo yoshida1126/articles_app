@@ -3,6 +3,7 @@ module ArticleParams
         def sanitized_article_params(params)
             params[:article_draft].delete(:images)
             params[:article_draft].delete(:blob_signed_ids)
+            params[:article_draft].delete(:draft_id)
 
             article_params = params.require(:article).permit(:published)
             draft_params   = params.require(:article_draft).permit(:title, :content, :image, :tag_list, article_images: [])

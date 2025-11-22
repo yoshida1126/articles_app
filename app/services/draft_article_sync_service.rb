@@ -1,5 +1,4 @@
 class DraftArticleSyncService
-  include ArticleDraftParams::ArticleDraftParamsPermitter
 
   def initialize(draft:, action:, user: nil, params: [])
     @draft = draft
@@ -12,11 +11,13 @@ class DraftArticleSyncService
   def call
     case @action
     when :autosave_draft
-      handle_update_draft
+      handle_autosave_draft
+    when :save_draft
+      handle_save_draft
     when :update_draft
       handle_update_draft
     when :commit
-      @params[:article_draft][:draft_id].present? ? handle_update : handle_commit
+      handle_commit
     when :update
       handle_update
     when :destroy
@@ -28,39 +29,54 @@ class DraftArticleSyncService
 
   private
 
-  def handle_update_draft
-    service = ArticleImageService.new(@user, @params, :update_draft)
+  def handle_autosave_draft
+    service = ArticleImageService.new(@user, @params, :autosave_draft)
     @draft, @params, remaining_mb, max_size = service.process
 
     @draft.editing = true
 
     @draft.assign_attributes(service.sanitized_article_draft_params(@params))
 
-    return @action == :autosave_draft ? [@draft, remaining_mb, max_size] : @draft
+    return [@draft, remaining_mb, max_size]
+  end
+
+  def handle_save_draft
+    service = ArticleImageService.new(@user, @params, :save_draft)
+    @draft, @params = service.process
+
+    @draft.editing = true
+
+    @draft.assign_attributes(service.sanitized_article_draft_params(@params).except(:image))
+
+    return @draft
+  end
+
+  def handle_update_draft
+    service = ArticleImageService.new(@user, @params, :update_draft)
+    @draft, @params = service.process
+
+    @draft.editing = true
+
+    @draft.assign_attributes(service.sanitized_article_draft_params(@params).except(:image))
+
+    return @draft
   end
 
   def handle_commit
-    service = ArticleImageService.new(@user, @params, :commit)
-    @draft, @params = service.process
-
-    @draft.editing = false
-
-    to_published = @params[:article][:published] == 'true'
-
-    @article = @user.articles.build(
-      article_draft: @draft
-    )
+    to_published = @params[:article][:published]
     from_published = nil
 
-    @draft.article.image.attach(@draft.image&.blob)
+    service = ArticleImageService.new(@user, @params, :commit)
+    @article, @draft, @params = service.process
 
     begin
       ActiveRecord::Base.transaction do
-        @params = service.sanitized_article_draft_params(@params)
-        @draft.assign_attributes(@params)
-        @article.assign_attributes(@params)
-
+        @draft.assign_attributes(service.sanitized_article_draft_params(@params).except(:image))
         @draft.save!
+        @draft.reload
+
+        sync_images
+        @article.assign_attributes(service.sanitized_article_params(@params).except(:image))
         @article.save!
       end
 
@@ -71,28 +87,24 @@ class DraftArticleSyncService
   end
 
   def handle_update
-    service = ArticleImageService.new(@user, @params, :update)
-    @draft, @params = service.process
+    to_published = @params[:article][:published]
 
-    @draft.editing = false
-
-    to_published = @params[:article][:published] == 'true'
-
-    if @article.nil?
-      @article = @user.articles.build(
-        article_draft: @draft
-      )
+    if @draft.article.nil?
       from_published = nil
-
-      @draft.article.image.attach(@draft.image&.blob)
     else
       from_published = @article.published
     end
 
+    service = ArticleImageService.new(@user, @params, :update)
+    @article, @draft, @params = service.process
+
     begin
       ActiveRecord::Base.transaction do
-        @draft.update!(service.sanitized_article_draft_params(@params))
-        @article.update!(service.sanitized_article_params(@params))
+        @draft.update!(service.sanitized_article_draft_params(@params).except(:image))
+        @draft.reload
+
+        sync_images
+        @article.update!(service.sanitized_article_params(@params).except(:image))
       end
 
       [@article, @draft, generate_notice_message(from_published, to_published), :success]
@@ -124,17 +136,53 @@ class DraftArticleSyncService
     end
   end
 
+  def sync_images
+    @article.image.attach(@draft.image.blob) if @draft.image.present?
+
+    if @draft.article_images.attached?
+      draft_ids   = @draft.article_images.blobs.map(&:id)
+      article_ids = @article.article_images.blobs.map(&:id)
+
+      remove_ids = article_ids - draft_ids
+      add_ids    = draft_ids - article_ids
+
+      @article.article_images.attachments.where(blob_id: remove_ids).each(&:purge_later) if remove_ids.present?
+
+      add_ids.each do |id|
+        blob = @draft.article_images.blobs.find(id)
+        @article.article_images.attach(blob)
+      end
+    else
+      @article.article_images.each(&:purge_later) if @article.article_images.present?
+    end
+  end
+
   def sync_draft_with_article
-    @draft.title = @article.title
-    @draft.image.attach(@article.image.blob) if @article.image.attached?
+    @draft.assign_attributes(@article.attributes.except("id", "published", "created_at", "updated_at"))
     @draft.tag_list = @article.tag_list
-    @draft.content = @article.content
     @draft.editing = false
 
-    @draft.article_images.detach
+    if @article.image.attached?
+      @draft.image.attach(@article.image.blob) 
+    else
+      @draft.image.detach if @draft.image.attached?
+    end
 
-    @article.article_images.each do |image|
-      @draft.article_images.attach(image.blob)
+    if @article.article_images.attached?
+      draft_ids   = @draft.article_images.blobs.map(&:id)
+      article_ids = @article.article_images.blobs.map(&:id)
+
+      remove_ids = draft_ids - article_ids
+      add_ids    = article_ids - draft_ids
+      
+      @draft.article_images.attachments.where(blob_id: remove_ids).each(&:purge_later) if remove_ids.present?
+
+      add_ids.each do |id|
+        blob = @draft.article_images.blobs.find(id)
+        @draft.article_images.attach(blob)
+      end
+    else
+      @draft.article_images.each(&:purge_later) if @draft.article_images.present?
     end
   end
 end

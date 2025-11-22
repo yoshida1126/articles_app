@@ -13,13 +13,7 @@ class ArticleDraftsController < ApplicationController
   end
 
   def autosave_draft
-    if params[:id].present?
-      @draft, remaining_mb, max_size = DraftArticleSyncService.new(draft: @draft, action: :autosave_draft, user: current_user, params: params).call   
-    else
-      @draft, remaining_mb, max_size = ArticleImageService.new(current_user, params, :autosave_draft).process
-      @draft.user = current_user
-      @draft.editing = true
-    end
+    @draft, remaining_mb, max_size = DraftArticleSyncService.new(draft: @draft, action: :autosave_draft, user: current_user, params: params).call
 
     @draft.save(validate: false)
     render json: {
@@ -32,17 +26,9 @@ class ArticleDraftsController < ApplicationController
   end
 
   def save_draft
-    if params[:article_draft][:draft_id].present?
-      service = ArticleImageService.new(current_user, params, :update_draft)
-      @draft, @params = service.process
-      @draft.assign_attributes(service.sanitized_article_draft_params(@params))
-    else
-      @draft = ArticleImageService.new(current_user, params, :save_draft).process
-      @draft.user = current_user
-      @draft.editing = true
-    end
+    @draft = DraftArticleSyncService.new(draft: @draft, action: :save_draft, user: current_user, params: params).call
 
-    @draft.save(validate: false)
+    @draft.save!(validate: false)
     redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
   end
 

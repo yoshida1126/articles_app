@@ -75,7 +75,7 @@ module ImageUtils
     # attachments_finder は ActiveStorage::Attachment.where を差し替えるための依存性注入です。
     # テスト時にモック可能なように関数として渡せるようにしています。
     # アタッチされていない画像に対しては不要なため、デフォルトは nil にしています。
-    def unused_blob_delete(unused_blob_signed_ids, blob_finder:, attachments_finder: nil)
+    def unused_blob_delete(record_id, unused_blob_signed_ids, blob_finder:, attachments_finder: nil)
         return unless unused_blob_signed_ids.present?
       
         unused_blob_signed_ids.each do |blob_key|
@@ -85,8 +85,9 @@ module ImageUtils
             attachments = attachments_finder&.call(blob.id)
 
             if attachments.present?
-                # アタッチメントを purge して関連付けを削除
-                 attachments&.each(&:purge_later)
+                attachments.each do |attachment|
+                    attachment.purge_later if attachment.record_id == record_id
+                end
             else
                 blob.purge_later
             end

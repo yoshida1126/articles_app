@@ -7,7 +7,6 @@ class ArticleImageService
         @user = user
         @params = params
         @action = action
-        # @blob_finder は、signed_id を元に ActiveStorage::Blob を検索するための Proc です。
         @blob_finder = ->(blob_key) { find_blob_by_blob_key(blob_key) }
         @image_resizer = ->(tempfile) { resize_image(tempfile) }
     end
@@ -21,32 +20,15 @@ class ArticleImageService
             remaining_mb = @service.remaining_mb
             max_size = @service.max_size
 
-            return @draft, remaining_mb, max_size
-        when :save_draft
-            if @params[:article_draft][:draft_id].present?
-                handle_images_for_update_draft
-            else
-                handle_images_for_save_draft_and_commit
-            end
-            return @params[:article_draft][:draft_id].present? ? [@draft, @params] : @draft
-        when :commit
-            handle_images_for_save_draft_and_commit
+            return [@draft, @params, remaining_mb, max_size]
+        when :save_draft, :update_draft
+            handle_images
 
             return @draft, @params
-        when :update_draft
-            @service = UploadQuotaService.new(user: @user)
-            handle_images_for_update_draft
+        when :commit, :update
+            handle_images
 
-            remaining_mb = @service.remaining_mb
-            max_size = @service.max_size
-
-            return @draft, @params, remaining_mb, max_size
-        when :update
-            handle_images_for_update_draft
-
-            sync_header_image_from_draft if @draft.article
-
-            return @draft, @params
+            return [load_or_build_from_draft, @draft, @params]
         else
             raise "Unknown action: #{@action}"
         end
@@ -67,134 +49,65 @@ class ArticleImageService
 
         load_or_build_draft
 
-        attach_article_images(blob_signed_ids) if @params[:article_draft][:content].present?
+        attach_article_images if @params[:article_draft][:content].present?
     end
 
-    def handle_images_for_save_draft_and_commit
-        # 画像に関する処理をするメソッドです。（ヘッダー画像・記事本文中の画像）
-        # 画像関連のロジックは app/services/concerns/image_utils.rb に定義されています。
-
-        # 記事本文中の画像の処理の流れ：
-        # 1. フォームから送られた全画像の signed_id を取得
-        # 2. 記事本文内で実際に使用されている画像を抽出
-        # 3. 使用されていない画像を purge（削除）
-
-        # ※ 注意点：
-        # sanitized_article_paramsメソッドでパラメータがフィルタされる前に、
-        # blob_signed_ids を先に取り出しておく必要があります。
+    def handle_images
         blob_signed_ids = @params[:article_draft][:blob_signed_ids].present? ? JSON.parse(@params[:article_draft][:blob_signed_ids]) : []
 
-        @params[:article_draft][:image] = resize_article_header_image(@params[:article_draft][:image])
+        load_or_build_draft
 
-        @sanitized_params = sanitized_article_draft_params(@params)
-        @draft = @user.article_drafts.build(@sanitized_params)
-
-        attach_article_images(blob_signed_ids)
+        purge_article_images(blob_signed_ids)
     end
 
-    def handle_images_for_update_draft
-        blob_signed_ids = @params[:article_draft][:blob_signed_ids].present? ? JSON.parse(@params[:article_draft][:blob_signed_ids]) : []
-        draft_id = @params[:article_draft][:draft_id].present? ? @params[:article_draft][:draft_id] : @params[:id]
-        @draft = @user.article_drafts.find(draft_id)
+    def attach_article_images
+        attached_signed_ids = @draft.article_images.present? ? @draft.article_images.map(&:signed_id) : []
 
-        # ヘッダー画像が設定されている場合のみ、リサイズ処理を行う
-        # 記事更新時にヘッダー画像が消えてしまうことを防ぐため、nil が入らないようにサービスクラス側でも確認しています。
-        if @params[:article_draft][:image].present?
-            resized = resize_article_header_image(@params[:article_draft][:image])
+        # 画像が保存されている場所のURLを取得
+        image_urls = extract_s3_urls(@params[:article_draft][:content])
+        # URLを元に使われている画像のblob_signed_idの配列を取得
+        used_blob_signed_ids = get_blob_signed_id_from_url(image_urls, blob_finder: @blob_finder)
+        # 編集後にも使われているアタッチ済みの画像を抽出
+        used_attached_signed_ids = attached_signed_ids & used_blob_signed_ids
+        # 記事の編集により追加された画像のアタッチ処理
+        attach_images_to_resource(@draft.article_images, used_blob_signed_ids - used_attached_signed_ids, blob_finder: @blob_finder)
+    end
 
-            if @action == :update_draft
-              attachable = @service.track!(resized.size)
+    def purge_article_images(blob_signed_ids)
+        attached_signed_ids = @draft.article_images.map(&:signed_id)
+        image_urls = extract_s3_urls(@params[:article_draft][:content])
+        used_blob_signed_ids = get_blob_signed_id_from_url(image_urls, blob_finder: @blob_finder)
 
-              @params[:article_draft][:image] = resized if (attachable)
-            else
-                @params[:article_draft][:image] = resized
-            end
-        end
-
-        attach_article_images(blob_signed_ids) if @params[:article_draft][:content].present?
+        # 使われなかった画像や、消された画像の抽出処理
+        unused_blob_signed_ids = calculate_unused_blob_signed_ids(
+            blob_signed_ids, attached_signed_ids, used_blob_signed_ids
+        )
+        # attachments_finder は、signed_id を元に ActiveStorage::Attachment を検索するための Proc です。
+        attachments_finder = ->(blob_id) { find_attachments(blob_id) }
+        # 使われなかった画像や、消された画像のpurge処理
+        unused_blob_delete(@draft.id, unused_blob_signed_ids, blob_finder: @blob_finder, attachments_finder: attachments_finder)
     end
 
     def load_or_build_draft
-        if @params[:id].present?
-            @draft = @user.article_drafts.find(@params[:id])
+        if @params[:id].present? || @params[:article_draft][:draft_id].present?
+            draft_id = @params[:id].present? ? @params[:id] : @params[:article_draft][:draft_id]
+            @draft = @user.article_drafts.find(draft_id)
         else
             @sanitized_params = sanitized_article_draft_params(@params)
             @draft = @user.article_drafts.build(@sanitized_params)
         end
     end
 
-    def attach_article_images(blob_signed_ids)
-        if @params[:article_draft][:draft_id].present? || @params[:id].present?
-            attached_signed_ids = @draft.article_images.map(&:signed_id)
-
-            # 画像が保存されている場所のURLを取得
-            image_urls = extract_s3_urls(@params[:article_draft][:content])
-            # URLを元に使われている画像のblob_signed_idの配列を取得
-            used_blob_signed_ids = get_blob_signed_id_from_url(image_urls, blob_finder: @blob_finder)
-            # 編集後にも使われているアタッチ済みの画像を抽出
-            used_attached_signed_ids = attached_signed_ids & used_blob_signed_ids
-            # 記事の編集により追加された画像のアタッチ処理
-            attach_images_to_resource(@draft.article_images, used_blob_signed_ids - used_attached_signed_ids, blob_finder: @blob_finder)
+    def load_or_build_from_draft
+        if @draft.article.present?
+            @article = @draft.article 
         else
-            # 画像が保存されている場所のURLを取得
-            image_urls = extract_s3_urls(@sanitized_params[:content])
-            # URLを元に使われている画像のblob_signed_idの配列を取得
-            used_blob_signed_ids = get_blob_signed_id_from_url(image_urls, blob_finder: @blob_finder)
-            # 記事本文に使われた画像のアタッチ処理
-            attach_images_to_resource(@draft.article_images, used_blob_signed_ids, blob_finder: @blob_finder)
-        end
-        return if @action == :autosave_draft || (@action == :update_draft && @draft.article.present?)
-
-        purge_article_images(blob_signed_ids, attached_signed_ids, used_blob_signed_ids)
-    end
-
-    def purge_article_images(blob_signed_ids, attached_signed_ids, used_blob_signed_ids)
-        if @params[:article_draft][:draft_id].present?
-            # 使われなかった画像や、消された画像の抽出処理
-            unused_blob_signed_ids = calculate_unused_blob_signed_ids(
-                blob_signed_ids, attached_signed_ids, used_blob_signed_ids
+            @article = @user.articles.build(
+                article_draft: @draft
             )
-            # attachments_finder は、signed_id を元に ActiveStorage::Attachment を検索するための Proc です。
-            attachments_finder = ->(blob_id) { find_attachments(blob_id) }
-            # 使われなかった画像や、消された画像のpurge処理
-            unused_blob_delete(unused_blob_signed_ids, blob_finder: @blob_finder, attachments_finder: attachments_finder)
-        else
-            # 使われていない画像のblob_signed_idの配列を取得
-            unused_blob_signed_ids = blob_signed_ids - used_blob_signed_ids
-            # 使われなかった画像のpurge処理
-            unused_blob_delete(unused_blob_signed_ids, blob_finder: @blob_finder)
+            @draft.article = @article
         end
-    end
-
-    def build_from_draft
-        @article = @user.articles.build(
-            title: @draft.title,
-            content: @draft.content,
-            tag_list: @draft.tag_list,
-            published: @published == "true",
-            article_draft: @draft
-        )
-
-        @article.image.attach(@draft.image.blob) if @draft.image.attached?
-
-        @draft.article_images.each do |image|
-            @article.article_images.attach(image.blob)
-        end
-
-        @draft.article = @article
 
         return @article
-    end
-
-    def sync_header_image_from_draft
-        return unless @draft.image.attached?
-
-        draft_blob = @draft.image.blob
-        article_blob = @draft.article.image.blob
-
-        if article_blob != draft_blob
-            @draft.article.image.detach if @draft.article.image.attached?
-            @draft.article.image.attach(draft_blob)
-        end
     end
 end
