@@ -483,7 +483,7 @@ li.link-btn {
   }
 }
 
-.article-submit-btn {
+#article-submit-btn {
   width: 150px;
   height: fit-content;
   text-align: center;
@@ -1691,7 +1691,7 @@ ul.article-comment-option {
   display: inline-flex;
   align-items: center;
   margin-top: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   border: 1px solid #ccc;
   border-radius: 6px;
   overflow: hidden;
@@ -1795,7 +1795,6 @@ ul.article-comment-option {
 .toolbar {
   display: flex;
   background-color: #99b9c2;
-  margin-top: 40px;
   height: 30px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -1991,7 +1990,6 @@ label {
 }
 
 .select-image {
-  margin-top: 10px;
   border-radius: 8px;
   background-color: #99b9c2;
   color: #fff;
@@ -2037,6 +2035,9 @@ label {
 }
 
 #add-tags { 
+  .form-control {
+    margin-bottom: 30px;
+  }
   label.form-label {
     color: #333333;
     font-weight: 350;
@@ -2260,6 +2261,7 @@ label {
 
 .title-field {
   margin: auto;
+  margin-bottom: 30px;
   max-width: 100%;
 }
 

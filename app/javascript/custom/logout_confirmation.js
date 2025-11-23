@@ -15,6 +15,6 @@ function logout_confirmation () {
 }
 
 function logoutClickHandler(event) {
-  const leave = confirm("ログアウトしますか？\n再度ログインが必要になります。");
+  const leave = confirm("ログアウトしますか？\n\n※再度ログインが必要になります。");
   if (!leave) event.preventDefault();
 }

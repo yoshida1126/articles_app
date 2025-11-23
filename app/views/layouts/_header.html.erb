@@ -81,7 +81,7 @@
               <div id="file-size-bar" data-header-target="bar"></div>
               <span id="file-size-text" data-header-target="quota"></span>
           </div>
-          <div class="article-submit-btn">
+          <div id="article-submit-btn">
             <%= yield :form_submit_button if content_for?(:form_submit_button) %>
           </div>
           <% if user_signed_in? %>

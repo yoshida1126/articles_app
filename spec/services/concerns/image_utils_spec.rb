@@ -189,6 +189,8 @@ RSpec.describe ImageUtils do
     end
 
     describe '#unused_blob_delete' do
+        let(:resource_id) { 999 }
+
         # blob_finderがblob_keyで呼ばれたら、mock_blobを返すようにする
         let(:blob_finder) do
             ->(key) {
@@ -226,12 +228,12 @@ RSpec.describe ImageUtils do
 
         # モックの attachment
         let(:mock_attachments1) do
-            instance_double('ActiveStorage::Attachment', signed_id: 'abc123').tap do |attachment|
+            instance_double('ActiveStorage::Attachment', signed_id: 'abc123', record_id: resource_id).tap do |attachment|
                 allow(attachment).to receive(:purge_later)
             end
         end
         let(:mock_attachments2) do
-            instance_double('ActiveStorage::Attachment', signed_id: 'abc123').tap do |attachment|
+            instance_double('ActiveStorage::Attachment', signed_id: 'abc123', record_id: resource_id).tap do |attachment|
                 allow(attachment).to receive(:purge_later)
             end
         end
@@ -242,7 +244,7 @@ RSpec.describe ImageUtils do
         context 'when create article and article comment and when no attachements' do
             it '消されるべきblobデータがpurgeされること' do
                 unused_blob_signed_ids = ['abc123', 'def123']
-                unused_blob_delete(unused_blob_signed_ids, blob_finder: blob_finder)
+                unused_blob_delete(resource_id, unused_blob_signed_ids, blob_finder: blob_finder)
 
                 expect(mock_blob1).to have_received(:purge_later)
                 expect(mock_blob2).to have_received(:purge_later)
@@ -252,7 +254,7 @@ RSpec.describe ImageUtils do
         context 'when update article and article comment' do
             it '消されるべきblobデータがpurgeされること' do
                 unused_blob_signed_ids = ['abc123', 'def123']
-                unused_blob_delete(unused_blob_signed_ids, blob_finder: blob_finder, attachments_finder: attachments_finder)
+                unused_blob_delete(resource_id, unused_blob_signed_ids, blob_finder: blob_finder, attachments_finder: attachments_finder)
 
                 expect(mock_attachments1).to have_received(:purge_later)
                 expect(mock_attachments2).to have_received(:purge_later)

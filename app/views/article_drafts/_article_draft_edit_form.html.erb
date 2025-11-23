@@ -1,6 +1,6 @@
 <%= form_with model: @draft, url: update_draft_user_article_draft_path(current_user), id: "article-draft-edit-form", method: :patch do |f| %> 
   <% content_for :form_submit_button do %>
-    <%= f.submit '送信する' , class: "btn btn-primary"%>
+    <%= f.submit '送信する', class: "btn btn-primary"%>
   <% end %>
 
   <%= render '/layouts/header' %>
@@ -123,6 +123,7 @@
       <% end %>
     </div> 
 
+    <div id="last-save-date">最終保存: <%= @draft.updated_at.strftime("%Y-%m-%d %H:%M:%S") %></div>
     <div class="toolbar">
       <div class="article-image-upload">
         <label>

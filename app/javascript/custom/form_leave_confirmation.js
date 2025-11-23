@@ -1,7 +1,7 @@
 document.addEventListener('turbo:load', () => {
 
-  const submitBtns = document.getElementsByClassName('article-submit-btn');
-  if (submitBtns.length === 0) return;
+  const submitBtn = document.getElementById('article-submit-btn');
+  if (!submitBtn) return;
 
   if (window._formDirtyListenerInitialized) return;
 
@@ -21,7 +21,7 @@ document.addEventListener('turbo:load', () => {
 
   document.addEventListener("turbo:before-visit", (event) => {
   if (isFormDirty) {
-    const leave = confirm("このページを離れますか？変更内容は保存されません。");
+    const leave = confirm("このページを離れますか？");
     if (!leave) {
       event.preventDefault();
     } else {

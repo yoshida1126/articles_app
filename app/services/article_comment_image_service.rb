@@ -50,7 +50,7 @@ class ArticleCommentImageService
 
         unused_blob_signed_ids = blob_signed_ids - used_blob_signed_ids # 使用されていない画像の signed_id を抽出
 
-        unused_blob_delete(unused_blob_signed_ids, blob_finder: @blob_finder) # 使用されなかった画像のpurge処理
+        unused_blob_delete(@article_comment.id, unused_blob_signed_ids, blob_finder: @blob_finder) # 使用されなかった画像のpurge処理
     end
 
     def handle_article_comment_images_for_update
@@ -92,6 +92,6 @@ class ArticleCommentImageService
         attachments_finder = ->(blob_id) { find_attachments(blob_id) }
         
         # 未使用画像の purge 処理
-        unused_blob_delete(unused_blob_signed_ids, blob_finder: @blob_finder, attachments_finder: attachments_finder)
+        unused_blob_delete(@article_comment.id, unused_blob_signed_ids, blob_finder: @blob_finder, attachments_finder: attachments_finder)
     end
 end

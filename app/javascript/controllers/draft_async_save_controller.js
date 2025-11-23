@@ -16,6 +16,7 @@ export default class extends Controller {
     this.contentField = document.querySelector('#markdown')
     this.blobField = document.querySelector('#blob')
     this.draftIdField = document.querySelector('#draft-id')
+    this.lastSaveDateField = document.querySelector('#last-save-date')
   }
 
   initialize() {
@@ -39,6 +40,8 @@ export default class extends Controller {
     }
     this.saving = true
 
+    this.lastSaveDateField.innerText = 'オートセーブ中...'
+
     const formData = this.buildFormDataFromChangedFields()
 
     fetch(`/users/${this.userIdValue}/article_drafts/autosave_draft`, {
@@ -61,6 +64,10 @@ export default class extends Controller {
           const ratioDisplay = document.getElementById("file-size-bar")
                     
           updateSizeBar(quotaDisplay, ratioDisplay, data.remaining_mb, data.max_size)
+        }
+
+        if (data.updated_at !== undefined) {
+          this.fadeOutIn(this.lastSaveDateField, `最終保存: ${data.updated_at}`)
         }
 
         this.changedFields.clear()
@@ -99,5 +106,15 @@ export default class extends Controller {
       }
     })
     return formData
+  }
+
+  fadeOutIn(element, newText) {
+    element.style.transition = `opacity ${2000 / 2}ms ease-in-out`
+    element.style.opacity = '0'
+
+    setTimeout(() => {
+        element.innerText = newText
+        element.style.opacity = '1'
+    }, 2000 / 2)
   }
 }

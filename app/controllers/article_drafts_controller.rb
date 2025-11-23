@@ -21,7 +21,7 @@ class ArticleDraftsController < ApplicationController
       id: @draft.id,
       remaining_mb: remaining_mb,
       max_size: max_size,
-      updated_at: @draft.updated_at
+      updated_at: "#{@draft.updated_at.strftime("%Y-%m-%d %H:%M:%S")}"
     }
   end
 

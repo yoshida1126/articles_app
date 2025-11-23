@@ -43,8 +43,8 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :save_draft) }
 
-            it 'handle_images_for_update_draftを呼び出す' do
-                expect(service).to receive(:handle_images_for_update_draft).and_call_original
+            it 'handle_imagesを呼び出す' do
+                expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
@@ -70,14 +70,16 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :save_draft) }
 
-            it 'handle_images_for_save_draft_and_commitを呼び出す' do
-                expect(service).to receive(:handle_images_for_save_draft_and_commit).and_call_original
+            it 'handle_imagesを呼び出す' do
+                expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'ArticleDraftモデルのインスタンスが返ってくること' do
-                result = service.process
+            it 'ArticleDraftモデルのインスタンスとパラメータが返ってくること' do
+                result, result_params = service.process
+
                 expect(result).to be_an(ArticleDraft)
+                expect(result_params).to eq(params)
             end
         end
 
@@ -95,14 +97,15 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :commit) }
 
-            it 'handle_images_for_save_draft_and_commitを呼び出す' do
-                expect(service).to receive(:handle_images_for_save_draft_and_commit).and_call_original
+            it 'handle_imagesを呼び出す' do
+                expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'ArticleDraftモデルのインスタンスとパラメータが返ってくること' do 
-                result_draft, result_params = service.process
+            it 'Articleモデル、ArticleDraftモデルのインスタンスとパラメータが返ってくること' do 
+                result_article, result_draft, result_params = service.process
 
+                expect(result_article).to be_an(Article)
                 expect(result_draft).to be_an(ArticleDraft)
                 expect(result_params).to eq(params)
             end
@@ -123,8 +126,8 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :update_draft) }
 
-            it 'handle_images_for_update_draftを呼び出す' do
-                expect(service).to receive(:handle_images_for_update_draft).and_call_original
+            it 'handle_imagesを呼び出す' do
+                expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
@@ -150,13 +153,15 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :update) }
 
-            it 'handle_images_for_update_draftを呼び出す' do
-                expect(service).to receive(:handle_images_for_update_draft).and_call_original
+            it 'handle_imagesを呼び出す' do
+                expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'ArticleDraftモデルのインスタンスとパラメータが返ってくること' do 
-                result_draft, result_params = service.process
+            it 'Articleモデル、ArticleDraftモデルのインスタンスとパラメータが返ってくること' do 
+                result_article, result_draft, result_params = service.process
+
+                expect(result_article).to be_an(Article)
                 expect(result_draft).to be_an(ArticleDraft)
                 expect(result_params).to eq(params)
             end
@@ -179,18 +184,15 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let!(:service) { ArticleImageService.new(user, params, :update) }
 
-            it 'handle_images_for_update_draftを呼び出す' do
-                expect(service).to receive(:handle_images_for_update_draft).and_call_original
+            it 'handle_imagesを呼び出す' do
+                expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'sync_header_image_from_draftを呼び出す' do
-                expect(service).to receive(:sync_header_image_from_draft).and_call_original
-                service.process
-            end
+            it 'Articleモデル、ArticleDraftモデルのインスタンスとパラメータが返ってくること' do
+                result_article, result_draft, result_params = service.process
 
-            it 'ArticleDraftモデルのインスタンスとパラメータが返ってくること' do
-                result_draft, result_params = service.process
+                expect(result_article).to be_an(Article)
                 expect(result_draft).to be_an(ArticleDraft)
                 expect(result_params).to eq(params)
             end
