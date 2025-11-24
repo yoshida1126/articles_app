@@ -468,7 +468,7 @@ li.link-btn {
     text-align: center;
     color: #fff;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: lighter;
     pointer-events: none;
     z-index: 2;
   }
@@ -2789,13 +2789,18 @@ input.favorite_article_delete_btn {
     }
   }
 
-  .article-submit-btn {
+  #article-submit-btn {
     margin-right: 0;
     margin-left: 5px;
     .btn {
       letter-spacing: 2px;
       text-indent: 2px;
     }
+  }
+
+  [id^="comment-file-size-bar-container"] {
+    width: 190px;
+    height: 17px;
   }
 
   .select-operation {
@@ -3001,9 +3006,6 @@ input.favorite_article_delete_btn {
 
   #file-size-bar-container {
     margin-left: 15px;
-    #file-size-text {
-      font-weight: lighter;
-    }
   }
 
   .html {
