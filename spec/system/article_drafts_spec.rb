@@ -208,6 +208,13 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
 
         expect(page).to have_selector("img[alt='map.png']")
       end
+
+      it 'プロフィールページの下書き記事一覧に投稿した記事に紐づく下書きがないこと' do
+        expect(page).to have_content('Article Title')
+
+        visit drafts_user_path(user)
+        expect(page).to_not have_content('Article Title')
+      end
     end
 
     context 'submit as a private article' do
@@ -242,6 +249,13 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_link 'Article Title'
 
         expect(page).to have_selector("img[alt='map.png']")
+      end
+
+      it 'プロフィールページの下書き一覧に投稿した記事に紐づく下書きがないこと' do
+        expect(page).to have_content('Article Title')
+
+        visit drafts_user_path(user)
+        expect(page).to_not have_content('Article Title')
       end
     end
   end
@@ -465,6 +479,13 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
 
         expect(page).to have_selector "img[src$='map.png']"
       end
+
+      it 'プロフィールページの下書き一覧に編集した記事に紐づく下書きがないこと' do
+        expect(page).to have_content('Article Edit Title')
+
+        visit drafts_user_path(user)
+        expect(page).to_not have_content('Article Edit Title')
+      end
     end
 
     context 'update of posted article' do
@@ -511,6 +532,13 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_link 'Article Edit Title'
 
         expect(page).to have_selector "img[src$='map.png']"
+      end
+
+      it 'プロフィールページの下書き一覧に編集した記事に紐づく下書きがないこと' do
+        expect(page).to have_content('Article Edit Title')
+
+        visit drafts_user_path(user)
+        expect(page).to_not have_content('Article Edit Title')
       end
     end
 
@@ -560,6 +588,13 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
 
         expect(page).to have_selector "img[src$='map.png']"
       end
+
+      it 'プロフィールページの下書き一覧に編集した記事に紐づく下書きがないこと' do
+        expect(page).to have_content('Article Edit Title')
+
+        visit drafts_user_path(user)
+        expect(page).to_not have_content('Article Edit Title')
+      end
     end
 
     context 'update a private article as a public article' do
@@ -606,6 +641,12 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_link 'Article Edit Title'
 
         expect(page).to have_selector "img[src$='map.png']"
+      end
+
+      it 'プロフィールページの下書き一覧に編集した記事に紐づく下書きがないこと' do
+        expect(page).to have_content('Article Edit Title')
+        visit drafts_user_path(user)
+        expect(page).to_not have_content('Article Edit Title')
       end
     end
   end

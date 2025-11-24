@@ -72,6 +72,7 @@ class DraftArticleSyncService
     begin
       ActiveRecord::Base.transaction do
         @draft.assign_attributes(service.sanitized_article_draft_params(@params).except(:image))
+        @draft.editing = false
         @draft.save!
         @draft.reload
 
@@ -100,6 +101,7 @@ class DraftArticleSyncService
 
     begin
       ActiveRecord::Base.transaction do
+        @draft.editing = false
         @draft.update!(service.sanitized_article_draft_params(@params).except(:image))
         @draft.reload
 

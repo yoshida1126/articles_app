@@ -19,11 +19,11 @@
       </div>
       <div class="comment-time-and-option">
         <% if article_comment.updated_at != article_comment.created_at %>
-          <%= article_comment.updated_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
+          <%= article_comment.updated_at.strftime("%Y年%-m月%-d日 %H:%M") %>
           <br>
           (編集済み)
         <% else %>
-          <%= article_comment.created_at.strftime("%Y年%-m月%-d日 %-H:%-M") %>
+          <%= article_comment.created_at.strftime("%Y年%-m月%-d日 %H:%M") %>
         <% end %>
         <% if article_comment.user == current_user || current_user&.admin? %> 
           <section class="article-edit">
