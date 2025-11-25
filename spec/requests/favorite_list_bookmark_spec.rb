@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "FavoriteArticleLists", type: :request do
 
     let(:user) { FactoryBot.create(:user) }
-    let(:other_user) { FactoryBot.create(:other_user, :with_favorite_article_lists) }
+    let!(:other_user) { FactoryBot.create(:other_user, :with_favorite_article_lists) }
     let!(:favorite_article_list) { other_user.favorite_article_lists.first }
 
      describe "#create" do
@@ -13,7 +13,7 @@ RSpec.describe "FavoriteArticleLists", type: :request do
 
         it "リストをブックマークできること" do
             expect do
-                post favorite_list_bookmarks_path, params: { favorite_list_bookmark: { favorite_article_list_id: favorite_article_list.id } },
+                post favorite_list_bookmarks_path, params: { favorite_article_list_id: favorite_article_list.id },
                 xhr: true, headers: { Accept: 'text/vnd.turbo-stream.html' }
             end.to change(FavoriteListBookmark, :count).by 1
         end 
@@ -22,7 +22,7 @@ RSpec.describe "FavoriteArticleLists", type: :request do
     describe "#destroy" do
         before do
             sign_in user
-            post favorite_list_bookmarks_path, params: { favorite_list_bookmark: { favorite_article_list_id: favorite_article_list.id } },
+            post favorite_list_bookmarks_path, params: { favorite_article_list_id: favorite_article_list.id },
             xhr: true, headers: { Accept: 'text/vnd.turbo-stream.html' }
         end
 

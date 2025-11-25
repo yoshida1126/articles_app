@@ -45,7 +45,9 @@ FactoryBot.define do
     end
 
     trait :with_favorite_article_lists do
-      after(:create) { |user| create_list(:favorite_article_list, 1, user: user) }
+      after(:create) do |user|
+        create_list(:favorite_article_list, 1, user: user, articles_count: 1)
+      end
     end
   end
 

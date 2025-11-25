@@ -2,8 +2,8 @@ document.addEventListener("turbo:load", tabSwitcher);
 document.addEventListener("turbo:render", tabSwitcher);
 
 function tabSwitcher() {
-  const tabs = document.querySelectorAll(".article-tab");
-  const contents = document.querySelectorAll("#article-contents .articles");
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll("#tab-contents .contents");
 
   if (!tabs.length || !contents.length) return;
 
@@ -37,5 +37,6 @@ function getUserIdFromPath(path) {
 function getActiveTabFromPath(path) {
   if (path.endsWith("/drafts")) return "drafts";
   if (path.endsWith("/private_articles")) return "private_articles";
+  if (path.endsWith("/favorite_article_lists")) return "favorite_article_lists";
   return "published";
 }

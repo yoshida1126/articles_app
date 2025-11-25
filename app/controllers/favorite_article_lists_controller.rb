@@ -1,17 +1,6 @@
 class FavoriteArticleListsController < ApplicationController
-  before_action :logged_in_user, only: %i[new create edit update destroy]
+  before_action :logged_in_user, only: %i[show new create edit update destroy]
   before_action :correct_user, only: %i[edit update destroy]
-
-  def index
-    @user = User.find_by(id: params[:user_id])
-    @favorite_article_lists = @user.favorite_article_lists.paginate(page: params[:page], per_page: 30)
-    @favorite_list_bookmark = FavoriteListBookmark.new
-    favorite_list_bookmarks = @user.favorite_list_bookmarks
-    @bookmarked_lists = []
-    favorite_list_bookmarks.each do |bookmark|
-      @bookmarked_lists << bookmark.favorite_article_list
-    end
-  end
 
   def show
     @favorite_article_list = FavoriteArticleList.find_by(id: params[:id])

@@ -30,6 +30,27 @@ class UsersController < ApplicationController
     render :show
   end
 
+  def favorite_article_lists
+    @user = User.find(params[:id])
+
+    if params[:type] == "bookmark"
+      @lists = FavoriteArticleList
+                 .joins(:favorite_list_bookmarks)
+                 .where(favorite_list_bookmarks: { user_id: @user.id })
+                 .paginate(page: params[:page], per_page: 15)
+      @list_type = :bookmark
+    else
+      @lists = @user.favorite_article_lists.paginate(page: params[:page], per_page: 15)
+      @list_type = :my
+    end
+
+    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
+    @articles_count = @articles.count
+
+    @tab = :lists
+    render :show
+  end
+
   def account_delete_confirmation
     @user = current_user
   end

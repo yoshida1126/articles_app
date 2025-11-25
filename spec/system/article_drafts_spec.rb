@@ -371,13 +371,13 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
 
       it '編集元の記事のタイトルが変わってないこと' do
-        find('.article-type .article-tab', text: '投稿記事').click
+        find('.tab-type .tab', text: '投稿記事').click
 
         expect(page).to_not have_content('Article Edit Title')
       end
 
       it '編集元の記事の内容が変わってないこと' do
-        find('.article-type .article-tab', text: '投稿記事').click
+        find('.tab-type .tab', text: '投稿記事').click
         click_link 'test article'
 
         expect(page).to_not have_content('Article Edit content')

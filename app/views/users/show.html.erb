@@ -17,9 +17,6 @@
   <section class="stats">
     <%= render 'shared/stats' %>
   </section> 
-  <section class="favorite-article-list-link"> 
-    <%= link_to "お気に入り記事リスト一覧", user_favorite_article_lists_path(@user) %>
-  </section>
   <% if current_user != @user %>
     <section class="follow-btn">
       <%= render 'follow_form' if current_user %> 
@@ -27,24 +24,57 @@
   <% end %>
   </aside>
   <div class="col-sm-8"> 
-    <% if @user == current_user %>
-      <div class="article-type">
-        <div class="article-tab <%= 'selected' if @tab == :published %>" data-path-suffix="">投稿記事</div>
-        <div class="article-tab <%= 'selected' if @tab == :private %>" data-path-suffix="/private_articles">非公開記事</div>
-        <div class="article-tab <%= 'selected' if @tab == :drafts %>" data-path-suffix="/drafts">下書き記事</div>
-      </div>
-    <% else %>
-      <h4>投稿記事</h4>
-    <% end %>
-    <div id="article-contents">
-      <ol id="published" class="articles active">
-        <%= render @articles %> 
+    <div class="tab-type">
+      <% if @user == current_user %>
+        <div class="tab <%= 'selected' if @tab == :published %>" data-path-suffix="">投稿記事</div>
+        <div class="tab <%= 'selected' if @tab == :private %>" data-path-suffix="/private_articles">非公開記事</div>
+        <div class="tab <%= 'selected' if @tab == :drafts %>" data-path-suffix="/drafts">下書き記事</div>
+        <div class="tab <%= 'selected' if @tab == :lists %>" data-path-suffix="/favorite_article_lists">シェアリスト</div>
+      <% else %>
+        <div class="tab <%= 'selected' if @tab == :published %>" data-path-suffix="">投稿記事</div>
+        <div class="tab <%= 'selected' if @tab == :lists %>" data-path-suffix="/favorite_article_lists">シェアリスト</div>
+      <% end %>
+    </div>
+    <div id="tab-contents">
+      <ol id="published" class="contents articles active">
+        <% if @articles.present? %>
+          <%= render @articles %> 
+        <% else %>
+          投稿した記事はありません。
+        <% end %>
       </ol>
-      <ol id="private_articles" class="articles">
-        <%= render partial: 'articles/private_articles', collection: @private_articles, as: :private_article %>
+      <ol id="private_articles" class="contents articles">
+        <% if @private_articles.present? %>
+          <%= render partial: 'articles/private_articles', collection: @private_articles, as: :private_article %>
+        <% else %>
+          非公開記事はありません。
+        <% end %>
       </ol>
-      <ol id="drafts" class="articles">
-        <%= render partial: 'article_drafts/draft', collection: @drafts, as: :draft %>
+      <ol id="drafts" class="contents articles">
+        <% if @drafts.present? %>
+          <%= render partial: 'article_drafts/drafts', collection: @drafts, as: :draft %>
+        <% else %>
+          下書きはありません。
+        <% end %>
+      </ol>
+      <ol id="favorite_article_lists" class="contents articles">
+        <select id="share-list-select">
+          <option value="my" <%= "selected" if @list_type == :my %>>マイリスト</option>
+          <option value="bookmark" <%= "selected" if @list_type == :bookmark %>>ブックマーク</option>
+        </select>
+        <div class="new_favorite_list_link">
+          <%= link_to "新規シェアリストを作成する", new_user_favorite_article_list_path(@user) %>
+        </div>
+        <% if @lists.present? %>
+          <%= render partial: 'favorite_article_lists/favorite_article_lists',
+                     collection: @lists, as: :list %>
+        <% else %>
+          <% if @list_type == :my %>
+            <div><%= @user.name %>さんはシェアリストを作成していません。</div>  
+          <% else %>
+            <div>ブックマークしたリストはありません。</div>
+          <% end %>
+        <% end %>
       </ol>
     </div>
   </div>
@@ -53,8 +83,10 @@
       <%= render partial: "shared/pagination", locals: { object: @drafts } %>
     <% elsif @tab == :published %>
       <%= render partial: "shared/pagination", locals: { object: @articles } %>
-    <% else %>
+    <% elsif @tab == :private %>
       <%= render partial: "shared/pagination", locals: { object: @private_articles } %>
+    <% else %>
+      <%= render partial: "shared/pagination", locals: { object: @lists } %>
     <% end %>
   </div>
 </div> 

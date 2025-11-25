@@ -1,16 +1,15 @@
 <div class="favorite_list_bookmark">
   <% if current_user.bookmarked?(list) %>
     <% list_bookmark = FavoriteListBookmark.find_by(user_id: current_user.id, favorite_article_list_id: list.id) %>
-    <%= form_with(model: list_bookmark, url: favorite_list_bookmark_path(list_bookmark.id), method: :delete) do |f| %>
-      <%= f.hidden_field :favorite_article_list_id, value: list.id %>
-      <%= button_tag type: "submit", class: "unbookmark-btn", id: "unbookmark-btn-#{ list.id }" do %>
-          <i class="far fa-bookmark"></i>
+    <%= form_with(url: favorite_list_bookmark_path(list_bookmark.id), method: :delete) do |f| %>
+      <%= button_tag type: "submit", class: "unbookmark-btn", id: "unbookmark-btn-#{list.id}" do %>
+        <i class="far fa-bookmark"></i>
       <% end %>
     <% end %>
   <% else %>
-    <%= form_with(model: @favorite_list_bookmark, url: favorite_list_bookmarks_path, method: :post) do |f| %>
+    <%= form_with(url: favorite_list_bookmarks_path, method: :post) do |f| %>
       <%= f.hidden_field :favorite_article_list_id, value: list.id %>
-      <%= button_tag type: "submit", class: "bookmark-btn", id: "bookmark-btn-#{ list.id }" do %>
+      <%= button_tag type: "submit", class: "bookmark-btn", id: "bookmark-btn-#{list.id}" do %>
         <i class="far fa-bookmark"></i>
       <% end %>
     <% end %>

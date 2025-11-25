@@ -5,7 +5,6 @@ RSpec.describe 'FavoriteListBookmark', type: :system, js: true do
   let(:user) { FactoryBot.create(:user) }
   let!(:other_user) { FactoryBot.create(:other_user, :with_favorite_article_lists) }
   let!(:favorite_article_list) { other_user.favorite_article_lists.first }
-  let!(:article) { Article.create(title: "test", content: "test", tag_list: "test", user_id: user.id) }
 
   describe '#create' do
     before do

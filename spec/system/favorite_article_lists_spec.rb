@@ -16,7 +16,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
       end
 
       it '新しいリストを作成するリンクがあること' do
-        expect(page).to have_link '新規リスト作成'
+        expect(page).to have_link '新規シェアリストを作成する'
       end
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
       before do
         sign_in @user
         visit user_favorite_article_lists_path(@user)
-        click_link '新規リスト作成'
+        click_link '新規シェアリストを作成する'
       end
 
       it 'リストの作成ページにアクセスできること' do
@@ -62,7 +62,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
       before do
         sign_in user
         visit user_favorite_article_lists_path(user)
-        click_link '新規リスト作成'
+        click_link '新規シェアリストを作成する'
         fill_in 'favorite_article_list[list_title]', with: 'List Title'
         click_button '作　成'
       end

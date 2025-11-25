@@ -40,15 +40,12 @@ Rails.application.routes.draw do
   resources :users do
     member do
       get :following, :followers
-    end
-    resources :favorite_article_lists, only: %i[index show new create edit update destroy]
-  end
-
-  resources :users, only: [:show] do
-    member do
       get :private_articles
       get :drafts
+      get :favorite_article_lists
     end
+
+    resources :favorite_article_lists, only: %i[show new create edit update destroy]
 
     resources :article_drafts, except: [:index, :show] do
       member do
