@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     @search = Article.published.ransack(params[:q])
     return unless params[:q].present?
 
-    @search_word = @search.conditions.first.values.first.value
+    @search_word = params[:q].values.compact.first
 
     if /\A#.+/ =~ @search_word
       @search_word = @search_word.sub(/^#/, '')
@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
       redirect_to tag_path(@search_word)
     else
       @search_articles = @search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
-                                                                                        per_page: 32)
+                                                                                          per_page: 30)
     end
   end
 

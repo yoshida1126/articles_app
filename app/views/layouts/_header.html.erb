@@ -11,7 +11,7 @@
               <%= button_tag type: "submit", id: "search-btn", class:"btn-default" do %> 
                 <i class="fas fa-search"></i> 
               <% end %> 
-              <%= f.search_field :title_or_content_eq, placeholder: 'キーワード検索', value: "", class: "search-window",  data: { "search-target": "queryInput" } %>
+              <%= f.search_field :title_or_content_cont, placeholder: 'キーワード検索', value: "", class: "search-window",  data: { "search-target": "queryInput" } %>
             <% end %> 
             <div id="search-window-open">
               <a><i class="fas fa-search"></i></a>
@@ -21,7 +21,7 @@
                 <%= button_tag type: "submit", id: "responsive-search-btn", class:"btn-default" do %> 
                   <i class="fas fa-search"></i> 
                 <% end %> 
-                <%= f.search_field :title_or_content_eq, placeholder: 'キーワード検索', value: "", class: "responsive-search-window", data: { "search-target": "responsiveQueryInput" } %> 
+                <%= f.search_field :title_or_content_cont, placeholder: 'キーワード検索', value: "", class: "responsive-search-window", data: { "search-target": "responsiveQueryInput" } %> 
               <% end %>
               <button type="button"id="search-window-close" class="display"><span class="dli-close"></span></button>
             </div>

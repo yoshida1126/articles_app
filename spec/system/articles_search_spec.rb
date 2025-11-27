@@ -10,18 +10,18 @@ RSpec.describe 'Search', type: :system, js: true do
     context 'search article' do
       before do
         visit root_path
-        fill_in 'q_title_or_content_eq', with: 'test article'
+        fill_in 'q_title_or_content_cont', with: 'test article'
         find('#search-btn').click
       end
 
       it '検索結果 1 件 と表示されること' do
-        fill_in 'q_title_or_content_eq', with: 'test article'
+        fill_in 'q_title_or_content_cont', with: 'test article'
         find('#search-btn').click
         expect(page).to have_content("検索結果 1 件")
       end
 
       it '下書き記事は検索結果に含まれないこと' do
-        fill_in 'q_title_or_content_eq', with: 'draft article'
+        fill_in 'q_title_or_content_cont', with: 'draft article'
         find('#search-btn').click
         expect(page).to have_content("検索結果 0 件")
       end
@@ -33,21 +33,21 @@ RSpec.describe 'Search', type: :system, js: true do
       end
 
       it "タグで検索できること" do
-        fill_in 'q_title_or_content_eq', with: '#test'
+        fill_in 'q_title_or_content_cont', with: '#test'
         find('#search-btn').click
 
         expect(page).to have_content("タグ: testの一覧 (1件)")
       end
 
       it "下書き記事は検索結果に含まれないこと" do
-        fill_in 'q_title_or_content_eq', with: '#test'
+        fill_in 'q_title_or_content_cont', with: '#test'
         find('#search-btn').click
 
         expect(page).to have_content("タグ: testの一覧 (1件)")
       end
 
       it "存在しないタグを検索するとルートパスにリダイレクトされること" do
-        fill_in 'q_title_or_content_eq', with: '#article'
+        fill_in 'q_title_or_content_cont', with: '#article'
         find('#search-btn').click
 
         expect(current_path).to eq root_path
