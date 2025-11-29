@@ -2540,9 +2540,32 @@ input.favorite_article_delete_btn {
 
 /* search */ 
 
-.search-result {
-  font-weight: bold;
+.search-result-and-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 40px;
+  margin-bottom: 30px;
+  h4 {
+    margin: 0;
+  }
+  #search-filter {
+    display:flex;
+    align-items: center;
+    color: #333333;
+    cursor: pointer;
+    font-size: 2rem;
+    border-radius: 10px;
+    padding: 7px;
+    transition: all 0.2s ease;
+    span {
+      font-size: 1.5rem;
+      margin-right: 5px;
+    }
+    &:hover {
+      background-color: #99b9c26e;
+    }
+  }
 }
 
 @media (max-width: 768px) {
