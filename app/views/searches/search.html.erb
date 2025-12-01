@@ -1,16 +1,77 @@
 <% provide(:title, "#{ @search_word }の検索結果") %>
-<% if @search_articles.any? %> 
-  <div class="search-result-and-filter">
+<div class="search-result-and-filter">
+  <% if @search_articles.present? %> 
     <h4 class="search-result"><%= @search_word %> の検索結果 <%= @search_articles.count %> 件</h4>
-    <div id="search-filter">
-      <span>フィルタ</span>
-      <i class="fas fa-sliders-h"></i>
-    </div>
+  <% else %>
+    <h4 class="search-result">検索結果 0 件</h4>
+  <% end %>
+  <div data-controller="search-filter" data-action="click->search-filter#modalOpen" id="search-filter">
+    <span>フィルタ</span>
+    <i class="fas fa-sliders-h"></i>
   </div>
-  <ul id="search-or-tagged-articles" class="articles"> 
-    <%= render partial: "articles/shared/search_articles", collection: @search_articles, as: "article" %> 
-  </ul>
-  <%= render partial: "shared/pagination", locals: { object: @search_articles } %>
-<% else %>
-  <h4 class="search-result">検索結果 0 件</h4>
-<% end %>
+</div>
+<ul id="search-or-tagged-articles" class="articles"> 
+  <%= render partial: "articles/shared/search_articles", collection: @search_articles, as: "article" %> 
+</ul>
+<%= render partial: "shared/pagination", locals: { object: @search_articles } %>
+
+<div id="filter-modal">
+  <div class="filter-modal-content">
+    <div class="filter-modal-header">
+      <h2>検索フィルタ</h2>
+      <div data-controller="search-filter" data-action="click->search-filter#modalCloseWithBtn" id="filter-modal-close">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
+    <hr>
+    <%= form_with url: search_path do |f| %>
+      <div class="filter-modal-select" data-controller="search-filter">
+        <div class="filter-column">
+          <h4>検索対象</h4>
+          <label class="filter-item">
+            <input type="radio" name="q[target]" value="article" data-action="change->search-filter#toggleDate">
+            <span>記事</span>
+          </label>
+          <label class="filter-item">
+            <input type="radio" name="q[target]" value="list" data-action="change->search-filter#toggleDate">
+            <span>シェアリスト</span>
+          </label>
+          <label class="filter-item">
+            <input type="radio" name="q[target]" value="user" data-action="change->search-filter#toggleDate">
+            <span>ユーザー</span>
+          </label>
+        </div>
+
+        <div class="filter-column creation-date" data-search-filter-target="creationDate">
+          <h4>作成日</h4>
+          <label class="filter-item">
+            <input type="radio" name="q[created_at]" value="today" disabled>
+            <span>今日</span>
+          </label>
+          <label class="filter-item">
+            <input type="radio" name="q[created_at]" value="yesterday" disabled>
+            <span>昨日</span>
+          </label>
+          <label class="filter-item">
+            <input type="radio" name="q[created_at]" value="this_week" disabled>
+            <span>今週</span>
+          </label>
+          <label class="filter-item">
+            <input type="radio" name="q[created_at]" value="this_month" disabled>
+            <span>今月</span>
+          </label>
+          <label class="filter-item">
+            <input type="radio" name="q[created_at]" value="this_year" disabled>
+            <span>今年</span>
+          </label>
+        </div>
+      </div>
+      <hr>
+      <div class="filter-modal-footer">
+        <div class="conditions-confirmed">
+          <%= f.submit "条件確定", class: "btn" %> 
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

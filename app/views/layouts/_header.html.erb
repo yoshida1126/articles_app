@@ -7,21 +7,21 @@
       <ul id="navbar-menu" class="nav navbar-nav navbar-right">
         <% if show_header? %>
           <div id="search" data-controller="search">
-            <%= search_form_for @search, url: search_path, method: :get, data: { action: "submit->search#inputCheck"} do |f| %>
+            <%= form_with url: search_path, method: :get, scope: :q, data: { action: "submit->search#inputCheck"}, id: 'article_search' do |f| %>
               <%= button_tag type: "submit", id: "search-btn", class:"btn-default" do %> 
                 <i class="fas fa-search"></i> 
               <% end %> 
-              <%= f.search_field :title_or_content_cont, placeholder: 'キーワード検索', value: "", class: "search-window",  data: { "search-target": "queryInput" } %>
+              <%= f.search_field :title_or_content_cont, placeholder: "キーワード検索", value: params.dig(:q, :title_or_content_cont), data: { "search-target": "queryInput" }, class: "search-window" %>
             <% end %> 
             <div id="search-window-open">
               <a><i class="fas fa-search"></i></a>
             </div>
             <div id="responsive-search-window" class="display">
-              <%= search_form_for @search, url: search_path, method: :get, id: "search-window", class: "display", data: { action: "submit->search#responsiveInputCheck"} do |f| %>
+              <%= form_with url: search_path, method: :get, scope: :q, data: { action: "submit->search#responsiveInputCheck"}, id: "search-window", class: "display" do |f| %>
                 <%= button_tag type: "submit", id: "responsive-search-btn", class:"btn-default" do %> 
                   <i class="fas fa-search"></i> 
                 <% end %> 
-                <%= f.search_field :title_or_content_cont, placeholder: 'キーワード検索', value: "", class: "responsive-search-window", data: { "search-target": "responsiveQueryInput" } %> 
+                <%= f.search_field :title_or_content_cont, placeholder: 'キーワード検索', value: params.dig(:q, :title_or_content_cont), class: "responsive-search-window", data: { "search-target": "responsiveQueryInput" } %> 
               <% end %>
               <button type="button"id="search-window-close" class="display"><span class="dli-close"></span></button>
             </div>

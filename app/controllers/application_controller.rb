@@ -1,15 +1,11 @@
 class ApplicationController < ActionController::Base
   include ApplicationHelper
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :search
 
   def home; end
 
   def search
-    @search = Article.published.ransack(params[:q])
-    return unless params[:q].present?
-
-    @search_word = params[:q].values.compact.first
+    @search_word = params[:q].values.compact.first.to_s
 
     if /\A#.+/ =~ @search_word
       @search_word = @search_word.sub(/^#/, '')
@@ -17,8 +13,22 @@ class ApplicationController < ActionController::Base
       @search_word.gsub!("　", "")
       redirect_to tag_path(@search_word)
     else
-      @search_articles = @search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
-                                                                                          per_page: 30)
+      @target = params[:target] || 'article'
+
+      case @target
+      when 'article'
+        search = Article.published.ransack(params[:q])
+        @search_articles = search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
+                                                                                                 per_page: 30)
+      when 'list'
+        search = FavoriteArticleList.ransack(params[:q])
+        @search_lists = search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
+                                                                                              per_page: 30)
+      when 'user'
+        search = User.ransack(params[:q])
+        @search_users = search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
+                                                                                              per_page: 30)
+      end
     end
   end
 

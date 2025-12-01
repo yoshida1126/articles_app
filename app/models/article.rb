@@ -35,20 +35,12 @@ class Article < ApplicationRecord
     self.published
   end
 
-  def self.searchable_attributes
-    %w[title content]
-  end
-
-  searchable_attributes.each do |field|
-    scope "search_by_#{field}", ->(keyword) { where("#{field} LIKE ?", "%#{keyword}%") }
-  end
-
   def self.ransackable_attributes(_auth_object = nil)
-    %w[title content]
+    ["title", "content", "created_at"]
   end
 
-  def self.ransackable_associations(_auth_object = nil)
-    []
+  def self.ransackable_associations(auth_object = nil)
+    ["user"]
   end
 
   MAX_TAG_COUNT = 10

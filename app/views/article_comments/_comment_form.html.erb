@@ -9,7 +9,7 @@
     <%= render "shared/error_messages", object: @error_comment %>
   <% end %> 
 </div>
-<%= form_with model: [@article, @comment], local: true, remote: true do |f| %> 
+<%= form_with model: [@article, @comment], local: true, remote: true do |f| %>
   <div class="toolbar comment-toolbar">
     <%= turbo_frame_tag "articles-img" do %>
       <div class="article-image-upload">

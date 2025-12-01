@@ -107,7 +107,7 @@ class User < ApplicationRecord
            .includes(:user, image_attachment: :blob)
   end
 
-  def self.ransackable_associations(_auth_object = nil)
-    ['article']
+  def self.ransackable_attributes(auth_object = nil)
+    ["name"]
   end
 end
