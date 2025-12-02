@@ -1,0 +1,33 @@
+  <ol class="users follow">
+      <li>
+        <div class="user-info">
+          <div class="user-profile-image">
+            <a href="/users/<%= user.id %>">
+              <%= image_tag user.profile_img.attached? ? user.profile_img : "profile.jpg" %>
+            </a>
+          </div>
+          <div class="name">
+            <a href="/users/<%= user.id %>">
+              <%= user.name %>
+            </a>
+          </div>
+        </div>
+        <% unless current_user == user %>
+          <div class="follow-button">
+            <div id="follow_form_<%= user.id %>">
+              <% if current_user.following?(user) %> 
+                <%= form_with(model: current_user.active_relationships.find_by(followed: user),
+                    html: { method: :delete }) do |f| %> 
+                  <%= f.submit "フォロー解除", class: "btn unfollow-btn" %> 
+                <% end %> 
+              <% else %> 
+                <%= form_with(model: current_user.active_relationships.build) do |f| %>
+                  <div><%= hidden_field_tag :followed_id, user.id %></div> 
+                  <%= f.submit "フォロー", class: "btn btn-primary follow-btn" %> 
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </li>
+    </ol>

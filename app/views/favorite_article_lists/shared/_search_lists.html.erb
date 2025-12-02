@@ -1,0 +1,51 @@
+<% if list.articles.present? && list.articles.first.image.attached? %>
+  <li id="list-<%= list.id %>">
+    <span class="heading-image">
+      <%= link_to user_favorite_article_list_path(list.user, list) do %>
+        <%= image_tag list.articles.first.image %>
+      <% end %>
+    </span>
+    <div class="title-and-bookmark">
+      <div class="title">
+        <%= link_to list.list_title, user_favorite_article_list_path(list.user, list) %> 
+      </div>
+      <% if list.user != current_user %>
+        <span class="bookmark-<%= list.id %>">
+          <%= render "favorite_list_bookmarks/bookmark", list: list %>
+        </span>
+      <% end %>
+    </div>
+    <span>
+      作成者: <%= link_to list.user.name, user_path(list.user) %>
+    </span>
+    <span class="timestamp">
+      <%= list.created_at.strftime("%Y年%-m月%-d日 %H:%M") %>
+    </span>
+  </li>
+<% else %>
+  <li id="list-<%= list.id %>">
+    <span class="heading-image">
+      <%= link_to user_favorite_article_list_path(list.user, list) do %>
+        <div class="no-heading-image">
+          <p>Articles</p>
+        </div>
+      <% end %>
+    </span>
+    <div class="title-and-bookmark">
+      <div class="title">
+        <%= link_to list.list_title, user_favorite_article_list_path(list.user, list) %> 
+      </div>
+      <% if list.user != current_user %>
+        <span class="bookmark-<%= list.id %>">
+          <%= render "favorite_list_bookmarks/bookmark", list: list %>
+        </span>
+      <% end %>
+    </div>
+    <span>
+      作成者: <%= link_to list.user.name, user_path(list.user) %>
+    </span>
+    <span class="timestamp">
+      <%= list.created_at.strftime("%Y年%-m月%-d日 %H:%M") %>
+    </span>
+  </li>
+<% end %>

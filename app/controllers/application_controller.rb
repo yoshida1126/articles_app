@@ -13,7 +13,8 @@ class ApplicationController < ActionController::Base
       @search_word.gsub!("　", "")
       redirect_to tag_path(@search_word)
     else
-      @target = params[:target] || 'article'
+      set_date_params
+      @target = params.dig(:q, :target) || 'article'
 
       case @target
       when 'article'
@@ -78,5 +79,26 @@ class ApplicationController < ActionController::Base
     service = UploadQuotaService.new(user: current_user)
     @max_size = service.max_size
     @remaining_mb = service.remaining_mb
+  end
+
+  def set_date_params
+    date_filter = params.dig(:q, :created_at_filter)
+
+    if date_filter.present?
+      params[:q][:created_at_gteq] = case date_filter
+      when "today"
+        Time.zone.today.beginning_of_day
+      when "yesterday"
+        1.day.ago.beginning_of_day
+      when "this_week"
+        Time.zone.today.beginning_of_week(:monday)
+      when "this_month"
+        Time.zone.today.beginning_of_month
+      when "this_year"
+        Time.zone.today.beginning_of_year
+      end
+
+      params[:q][:created_at_lteq] = Time.zone.now.end_of_day
+    end
   end
 end

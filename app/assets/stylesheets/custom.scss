@@ -704,11 +704,12 @@ section.favorite-article-list-link {
   padding: 0;
   display: table;
   li {
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
     padding: 10px 0;
     border-top: 1px solid #e8e8e858;
     height: 50px;
-    display: flex;
-    justify-content: space-between;
   }
   a {
     text-decoration: none;
@@ -733,7 +734,6 @@ section.favorite-article-list-link {
   .follow-button {
     display: table-cell;
     vertical-align: middle;
-    padding-left: 100px;
   }
 }
 
@@ -1159,7 +1159,7 @@ div.birthday {
   }
 }
 
-.articles {
+.articles, .search-lists {
   list-style: none;
   padding: 0;
   li {
@@ -1175,6 +1175,7 @@ div.birthday {
       }
     }
   }
+
   span.heading-image {
     display: inline-block;
     width: fit-content;
@@ -1241,6 +1242,11 @@ div.birthday {
       color: $gray-light;
     }
   }
+}
+
+.search-users {
+  width: fit-content;
+  margin: 0 auto;
 }
 
 aside { 
@@ -2574,7 +2580,7 @@ input.favorite_article_delete_btn {
   position: fixed;
   max-width: 450px;
   width: 100%;
-  height: 330px;
+  height: 390px;
   top: 40%;
   left: 50%;
   padding: 0 20px;
@@ -2621,11 +2627,20 @@ input.favorite_article_delete_btn {
       }
     }
   }
+  .filter-search-window {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #99b9c2;
+    &:focus {
+      border: 2px solid #99b9c2;
+      outline: none;
+    }
+  }
   .filter-modal-select {
     display: flex;
     justify-content: center;
     gap: 70px;
-    margin: 10px 0;
 
     .filter-column {
       display: flex;
@@ -2642,6 +2657,7 @@ input.favorite_article_delete_btn {
       }
       span {
         white-space: nowrap;
+        font-weight: lighter;
       }
     }
 

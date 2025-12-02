@@ -16,4 +16,12 @@ class FavoriteArticleList < ApplicationRecord
   def unfavorite(favorite)
     favorites.destroy(favorite)
   end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    ["list_title", "created_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["user"]
+  end
 end

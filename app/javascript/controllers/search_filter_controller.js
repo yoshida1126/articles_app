@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["creationDate"]
+  static targets = ["creationDate", "searchField", "dateField"]
 
   connect() {}
 
@@ -46,5 +46,30 @@ export default class extends Controller {
     this.creationDateTarget.querySelectorAll('input').forEach(input => {
       input.disabled = !enabled
     })
+  }
+
+  updateSearchParam(event) {
+    const target = event.target.value
+    let paramName
+
+    switch (target) {
+      case "article":
+        paramName = "title_or_coontent_cont"
+        break
+      case "list":
+        paramName = "name_cont"
+        break
+      case "user":
+        paramName = "name_cont"
+        break
+      default:
+        paramName = "title_or_content_cont"
+    }
+    this.searchFieldTarget.name = `q[${paramName}]`
+  }
+
+  updateDateFilter(event) {
+    const value = event.target.value;
+    this.dateFieldTarget.value = value;
   }
 }
