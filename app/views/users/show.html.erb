@@ -1,27 +1,27 @@
 <% provide(:title, @user.name) %>
 <div class="row">
-  <aside class="col-sm-4">
-  <section class="user-info"> 
-    <%= link_to @user do %>
-      <div class="profile_img">
-        <%= image_tag @user.profile_img.attached? ? @user.profile_img : "profile.jpg" %>
-      </div>
-      <div class="name">
-        <%= link_to @user.name, @user %>
-      </div>
-    <% end %>
-  </section>
-  <section class="introduction">
-    <%= render 'shared/introduction' %> 
-  </section>
-  <section class="stats">
-    <%= render 'shared/stats' %>
-  </section> 
-  <% if current_user != @user %>
-    <section class="follow-btn">
-      <%= render 'follow_form' if current_user %> 
+  <aside class="col-sm-4 profile-aside">
+    <section class="user-info"> 
+      <%= link_to @user do %>
+        <div class="profile_img">
+          <%= image_tag @user.profile_img.attached? ? @user.profile_img : "profile.jpg" %>
+        </div>
+        <div class="name">
+          <%= link_to @user.name, @user %>
+        </div>
+      <% end %>
+    </section>
+    <section class="introduction">
+      <%= render 'shared/introduction' %> 
+    </section>
+    <section class="stats">
+      <%= render 'shared/stats' %>
     </section> 
-  <% end %>
+    <% if current_user && current_user != @user %>
+      <section class="follow-btn">
+        <%= render 'follow_form' %> 
+      </section> 
+    <% end %>
   </aside>
   <div class="col-sm-8"> 
     <div class="tab-type">

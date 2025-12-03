@@ -568,11 +568,13 @@ li.link-btn {
       }
     }
   }
+  .title-and-link:not(:first-of-type) {
+    margin-top: 30px;
+  }
   ol.articles {
     display: flex;
     justify-content: left;
     overflow-x: scroll;
-    height: 270px;
     li {
       margin-right: 20px;
     }
@@ -610,7 +612,7 @@ footer {
 
 aside {
   section.user-info {
-    margin-top: 20px;
+    margin-top: 35px;
   }
   section.introduction {
     margin: 0;
@@ -1225,7 +1227,11 @@ div.birthday {
     }
   }
   .title {
-    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
     width: 200px;
     font-size: 1.1em;
     margin-top: 10px;
@@ -1330,8 +1336,6 @@ aside {
   max-width: 328px;
   .articles {
     width: 200px;
-    margin-left: auto;
-    margin-right: auto;
   }
 }
 
@@ -2427,8 +2431,9 @@ label {
   width: fit-content;
   font-size: 1.5rem;
   margin-top: 20px;
+  margin-bottom: 10px;
   a {
-    color: #99b9c2;
+    color: #7aa4af;
   }
 }
 
