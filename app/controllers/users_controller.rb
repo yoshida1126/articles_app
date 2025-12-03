@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: %i[show following followers]
   before_action :unconfirmed_account_check, only: [:show, :private_articles, :drafts]
   before_action :authorize_user!, only: [:private_articles, :drafts]
 

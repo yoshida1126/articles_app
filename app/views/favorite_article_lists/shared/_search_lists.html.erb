@@ -9,7 +9,7 @@
       <div class="title">
         <%= link_to list.list_title, user_favorite_article_list_path(list.user, list) %> 
       </div>
-      <% if list.user != current_user %>
+      <% if current_user && list.user != current_user %>
         <span class="bookmark-<%= list.id %>">
           <%= render "favorite_list_bookmarks/bookmark", list: list %>
         </span>
@@ -35,7 +35,7 @@
       <div class="title">
         <%= link_to list.list_title, user_favorite_article_list_path(list.user, list) %> 
       </div>
-      <% if list.user != current_user %>
+      <% if current_user && list.user != current_user %>
         <span class="bookmark-<%= list.id %>">
           <%= render "favorite_list_bookmarks/bookmark", list: list %>
         </span>

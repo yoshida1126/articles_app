@@ -12,7 +12,7 @@
             </a>
           </div>
         </div>
-        <% unless current_user == user %>
+        <% if current_user && current_user != user %>
           <div class="follow-button">
             <div id="follow_form_<%= user.id %>">
               <% if current_user.following?(user) %> 

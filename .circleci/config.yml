@@ -40,7 +40,10 @@ commands:
 
       - run:
           name: Bundle Install
-          command: bundle check --path vendor/bundle || bundle install --deployment
+          command: |
+            bundle config set --local path 'vendor/bundle'
+            bundle config set --local deployment 'true'
+            bundle check || bundle install
 
       - save_cache:
           key: gem-cache-v1-{{ checksum "Gemfile.lock" }}

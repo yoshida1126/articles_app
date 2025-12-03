@@ -62,9 +62,11 @@
           <option value="my" <%= "selected" if @list_type == :my %>>マイリスト</option>
           <option value="bookmark" <%= "selected" if @list_type == :bookmark %>>ブックマーク</option>
         </select>
-        <div class="new_favorite_list_link">
-          <%= link_to "新規シェアリストを作成する", new_user_favorite_article_list_path(@user) %>
-        </div>
+        <% if current_user && current_user == @user %>
+          <div class="new_favorite_list_link">
+            <%= link_to "新規シェアリストを作成する", new_user_favorite_article_list_path(@user) %>
+          </div>
+        <% end %>
         <% if @lists.present? %>
           <%= render partial: 'favorite_article_lists/favorite_article_lists',
                      collection: @lists, as: :list %>
