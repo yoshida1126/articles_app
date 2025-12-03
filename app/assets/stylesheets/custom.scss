@@ -624,6 +624,8 @@ aside {
     }
   }
   section {
+    display: flex;
+    align-items: center;
     padding: 10px 0;
     &:first-child {
       border: 0;
@@ -700,16 +702,21 @@ section.favorite-article-list-link {
 }
 
 .users {
+  width: 100%;
   list-style: none;
   padding: 0;
   display: table;
   li {
     display: flex;
     justify-content: space-between;
-    width: 400px;
+    max-width: 400px;
+    align-items: center;
     padding: 10px 0;
     border-top: 1px solid #e8e8e858;
     height: 50px;
+  }
+  .search-users-li {
+    margin: 0 auto;
   }
   a {
     text-decoration: none;
@@ -1245,8 +1252,8 @@ div.birthday {
 }
 
 .search-users {
-  width: fit-content;
   margin: 0 auto;
+  padding: 0;
 }
 
 aside { 
@@ -1326,17 +1333,16 @@ aside {
 .col-sm-8 {
   h4 {
     margin-top: 40px;
-    margin-left: 64px;
   }
 }
 
 .user-info {
   .name {
-    max-width: 300px;
+    max-width: 200px;
     font-size: 1.1em;
     font-weight: 700;
-    margin-top: 13px;
     color: #777;
+    overflow-wrap: anywhere;
     a {
       text-decoration: none;
       color: #333333;
@@ -2649,6 +2655,7 @@ input.favorite_article_delete_btn {
 
     .filter-item {
       display: flex;
+      position: relative;
       align-items: center;
       margin-right: auto;
       margin-bottom: 8px;
@@ -2658,11 +2665,35 @@ input.favorite_article_delete_btn {
       span {
         white-space: nowrap;
         font-weight: lighter;
+        padding-left: 20px;
       }
-    }
-
-    .filter-item input[type="radio"] {
-      margin-right: 6px;
+      input[type="radio"] {
+        opacity: 0;
+        position: absolute;
+        pointer-events: none;
+        margin: 0;
+      }
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #99b9c2;
+        border-radius: 50%;
+        box-sizing: border-box;
+        position: absolute;
+      }
+      input[type="radio"]:checked + span::after {
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        background-color: #99b9c2;
+        border-radius: 50%;
+      }
     }
 
     input:disabled + span {
@@ -3046,13 +3077,13 @@ input.favorite_article_delete_btn {
     display: flex;
     justify-content: center;
     .name {
-      float: right;
-      padding-right: 20px;
+      text-align: left;
     }
    }
    section.introduction {
     display: flex;
     justify-content: center;
+    text-align: left;
    }
    .stats {
     display: flex;
