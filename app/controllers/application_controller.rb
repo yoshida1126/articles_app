@@ -13,22 +13,20 @@ class ApplicationController < ActionController::Base
       @search_word.gsub!("　", "")
       redirect_to tag_path(@search_word)
     else
-      set_date_params
       @target = params.dig(:q, :target) || 'article'
+
+      @target == 'user' ? params[:q].delete(:created_at_filter) : set_date_params
 
       case @target
       when 'article'
         search = Article.published.ransack(params[:q])
-        @search_articles = search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
-                                                                                                 per_page: 30)
+        @search_articles = search.result(distinct: true).order(created_at: :desc)
       when 'list'
         search = FavoriteArticleList.ransack(params[:q])
-        @search_lists = search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
-                                                                                              per_page: 30)
+        @search_lists = search.result(distinct: true).order(created_at: :desc)
       when 'user'
         search = User.ransack(params[:q])
-        @search_users = search.result(distinct: true).order(created_at: :desc).paginate(page: params[:page],
-                                                                                              per_page: 30)
+        @search_users = search.result(distinct: true).order(created_at: :desc)
       end
     end
   end
@@ -82,7 +80,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_date_params
-    date_filter = params.dig(:q, :created_at_filter)
+    date_filter = params.dig(:q, :created_at_filter).presence
 
     if date_filter.present?
       params[:q][:created_at_gteq] = case date_filter

@@ -549,10 +549,10 @@ li.link-btn {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     h4 {
       color: #333333;
       font-weight: 530;
-      margin-top: 0;
     }
     .articles-link {
       font-size: 1.3rem;
@@ -572,7 +572,7 @@ li.link-btn {
     display: flex;
     justify-content: left;
     overflow-x: scroll;
-    margin-bottom: 50px;
+    height: 270px;
     li {
       margin-right: 20px;
     }
@@ -1119,6 +1119,11 @@ div.birthday {
     margin: 0;
     width: 640px;
   }
+}
+
+.trend-articles, .recentry-articles {
+  margin-top: 50px;
+  margin-bottom: 30px;
 }
 
 .search-tag-result {
@@ -2617,9 +2622,11 @@ input.favorite_article_delete_btn {
       text-align: left;
     }
     #filter-modal-close {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
       text-align: center;
-      align-content: center;
       width: 25px;
       height: 25px;
       line-height: 1;

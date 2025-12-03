@@ -1,12 +1,12 @@
 <% if @trend_articles %> 
   <% provide(:title, "トレンド記事一覧") %>
-  <h4 class="search-result">トレンド記事一覧</h4> 
+  <h4 class="trend-articles">トレンド記事一覧</h4> 
   <ul id="search-or-tagged-articles" class="articles">
     <%= render partial: "articles/shared/search_articles", collection: @trend_articles, as: "article" %> 
   </ul>  
 <% elsif @articles %>
   <% provide(:title, "最近の投稿一覧") %>
-  <h4 class="search-result">最近の投稿一覧</h4> 
+  <h4 class="recentry-articles">最近の投稿一覧</h4> 
   <ul id="search-or-tagged-articles" class="articles">
     <%= render partial: "articles/shared/search_articles", collection: @articles, as: "article" %>
   </ul>

@@ -17,8 +17,16 @@ export default class extends Controller {
 
   modalClose(e) {
     document.body.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false)
+
     const node = document.getElementsByClassName('creation-date')[0]
     node.querySelectorAll('input').forEach(input => input.disabled = true)
+    const defaultRadio = node.querySelector('input[value=""]')
+    if (defaultRadio) {
+      defaultRadio.checked = true
+    }
+
+    const dateField = document.getElementById("q_created_at_filter")
+    dateField.value = ""
 
     const filterModal = document.getElementById('filter-modal')
     filterModal.style.display = "none"
@@ -28,8 +36,16 @@ export default class extends Controller {
 
   modalCloseWithBtn() {
     document.body.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false)
+
     const node = document.getElementsByClassName('creation-date')[0]
     node.querySelectorAll('input').forEach(input => input.disabled = true)
+    const defaultRadio = node.querySelector('input[value=""]')
+    if (defaultRadio) {
+      defaultRadio.checked = true
+    }
+
+    const dateField = document.getElementById("q_created_at_filter")
+    dateField.value = ""
 
     const filterModal = document.getElementById('filter-modal')
     filterModal.style.display = "none"
@@ -57,7 +73,7 @@ export default class extends Controller {
         paramName = "title_or_coontent_cont"
         break
       case "list":
-        paramName = "name_cont"
+        paramName = "list_title_cont"
         break
       case "user":
         paramName = "name_cont"
@@ -69,7 +85,7 @@ export default class extends Controller {
   }
 
   updateDateFilter(event) {
-    const value = event.target.value;
-    this.dateFieldTarget.value = value;
+    const value = event.target.value
+    this.dateFieldTarget.value = value
   }
 }
