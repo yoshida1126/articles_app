@@ -14,21 +14,22 @@
     <i class="fas fa-sliders-h"></i>
   </div>
 </div> 
-  <% if @search_articles.present? %>
-    <ul id="search-or-tagged-articles" class="articles">
-      <%= render partial: "articles/shared/search_articles", collection: @search_articles, as: "article" %>
-    </ul>
-  <% elsif @search_lists.present? %>
-    <ul id="search-or-tagged-articles" class="search-lists">
-      <%= render partial: "favorite_article_lists/shared/search_lists", collection: @search_lists, as: "list" %>
-    </ul>
-  <% else %>
-    <ul class="search-users">
-      <%= render partial: "users/shared/search_users", collection: @search_users, as: "user" %>
-    </ul>
-  <% end %>
-<% if @search_article.present? %>
-  <%= render partial: "shared/pagination", locals: { object: @search_articles } %>
+  
+<% if @search_articles.present? %>
+  <ul id="search-or-tagged-articles" class="articles">
+    <%= render partial: "articles/shared/search_articles",
+               collection: @search_articles, as: "article" %>
+  </ul>
+<% elsif @search_lists.present? %>
+  <ul id="search-or-tagged-articles" class="search-lists">
+    <%= render partial: "favorite_article_lists/shared/search_lists",
+               collection: @search_lists, as: "list" %>
+  </ul>
+<% else %>
+  <ul class="search-users">
+    <%= render partial: "users/shared/search_users",
+               collection: @search_users, as: "user" %>
+  </ul>
 <% end %>
 
 <div id="filter-modal" data-controller="search-filter">

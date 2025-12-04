@@ -39,5 +39,7 @@ module ArticlesApp
     ActionView::Base.field_error_proc = Proc.new do |html_tag, _instance|
       html_tag.html_safe
     end
+
+    config.action_view.image_loading = 'lazy'
   end
 end

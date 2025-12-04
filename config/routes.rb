@@ -74,7 +74,7 @@ Rails.application.routes.draw do
   end
 
   resources :tags, only: [:show]
-  get 'search', to: 'searches#search'
+  get "search", to: "searches#search"
   resources :favorites, only: %i[create destroy]
   resources :favorite_list_bookmarks, only: %i[create destroy]
   
