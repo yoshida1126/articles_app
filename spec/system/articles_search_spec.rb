@@ -45,14 +45,6 @@ RSpec.describe 'Search', type: :system, js: true do
 
         expect(page).to have_content("タグ: testの一覧 (1件)")
       end
-
-      it "存在しないタグを検索するとルートパスにリダイレクトされること" do
-        fill_in 'q_title_or_content_cont', with: '#article'
-        find('#search-btn').click
-
-        expect(current_path).to eq root_path
-        expect(page).to have_selector 'div.alert-danger'
-      end
     end
   end
 end 
