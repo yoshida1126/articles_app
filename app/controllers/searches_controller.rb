@@ -1,6 +1,38 @@
 class SearchesController < ApplicationController
 
   def search
+    if turbo_frame_request? && params[:page].present?
+      @target = params.dig(:q, :target) || 'article'
+
+      case @target
+      when 'article'
+        search = Article.published.ransack(params[:q] || {})
+        search_articles = search.result(distinct: true)
+                                .order(created_at: :desc)
+                                .paginate(page: params[:page], per_page: 30)
+
+        render partial: "searches/search_articles_page",
+               locals: { search_articles: search_articles }
+        return
+      when 'list'
+        search = FavoriteArticleList.ransack(params[:q])
+        search_lists = search.result(distinct: true)
+                              .order(created_at: :desc)
+                              .paginate(page: params[:page], per_page: 30)
+        render partial: "searches/search_lists_page",
+               locals: { search_lists: search_lists }
+        return
+      when 'user'
+        search = User.ransack(params[:q])
+        search_users = search.result(distinct: true)
+                              .order(created_at: :desc)
+                              .paginate(page: params[:page], per_page: 30)
+        render partial: "searches/search_users_page",
+               locals: { search_users: search_users }
+        return
+      end
+    end
+
     @search_word = params[:q].values.compact.first.to_s
 
     if /\A#.+/ =~ @search_word
@@ -16,13 +48,22 @@ class SearchesController < ApplicationController
       case @target
       when 'article'
         search = Article.published.ransack(params[:q])
-        @search_articles = search.result(distinct: true).order(created_at: :desc)
+        @search_articles = search.result(distinct: true)
+                                 .order(created_at: :desc)
+                                 .paginate(page: params[:page], per_page: 30)
+        @results_count = @search_articles.count
       when 'list'
         search = FavoriteArticleList.ransack(params[:q])
-        @search_lists = search.result(distinct: true).order(created_at: :desc)
+        @search_lists = search.result(distinct: true)
+                              .order(created_at: :desc)
+                              .paginate(page: params[:page], per_page: 30)
+        @results_count = @search_lists.count
       when 'user'
         search = User.ransack(params[:q])
-        @search_users = search.result(distinct: true).order(created_at: :desc)
+        @search_users = search.result(distinct: true)
+                              .order(created_at: :desc)
+                              .paginate(page: params[:page], per_page: 30)
+        @results_count = @search_users.count
       end
     end
   end

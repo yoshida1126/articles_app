@@ -2,14 +2,14 @@
   <li class="search-users-li">
     <div class="user-info">
       <div class="user-profile-image">
-        <a href="/users/<%= user.id %>">
+        <%= link_to user , data: { turbo_frame: "_top" } do %>
           <%= image_tag user.profile_img.attached? ? user.profile_img : "profile.jpg" %>
-        </a>
+        <% end %>
       </div>
       <div class="name">
-        <a href="/users/<%= user.id %>">
+        <%= link_to user , data: { turbo_frame: "_top" } do %>
           <%= user.name %>
-        </a>
+        <% end %>
       </div>
     </div>
     <% if current_user && current_user != user %>

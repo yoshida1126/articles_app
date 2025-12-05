@@ -3,12 +3,22 @@
   <div class="col-md-12">
     <% if @tagged_articles.present? %>
       <h4 class="search-tag-result">タグ: <%= @tag.name %>の一覧 (<%= @total_articles_count %>件)</h4>
-      <ul id="search-or-tagged-articles" class="articles">
-        <%= render partial: "articles/shared/search_articles", collection: @tagged_articles, as: "article" %>
-      </ul>
-      <div class="pagination">
-        <%= render partial: "shared/pagination", locals: { object: @tagged_articles } %>
-      </div>
+      <%= turbo_frame_tag "search_articles_page_#{@tagged_articles.current_page}" do %>
+        <ul id="search-or-tagged-articles" class="articles">
+          <%= render partial: "articles/shared/search_articles", collection: @tagged_articles, as: "article" %>
+        </ul>
+
+        <% if @tagged_articles.next_page %>
+          <%= turbo_frame_tag "search_articles_page_#{@tagged_articles.next_page}",
+              src: search_path(page: @tagged_articles.next_page),
+              loading: :lazy,
+              class: "infinite-scroll-frame" do %>
+            <div class="spinner"></div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <span class="search-tag-result">該当するタグが付けられた記事は見つかりませんでした。</span>
     <% end %>
   </div>
 </div>

@@ -1,11 +1,7 @@
 <% provide(:title, "#{ @search_word }の検索結果") %>
 <div class="search-result-and-filter">
-  <% if @search_articles.present? %>
-    <h4 class="search-result"><%= @search_word %> の検索結果 <%= @search_articles.count %> 件</h4>
-  <% elsif @search_lists.present? %>
-    <h4 class="search-result"><%= @search_word %> の検索結果 <%= @search_lists.count %> 件</h4>
-  <% elsif @search_users.present? %>
-    <h4 class="search-result"><%= @search_word %> の検索結果 <%= @search_users.count %> 件</h4>
+  <% if @results_count > 0 %>
+    <h4 class="search-result"><%= @search_word %> の検索結果 <%= @results_count %> 件</h4>
   <% else %>
     <h4 class="search-result">検索結果 0 件</h4>
   <% end %>
@@ -16,20 +12,50 @@
 </div> 
   
 <% if @search_articles.present? %>
-  <ul id="search-or-tagged-articles" class="articles">
-    <%= render partial: "articles/shared/search_articles",
-               collection: @search_articles, as: "article" %>
-  </ul>
+  <%= turbo_frame_tag "search_articles_page_#{@search_articles.current_page}" do %>
+    <ul id="search-or-tagged-articles" class="articles">
+      <%= render partial: "articles/shared/search_articles",
+                 collection: @search_articles, as: "article" %>
+    </ul>
+    <% if @search_articles.next_page %>
+      <%= turbo_frame_tag "search_articles_page_#{@search_articles.next_page}",
+          src: search_path(page: @search_articles.next_page, q: { target: @target }),
+          loading: :lazy,
+          class: "infinite-scroll-frame" do %>
+        <div class="spinner"></div>
+      <% end %>
+    <% end %>
+  <% end %>
 <% elsif @search_lists.present? %>
-  <ul id="search-or-tagged-articles" class="search-lists">
-    <%= render partial: "favorite_article_lists/shared/search_lists",
-               collection: @search_lists, as: "list" %>
-  </ul>
-<% else %>
-  <ul class="search-users">
-    <%= render partial: "users/shared/search_users",
-               collection: @search_users, as: "user" %>
-  </ul>
+  <%= turbo_frame_tag "search_lists_page_#{@search_lists.current_page}" do %>
+    <ul id="search-or-tagged-articles" class="search-lists">
+      <%= render partial: "favorite_article_lists/shared/search_lists",
+                 collection: @search_lists, as: "list" %>
+    </ul>
+    <% if @search_lists.next_page %>
+      <%= turbo_frame_tag "search_lists_page_#{@search_lists.next_page}",
+          src: search_path(page: @search_lists.next_page, q: { target: @target }),
+          loading: :lazy,
+          class: "infinite-scroll-frame" do %>
+        <div class="spinner"></div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% elsif @search_users.present? %>
+  <%= turbo_frame_tag "search_lists_page_#{@search_users.current_page}" do %>
+    <ul class="search-users">
+      <%= render partial: "users/shared/search_users",
+                 collection: @search_users, as: "user" %>
+    </ul>
+    <% if @search_users.next_page %>
+      <%= turbo_frame_tag "search_users_page_#{@search_users.next_page}",
+          src: search_path(page: @search_users.next_page, q: { target: @target }),
+          loading: :lazy,
+          class: "infinite-scroll-frame" do %>
+        <div class="spinner"></div>
+      <% end %>
+    <% end %>
+  <% end %>
 <% end %>
 
 <div id="filter-modal" data-controller="search-filter">

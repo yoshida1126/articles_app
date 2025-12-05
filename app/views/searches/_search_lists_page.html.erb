@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "search_lists_page_#{search_lists.current_page}" do %>
+  <ul id="search-or-tagged-articles" class="articles">
+    <%= render partial: "favorite_article_lists/shared/search_lists",
+               collection: search_lists,
+               as: "list" %>
+  </ul>
+
+  <% if search_lists.next_page %>
+    <%= turbo_frame_tag "search_lists_page_#{search_lists.next_page}",
+        src: search_path(page: search_lists.next_page, q: { target: @target }),
+        loading: :lazy,
+        class: "infinite-scroll-frame" do %>
+      <div class="spinner"></div>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,6 +1,6 @@
 <li id="article-<%= article.id %>">
   <span class="heading-image">
-    <%= link_to article do %>
+    <%= link_to article, data: { turbo_frame: "_top" } do %>
       <% if article.image.attached? %> 
         <%= image_tag article.image %>
       <% else %> 
@@ -11,13 +11,13 @@
     <% end %>
   </span>
   <span class="title">
-    <%= link_to article do %>
+    <%= link_to article, data: { turbo_frame: "_top" } do %>
       <%= article.title %>
     <% end %>
   </span>
   <div class="article-info">
     <div class="user-profile-img">
-      <%= link_to article.user do %>
+      <%= link_to article.user , data: { turbo_frame: "_top" } do %>
         <% if article.user.profile_img.attached? %>
           <%= image_tag article.user.profile_img %>
         <% else %>
@@ -27,7 +27,7 @@
     </div>
     <div class="name-and-timestamp">
       <div class="name">
-        <%= link_to article.user do %>
+        <%= link_to article.user, data: { turbo_frame: "_top" } do %>
           <%= article.user.name %>
         <% end %>
       </div>

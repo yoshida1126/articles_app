@@ -1,6 +1,12 @@
 class TagsController < ApplicationController
   def show
-    # 関連するタグがつけられた記事の一覧を取得
+    if turbo_frame_request? && params[:page].present?
+      @search_articles = Article.published.tagged_with(params[:id]).paginate(page: params[:page], per_page: 30)
+      render partial: "searches/search_articles_page",
+             locals: { search_articles: search_articles }
+      return
+    end
+
     @tag = ActsAsTaggableOn::Tag.find_by(name: params[:id])
 
     redirect_to request.referer, alert: '存在しないタグです。' unless @tag.present?

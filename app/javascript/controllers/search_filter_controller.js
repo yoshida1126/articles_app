@@ -70,7 +70,7 @@ export default class extends Controller {
 
     switch (target) {
       case "article":
-        paramName = "title_or_coontent_cont"
+        paramName = "title_or_content_cont"
         break
       case "list":
         paramName = "list_title_cont"

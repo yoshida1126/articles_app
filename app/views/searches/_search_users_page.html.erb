@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "search_users_page_#{search_users.current_page}" do %>
+  <ul class="search-users">
+    <%= render partial: "users/shared/search_users",
+               collection: search_users, 
+               as: "user" %>
+  </ul>
+
+  <% if search_users.next_page %>
+    <%= turbo_frame_tag "search_users_page_#{search_users.next_page}",
+        src: search_path(page: search_users.next_page, q: { target: @target }),
+        loading: :lazy,
+        class: "infinite-scroll-frame" do %>
+      <div class="spinner"></div>
+    <% end %>
+  <% end %>
+<% end %>
