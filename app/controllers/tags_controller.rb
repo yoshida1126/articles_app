@@ -9,8 +9,6 @@ class TagsController < ApplicationController
 
     @tag = ActsAsTaggableOn::Tag.find_by(name: params[:id])
 
-    redirect_to request.referer, alert: '存在しないタグです。' unless @tag.present?
-
     @tagged_articles = Article.published.tagged_with(params[:id])
 
     @total_articles_count = @tagged_articles.count
