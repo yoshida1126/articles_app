@@ -1,43 +1,33 @@
-<% if URI(request.referer.to_s).path == "/users/#{current_user.id}/following" %>
+<% referer_path = URI(request.referer.to_s).path %>
+<% case referer_path %>
+<% when %r{/users/#{current_user.id}/(following|followers)} %>
   <%= turbo_stream.update "follow_form_#{@user.id}" do %>
     <%= render partial: "users/follow" %>
-  <% end %> 
-  <%= turbo_stream.update "following" do %> 
-    <%= current_user.following.count %> 
   <% end %>
-<% elsif URI(request.referer.to_s).path == "/users/#{current_user.id}/followers" %>
-  <%= turbo_stream.update "follow_form_#{@user.id}" do %>
-    <%= render partial: "users/follow" %> 
+  <%= turbo_stream.update "following" do %>
+    <%= current_user.following.count %>
   <% end %>
-  <%= turbo_stream.update "following" do %> 
-    <%= current_user.following.count %> 
-  <% end %>
-<% elsif URI(request.referer.to_s).path == "/users/#{@user.id}" %>
+<% when %r{/users/#{@user.id}/(favorite_article_lists|following|followers)} %>
   <%= turbo_stream.update "follow_form" do %>
     <%= render partial: "users/follow" %>
   <% end %>
   <%= turbo_stream.update "followers" do %>
     <%= @user.followers.count %>
   <% end %>
-<% elsif URI(request.referer.to_s).path == "/users/#{@user.id}/following" %>
+  <% if referer_path.match?(%r{/users/#{@user.id}/following}) %>
+    <%= turbo_stream.update "follow_form_#{@user.id}" do %>
+      <%= render partial: "users/follow" %>
+    <% end %>
+  <% end %>
+<% when %r{/users/#{@user.id}$} %>
   <%= turbo_stream.update "follow_form" do %>
     <%= render partial: "users/follow" %>
   <% end %>
-  <%= turbo_stream.update "followers" do %> 
-    <%= @user.followers.count %> 
+  <%= turbo_stream.update "followers" do %>
+    <%= @user.followers.count %>
   <% end %>
-  <%= turbo_stream.update "follow_form_#{@user.id}" do %>
-    <%= render partial: "users/follow" %>
-  <% end %>
-<% elsif URI(request.referer.to_s).path == "/users/#{@user.id}/followers" %>
-  <%= turbo_stream.update "follow_form" do %>
-    <%= render partial: "users/follow" %>
-  <% end %>
-  <%= turbo_stream.update "followers" do %> 
-    <%= @user.followers.count %> 
-  <% end %> 
 <% else %>
   <%= turbo_stream.update "follow_form_#{@user.id}" do %>
     <%= render partial: "users/follow" %>
-  <% end %> 
+  <% end %>
 <% end %>
