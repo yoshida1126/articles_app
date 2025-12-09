@@ -2424,10 +2424,14 @@ label {
   text-align: left;
 }
 
+#share-list-select {
+  margin-bottom: 10px;
+}
+
 .new_favorite_list_link {
   width: fit-content;
   font-size: 1.5rem;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 10px;
   a {
     color: #7aa4af;
@@ -2460,8 +2464,8 @@ input.favorite_article_delete_btn {
 }
 
 .favorite_list_bookmark {
+  padding-top: 2px;
   .bookmark-btn {
-    margin-top: 10px;
     background: none;
     border: none;
     font-size: 1.5rem;
@@ -2470,7 +2474,6 @@ input.favorite_article_delete_btn {
     }
   }
   .unbookmark-btn {
-    margin-top: 10px;
     background: none;
     border: none;
     color: #99b9c2;
@@ -2485,13 +2488,18 @@ input.favorite_article_delete_btn {
 }
 
 .title-and-bookmark {
+  width: 200px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 8px;
   .title {
     width: 180px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin: 0;
   }
 }
 
@@ -2979,6 +2987,7 @@ input.favorite_article_delete_btn {
 
   .tab-type {
     max-width: 100%;
+    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
     white-space: nowrap;
@@ -3122,6 +3131,12 @@ input.favorite_article_delete_btn {
       width: 200px;
     }
    }
+  }
+
+  .title-and-bookmark {
+    .title {
+      margin: 0;
+    }
   }
 
   // 記事ページ
