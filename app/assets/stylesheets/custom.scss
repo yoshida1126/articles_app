@@ -1137,13 +1137,36 @@ div.birthday {
 
 #search-or-tagged-articles {
   display: grid;
-  place-content: center;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  justify-content: space-between;
-  column-gap: 10px;
+  gap: 10px;
   overflow: hidden;
   li {
     margin: 0 auto;
+  }
+}
+
+@media (max-width: 439px) {
+  #search-or-tagged-articles {
+    grid-template-columns: repeat(1, minmax(200px, 1fr));
+  }
+}
+
+@media (min-width: 440px) and (max-width: 659px) {
+  #search-or-tagged-articles {
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+  }
+}
+
+@media (min-width: 660px) and (max-width: 1199px) {
+  #search-or-tagged-articles {
+    max-width: 800px;
+    margin: 0 auto;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  #search-or-tagged-articles {
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
   }
 }
 
