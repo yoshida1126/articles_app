@@ -1141,6 +1141,11 @@ div.birthday {
   overflow: hidden;
   li {
     margin: 0 auto;
+    span {
+      a {
+        color: #777;
+      }
+    }
   }
 }
 
