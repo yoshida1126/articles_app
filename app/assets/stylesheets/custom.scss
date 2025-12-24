@@ -1219,7 +1219,7 @@ div.birthday {
     display: inline-block;
     width: fit-content;
     height: fit-content;
-    transition: .1s;
+    transition: all 0.2s ease;
     &:hover {
       opacity: .5;
     }
@@ -1326,9 +1326,8 @@ aside {
 }
 
 .tab-type {
-  width: fit-content;
+  width: 460px;
   display: flex;
-  margin-top: 40px;
   margin-bottom: 20px;
   border-bottom: .5px solid #99b9c2;
   font-size: 1.7rem;
@@ -1358,15 +1357,74 @@ aside {
 }
 
 #tab-contents {
-  max-width: 328px;
-  .articles {
-    width: 200px;
+  li {
+    width: 100%;
+    height: 130px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    padding: 0 10px;
+    transition: all 0.2s ease;
+    &:hover {
+      background-color: #f0f0f0;
+    }
+    a {
+      color: #333;
+    }
+  }
+  .public-title, .private-title, .draft-title, .list-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 3;
+    font-size: 1.1em;
+    padding-top: 0;
+    a {
+      color: #333;
+    }
+  }
+  .timestamp-and-likes, .timestamp, .timestamp-and-bookmark {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    #good-btn {
+      margin: 0;
+    }
+    .bookmark-btn, .unbookmark-btn {
+      padding: 0;
+    }
+  }
+  .timestamp {
+    color: #777777;
+  }
+  .public-article-info, .private-article-info, .draft-info, .list-info {
+    width: 100%;
+    max-width: 200px;
+    padding-left: 10px;
   }
 }
 
 .col-sm-8 {
   h4 {
     margin-top: 40px;
+  }
+}
+
+.profile-layout {
+  display: flex;
+  max-width: 1000px;
+  .profile-aside {
+    position: sticky;
+    top: 50px;
+    height: fit-content;
+  }
+  .profile-main {
+    max-width: 460px;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -2452,17 +2510,17 @@ label {
   text-align: left;
 }
 
-#share-list-select {
-  margin-bottom: 10px;
-}
-
-.new_favorite_list_link {
-  width: fit-content;
-  font-size: 1.5rem;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  a {
-    color: #7aa4af;
+.list-select-and-new-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 10px;
+  .new_favorite_list_link {
+    font-size: 1.5rem;
+    a {
+      color: #7aa4af;
+    }
   }
 }
 
@@ -3168,6 +3226,34 @@ input.favorite_article_delete_btn {
     }
   }
 
+  .profile-layout {
+    display: block;
+    .profile-aside {
+      position: static;
+      margin: 0 auto;
+      max-width: 280px;
+    }
+    .profile-main {
+      margin-top: 20px;
+      #tab-contents {
+        .public-title {
+          font-size: 1em;
+        }
+        .timestamp {
+          font-size: .6em;
+        }
+      }
+    }
+  }
+
+  aside section {
+    display: flex;
+    justify-content: center;
+  }
+  aside section.introduction {
+    text-align: center;
+  }
+
   // 記事ページ
 
   .article-page {
@@ -3313,11 +3399,7 @@ input.favorite_article_delete_btn {
   }
 
   .new_favorite_list_link {
-    width: fit-content;
     margin-top: 0px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 20px;
     a {
       color: #99b9c2;
     }
