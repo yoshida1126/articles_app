@@ -40,21 +40,21 @@
         <% if @articles.present? %>
           <%= render partial: 'articles/public_articles', collection: @articles, as: :article %> 
         <% else %>
-          投稿した記事はありません。
+          <div class='no-contents'>投稿した記事はありません。</div>
         <% end %>
       </ol>
       <ol id="private_articles" class="contents articles">
         <% if @private_articles.present? %>
           <%= render partial: 'articles/private_articles', collection: @private_articles, as: :private_article %>
         <% else %>
-          非公開記事はありません。
+          <div class='no-contents'>非公開記事はありません。</div>
         <% end %>
       </ol>
       <ol id="drafts" class="contents articles">
         <% if @drafts.present? %>
           <%= render partial: 'article_drafts/drafts', collection: @drafts, as: :draft %>
         <% else %>
-          下書きはありません。
+          <div class='no-contents'>下書きはありません。</div>
         <% end %>
       </ol>
       <ol id="favorite_article_lists" class="contents articles">
@@ -74,9 +74,9 @@
                      collection: @lists, as: :list %>
         <% else %>
           <% if @list_type == :my %>
-            <div><%= @user.name %>さんはシェアリストを作成していません。</div>  
+            <div class='no-contents'><%= @user.name %>さんはシェアリストを作成していません。</div>  
           <% else %>
-            <div>ブックマークしたリストはありません。</div>
+            <div class='no-contents'>ブックマークしたリストはありません。</div>
           <% end %>
         <% end %>
       </ol>
