@@ -4,6 +4,7 @@ class Article < ApplicationRecord
   belongs_to :user
   has_one :article_draft, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :liked_users, through: :likes, source: :user
   has_many :article_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :favorite_article_lists, through: :favorites

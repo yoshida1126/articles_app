@@ -38,5 +38,6 @@ function getActiveTabFromPath(path) {
   if (path.endsWith("/drafts")) return "drafts";
   if (path.endsWith("/private_articles")) return "private_articles";
   if (path.endsWith("/favorite_article_lists")) return "favorite_article_lists";
+  if (path.endsWith("/liked_articles")) return "liked_articles";
   return "published";
 }

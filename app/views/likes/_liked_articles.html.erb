@@ -1,0 +1,42 @@
+<li id="article-<%= liked_article.id %>">
+  <%= link_to liked_article do %>
+    <span class="heading-image">
+      <% if liked_article.image.attached? %> 
+        <%= image_tag liked_article.image %>
+      <% else %> 
+        <div class="no-heading-image">
+          <p>Articles</p>
+        </div>
+      <% end %>
+    </span>
+  <% end %>
+  <div class="liked-article-info">
+    <span class="liked-article-title">
+      <%= link_to liked_article do %>
+        <%= liked_article.title %>
+      <% end %>
+    </span>
+    <div class="user-profile-img">
+      <%= link_to liked_article.user do %>
+        <% if liked_article.user.profile_img.attached? %>
+          <%= image_tag liked_article.user.profile_img %>
+        <% else %>
+          <%= image_tag "profile.jpg" %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="name-and-timestamp">
+      <div class="name">
+        <%= link_to liked_article.user do %>
+          <%= liked_article.user.name %>
+        <% end %>
+      </div>
+      <span class="timestamp"> 
+        <%= liked_article.created_at.strftime("%Y年%-m月%-d日 %H:%M") %>
+      </span> 
+    </div>
+    <span class="likes_btn_<%= liked_article.id %>">
+      <%= render "likes/btn", article: liked_article %>
+    </span>
+  </div>
+</li>

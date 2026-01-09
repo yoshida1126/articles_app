@@ -50,6 +50,17 @@ class UsersController < ApplicationController
     render :show
   end
 
+  def liked_articles
+    @user = User.find(params[:id])
+    @liked_articles = @user.liked_articles.paginate(page: params[:page], per_page: 15)
+
+    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
+    @articles_count = @articles.count
+
+    @tab = :liked
+    render :show
+  end
+
   def account_delete_confirmation
     @user = current_user
   end

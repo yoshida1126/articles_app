@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       get :private_articles
       get :drafts
       get :favorite_article_lists
+      get :liked_articles
     end
 
     resources :favorite_article_lists, only: %i[show new create edit update destroy]

@@ -1268,8 +1268,27 @@ div.birthday {
       text-decoration: none;
     }
   }
+  .liked-article-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    width: 200px;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    padding-top: 0;
+    color: #333;
+    a {
+      color: #333333;
+    }
+  }
   .article-info {
     display: flex;
+  }
+  .article-info, .liked-article-info {
     .name {
       width: 160px;
       a {
@@ -1326,11 +1345,12 @@ aside {
 }
 
 .tab-type {
-  width: 460px;
+  width: 510px;
   display: flex;
   margin-bottom: 20px;
   border-bottom: .5px solid #99b9c2;
-  font-size: 1.7rem;
+  font-size: 1.57rem;
+  white-space: nowrap;
   .tab {
     padding: 10px 15px;
     cursor: pointer;
@@ -1422,7 +1442,7 @@ aside {
     height: fit-content;
   }
   .profile-main {
-    max-width: 460px;
+    max-width: 510px;
     margin-top: 50px;
     margin-left: auto;
     margin-right: auto;

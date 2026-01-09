@@ -30,6 +30,7 @@
         <div class="tab <%= 'selected' if @tab == :private %>" data-path-suffix="/private_articles">非公開記事</div>
         <div class="tab <%= 'selected' if @tab == :drafts %>" data-path-suffix="/drafts">下書き記事</div>
         <div class="tab <%= 'selected' if @tab == :lists %>" data-path-suffix="/favorite_article_lists">シェアリスト</div>
+        <div class="tab <%= 'selected' if @tab == :liked %>" data-path-suffix="/liked_articles">いいね</div>
       <% else %>
         <div class="tab <%= 'selected' if @tab == :published %>" data-path-suffix="">投稿記事</div>
         <div class="tab <%= 'selected' if @tab == :lists %>" data-path-suffix="/favorite_article_lists">シェアリスト</div>
@@ -80,6 +81,14 @@
           <% end %>
         <% end %>
       </ol>
+      <ol id="liked_articles" class="contents articles">
+        <% if @liked_articles.present? %>
+          <%= render partial: 'likes/liked_articles',
+                     collection: @liked_articles, as: :liked_article %>
+        <% else %>
+          <div class='no-contents'>いいねした記事はありません。</div>
+        <% end %>
+      </ol>
     </div>
     <div class="pagination">
       <% if @tab == :drafts %>
@@ -88,8 +97,10 @@
         <%= render partial: "shared/pagination", locals: { object: @articles } %>
       <% elsif @tab == :private %>
         <%= render partial: "shared/pagination", locals: { object: @private_articles } %>
-      <% else %>
+      <% elsif @tab == :lists %>
         <%= render partial: "shared/pagination", locals: { object: @lists } %>
+      <% elsif @tab == :liked %>
+        <%= render partial: "shared/pagination", locals: { object: @liked_articles } %>
       <% end %>
     </div>
   </div>
