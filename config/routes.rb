@@ -68,7 +68,13 @@ Rails.application.routes.draw do
   resources :relationships, only: %i[create destroy]
 
   resources :articles, only: %i[index show destroy] do
+    
+    member do
+      get :liked_users
+    end
+
     resource :likes, only: %i[create destroy]
+
     resources :article_comments, only: %i[create destroy edit update] do
       resource :article_comment_likes, only: %i[create destroy]
     end

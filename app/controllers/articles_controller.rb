@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
-  before_action :logged_in_user, only: %i[destroy]
-  before_action :correct_user, only: %i[destroy]
+  before_action :logged_in_user, only: %i[liked_users destroy]
+  before_action :correct_user, only: %i[liked_users destroy]
   before_action :set_upload_quota_data, only: %i[show]
 
   def index; end
@@ -21,6 +21,12 @@ class ArticlesController < ApplicationController
 
     @favorite_article_lists = current_user.favorite_article_lists
     @favorite = Favorite.new
+  end
+
+  def liked_users
+    @article = Article.find(params[:id])
+
+    @liked_users = @article.liked_users.paginate(page: params[:page], per_page: 15)
   end
 
   def destroy

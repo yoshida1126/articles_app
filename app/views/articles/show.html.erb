@@ -32,6 +32,7 @@
             <ul id="dropdown-menu2" class="dropdown-menu dropdown-menu-right article-option">
               <% if @article.user == current_user %>
                 <li><%= link_to "記事を編集", edit_user_article_draft_path(current_user, @article.article_draft), data: { turbo: false } %></li>
+                <li><%= link_to "この記事を「いいね」したユーザー", liked_users_article_path(@article) %></li>
                 <li class="divider"></li>
               <% end %>
               <li><%= link_to "記事を削除", @article, data: { "turbo-method": :delete,

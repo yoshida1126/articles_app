@@ -1502,6 +1502,17 @@ aside {
   }
 }
 
+.liked_users {
+  max-width: 500px;
+   margin: 0 auto;
+  h2 {
+    margin-top: 50px;
+  }
+  .users li {
+    max-width: 600px;
+  }
+}
+
 #good-btn {
   margin-top: 10px;
   a {
