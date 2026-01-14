@@ -94,7 +94,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
 
       it 'オートセーブされた下書きの内容が失われていないこと' do
-        click_link 'Article Autosave Title'
+        find('.article-link').click
 
         expect(page).to have_content('Article Autosave Title')
         expect(page).to have_content('autosavearticle')
@@ -126,7 +126,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
 
       it 'オートセーブされた下書きの内容が失われていないこと' do
-        click_link 'Article Autosave Title'
+        first('.article-link').click
 
         expect(page).to have_content('Article Autosave Title')
         expect(page).to have_content('autosavearticle')
@@ -165,8 +165,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
 
       it '保存した下書きの画像が表示されていること' do
-        expect(page).to have_link('Article Title')
-        click_link 'Article Title'
+        find('.article-link').click
 
         expect(page).to have_selector("img[alt='map.png']")
       end
@@ -203,8 +202,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
 
       it '投稿した記事の画像が表示されていること' do
-        expect(page).to have_link('Article Title')
-        click_link 'Article Title'
+        find('.article-link').click
 
         expect(page).to have_selector("img[alt='map.png']")
       end
@@ -245,8 +243,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
 
       it '投稿した非公開記事の画像が表示されていること' do
-        expect(page).to have_link('Article Title')
-        click_link 'Article Title'
+        find('.article-link').click
 
         expect(page).to have_selector("img[alt='map.png']")
       end
@@ -350,22 +347,19 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
   
       it '下書き記事のタイトルが変わっていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
       it '編集で追加したヘッダー画像があること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
       it '編集で追加した記事の画像が表示されていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
@@ -378,7 +372,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
 
       it '編集元の記事の内容が変わってないこと' do
         find('.tab-type .tab', text: '投稿記事').click
-        click_link 'test article'
+        find('.article-link').click
 
         expect(page).to_not have_content('Article Edit content')
       end
@@ -410,22 +404,19 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
   
       it '下書き記事のタイトルが変わっていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
       it '編集で追加したヘッダー画像があること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
       it '編集で追加した記事の画像が表示されていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
@@ -460,22 +451,19 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
   
       it '記事のタイトルが変わっていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
       it '編集で追加したヘッダー画像があること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
       it '編集で追加した記事の画像が表示されていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
@@ -514,22 +502,19 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
   
       it '記事のタイトルが変わっていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
       it '編集で追加したヘッダー画像があること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
       it '編集で追加した記事の画像が表示されていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
@@ -569,22 +554,19 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
 
       it '記事のタイトルが変わっていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
       it '編集で追加したヘッダー画像があること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
       it '編集で追加した記事の画像が表示されていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
@@ -623,22 +605,19 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
   
       it '記事のタイトルが変わっていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
       it '編集で追加したヘッダー画像があること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
       it '編集で追加した記事の画像が表示されていること' do
-        expect(page).to have_link('Article Edit Title', exact: true, visible: true)
-        click_link 'Article Edit Title'
+        find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end

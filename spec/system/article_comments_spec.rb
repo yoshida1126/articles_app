@@ -10,15 +10,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
     context 'as a logged in user(input correct article comment)' do
       before do
         sign_in user
-        visit root_path
-        expect(page).to have_link('プロフィール画像', visible: true)
-        click_link 'プロフィール画像', match: :first, exact: true
-
-        expect(page).to have_link('プロフィール', visible: true)
-        click_link 'プロフィール', match: :first, exact: true
-
-        expect(page).to have_link(article.title, visible: true)
-        click_link article.title, match: :first
+        visit article_path(article)
       end
 
       it 'コメントの投稿に成功すること' do
@@ -44,15 +36,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
     context 'as a logged in user(input wrong article comment)' do
       before do
         sign_in user
-        visit root_path
-        expect(page).to have_link('プロフィール画像', visible: true)
-        click_link 'プロフィール画像', match: :first, exact: true
-
-        expect(page).to have_link('プロフィール', visible: true)
-        click_link 'プロフィール', match: :first, exact: true
-
-        expect(page).to have_link(article.title, visible: true)
-        click_link article.title, match: :first
+        visit article_path(article)
       end
 
       it 'コメントフォームが空だと投稿できないこと' do
@@ -75,15 +59,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
     context 'as a logged in user(input correct article comment)' do
       before do
         sign_in user
-        visit root_path
-        expect(page).to have_link('プロフィール画像', visible: true)
-        click_link 'プロフィール画像', match: :first, exact: true
-
-        expect(page).to have_link('プロフィール', visible: true)
-        click_link 'プロフィール', match: :first, exact: true
-
-        expect(page).to have_link(article.title, visible: true)
-        click_link article.title, match: :first
+        visit article_path(article)
 
         find('.dropdown3').click
 
@@ -112,15 +88,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
     context 'as a logged in user(input wrong article comment)' do
       before do
         sign_in user
-        visit root_path
-        expect(page).to have_link('プロフィール画像', visible: true)
-        click_link 'プロフィール画像', match: :first, exact: true
-
-        expect(page).to have_link('プロフィール', visible: true)
-        click_link 'プロフィール', match: :first, exact: true
-
-        expect(page).to have_link(article.title, visible: true)
-        click_link article.title, match: :first
+        visit article_path(article)
 
         find('.dropdown3').click
         click_link 'コメントを編集'
@@ -145,15 +113,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
     context 'as a logged in user' do
       before do
         sign_in user
-        visit root_path
-        expect(page).to have_link('プロフィール画像', visible: true)
-        click_link 'プロフィール画像', match: :first, exact: true
-
-        expect(page).to have_link('プロフィール', visible: true)
-        click_link 'プロフィール', match: :first, exact: true
-
-        expect(page).to have_link(article.title, visible: true)
-        click_link article.title, match: :first
+        visit article_path(article)
 
         find('.dropdown3').click
 

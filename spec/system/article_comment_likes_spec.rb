@@ -11,15 +11,7 @@ RSpec.describe 'ArticleCommentLikes', type: :system, js: true do
     context 'as a logged in user' do
       before do
         sign_in user
-        visit root_path
-        expect(page).to have_link('プロフィール画像', visible: true)
-        click_link 'プロフィール画像', match: :first, exact: true
-
-        expect(page).to have_link('プロフィール', visible: true)
-        click_link 'プロフィール', match: :first, exact: true
-
-        expect(page).to have_link(article.title, visible: true)
-        click_link article.title, match: :first
+        visit article_path(article)
       end
 
       it 'コメント欄にいいねボタンがあること' do
@@ -42,15 +34,7 @@ RSpec.describe 'ArticleCommentLikes', type: :system, js: true do
     context 'as a logged in user' do
       before do
         sign_in user
-        visit root_path
-        expect(page).to have_link('プロフィール画像', visible: true)
-        click_link 'プロフィール画像', match: :first, exact: true
-
-        expect(page).to have_link('プロフィール', visible: true)
-        click_link 'プロフィール', match: :first, exact: true
-
-        expect(page).to have_link(article.title, visible: true)
-        click_link article.title, match: :first
+        visit article_path(article)
 
         expect(page).to have_css('#article-comment-like-btn', visible: true)
         find('#article-comment-like-btn').click

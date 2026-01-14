@@ -26,7 +26,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
       before do
         sign_in user
         visit user_favorite_article_lists_path(user)
-        click_link 'Test'
+        find('.article-link').click
       end
 
       it 'リストを編集するリンクがあること' do
@@ -86,7 +86,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
       before do
         sign_in user
         visit user_favorite_article_lists_path(user)
-        click_link 'Test'
+        find('.article-link').click
         click_link 'リストを編集'
         fill_in 'favorite_article_list[list_title]', with: 'Edit Title'
         click_button '編　集'
@@ -111,7 +111,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
       before do
         sign_in user
         visit user_favorite_article_lists_path(user)
-        click_link 'Test'
+        find('.article-link').click
         page.accept_confirm do
           click_link 'リストを削除'
         end

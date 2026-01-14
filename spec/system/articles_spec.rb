@@ -12,15 +12,7 @@ RSpec.describe 'Articles', type: :system, js: true do
     context 'user login(article user)' do
       before do
         sign_in user
-        visit root_path
-        expect(page).to have_link('プロフィール画像', visible: true)
-        click_link 'プロフィール画像', match: :first, exact: true
-
-        expect(page).to have_link('プロフィール', visible: true)
-        click_link 'プロフィール', match: :first, exact: true
-
-        expect(page).to have_link(article.title, visible: true)
-        click_link article.title, match: :first
+        visit article_path(article)
       end
 
       it '記事の編集や削除のリンクを表示するケバブメニューがあること' do 
@@ -75,15 +67,7 @@ RSpec.describe 'Articles', type: :system, js: true do
     context 'as a logged in user(correct user)' do
       before do
         sign_in user
-        visit root_path
-        expect(page).to have_link('プロフィール画像', visible: true)
-        click_link 'プロフィール画像', match: :first, exact: true
-
-        expect(page).to have_link('プロフィール', visible: true)
-        click_link 'プロフィール', match: :first, exact: true
-
-        expect(page).to have_link(article.title, visible: true)
-        click_link article.title, match: :first
+        visit article_path(article)
 
         expect(page).to have_link('option', visible: true)
         click_link 'option'

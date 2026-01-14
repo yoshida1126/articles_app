@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
+RSpec.describe 'Favorites', type: :system, js: true do
 
   let(:user) { FactoryBot.create(:user, :with_relationships, :with_favorite_article_lists) }
   let!(:article) { FactoryBot.create(:article, user: user) }
@@ -22,7 +22,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
 
       it 'リストに追加した記事があること' do
         visit user_favorite_article_lists_path(user)
-        click_link 'Test'
+        find('.article-link').click
         expect(page).to have_content 'Test article'
       end
     end
@@ -37,7 +37,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
         select('Test', from: 'favorite[favorite_article_list_id]')
         click_button 'リストに追加'
         visit user_favorite_article_lists_path(user)
-        click_link 'Test'
+        find('.article-link').click
         click_link 'リストを編集'
         click_button '削 除', match: :first
       end
@@ -48,7 +48,7 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
 
       it 'リストに削除した記事がないこと' do
         visit user_favorite_article_lists_path(user)
-        click_link 'Test'
+        find('.article-link').click
         expect(page).to have_content 'Test'
       end
     end
