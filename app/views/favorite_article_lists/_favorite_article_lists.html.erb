@@ -1,13 +1,11 @@
 <% if list.articles.present? && list.articles.first.image.attached? %>
   <li>
     <span class="heading-image">
-      <%= link_to user_favorite_article_list_path(@user, list) do %>
-        <%= image_tag list.articles.first.image %>
-      <% end %>
+      <%= image_tag list.articles.first.image %>
     </span>
     <div class="list-info">
       <div class="list-title">
-        <%= link_to list.list_title, user_favorite_article_list_path(@user, list) %> 
+        <%= list.list_title %> 
       </div>
       <div class="timestamp-and-bookmark">
         <span class="timestamp">
@@ -20,19 +18,18 @@
         <% end %>
       </div>
     </div>
+    <%= link_to user_favorite_article_list_path(@user, list), class:'article-link' do %><% end %>
   </li>
 <% else %>
   <li>
     <span class="heading-image">
-      <%= link_to user_favorite_article_list_path(@user, list) do %>
-        <div class="no-heading-image">
-          <p>Articles</p>
-        </div>
-      <% end %>
+      <div class="no-heading-image">
+        <p>Articles</p>
+      </div>
     </span>
     <div class="list-info">
       <div class="list-title">
-        <%= link_to list.list_title, user_favorite_article_list_path(@user, list) %> 
+        <%= list.list_title %> 
       </div>
       <div class="timestamp-and-bookmark">
         <span class="timestamp">
@@ -45,5 +42,6 @@
         <% end %>
       </div>
     </div>
+    <%= link_to user_favorite_article_list_path(@user, list), class:'article-link' do %><% end %>
   </li>
 <% end %>

@@ -16,27 +16,25 @@
         <%= liked_article.title %>
       <% end %>
     </span>
-    <div class="user-profile-img">
+    <div class="profile-img-and-name-and-good-btn">
       <%= link_to liked_article.user do %>
-        <% if liked_article.user.profile_img.attached? %>
-          <%= image_tag liked_article.user.profile_img %>
-        <% else %>
-          <%= image_tag "profile.jpg" %>
-        <% end %>
+        <div class="profile-link">
+          <div class="user-profile-img">
+            <% if liked_article.user.profile_img.attached? %>
+              <%= image_tag liked_article.user.profile_img %>
+            <% else %>
+              <%= image_tag "profile.jpg" %>
+            <% end %>
+          </div>
+          <div class="user-name">
+            <%= liked_article.user.name %>
+          </div>
+        </div>
       <% end %>
+      <span class="likes_btn_<%= liked_article.id %>">
+        <%= render "likes/btn", article: liked_article %>
+      </span>
     </div>
-    <div class="name-and-timestamp">
-      <div class="name">
-        <%= link_to liked_article.user do %>
-          <%= liked_article.user.name %>
-        <% end %>
-      </div>
-      <span class="timestamp"> 
-        <%= liked_article.created_at.strftime("%Y年%-m月%-d日 %H:%M") %>
-      </span> 
-    </div>
-    <span class="likes_btn_<%= liked_article.id %>">
-      <%= render "likes/btn", article: liked_article %>
-    </span>
   </div>
+  <a href="/articles/<%= liked_article.id %>" class="article-link"></a>
 </li>

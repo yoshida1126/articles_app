@@ -1,20 +1,16 @@
 <li id="article-<%= private_article.id %>"> 
   <span class="heading-image">
-    <%= link_to private_article do %>
-      <% if private_article.image.attached? %> 
-        <%= image_tag private_article.image %>
-      <% else %> 
-        <div class="no-heading-image">
-          <p>Articles</p>
-        </div>
-      <% end %>
+    <% if private_article.image.attached? %> 
+      <%= image_tag private_article.image %>
+    <% else %> 
+      <div class="no-heading-image">
+        <p>Articles</p>
+      </div>
     <% end %>
   </span>
   <div class="private-article-info">
     <span class="private-title">
-      <%= link_to private_article do %>
         <%= private_article.title %>
-      <% end %>
     </span>
     <div class="timestamp">
       <span>
@@ -22,4 +18,5 @@
       </span>
     </div> 
   </div>
+  <a href="/articles/<%= private_article.id %>" class="article-link"></a>
 </li>

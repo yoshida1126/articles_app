@@ -1273,8 +1273,7 @@ div.birthday {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    -webkit-line-clamp: 1;
-    width: 200px;
+    -webkit-line-clamp: 2;
     font-size: 1.1em;
     font-weight: bold;
     margin-top: 10px;
@@ -1290,7 +1289,6 @@ div.birthday {
   }
   .article-info, .liked-article-info {
     .name {
-      width: 160px;
       a {
         display: block;
         text-decoration: none;
@@ -1303,6 +1301,40 @@ div.birthday {
     .timestamp {
       color: $gray-light;
     }
+  }
+}
+
+.liked-article-info {
+  width: 200px;
+  margin-left: 10px;
+}
+
+.profile-img-and-name-and-good-btn {
+  display: flex;
+  width: clamp(130px, 30vw, 200px);
+  justify-content: space-between;
+  position: absolute;
+  bottom: 20px;
+  align-items: center;
+  z-index: 2;
+  gap: 10px;
+  .user-profile-img img {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .profile-link {
+    display: flex;
+    align-items: center;
+  }
+  a {
+    color: gray;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  #good-btn {
+    display: flex;
+    margin-top: 3px;
   }
 }
 
@@ -1377,20 +1409,34 @@ aside {
 }
 
 #tab-contents {
+  #published li, #private_articles li, #drafts li, #favorite_article_lists li {
+    align-items: center;
+  }
   li {
+    position: relative;
     width: 100%;
     height: 130px;
     display: flex;
+    overflow: hidden;
     justify-content: space-between;
-    align-items: center;
     border-radius: 10px;
-    padding: 0 10px;
+    padding: 12px 10px;
     transition: all 0.2s ease;
     &:hover {
       background-color: #f0f0f0;
+      span.heading-image {
+        opacity: .5;
+      }
     }
-    a {
+    .article-link {
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
       color: #333;
+      text-decoration: none;
+      inset: 0;
+      z-index: 1;
     }
   }
   .public-title, .private-title, .draft-title, .list-title {
@@ -1412,6 +1458,11 @@ aside {
     align-items: center;
     #good-btn {
       margin: 0;
+      display: flex;
+      position: absolute;
+      z-index: 2;
+      bottom: 10px;
+      right: 10px;
     }
     .bookmark-btn, .unbookmark-btn {
       padding: 0;
@@ -2582,6 +2633,10 @@ input.favorite_article_delete_btn {
 }
 
 .favorite_list_bookmark {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
   padding-top: 2px;
   .bookmark-btn {
     background: none;
@@ -2619,6 +2674,16 @@ input.favorite_article_delete_btn {
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
+  }
+}
+
+.profile-img-and-name {
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  align-items: center;
+  .user-profile-img img {
+    margin-top: 0;
   }
 }
 
@@ -3274,9 +3339,6 @@ input.favorite_article_delete_btn {
       #tab-contents {
         .public-title {
           font-size: 1em;
-        }
-        .timestamp {
-          font-size: .6em;
         }
       }
     }
