@@ -2378,14 +2378,14 @@ label {
     caret-color: black;
     overflow: auto;
     padding: 6px;
-    padding-left: 24px;
+    padding-left: 36px;
     margin-bottom: 0;
   }
   #line-numbers {
     position: absolute;
     top: 0;
     left: 0;
-    width: 18px;
+    width: 30px;
     height: 350px;
     text-align: center;
     background-color: #7777771c;
@@ -2405,7 +2405,7 @@ label {
     overflow: auto;
     pointer-events: none;
     padding: 6px;
-    padding-left: 24px;
+    padding-left: 36px;
     word-wrap: break-word;
     .empty-line {
       height: 20px;
