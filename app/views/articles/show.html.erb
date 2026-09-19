@@ -88,7 +88,7 @@
     </div>
 
     <div class="article-comment">
-      <p id="comment-count">コメント <%= @article.article_comments.count %>件</p>
+      <p id="comment-count">コメント <%= @article.article_comments.size %>件</p>
       <hr>
       <div id="article-comment-list">     
         <%= render "article_comments/comment" %>
