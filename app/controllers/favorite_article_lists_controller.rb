@@ -5,6 +5,8 @@ class FavoriteArticleListsController < ApplicationController
   def show
     @favorite_article_list = FavoriteArticleList.find_by(id: params[:id])
     @favorites = @favorite_article_list.favorites.paginate(page: params[:page], per_page: 30)
+
+    @liked_article_ids = fetch_liked_article_ids(@favorites.map(&:article_id))
   end
 
   def new
@@ -25,6 +27,8 @@ class FavoriteArticleListsController < ApplicationController
   def edit
     @favorite_article_list = FavoriteArticleList.find(params[:id])
     @favorites = @favorite_article_list.favorites.paginate(page: params[:page], per_page: 30)
+
+    @liked_article_ids = fetch_liked_article_ids(@favorites.map(&:article_id))
   end
 
   def update

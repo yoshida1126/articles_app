@@ -11,6 +11,8 @@ class TagsController < ApplicationController
 
     @tagged_articles = Article.published.tagged_with(params[:id])
 
+    @liked_article_ids = fetch_liked_article_ids(@tagged_articles.map(&:id))
+
     @total_articles_count = @tagged_articles.count
 
     @tagged_articles = @tagged_articles.paginate(page: params[:page], per_page: 30)

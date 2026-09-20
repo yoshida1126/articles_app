@@ -11,6 +11,8 @@ class SearchesController < ApplicationController
                                 .order(created_at: :desc)
                                 .paginate(page: params[:page], per_page: 30)
 
+        @liked_article_ids = fetch_liked_article_ids(search_articles.map(&:id))
+
         render partial: "searches/search_articles_page",
                locals: { search_articles: search_articles }
         return
@@ -51,6 +53,8 @@ class SearchesController < ApplicationController
         @search_articles = search.result(distinct: true)
                                  .order(created_at: :desc)
                                  .paginate(page: params[:page], per_page: 30)
+
+        @liked_article_ids = fetch_liked_article_ids(@search_articles.map(&:id))
         @results_count = @search_articles.count
       when 'list'
         search = FavoriteArticleList.ransack(params[:q])

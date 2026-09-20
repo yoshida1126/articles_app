@@ -29,6 +29,10 @@ class LikesController < ApplicationController
         # 最後に「いいね」した時間を記録
         limiter.record_like_time
 
+        @article.reload
+
+        @liked_article_ids = fetch_liked_article_ids([@article.id])
+
         # どのいいねボタンを更新するか判定（詳細ページ or 一覧）
         target_class = URI(request.referer.to_s).path == "/articles/#{@article.id}" ? '.likes_btn' : ".likes_btn_#{@article.id}"
 
@@ -61,6 +65,10 @@ class LikesController < ApplicationController
 
     respond_to do |format|
       if @article_like.destroy
+        @article.reload
+        
+        @liked_article_ids = fetch_liked_article_ids([@article.id])
+
         # どのいいねボタンを更新するか判定（詳細ページ or 一覧）
         target_class = URI(request.referer.to_s).path == "/articles/#{@article.id}" ? '.likes_btn' : ".likes_btn_#{@article.id}"
         format.turbo_stream do

@@ -6,6 +6,8 @@ class UsersController < ApplicationController
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @private_articles = @user.articles.unpublished.paginate(page: params[:page], per_page: 15)
 
+    @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
+
     @tab = :published
     render :show
   end
@@ -13,6 +15,8 @@ class UsersController < ApplicationController
   def private_articles
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
+
+    @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
 
     @private_articles = @user.articles.unpublished.paginate(page: params[:page], per_page: 15)
     @tab = :private
@@ -22,6 +26,8 @@ class UsersController < ApplicationController
   def drafts
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
+
+    @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
 
     @drafts = @user.article_drafts.editing.paginate(page: params[:page], per_page: 15)
 
@@ -46,6 +52,8 @@ class UsersController < ApplicationController
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
 
+    @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
+
     @tab = :lists
     render :show
   end
@@ -53,6 +61,8 @@ class UsersController < ApplicationController
   def liked_articles
     @user = User.find(params[:id])
     @liked_articles = @user.liked_articles.paginate(page: params[:page], per_page: 15)
+
+    @liked_article_ids = fetch_liked_article_ids(@liked_articles.map(&:id))
 
     @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count

@@ -2,16 +2,18 @@ class MainPageController < ApplicationController
   before_action :prepare_period_data, :fetch_trend_articles, only: [:home, :trend]
 
   def home
-    @liked_article_ids = fetch_liked_article_ids(@trend_articles.map(&:id))
-
     @articles = current_user&.following.present? ? current_user.feed : Article.published.limit(15)
     # 最も使用されているタグを上位5件取得（重複除外）           
     @tags = ActsAsTaggableOn::Tag.joins(:taggings).distinct.most_used(5)
     # トレンドタグごとの記事一覧を取得（記事数が一定以上のタグのみを対象）
     @trend_tag_sections = TrendTagService.new(@tags).call
+
+    @liked_article_ids = fetch_liked_article_ids(@trend_articles.map(&:id))
+    @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
   end
 
   def trend
+    @liked_article_ids = fetch_liked_article_ids(@trend_articles.map(&:id))
     render 'articles/index'
   end
 
@@ -21,6 +23,7 @@ class MainPageController < ApplicationController
                 else
                   current_user.feed.paginate(page: params[:page], per_page: 30)
                 end
+    @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
     render 'articles/index'
   end
 
@@ -43,7 +46,5 @@ class MainPageController < ApplicationController
     .where("likes_count > 0")
     .order(likes_count: :desc, created_at: :desc)
     .limit(15)
-
-    @trend_articles.load
   end
 end

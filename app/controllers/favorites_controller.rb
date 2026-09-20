@@ -32,6 +32,8 @@ class FavoritesController < ApplicationController
 
     @favorites = @favorite_article_list.favorites
 
+    @liked_article_ids = fetch_liked_article_ids(@favorites.map(&:article_id))
+
     flash.now[:notice] = 'お気に入り記事のリストを整理しました。'
 
     respond_to do |format|
