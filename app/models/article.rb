@@ -26,6 +26,17 @@ class Article < ApplicationRecord
   scope :published, -> { where(published: true) }
   scope :unpublished, -> { where(published: false) }
 
+  scope :with_display_images, -> {
+    includes(
+      {
+        user: {
+          profile_img_attachment: :blob
+        }
+      },
+      image_attachment: :blob
+    )
+  }
+
   validates :user_id, presence: true
 
   def liked?(user)

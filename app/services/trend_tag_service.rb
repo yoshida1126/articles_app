@@ -16,7 +16,15 @@ class TrendTagService
       .published
       .joins(:tags)
       .where(tags: { name: tag_names })
-      .includes(:tags)
+      .includes(
+        :tags,
+        {
+          user: {
+            profile_img_attachment: :blob
+          }
+        },
+        image_attachment: :blob
+      )
       .limit(@limit * tag_names.size)
 
     # タグ名ごとに記事を分けて格納するためのハッシュ（自動初期化付き）  

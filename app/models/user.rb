@@ -105,7 +105,7 @@ class User < ApplicationRecord
                      WHERE follower_id = :user_id"
     Article.published.where("user_id IN (#{following_ids})
                    OR user_id = :user_id", user_id: id).limit(15)
-           .includes(:user, image_attachment: :blob)
+           .with_display_images
   end
 
   def self.ransackable_attributes(auth_object = nil)
