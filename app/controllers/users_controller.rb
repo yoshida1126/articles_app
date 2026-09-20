@@ -3,8 +3,8 @@ class UsersController < ApplicationController
   before_action :authorize_user!, only: [:private_articles, :drafts]
 
   def show
-    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
-    @private_articles = @user.articles.unpublished.paginate(page: params[:page], per_page: 15)
+    @articles = @user.articles.published.with_display_article_images.paginate(page: params[:page], per_page: 15)
+    @private_articles = @user.articles.unpublished.with_display_article_images.paginate(page: params[:page], per_page: 15)
 
     @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
 
@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   end
 
   def private_articles
-    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
+    @articles = @user.articles.published.with_display_article_images.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
 
     @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   end
 
   def drafts
-    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
+    @articles = @user.articles.published.with_display_article_images.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
 
     @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
@@ -42,14 +42,25 @@ class UsersController < ApplicationController
       @lists = FavoriteArticleList
                  .joins(:favorite_list_bookmarks)
                  .where(favorite_list_bookmarks: { user_id: @user.id })
+                 .includes(
+                   articles: {
+                     image_attachment: :blob
+                   }
+                 )
                  .paginate(page: params[:page], per_page: 15)
       @list_type = :bookmark
     else
-      @lists = @user.favorite_article_lists.paginate(page: params[:page], per_page: 15)
+      @lists = @user.favorite_article_lists
+                 .includes(
+                   articles: {
+                     image_attachment: :blob
+                   }
+                 )
+                 .paginate(page: params[:page], per_page: 15)
       @list_type = :my
     end
 
-    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
+    @articles = @user.articles.published.with_display_article_images.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
 
     @liked_article_ids = fetch_liked_article_ids(@articles.map(&:id))
@@ -60,11 +71,11 @@ class UsersController < ApplicationController
 
   def liked_articles
     @user = User.find(params[:id])
-    @liked_articles = @user.liked_articles.paginate(page: params[:page], per_page: 15)
+    @liked_articles = @user.liked_articles.with_display_images.paginate(page: params[:page], per_page: 15)
 
     @liked_article_ids = fetch_liked_article_ids(@liked_articles.map(&:id))
 
-    @articles = @user.articles.published.paginate(page: params[:page], per_page: 15)
+    @articles = @user.articles.published.with_display_article_images.paginate(page: params[:page], per_page: 15)
     @articles_count = @articles.count
 
     @tab = :liked

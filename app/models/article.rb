@@ -37,6 +37,10 @@ class Article < ApplicationRecord
     )
   }
 
+  scope :with_display_article_images, -> {
+    includes(image_attachment: :blob)
+  }
+
   validates :user_id, presence: true
 
   def liked?(user)
