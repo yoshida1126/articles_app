@@ -9,7 +9,7 @@ class TagsController < ApplicationController
 
     @tag = ActsAsTaggableOn::Tag.find_by(name: params[:id])
 
-    @tagged_articles = Article.published.tagged_with(params[:id])
+    @tagged_articles = Article.published.with_display_images.tagged_with(params[:id])
 
     @liked_article_ids = fetch_liked_article_ids(@tagged_articles.map(&:id))
 
