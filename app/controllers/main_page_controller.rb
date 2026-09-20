@@ -2,6 +2,8 @@ class MainPageController < ApplicationController
   before_action :prepare_period_data, :fetch_trend_articles, only: [:home, :trend]
 
   def home
+    @liked_article_ids = fetch_liked_article_ids(@trend_articles.map(&:id))
+
     @articles = current_user&.following.present? ? current_user.feed : Article.published.limit(15)
     # 最も使用されているタグを上位5件取得（重複除外）           
     @tags = ActsAsTaggableOn::Tag.joins(:taggings).distinct.most_used(5)
@@ -31,11 +33,17 @@ class MainPageController < ApplicationController
 
   def fetch_trend_articles
     @trend_articles = Article
-    .joins(:likes)
+    .with_attached_image
+    .includes(
+      user: {
+        profile_img_attachment: :blob
+      }
+    )
     .where(created_at: @from...@to)
-    .group('articles.id')
-    .select('articles.*, COUNT(likes.id) AS likes_count')
-    .reorder(Arel.sql('COUNT(likes.id) DESC, articles.created_at DESC'))
+    .where("likes_count > 0")
+    .order(likes_count: :desc, created_at: :desc)
     .limit(15)
+
+    @trend_articles.load
   end
 end

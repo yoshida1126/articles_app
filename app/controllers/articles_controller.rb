@@ -8,6 +8,8 @@ class ArticlesController < ApplicationController
   def show
     @article = Article.includes(article_comments: { user: { profile_img_attachment: :blob } }).find(params[:id])
 
+    @liked_article_ids = fetch_liked_article_ids([@article.id])
+
     if !@article.published? && @article.user != current_user
       redirect_to root_path, alert: "指定された記事は存在しません。"
     end

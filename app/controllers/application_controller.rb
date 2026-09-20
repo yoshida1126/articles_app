@@ -51,4 +51,12 @@ class ApplicationController < ActionController::Base
     @max_size = service.max_size
     @remaining_mb = service.remaining_mb
   end
+
+  def fetch_liked_article_ids(article_ids)
+    return unless current_user
+    
+    current_user.likes
+    .where(article_id: article_ids)
+    .pluck(:article_id)
+  end
 end
