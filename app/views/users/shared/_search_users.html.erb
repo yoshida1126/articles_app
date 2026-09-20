@@ -3,7 +3,7 @@
     <div class="user-info">
       <div class="user-profile-image">
         <%= link_to user , data: { turbo_frame: "_top" } do %>
-          <%= image_tag user.profile_img.attached? ? user.profile_img : "profile.jpg" %>
+          <%= image_tag profile_image_for(user), alt: "プロフィール画像" %>
         <% end %>
       </div>
       <div class="name">

@@ -30,7 +30,7 @@
             <li class="dropdown">
               <a href="#" id="account" class="dropdown-toggle"> 
                 <div class="header-profile-img">
-                  <%= image_tag current_user.profile_img.attached? ? current_user.profile_img : "profile.jpg", alt: "プロフィール画像" %>
+                  <%= image_tag profile_image_for(current_user), alt: "プロフィール画像" %>
                 </div>
               </a>
               <ul id="dropdown-menu" class="dropdown-menu">

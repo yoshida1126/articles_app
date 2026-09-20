@@ -31,4 +31,8 @@ module ApplicationHelper
     return false if controller_name == 'article_drafts' && ['save_draft', 'commit', 'update_draft', 'update'].include?(action_name) && @draft&.errors&.any?
     true
   end
+
+  def profile_image_for(user)
+    user.profile_img.attached? ? user.profile_img : "profile.jpg"
+  end
 end

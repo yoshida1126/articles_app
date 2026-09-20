@@ -18,11 +18,7 @@
   <div class="article-info">
     <div class="user-profile-img">
       <%= link_to article.user , data: { turbo_frame: "_top" } do %>
-        <% if article.user.profile_img.attached? %>
-          <%= image_tag article.user.profile_img %>
-        <% else %>
-          <%= image_tag "profile.jpg" %>
-        <% end %>
+        <%= image_tag profile_image_for(article.user), alt: "プロフィール画像" %>
       <% end %>
     </div>
     <div class="name-and-timestamp">

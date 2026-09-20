@@ -20,11 +20,7 @@
       <%= link_to liked_article.user do %>
         <div class="profile-link">
           <div class="user-profile-img">
-            <% if liked_article.user.profile_img.attached? %>
-              <%= image_tag liked_article.user.profile_img %>
-            <% else %>
-              <%= image_tag "profile.jpg" %>
-            <% end %>
+            <%= image_tag profile_image_for(liked_article.user), alt: "プロフィール画像" %>
           </div>
           <div class="user-name">
             <%= liked_article.user.name %>
