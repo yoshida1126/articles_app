@@ -8,6 +8,7 @@ class SearchesController < ApplicationController
       when 'article'
         search = Article.published.ransack(params[:q] || {})
         search_articles = search.result(distinct: true)
+                                .with_display_images
                                 .order(created_at: :desc)
                                 .paginate(page: params[:page], per_page: 30)
 
@@ -19,6 +20,11 @@ class SearchesController < ApplicationController
       when 'list'
         search = FavoriteArticleList.ransack(params[:q])
         search_lists = search.result(distinct: true)
+                              .includes(
+                                articles: {
+                                  image_attachment: :blob
+                                }
+                              )
                               .order(created_at: :desc)
                               .paginate(page: params[:page], per_page: 30)
         render partial: "searches/search_lists_page",
@@ -27,8 +33,14 @@ class SearchesController < ApplicationController
       when 'user'
         search = User.ransack(params[:q])
         search_users = search.result(distinct: true)
+                              .includes(
+                                profile_img_attachment: :blob
+                              )
                               .order(created_at: :desc)
                               .paginate(page: params[:page], per_page: 30)
+        @followed_relationships = current_user.active_relationships
+                                    .where(followed_id: @search_users.map(&:id))
+                                    .index_by(&:followed_id)
         render partial: "searches/search_users_page",
                locals: { search_users: search_users }
         return
@@ -51,6 +63,7 @@ class SearchesController < ApplicationController
       when 'article'
         search = Article.published.ransack(params[:q])
         @search_articles = search.result(distinct: true)
+                                 .with_display_images
                                  .order(created_at: :desc)
                                  .paginate(page: params[:page], per_page: 30)
 
@@ -59,14 +72,23 @@ class SearchesController < ApplicationController
       when 'list'
         search = FavoriteArticleList.ransack(params[:q])
         @search_lists = search.result(distinct: true)
+                              .includes(
+                                articles: {
+                                  image_attachment: :blob
+                                }
+                              )
                               .order(created_at: :desc)
                               .paginate(page: params[:page], per_page: 30)
         @results_count = @search_lists.count
       when 'user'
         search = User.ransack(params[:q])
         @search_users = search.result(distinct: true)
+                              .includes(profile_img_attachment: :blob)
                               .order(created_at: :desc)
                               .paginate(page: params[:page], per_page: 30)
+        @followed_relationships = current_user.active_relationships
+                                    .where(followed_id: @search_users.map(&:id))
+                                    .index_by(&:followed_id)
         @results_count = @search_users.count
       end
     end
