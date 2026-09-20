@@ -9,11 +9,11 @@
         <i class="far fa-heart" aria-hidden="true"></i>
       <% end %> 
     <% end %> 
-    <span class="likes-count"><%= article.likes.count %></span>
+    <span class="likes-count"><%= article.likes_count %></span>
   <% else %>
     <%= link_to article_likes_path(article.id), data: { "turbo-method": :post }, id: "like-btn" do %> 
       <i class="far fa-heart" aria-hidden="true"></i>
     <% end %>
-    <span class="likes-count"><%= article.likes.count %></span>
+    <span class="likes-count"><%= article.likes_count %></span>
   <% end %>
 </div>
