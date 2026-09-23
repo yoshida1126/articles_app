@@ -4,6 +4,17 @@ class ApplicationController < ActionController::Base
 
   def home; end
 
+  rescue_from ActiveRecord::RecordNotFound, with: :render404
+  rescue_from ActionController::RoutingError, with: :render_404
+
+  def routing_error
+    render404
+  end
+
+  def render404
+    render template: 'static_pages/render404', status: 404, layout: 'static_page', content_type: 'text/html'
+  end
+
   private
 
   def after_sign_in_path_for(resource)

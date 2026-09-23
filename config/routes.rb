@@ -91,4 +91,8 @@ Rails.application.routes.draw do
     end
     resources :feedbacks, only: %i[index destroy]
   end
+
+  match '*path', to: 'application#routing_error', via: :all, constraints: lambda { |req|
+    !req.path.start_with?('/rails/', '/assets/')
+  }
 end
