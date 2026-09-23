@@ -1,0 +1,77 @@
+<div class="error-container">
+  <div class="error-content">
+    <h1 class="error-code">404</h1>
+    <h2 class="error-title">ページが見つかりませんでした</h2>
+    <p class="error-message">
+      お探しのページは、移動または削除されたか、URLが間違っている可能性があります。
+    </p>
+    
+    <div class="error-actions">
+      <%= link_to '←トップページへ戻る', root_path, class: 'btn' %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .error-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+    padding: 20px;
+  }
+
+  .error-content {
+    text-align: center;
+    max-width: 500px;
+  }
+
+  .error-code {
+    font-size: 6rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1;
+    background: linear-gradient(45deg, #ff0069, #7000ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .error-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .error-message {
+    font-size: 1.5rem;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    transition: background-color 0.2s, transform 0.1s;
+  }
+
+  .btn:hover {
+    color: #fff;
+    background-color: #555;
+  }
+
+  .btn:active, .btn:focus {
+    color: #fff;
+    border: none;
+    outline: 3px solid lightgray !important;
+  }
+</style>
