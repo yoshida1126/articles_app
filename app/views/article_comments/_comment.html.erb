@@ -32,10 +32,10 @@
                   <li><a href="#" data-controller="article-comment-menu" data-action="click->article-comment-menu#edit">コメントを編集</a></li>
                   <li class="divider"></li>
                 <% end %>
-                <li><%= link_to "コメントを削除", article_article_comment_path(article_comment.article, article_comment), data: { "turbo-method": :delete,
-                        turbo_confirm: "本当に削除しますか？" } %> 
+                <li><%= link_to "コメントを削除", article_comment_path(article_comment), data: { "turbo-method": :delete,
+                        turbo_confirm: "本当に削除しますか？" } %>
                 </li>
-              </ul> 
+              </ul>
             </div>
           </section>
         <% end %>
@@ -45,13 +45,13 @@
       <%= markdown(article_comment.comment) %>
     </div>
     <span class="likes_btn_<%= article_comment.id %>">
-      <%= render "article_comment_likes/btn", article: @article, article_comment: article_comment %>
+      <%= render "article_comment_likes/btn", article_comment: article_comment %>
     </span>
   </div>
   <div id="comment-edit-<%= article_comment.id %>" class="article-comment-edit-area" style="display:none">
-    <% if @error_comment.present? %> 
+    <% if @error_comment.present? %>
       <%= render "shared/error_messages", object: @error_comment %>
-    <% end %>   
+    <% end %>
     <%= render "article_comments/comment_edit_form", article_comment: article_comment %>
   </div>
   <hr>

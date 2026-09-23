@@ -42,7 +42,11 @@ class ArticleCommentLikesController < ApplicationController
 
   def set_resources
     @article = Article.find_by(id: params[:article_id])
-    @article_comment = ArticleComment.find_by(id: params[:article_comment_id])
+    if action_name == 'create'
+      @article_comment = ArticleComment.find_by(id: params[:article_comment_id])
+    else
+      @article_comment = ArticleComment.find_by(id: params[:id])
+    end
   end
 
   def check_consecutive_like

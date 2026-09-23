@@ -23,10 +23,6 @@ class ArticleCommentsController < ApplicationController
     end
   end
 
-  def edit
-    @article_comment = ArticleComment.find(params[:id])
-  end
-
   def update
     article_comment = params[:article_comment][:comment]
 
@@ -47,8 +43,8 @@ class ArticleCommentsController < ApplicationController
   end
 
   def destroy
-    @article = Article.find(params[:article_id])
     @article_comment = ArticleComment.find(params[:id])
+    @article = @article_comment.article
 
     respond_to do |format|
       if @article_comment.destroy
@@ -68,7 +64,11 @@ class ArticleCommentsController < ApplicationController
   end
 
   def prepare_article_comment_data(action)
-    @article = Article.find(params[:article_id])
+    if action === :create
+      @article = Article.find(params[:article_id])
+    elsif action === :update
+      @article = ArticleComment.find(params[:id]).article
+    end
     @tags = @article.tag_counts_on(:tags)
     @comment = ArticleComment.new if action === :create
   end
