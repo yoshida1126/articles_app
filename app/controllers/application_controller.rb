@@ -2,26 +2,13 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  def home; end
-
-  rescue_from ActiveRecord::RecordNotFound, with: :render404
-  rescue_from ActionController::RoutingError, with: :render404
   rescue_from StandardError, with: :render500
+  rescue_from ActiveRecord::RecordNotFound, with: :render404
+
+  def home; end
 
   def routing_error
     render404
-  end
-
-  def internal_server_error
-    render500
-  end
-
-  def render404
-    render template: 'static_pages/render404', status: 404, layout: 'static_page', content_type: 'text/html'
-  end
-
-  def render500
-    render template: 'static_pages/render500', status: 500, layout: 'static_page', content_type: 'text/html'
   end
 
   private
@@ -78,5 +65,13 @@ class ApplicationController < ActionController::Base
     current_user.likes
     .where(article_id: article_ids)
     .pluck(:article_id)
+  end
+
+  def render404
+    render template: 'static_pages/render404', status: 404, layout: 'static_page', content_type: 'text/html'
+  end
+
+  def render500
+    render template: 'static_pages/render500', status: 500, layout: 'static_page', content_type: 'text/html'
   end
 end

@@ -95,6 +95,4 @@ Rails.application.routes.draw do
   match '*path', to: 'application#routing_error', via: :all, constraints: lambda { |req|
     !req.path.start_with?('/rails/', '/assets/')
   }
-
-  get '/500', to: 'application#internal_server_error'
 end
