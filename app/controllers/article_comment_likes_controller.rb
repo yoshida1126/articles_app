@@ -4,23 +4,19 @@ class ArticleCommentLikesController < ApplicationController
   before_action :check_consecutive_like, only: :create
 
   def create
-    @like = ArticleCommentLike.new(user: current_user, article_comment: @article_comment)
-
     respond_to do |format|
       if @like.save
         @rate_limiter.record_like_time
         format.turbo_stream do
           render turbo_stream: turbo_stream.update_all(".likes_btn_#{@article_comment.id}",
                                                        partial: 'article_comment_likes/btn',
-                                                       locals: { article: @article,
-                                                                 article_comment: @article_comment })
+                                                       locals: { article_comment: @article_comment })
         end
       end
     end
   end
 
   def destroy
-    @like = ArticleCommentLike.find_by(user: current_user, article_comment: @article_comment)
     unless @like
       flash[:alert] = "このコメントをいいねしていないか、権限がありません。"
       return redirect_to root_path
@@ -28,11 +24,12 @@ class ArticleCommentLikesController < ApplicationController
 
     respond_to do |format|
       if @like.destroy
+        @article_comment.reload
+        
         format.turbo_stream do
           render turbo_stream: turbo_stream.update_all(".likes_btn_#{@article_comment.id}",
                                                        partial: 'article_comment_likes/btn',
-                                                       locals: { article: @article,
-                                                                 article_comment: @article_comment })
+                                                       locals: { article_comment: @article_comment })
         end
       end
     end
@@ -41,11 +38,12 @@ class ArticleCommentLikesController < ApplicationController
   private
 
   def set_resources
-    @article = Article.find_by(id: params[:article_id])
     if action_name == 'create'
       @article_comment = ArticleComment.find_by(id: params[:article_comment_id])
-    else
+      @like = ArticleCommentLike.new(user: current_user, article_comment: @article_comment)
+    elsif action_name == 'destroy'
       @article_comment = ArticleComment.find_by(id: params[:id])
+      @like = ArticleCommentLike.find_by(user_id: current_user.id, article_comment_id: params[:id])
     end
   end
 
