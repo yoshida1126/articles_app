@@ -41,5 +41,9 @@ module ArticlesApp
     end
 
     config.action_view.image_loading = 'lazy'
+
+    config.generators do |g|
+      g.helper false
+    end
   end
 end
