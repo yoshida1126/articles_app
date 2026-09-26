@@ -171,16 +171,16 @@ class DraftArticleSyncService
     end
 
     if @article.article_images.attached?
-      draft_ids   = @draft.article_images.blobs.map(&:id)
-      article_ids = @article.article_images.blobs.map(&:id)
+      draft_blob_ids   = @draft.article_images.blobs.map(&:id)
+      article_blob_ids = @article.article_images.blobs.map(&:id)
 
-      remove_ids = draft_ids - article_ids
-      add_ids    = article_ids - draft_ids
+      remove_blob_ids = draft_blob_ids - article_blob_ids
+      add_blob_ids    = article_blob_ids - draft_blob_ids
       
-      @draft.article_images.attachments.where(blob_id: remove_ids).each(&:purge_later) if remove_ids.present?
+      @draft.article_images.attachments.where(blob_id: remove_blob_ids).each(&:purge_later) if remove_blob_ids.present?
 
-      add_ids.each do |id|
-        blob = @draft.article_images.blobs.find(id)
+      add_blob_ids.each do |id|
+        blob = @article.article_images.blobs.find(id)
         @draft.article_images.attach(blob)
       end
     else
