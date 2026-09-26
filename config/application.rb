@@ -44,6 +44,8 @@ module ArticlesApp
 
     config.generators do |g|
       g.helper false
+      g.helper_specs false
+      g.view_specs false
     end
   end
 end
