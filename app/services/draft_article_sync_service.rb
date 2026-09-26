@@ -168,7 +168,7 @@ class DraftArticleSyncService
     @draft.assign_attributes(
       @article.attributes.slice(*DRAFT_SYNC_ATTRIBUTES)
     )
-    # @draft.assign_attributes(@article.attributes.except("id", "published", "created_at", "updated_at", "likes_count"))
+
     @draft.tag_list = @article.tag_list
     @draft.editing = false
 
