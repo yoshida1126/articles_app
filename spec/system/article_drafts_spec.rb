@@ -38,8 +38,8 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         visit preview_user_article_draft_path(user, article_draft)
       end
 
-      it 'ルートパスにリダイレクトされること' do
-        expect(current_path).to eq root_path
+      it '404ページが表示されること' do
+        expect(page).to have_content "ページが見つかりませんでした"
       end
     end
   end
@@ -308,12 +308,8 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         visit edit_user_article_draft_path(user, article_draft)
       end
 
-      it '記事の編集ページにアクセスできないこと' do
-        expect(current_path).to eq root_path
-      end
-
-      it 'フラッシュメッセージが表示されること' do
-        expect(page).to have_selector('div.alert-danger')
+      it '404ページが表示されること' do
+        expect(page).to have_content "ページが見つかりませんでした"
       end
     end
   end

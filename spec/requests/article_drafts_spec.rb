@@ -27,7 +27,7 @@ RSpec.describe "ArticleDrafts", type: :request do
 
       it "下書き記事のプレビューページにはアクセスできないこと"do 
         get "/users/#{ user.id }/article_drafts/#{ article_draft.id }/preview"
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status(:not_found)
       end
     end
 
@@ -200,7 +200,7 @@ RSpec.describe "ArticleDrafts", type: :request do
       end
 
       it "他のユーザーの下書きの編集ページにはアクセスできないこと" do
-        expect(response).to redirect_to root_path
+        expect(response).to have_http_status(:not_found)
       end
     end
 

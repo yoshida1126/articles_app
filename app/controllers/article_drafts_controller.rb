@@ -85,10 +85,6 @@ class ArticleDraftsController < ApplicationController
   def correct_user
     return unless params[:id].present?
 
-    @draft = current_user.article_drafts.find_by(id: params[:id])
-    unless @draft
-      redirect_to root_path, alert: "不正なアクセスです" and return
-    end
-    authorize_resource_owner(@draft)
+    @draft = current_user.article_drafts.find(params[:id])
   end
 end
