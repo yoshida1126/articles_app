@@ -65,5 +65,13 @@ FactoryBot.define do
     password { 'adminpass' }
     password_confirmation { 'adminpass' }
     confirmed_at { Time.now }
+
+    after(:build) do |user|
+      user.profile_img.attach(
+        io: File.open('spec/fixtures/profile.jpg'),
+       filename: 'profile.jpg',
+        content_type: 'image/jpeg'
+      )
+    end
   end
 end

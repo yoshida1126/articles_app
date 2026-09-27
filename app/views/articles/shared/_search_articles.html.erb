@@ -18,7 +18,7 @@
   <div class="article-info">
     <div class="user-profile-img">
       <%= link_to article.user , data: { turbo_frame: "_top" } do %>
-        <%= image_tag profile_image_for(article.user), alt: "プロフィール画像" %>
+        <%= image_tag article.user.profile_img, alt: "プロフィール画像" %>
       <% end %>
     </div>
     <div class="name-and-timestamp">

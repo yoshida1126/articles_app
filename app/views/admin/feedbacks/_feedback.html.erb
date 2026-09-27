@@ -4,11 +4,7 @@
     <div class="user-info-and-time">
       <div class="user-info">
         <%= link_to feedback.user do %>
-          <% if feedback.user.profile_img.attached? %>
-            <%= image_tag feedback.user.profile_img, class: "feedback-user-img" %> 
-          <% else %>
-            <%= image_tag "profile.jpg", class: "feedback-user-img" %>
-          <% end %>
+          <%= image_tag feedback.user.profile_img, class: "feedback-user-img" %> 
           <%= feedback.user.name %>
         <% end %>
       </div>

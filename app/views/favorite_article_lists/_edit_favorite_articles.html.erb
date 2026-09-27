@@ -18,11 +18,7 @@
   <div class="article-info">
     <div class="user-profile-img">
       <%= link_to favorite.article.user do %>
-        <% if favorite.article.user.profile_img.attached? %>
-          <%= image_tag favorite.article.user.profile_img %>
-        <% else %>
-          <%= image_tag "profile.jpg" %>
-        <% end %>
+        <%= image_tag favorite.article.user.profile_img %>
       <% end %>
     </div>
     <div class="name-and-timestamp">

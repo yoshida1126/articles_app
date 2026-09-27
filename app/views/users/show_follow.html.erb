@@ -4,7 +4,7 @@
     <section class="user-info"> 
       <%= link_to @user do %>
         <div class="profile_img">
-          <%= image_tag profile_image_for(@user), alt: "プロフィール画像" %>
+          <%= image_tag @user.profile_img, alt: "プロフィール画像" %>
         </div>
         <div class="name">
           <%= link_to @user.name, @user %>

@@ -6,14 +6,14 @@
       <li>
         <div class="user-info">
           <div class="user-profile-image">
-            <a href="/users/<%= user.id %>">
-              <%= image_tag profile_image_for(user), alt: "プロフィール画像" %>
-            </a>
+            <%= link_to user do %>
+              <%= image_tag user.profile_img, alt: "プロフィール画像" %>
+            <% end %>
           </div>
           <div class="name">
-            <a href="/users/<%= user.id %>">
+            <%= link_to user do %>
               <%= user.name %>
-            </a>
+            <% end %>
           </div>
         </div>
         <% if current_user && current_user != user %>

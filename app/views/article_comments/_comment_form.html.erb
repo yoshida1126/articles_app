@@ -1,4 +1,4 @@
-<%= image_tag profile_image_for(current_user), alt: "プロフィール画像", class: "comment-user-img" %> 
+<%= image_tag current_user.profile_img, alt: "プロフィール画像", class: "comment-user-img" %> 
   コメントする
 <div id="comment-error">
   <% if @error_comment.present? %> 

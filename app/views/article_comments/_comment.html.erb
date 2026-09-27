@@ -4,7 +4,7 @@
       <div class="comment-user-info">
         <div class="article-comment-profile-img">
           <%= link_to article_comment.user do %>
-            <%= image_tag profile_image_for(article_comment.user), alt: "プロフィール画像", class: "comment-user-img" %> 
+            <%= image_tag article_comment.user.profile_img, alt: "プロフィール画像", class: "comment-user-img" %> 
           <% end %>
         </div>
         <div class="article-comment-user-name">    

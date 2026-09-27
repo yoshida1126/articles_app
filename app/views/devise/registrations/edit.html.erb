@@ -46,7 +46,7 @@
         </p>
       <% end %>
 
-      <%= image_tag profile_image_for(@user), alt: "プロフィール画像", id: "target" %>
+      <%= image_tag @user.profile_img, alt: "プロフィール画像", id: "target" %>
   
       <% if @remaining_avatar_update_count > 0 %>
         <button id="selected-img-trim" type="button">画像をトリミングする</button>
