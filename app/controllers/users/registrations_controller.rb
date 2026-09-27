@@ -15,10 +15,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    super
-    return unless params[:user][:profile_img].present?
-
-    resource.profile_img.attach(params[:user][:profile_img])
+    super do |user|
+      if params[:user][:profile_img].present?
+        user.profile_img.attach(params[:user][:profile_img])
+      else
+        user.profile_img.attach(
+          io: File.open('app/assets/images/profile.jpg'),
+          filename: 'profile.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
+    end
   end
 
   # GET /resource/edit
