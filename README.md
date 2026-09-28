@@ -69,10 +69,10 @@ Ruby on Railsで開発した、技術記事の投稿・共有を目的としたW
 <ins></ins>
 
 ### インフラ構成図
-<img width="917" height="580" alt="Image" src="https://github.com/user-attachments/assets/25e4316a-6849-4abd-9bad-263728c697e0" />
+<img height="500" alt="Image" src="https://github.com/user-attachments/assets/7516f12e-f1ee-4440-8c53-9de8f51015b4" />
 
 ### ER図
-<img width="610" height="580" alt="Image" src="https://github.com/user-attachments/assets/4a3fc26b-3d5f-4a03-ab02-2a1b1a5ae99a" />
+<img height="500" alt="Image" src="https://github.com/user-attachments/assets/fb84b98c-e904-4c36-8cfa-3456ba952d82" />
 
 # ⚙️ 機能一覧
 <ins></ins>
