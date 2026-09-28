@@ -72,7 +72,7 @@ Ruby on Railsで開発した、技術記事の投稿・共有を目的としたW
 <img height="500" alt="Image" src="https://github.com/user-attachments/assets/cb29bbdf-f7f5-4876-aa30-18bde1d67092" />
 
 ### ER図
-<img height="500" alt="Image" src="https://github.com/user-attachments/assets/fb84b98c-e904-4c36-8cfa-3456ba952d82" />
+<img height="500" alt="Image" src="https://github.com/user-attachments/assets/e533485c-a993-4f7f-b4b6-12d76b4cefa1" />
 
 # ⚙️ 機能一覧
 <ins></ins>
