@@ -8,8 +8,6 @@ Ruby on Railsで開発した、技術記事の投稿・共有を目的としたW
 # 📘 概要
 <ins></ins>
 
-📘 概要
-
 記事の投稿・編集、コメント、いいね、フォローなどの基本的なCRUD操作に加え、非同期での記事のオートセーブ機能など、記事作成体験を意識した機能も実装しています。
 
 機能の実装だけでなく、開発を進める中でN+1問題の解消や設計の見直し、サービスクラス・モジュールへの責務分離、テストしやすい構成へのリファクタリングなどにも取り組んでいます。
@@ -69,7 +67,7 @@ Ruby on Railsで開発した、技術記事の投稿・共有を目的としたW
 <ins></ins>
 
 ### インフラ構成図
-<img height="500" alt="Image" src="https://github.com/user-attachments/assets/cb29bbdf-f7f5-4876-aa30-18bde1d67092" />
+<img height="500" alt="Image" src="https://github.com/user-attachments/assets/e92386e3-2aa3-4bea-9394-1aa3f0929025" />
 
 ### ER図
 <img height="500" alt="Image" src="https://github.com/user-attachments/assets/e533485c-a993-4f7f-b4b6-12d76b4cefa1" />
