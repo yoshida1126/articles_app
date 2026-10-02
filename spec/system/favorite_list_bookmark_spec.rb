@@ -12,7 +12,7 @@ RSpec.describe 'FavoriteListBookmark', type: :system, js: true do
       visit "/users/#{ other_user.id }/favorite_article_lists"
     end
 
-    it "リストをブックマークできること" do
+    it "allows bookmarking a list" do
       find("#bookmark-btn-#{ favorite_article_list.id }").click
       expect(page).to have_selector '.unbookmark-btn'
     end
@@ -25,7 +25,7 @@ RSpec.describe 'FavoriteListBookmark', type: :system, js: true do
       find("#bookmark-btn-#{ favorite_article_list.id }").click
     end
 
-    it "リストのブックマークを解除できること" do
+    it "allows unbookmarking the list" do
       find("#unbookmark-btn-#{ favorite_article_list.id }").click
       expect(page).to have_selector '.bookmark-btn'
     end
