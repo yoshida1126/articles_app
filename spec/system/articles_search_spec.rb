@@ -7,39 +7,39 @@ RSpec.describe 'Search', type: :system, js: true do
     let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
     let!(:draft) { Article.create(published: false, title: 'draft article', content: 'test', tag_list: 'test', user_id: user.id) }
 
-    context 'search article' do
+    context 'when searching for articles by keywords' do
       before do
         visit root_path
         fill_in 'q_title_or_content_cont', with: 'test article'
         find('#search-btn').click
       end
 
-      it '検索結果 1 件 と表示されること' do
+      it 'displays that 1 result was found' do
         fill_in 'q_title_or_content_cont', with: 'test article'
         find('#search-btn').click
         expect(page).to have_content("検索結果 1 件")
       end
 
-      it '下書き記事は検索結果に含まれないこと' do
+      it 'does not include drafts in the search results' do
         fill_in 'q_title_or_content_cont', with: 'draft article'
         find('#search-btn').click
         expect(page).to have_content("検索結果 0 件")
       end
     end
 
-    context 'search tag' do
+    context 'when searching for articles by tags' do
       before do
         visit root_path
       end
 
-      it "タグで検索できること" do
+      it "allows searching by tags" do
         fill_in 'q_title_or_content_cont', with: '#test'
         find('#search-btn').click
 
         expect(page).to have_content("タグ: testの一覧 (1件)")
       end
 
-      it "下書き記事は検索結果に含まれないこと" do
+      it "does not include drafts in the tag search results" do
         fill_in 'q_title_or_content_cont', with: '#test'
         find('#search-btn').click
 
