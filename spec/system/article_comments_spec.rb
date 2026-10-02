@@ -7,13 +7,13 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
     let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id) }
     let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
 
-    context 'as a logged in user(input correct article comment)' do
+    context 'when posting a valid comment' do
       before do
         sign_in user
         visit article_path(article)
       end
 
-      it 'コメントの投稿に成功すること' do
+      it 'successfully posts a comment' do
         expect(page).to have_field('article_comment[comment]', visible: true)
         fill_in 'article_comment[comment]', with: 'Article Comment'
 
@@ -22,7 +22,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         expect(page).to have_content('Article Comment')
       end
 
-      it 'コメントに画像を貼れること' do
+      it 'attaches an image to the comment' do
         expect(page).to have_field('article_comment[comment]', visible: true)
         fill_in 'article_comment[comment]', with: 'Article Comment'
 
@@ -33,13 +33,13 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
       end
     end
 
-    context 'as a logged in user(input wrong article comment)' do
+    context 'when posting an invalid comment' do
       before do
         sign_in user
         visit article_path(article)
       end
 
-      it 'コメントフォームが空だと投稿できないこと' do
+      it 'cannot post a comment when the form is empty' do
         expect(page).to have_field('article_comment[comment]', visible: true)
         fill_in 'article_comment[comment]', with: ''
 
@@ -56,7 +56,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
     let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
     let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
 
-    context 'as a logged in user(input correct article comment)' do
+    context 'with valid updates' do
       before do
         sign_in user
         visit article_path(article)
@@ -67,7 +67,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         click_link 'コメントを編集'
       end
 
-      it 'コメントを編集できること' do
+      it 'successfully updates the comment' do
         fill_in('article_comment[comment]', match: :first, visible: true, with: 'Edit Article Comment')
 
         click_button '編集'
@@ -75,7 +75,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         expect(page).to have_content('Edit Article Comment')
       end
 
-      it '編集するコメントに画像を貼れること' do
+      it 'attaches an image when updating the comment' do
         fill_in('article_comment[comment]', match: :first, visible: true, with: 'Edit Article Comment')
         attach_file 'article_comment[images][]', 'spec/fixtures/map.png', visible: false, match: :first
 
@@ -85,7 +85,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
       end
     end
 
-    context 'as a logged in user(input wrong article comment)' do
+    context 'with invalid updatesco' do
       before do
         sign_in user
         visit article_path(article)
@@ -94,7 +94,7 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
         click_link 'コメントを編集'
       end
 
-      it 'コメントフォームが空だと編集できないこと' do
+      it 'cannot update the comment when the form is empty' do
         fill_in('article_comment[comment]', match: :first, visible: true, with: '')
       
         click_button '編集'
@@ -110,22 +110,20 @@ RSpec.describe 'ArticleComments', type: :system, js: true do
     let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
     let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
 
-    context 'as a logged in user' do
-      before do
-        sign_in user
-        visit article_path(article)
+    before do
+      sign_in user
+      visit article_path(article)
 
-        find('.dropdown3').click
+      find('.dropdown3').click
 
-        expect(page).to have_link('コメントを削除', visible: true)
-        page.accept_confirm do
-          click_link 'コメントを削除'
-        end
-      end 
-
-      it '削除したコメントがコメント欄にないこと' do
-        expect(page).to have_no_content('Article Comment')
+      expect(page).to have_link('コメントを削除', visible: true)
+      page.accept_confirm do
+        click_link 'コメントを削除'
       end
+    end 
+
+    it 'removes the deleted comment from the comment section' do
+      expect(page).to have_no_content('Article Comment')
     end
   end
 end
