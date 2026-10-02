@@ -7,24 +7,24 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
     let(:other_user) { FactoryBot.create(:other_user) }
     let!(:article_draft) { FactoryBot.create(:article_draft, user: user)}
 
-    context 'as a logged in user' do
+    context 'when the author views the draft preview' do
       before do
         sign_in user
         visit preview_user_article_draft_path(user, article_draft)
       end
 
-      it '下書きの編集や削除のリンクを表示するケバブメニューがあること' do 
+      it 'displays the kebab menu for draft actions' do 
         expect(page).to have_css('.dli-more-v')
       end
 
-      it '下書きの編集ページへのリンクがあること' do
+      it 'displays the link to edit the draft' do
         expect(page).to have_link('option', visible: true)
         click_link 'option'
 
         expect(page).to have_content('下書きを編集')
       end
 
-      it '下書きを削除するリンクがあること' do
+      it 'displays the link to delete the draft' do
         expect(page).to have_link('option', visible: true)
         click_link 'option'
 
@@ -32,13 +32,13 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
     end
 
-    context 'as a logged in user(other user)' do
+    context 'when another user views the draft preview' do
       before do
         sign_in other_user
         visit preview_user_article_draft_path(user, article_draft)
       end
 
-      it '404ページが表示されること' do
+      it 'displays the 404 error page' do
         expect(page).to have_content "ページが見つかりませんでした"
       end
     end
@@ -48,24 +48,24 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
 
-    context 'as a logged in user' do
+    context 'when the author accesses the page' do
       before do
         sign_in user
         visit new_user_article_draft_path(user)
       end
 
-      it 'アクセスできていること' do
+      it 'successfully accesses the page' do
         expect(current_path).to eq new_user_article_draft_path(user)
       end
     end
 
-    context 'as a logged in user(other user)' do
+    context 'when another user accesses the page' do
       before do
         sign_in other_user
         visit new_user_article_draft_path(user)
       end
 
-      it 'ルートパスにリダイレクトされること' do
+      it 'redirects to the root path' do
         expect(current_path).to eq root_path
       end
     end
@@ -74,7 +74,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
   describe '#autosave_draft' do
     let(:user) { FactoryBot.create(:user) }
 
-    context 'autosave from new draft path' do
+    context 'when autosaving from the new draft path' do
       before do
         sign_in user
         visit new_user_article_draft_path(user)
@@ -89,11 +89,11 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         end
       end
 
-      it '下書き一覧にオートセーブされた下書きのタイトルがあること' do
+      it 'displays the title of the autosaved draft in the draft list' do
         expect(page).to have_content('Article Autosave Title')
       end
 
-      it 'オートセーブされた下書きの内容が失われていないこと' do
+      it 'retains the content of the autosaved draft' do
         find('.article-link').click
 
         expect(page).to have_content('Article Autosave Title')
@@ -103,7 +103,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
     end
 
-    context 'autosave from edit draft path' do
+    context 'when autosaving from the edit draft path' do
       let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user: user) }
       let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
 
@@ -121,11 +121,11 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         end
       end
 
-      it '下書き一覧にオートセーブされた下書きのタイトルがあること' do
+      it 'displays the title of the autosaved draft in the draft list' do
         expect(page).to have_content('Article Autosave Title')
       end
 
-      it 'オートセーブされた下書きの内容が失われていないこと' do
+      it 'retains the content of the autosaved draft' do
         first('.article-link').click
 
         expect(page).to have_content('Article Autosave Title')
@@ -139,7 +139,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
   describe '#save_draft' do
     let(:user) { FactoryBot.create(:user) }
 
-    context 'save as draft' do
+    context 'when saving as a draft' do
       before do
         sign_in user
         visit new_user_article_draft_path(user)
@@ -152,19 +152,19 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_button '送信する'
       end
 
-      it '下書きの保存に成功すること' do
+      it 'successfully saves the draft' do
         expect(page).to have_selector('div.alert-success')
       end
 
-      it 'プロフィールページの下書き記事一覧に保存したヘッダー画像があること' do
+      it 'displays the saved header image in the draft list on the profile page' do
         expect(page).to have_selector("img[src$='earth.png']")
       end
 
-      it 'プロフィールページの下書き記事一覧に保存した下書きのタイトルがあること' do
+      it 'displays the title of the saved draft in the draft list on the profile page' do
         expect(page).to have_content('Article Title')
       end
 
-      it '保存した下書きの画像が表示されていること' do
+      it 'displays the attached image of the saved draft' do
         find('.article-link').click
 
         expect(page).to have_selector("img[alt='map.png']")
@@ -175,7 +175,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
   describe '#commit' do
     let(:user) { FactoryBot.create(:user) }
 
-    context 'submit as a published article' do
+    context 'when submitting as a published article' do
       before do
         sign_in user
         visit new_user_article_draft_path(user)
@@ -189,25 +189,25 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_button '送信する'
       end
 
-      it '記事の投稿に成功すること' do
+      it 'successfully posts the article' do
         expect(page).to have_selector('div.alert-success')
       end
 
-      it 'プロフィールページの投稿記事一覧に保存したヘッダー画像があること' do
+      it 'displays the saved header image in the published article list on the profile page' do
         expect(page).to have_selector("img[src$='earth.png']")
       end
 
-      it 'プロフィールページの投稿記事一覧に投稿した記事のタイトルがあること' do
+      it 'displays the title of the published article in the published article list on the profile page' do
         expect(page).to have_content('Article Title')
       end
 
-      it '投稿した記事の画像が表示されていること' do
+      it 'displays the attached image of the published article' do
         find('.article-link').click
 
         expect(page).to have_selector("img[alt='map.png']")
       end
 
-      it 'プロフィールページの下書き記事一覧に投稿した記事に紐づく下書きがないこと' do
+      it 'does not keep the article in the draft list on the profile page' do
         expect(page).to have_content('Article Title')
 
         visit drafts_user_path(user)
@@ -215,7 +215,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
     end
 
-    context 'submit as a private article' do
+    context 'when submitting as a private article' do
       before do
         sign_in user
         visit new_user_article_draft_path(user)
@@ -230,25 +230,25 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_button '送信する'
       end
 
-      it '非公開記事の投稿に成功すること' do
+      it 'successfully posts the private article' do
         expect(page).to have_selector('div.alert-success')
       end
 
-      it 'プロフィールページの非公開記事一覧に投稿したヘッダー画像があること' do
+      it 'displays the saved header image in the private article list on the profile page' do
         expect(page).to have_selector("img[src$='earth.png']")
       end
 
-      it 'プロフィールページの非公開記事一覧に投稿した記事のタイトルがあること' do
+      it 'displays the title of the private article in the private article list on the profile page' do
         expect(page).to have_content('Article Title')
       end
 
-      it '投稿した非公開記事の画像が表示されていること' do
+      it 'displays the attached image of the private article' do
         find('.article-link').click
 
         expect(page).to have_selector("img[alt='map.png']")
       end
 
-      it 'プロフィールページの下書き一覧に投稿した記事に紐づく下書きがないこと' do
+      it 'does not keep the article in the draft list on the profile page' do
         expect(page).to have_content('Article Title')
 
         visit drafts_user_path(user)
@@ -261,7 +261,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
 
-    context 'as a logged in user(accessing the edit page from an article page)' do
+    context 'when the author accesses the edit page from an article page' do
       let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user: user) }
       let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user)}
 
@@ -276,12 +276,12 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_link '記事を編集'
       end
 
-      it '記事の編集ページにアクセスできること' do
+      it 'successfully accesses the edit page' do
         expect(current_path).to eq edit_user_article_draft_path(user, article_draft)
       end
     end
 
-    context 'as a logged in user(accessing the edit page from an article page)' do
+    context 'when the author accesses the edit page from a draft preview page' do
       let!(:article_draft) { FactoryBot.create(:article_draft, user: user)}
 
       before do
@@ -295,12 +295,12 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_link '下書きを編集'
       end
 
-      it '下書きの編集ページにアクセスできること' do
+      it 'successfully accesses the edit page' do
         expect(current_path).to eq edit_user_article_draft_path(user, article_draft)
       end
     end
 
-    context 'as a logged in other user' do
+    context 'when another user accesses the edit page' do
       let!(:article_draft) { FactoryBot.create(:article_draft, user: user)}
 
       before do
@@ -308,7 +308,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         visit edit_user_article_draft_path(user, article_draft)
       end
 
-      it '404ページが表示されること' do
+      it 'displays the 404 error page' do
         expect(page).to have_content "ページが見つかりませんでした"
       end
     end
@@ -317,7 +317,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
   describe '#update_draft' do
     let(:user) { FactoryBot.create(:user) }
 
-    context 'editing a posted article draft' do
+    context 'when editing a draft associated with a posted article' do
       let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user: user) }
       let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
 
@@ -334,39 +334,39 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_button '送信する'
       end
 
-      it '記事の編集に成功すること' do
+      it 'successfully updates the draft' do
         expect(page).to have_selector('.alert-success')
       end
 
-      it '下書き記事一覧に編集した記事のタイトルがあること' do
+      it 'displays the updated title in the draft list' do
         expect(page).to have_content('Article Edit Title')
       end
   
-      it '下書き記事のタイトルが変わっていること' do
+      it 'changes the content of the draft' do
         find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
-      it '編集で追加したヘッダー画像があること' do
+      it 'displays the added header image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
-      it '編集で追加した記事の画像が表示されていること' do
+      it 'displays the added attached image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
 
-      it '編集元の記事のタイトルが変わってないこと' do
+      it 'does not change the title of the original posted article' do
         find('.tab-type .tab', text: '投稿記事').click
 
         expect(page).to_not have_content('Article Edit Title')
       end
 
-      it '編集元の記事の内容が変わってないこと' do
+      it 'does not change the content of the original posted article' do
         find('.tab-type .tab', text: '投稿記事').click
         find('.article-link').click
 
@@ -374,7 +374,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
     end
 
-    context 'editing a draft' do
+    context 'when editing a normal draft' do
       let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user: user) }
       let!(:article_draft) { FactoryBot.create(:article_draft, user: user) }
 
@@ -391,27 +391,27 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_button '送信する'
       end
 
-      it '下書きの編集に成功すること' do
+      it 'successfully updates the draft' do
         expect(page).to have_selector('.alert-success')
       end
 
-      it '下書き記事一覧に編集した記事のタイトルがあること' do
+      it 'displays the updated title in the draft list' do
         expect(page).to have_content('Article Edit Title')
       end
   
-      it '下書き記事のタイトルが変わっていること' do
+      it 'changes the content of the draft' do
         find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
-      it '編集で追加したヘッダー画像があること' do
+      it 'displays the added header image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
-      it '編集で追加した記事の画像が表示されていること' do
+      it 'displays the added attached image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
@@ -422,7 +422,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
   describe '#update' do
     let!(:user) { FactoryBot.create(:user) }
 
-    context'post a draft' do
+    context'when publishing a draft as a public article' do
       let(:article_draft) { FactoryBot.create(:article_draft, user: user) }
 
       before do
@@ -438,33 +438,33 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_button '送信する'
       end
 
-      it '記事の公開に成功すること' do
+      it 'successfully publishes the article' do
         expect(page).to have_selector('.alert-success')
       end
 
-      it '投稿記事一覧に編集した記事のタイトルがあること' do
+      it 'displays the updated title in the published article list' do
         expect(page).to have_content('Article Edit Title')
       end
   
-      it '記事のタイトルが変わっていること' do
+      it 'changes the content of the article' do
         find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
-      it '編集で追加したヘッダー画像があること' do
+      it 'displays the added header image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
-      it '編集で追加した記事の画像が表示されていること' do
+      it 'displays the added attached image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
 
-      it 'プロフィールページの下書き一覧に編集した記事に紐づく下書きがないこと' do
+      it 'does not keep the article in the draft list on the profile page' do
         expect(page).to have_content('Article Edit Title')
 
         visit drafts_user_path(user)
@@ -472,7 +472,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
     end
 
-    context 'update of posted article' do
+    context 'when updating a posted public article' do
       let!(:article) { FactoryBot.create(:article, user: user) }
       let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
 
@@ -489,33 +489,33 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_button '送信する'
       end
 
-      it '記事の更新に成功すること' do
+      it 'successfully updates the article' do
         expect(page).to have_selector('.alert-success')
       end
 
-      it '投稿記事一覧に編集した記事のタイトルがあること' do
+      it 'displays the updated title in the published article list' do
         expect(page).to have_content('Article Edit Title')
       end
   
-      it '記事のタイトルが変わっていること' do
+      it 'changes the content of the article' do
         find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
-      it '編集で追加したヘッダー画像があること' do
+      it 'displays the added header image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
-      it '編集で追加した記事の画像が表示されていること' do
+      it 'displays the added attached image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
 
-      it 'プロフィールページの下書き一覧に編集した記事に紐づく下書きがないこと' do
+      it 'does not keep the article in the draft list on the profile page' do
         expect(page).to have_content('Article Edit Title')
 
         visit drafts_user_path(user)
@@ -523,7 +523,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
     end
 
-    context 'update the post as a private post' do
+    context 'when updating a public article as a private article' do
       let!(:article) { FactoryBot.create(:article, user: user) }
       let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
 
@@ -541,33 +541,33 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_button '送信する'
       end
 
-      it '記事の更新に成功すること' do
+      it 'successfully updates the article' do
         expect(page).to have_selector('.alert-success')
       end
 
-      it '非公開記事一覧に編集した記事のタイトルがあること' do
+      it 'displays the updated title in the private article list' do
         expect(page).to have_content('Article Edit Title')
       end
 
-      it '記事のタイトルが変わっていること' do
+      it 'changes the content of the article' do
         find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
-      it '編集で追加したヘッダー画像があること' do
+      it 'displays the added header image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
-      it '編集で追加した記事の画像が表示されていること' do
+      it 'displays the added attached image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
 
-      it 'プロフィールページの下書き一覧に編集した記事に紐づく下書きがないこと' do
+      it 'does not keep the article in the draft list on the profile page' do
         expect(page).to have_content('Article Edit Title')
 
         visit drafts_user_path(user)
@@ -575,7 +575,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
     end
 
-    context 'update a private article as a public article' do
+    context 'when updating a private article as a public article' do
       let!(:private_article) { FactoryBot.create(:article, user: user) }
       let!(:article_draft) { FactoryBot.create(:article_draft, article: private_article, user: user) }
 
@@ -592,33 +592,33 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_button '送信する'
       end
 
-      it '記事の更新に成功すること' do
+      it 'successfully updates the article' do
         expect(page).to have_selector('.alert-success')
       end
 
-      it '投稿記事一覧に編集した記事のタイトルがあること' do
+      it 'displays the updated title in the published article list' do
         expect(page).to have_content('Article Edit Title')
       end
   
-      it '記事のタイトルが変わっていること' do
+      it 'changes the content of the article' do
         find('.article-link').click
 
         expect(page).to have_content('Article Edit content')
       end
 
-      it '編集で追加したヘッダー画像があること' do
+      it 'displays the added header image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='earth.png']"
       end
 
-      it '編集で追加した記事の画像が表示されていること' do
+      it 'displays the added attached image' do
         find('.article-link').click
 
         expect(page).to have_selector "img[src$='map.png']"
       end
 
-      it 'プロフィールページの下書き一覧に編集した記事に紐づく下書きがないこと' do
+      it 'does not keep the article in the draft list on the profile page' do
         expect(page).to have_content('Article Edit Title')
         visit drafts_user_path(user)
         expect(page).to_not have_content('Article Edit Title')
@@ -630,7 +630,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
     let(:user) { FactoryBot.create(:user) }
     let(:other_user) { FactoryBot.create(:other_user) }
 
-    context 'delete draft' do
+    context 'when deleting a draft' do
       let(:article_draft) { FactoryBot.create(:article_draft, user: user) }
 
       before do
@@ -641,7 +641,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_link 'option'
       end
 
-      it '削除した下書きがプロフィールページの下書き一覧にないこと' do
+      it 'removes the deleted draft from the draft list on the profile page' do
         expect(page).to have_link('下書きを削除', visible: true)
         page.accept_confirm do
           click_link '下書きを削除'
@@ -650,7 +650,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         expect(page).to_not have_content(article_draft.title, exact: true)
       end
 
-      it '確認ダイアログでキャンセルを選択すると記事が削除されないこと' do
+      it 'does not delete the draft when the confirmation dialog is canceled' do
         expect(page).to have_link('下書きを削除', visible: true)
         page.dismiss_confirm do
           click_link '下書きを削除'
@@ -660,7 +660,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
       end
     end
 
-    context 'delete posted article' do
+    context 'when deleting a posted article' do
       let!(:article) { FactoryBot.create(:article, user: user) }
       let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user) }
 
@@ -672,7 +672,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         click_link 'option'
       end
 
-      it '削除した記事がプロフィールページの記事一覧にないこと' do
+      it 'removes the deleted article from the article list on the profile page' do
         expect(page).to have_link('記事を削除', visible: true)
         page.accept_confirm do
           click_link '記事を削除'
@@ -681,7 +681,7 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         expect(page).to_not have_content(article.title, exact: true)
       end
 
-      it '確認ダイアログでキャンセルを選択すると記事が削除されないこと' do
+      it 'does not delete the article when the confirmation dialog is canceled' do
         expect(page).to have_link('記事を削除', visible: true)
         page.dismiss_confirm do
           click_link '記事を削除'
