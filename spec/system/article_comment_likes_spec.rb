@@ -8,20 +8,18 @@ RSpec.describe 'ArticleCommentLikes', type: :system, js: true do
     let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user)}
     let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
 
-    context 'as a logged in user' do
-      before do
-        sign_in user
-        visit article_path(article)
-      end
+    before do
+      sign_in user
+      visit article_path(article)
+    end
 
-      it 'コメント欄にいいねボタンがあること' do
-        expect(page).to have_css('#article-comment-like-btn', visible: true)
-      end
+    it 'displays the like button in the comment section' do
+      expect(page).to have_css('#article-comment-like-btn', visible: true)
+    end
 
-      it 'コメントにいいねできること' do
-        find('#article-comment-like-btn').click
-        expect(page).to have_css('#article-comment-unlike-btn', visible: true)
-      end
+    it 'allows liking a comment' do
+      find('#article-comment-like-btn').click
+      expect(page).to have_css('#article-comment-unlike-btn', visible: true)
     end
   end
 
@@ -31,26 +29,24 @@ RSpec.describe 'ArticleCommentLikes', type: :system, js: true do
     let!(:article_draft) { FactoryBot.create(:article_draft, article: article, user: user)}
     let!(:article_comment) { ArticleComment.create(comment: 'Article Comment', user_id: user.id, article_id: article.id) }
 
-    context 'as a logged in user' do
-      before do
-        sign_in user
-        visit article_path(article)
+    before do
+      sign_in user
+      visit article_path(article)
 
-        expect(page).to have_css('#article-comment-like-btn', visible: true)
-        find('#article-comment-like-btn').click
+      expect(page).to have_css('#article-comment-like-btn', visible: true)
+      find('#article-comment-like-btn').click
 
-        expect(page).to have_css('#article-comment-unlike-btn', visible: true)
-      end
+      expect(page).to have_css('#article-comment-unlike-btn', visible: true)
+    end
 
-      it 'すでにいいねされたボタンがあること' do
-        expect(page).to have_css('#article-comment-unlike-btn', visible: true)
-      end
+    it 'displays the button as liked' do
+      expect(page).to have_css('#article-comment-unlike-btn', visible: true)
+    end
 
-      it 'いいねを解除できること' do
-        find('#article-comment-unlike-btn').click
+    it 'allows unliking the comment' do
+      find('#article-comment-unlike-btn').click
 
-        expect(page).to have_css('#article-comment-like-btn', visible: true)
-      end
+      expect(page).to have_css('#article-comment-like-btn', visible: true)
     end
   end
 end
