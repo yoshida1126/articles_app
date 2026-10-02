@@ -9,24 +9,24 @@ RSpec.describe 'Articles', type: :system, js: true do
     let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id, article_draft: article_draft) }
     
 
-    context 'user login(article user)' do
+    context 'when the author views the article' do
       before do
         sign_in user
         visit article_path(article)
       end
 
-      it '記事の編集や削除のリンクを表示するケバブメニューがあること' do 
+      it 'displays the kebab menu for article actions' do 
         expect(page).to have_css('.dli-more-v')
       end
 
-      it '記事の編集ページへのリンクがあること' do
+      it 'displays the link to edit the article' do
         expect(page).to have_link('option', visible: true)
         click_link 'option'
 
         expect(page).to have_content('記事を編集')
       end
 
-      it '記事を削除するリンクがあること' do
+      it 'displays the link to delete the article' do
         expect(page).to have_link('option', visible: true)
         click_link 'option'
 
@@ -34,25 +34,25 @@ RSpec.describe 'Articles', type: :system, js: true do
       end
     end
 
-    context 'user login(other user)' do
+    context 'when another user views the article' do
       before do
         sign_in other_user
         visit root_path
         visit "/articles/#{article.id}"
       end
 
-      it '記事の編集や削除のリンクを表示するケバブメニューがないこと' do
+      it 'does not display the kebab menu' do
         expect(page).to_not have_css('#option')
       end
     end
 
-    context 'as a non logged in user' do
+    context 'when a non-logged-in user views the article' do
       before do
         visit root_path
         visit "/articles/#{article.id}"
       end
 
-      it '記事の編集や削除のリンクを表示するケバブメニューがないこと' do
+      it 'does not display the kebab menu' do
         expect(page).to_not have_css('#option')
       end
     end
@@ -64,7 +64,7 @@ RSpec.describe 'Articles', type: :system, js: true do
     let!(:article_draft) { FactoryBot.create(:article_draft)}
     let!(:article) { Article.create(title: 'test article', content: 'test', tag_list: 'test', user_id: user.id, article_draft: article_draft) }
 
-    context 'as a logged in user(correct user)' do
+    context 'when the author deletes the article' do
       before do
         sign_in user
         visit article_path(article)
@@ -73,7 +73,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         click_link 'option'
       end
 
-      it '削除した記事がプロフィールページの記事一覧にないこと' do
+      it 'removes the deleted article from the article list on the profile page' do
         expect(page).to have_link('記事を削除', visible: true)
         page.accept_confirm do
           click_link '記事を削除'
@@ -82,7 +82,7 @@ RSpec.describe 'Articles', type: :system, js: true do
         expect(page).to_not have_content(article.title, exact: true)
       end
 
-     it '確認ダイアログでキャンセルを選択すると記事が削除されないこと' do
+     it 'does not delete the article when the confirmation dialog is canceled' do
         expect(page).to have_link('記事を削除', visible: true)
         page.dismiss_confirm do
           click_link '記事を削除'
