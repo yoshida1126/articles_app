@@ -5,37 +5,33 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
   let(:user) { FactoryBot.create(:user, :with_favorite_article_lists) }
 
   describe '#index' do
-    context 'as a logged in user' do
-      before do
-        sign_in user
-        visit user_favorite_article_lists_path(user)
-      end
+    before do
+      sign_in user
+      visit user_favorite_article_lists_path(user)
+    end
 
-      it 'リスト一覧にユーザーが作成したリストがあること' do
-        expect(page).to have_content 'Test'
-      end
+    it 'displays the list created by the user' do
+      expect(page).to have_content 'Test'
+    end
 
-      it '新しいリストを作成するリンクがあること' do
-        expect(page).to have_link '新規シェアリストを作成する'
-      end
+    it 'displays the link to create a new shared list' do
+      expect(page).to have_link '新規シェアリストを作成する'
     end
   end
 
   describe '#show' do
-    context 'as a logged in user' do
-      before do
-        sign_in user
-        visit user_favorite_article_lists_path(user)
-        find('.article-link').click
-      end
+    before do
+      sign_in user
+      visit user_favorite_article_lists_path(user)
+      find('.article-link').click
+    end
 
-      it 'リストを編集するリンクがあること' do
-        expect(page).to have_link 'リストを編集'
-      end
+    it 'displays the link to edit the list' do
+      expect(page).to have_link 'リストを編集'
+    end
 
-      it 'リストを削除するリンクがあること' do
-        expect(page).to have_link 'リストを削除'
-      end
+    it 'displays the link to delete the list' do
+      expect(page).to have_link 'リストを削除'
     end
   end
 
@@ -44,90 +40,82 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
       @user = FactoryBot.create(:user)
     end
 
-    context 'as a logged in user' do
-      before do
-        sign_in @user
-        visit user_favorite_article_lists_path(@user)
-        click_link '新規シェアリストを作成する'
-      end
+    before do
+      sign_in @user
+      visit user_favorite_article_lists_path(@user)
+      click_link '新規シェアリストを作成する'
+    end
 
-      it 'リストの作成ページにアクセスできること' do
-        expect(page).to have_content 'リストの作成'
-      end
+    it 'successfully accesses the list creation page' do
+      expect(page).to have_content 'リストの作成'
     end
   end
 
   describe '#create' do
-    context 'as a logged in user' do
-      before do
-        sign_in user
-        visit user_favorite_article_lists_path(user)
-        click_link '新規シェアリストを作成する'
-        fill_in 'favorite_article_list[list_title]', with: 'List Title'
-        click_button '作　成'
-      end
+    before do
+      sign_in user
+      visit user_favorite_article_lists_path(user)
+      click_link '新規シェアリストを作成する'
+      fill_in 'favorite_article_list[list_title]', with: 'List Title'
+      click_button '作　成'
+    end
 
-      it 'リストの作成に成功すること' do
-        expect(page).to have_selector 'div.alert-success'
-      end
+    it 'successfully creates the list' do
+      expect(page).to have_selector 'div.alert-success'
+    end
 
-      it 'リストの作成後は、リスト一覧ページにリダイレクトされること' do
-        expect(page).to have_current_path user_favorite_article_lists_path(user)
-      end
+    it 'redirects to the list index page after creation' do
+      expect(page).to have_current_path user_favorite_article_lists_path(user)
+    end
 
-      it 'リストの一覧に作成したリストがあること' do
-        expect(page).to have_content 'List Title'
-      end
+    it 'displays the created list in the list index' do
+      expect(page).to have_content 'List Title'
     end
   end
 
   describe '#update' do
-    context 'as a logged in user' do
-      before do
-        sign_in user
-        visit user_favorite_article_lists_path(user)
-        find('.article-link').click
-        click_link 'リストを編集'
-        fill_in 'favorite_article_list[list_title]', with: 'Edit Title'
-        click_button '編　集'
-      end
+    before do
+      sign_in user
+      visit user_favorite_article_lists_path(user)
+      find('.article-link').click
+      click_link 'リストを編集'
+      fill_in 'favorite_article_list[list_title]', with: 'Edit Title'
+      click_button '編　集'
+    end
 
-      it 'リストの編集に成功すること' do
-        expect(page).to have_selector 'div.alert-success'
-      end
+    it 'successfully updates the list' do
+      expect(page).to have_selector 'div.alert-success'
+    end
 
-      it 'リストの編集後はリスト一覧ページにリダイレクトされること' do
-        expect(page).to have_current_path user_favorite_article_lists_path(user)
-      end
+    it 'redirects to the list index page after update' do
+      expect(page).to have_current_path user_favorite_article_lists_path(user)
+    end
 
-      it 'リストの一覧に編集したリストのタイトルがあること' do
-        expect(page).to have_content 'Edit Title'
-      end
+    it 'displays the updated title in the list index' do
+      expect(page).to have_content 'Edit Title'
     end
   end
 
   describe '#destroy' do
-    context 'as a logged in user' do
-      before do
-        sign_in user
-        visit user_favorite_article_lists_path(user)
-        find('.article-link').click
-        page.accept_confirm do
-          click_link 'リストを削除'
-        end
+    before do
+      sign_in user
+      visit user_favorite_article_lists_path(user)
+      find('.article-link').click
+      page.accept_confirm do
+        click_link 'リストを削除'
       end
+    end
 
-      it 'リストの削除に成功すること' do
-        expect(page).to have_selector 'div.alert-success'
-      end
+    it 'successfully deletes the list' do
+      expect(page).to have_selector 'div.alert-success'
+    end
 
-      it 'リストの削除後はリスト一覧ページにリダイレクトされること' do
-        expect(page).to have_current_path user_favorite_article_lists_path(user)
-      end
+    it 'redirects to the list index page after deletion' do
+      expect(page).to have_current_path user_favorite_article_lists_path(user)
+    end
 
-      it 'リストの一覧から削除したリストのタイトルが消えること' do
-        expect(page).to have_content 'Test'
-      end
+    it 'removes the deleted title from the list index' do
+      expect(page).to have_content 'Test'
     end
   end
 end
