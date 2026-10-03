@@ -4,8 +4,8 @@ RSpec.describe ArticleComment, type: :model do
   let(:article_comment) { FactoryBot.create(:article_comment) }
 
   describe 'validation' do
-    context 'is valid' do
-      it 'バリデーションが通ること' do
+    context 'with valid attributes' do
+      it 'is valid' do
         expect(article_comment).to be_valid
       end
     end
