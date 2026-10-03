@@ -5,7 +5,7 @@ RSpec.describe TrendTagService, type: :service do
     describe '#call' do
         let(:user) { FactoryBot.create(:user) }
 
-        context 'When there are five or more tags and ten or more articles with the tag' do
+        context 'when there are five or more tags and ten or more articles with each tag' do
 
             before do
                 tags = ['test1', 'test2', 'test3', 'test4', 'test5']
@@ -19,18 +19,18 @@ RSpec.describe TrendTagService, type: :service do
                 @result_sections = service.call
             end
 
-            it '返ってくるセクションが５つであること' do
+            it 'returns five sections' do
                 expect(@result_sections.size).to eq 5
             end
 
-            it '事前に用意したタグごとの10件の記事が全部含まれること' do
+            it 'includes all ten articles for each prepared tag' do
                 @result_sections.each do |section|
                     expect(section[:articles].count).to eq 10
                 end
             end
         end
 
-        context 'When only one tag is attached to 9 posts' do
+        context 'when only one tag is attached to nine articles' do
 
             before do
                 tags = ['test2', 'test3', 'test4', 'test5']
@@ -48,7 +48,7 @@ RSpec.describe TrendTagService, type: :service do
                 @result_sections = service.call
             end
 
-            it '返ってくるセクションが４つであること' do
+            it 'returns four sections' do
                 expect(@result_sections.size).to eq 4
             end
         end
