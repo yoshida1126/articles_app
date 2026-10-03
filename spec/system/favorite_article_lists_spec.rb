@@ -97,25 +97,20 @@ RSpec.describe 'FavoriteArticleLists', type: :system, js: true do
   end
 
   describe '#destroy' do
-    before do
+    it 'successfully deletes the favorite article list' do
       sign_in user
-      visit user_favorite_article_lists_path(user)
+      visit favorite_article_lists_user_path(user)
+
+      list_url = find('.article-link')[:href]
+
       find('.article-link').click
       page.accept_confirm do
         click_link 'リストを削除'
       end
-    end
 
-    it 'successfully deletes the list' do
       expect(page).to have_selector 'div.alert-success'
-    end
-
-    it 'redirects to the list index page after deletion' do
-      expect(page).to have_current_path user_favorite_article_lists_path(user)
-    end
-
-    it 'removes the deleted title from the list index' do
-      expect(page).to have_content 'Test'
+      expect(page).to have_current_path favorite_article_lists_user_path(user)
+      expect(page).not_to have_selector("a[href='#{list_url}']")
     end
   end
 end
