@@ -30,7 +30,7 @@ RSpec.describe PurgeUnusedImagesJob, type: :job do
       end
     end
 
-    it '1日前に作成された未添付のBlobのみが削除されること' do
+    it 'deletes only unused blobs created one day ago' do
       expect {
         PurgeUnusedImagesJob.new.perform
       }.to change { ActiveStorage::Blob.count }.by(-1)
