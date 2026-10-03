@@ -17,7 +17,7 @@ RSpec.describe ArticleDraftParams::ArticleDraftParamsPermitter do
     end
 
     describe '#sanitized_article_draft_params' do
-        it '変更を許可されたパラメータが返ってくること' do
+        it 'returns the permitted parameters' do
             sanitized_params = permitter_class.new.sanitized_article_draft_params(params)
             permitted_params = params.require(:article_draft).permit(:title, :content, :image, :tag_list, article_images: [])
 
