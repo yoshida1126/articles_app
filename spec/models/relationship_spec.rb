@@ -5,6 +5,9 @@ RSpec.describe Relationship, type: :model do
     let(:relationship) { FactoryBot.create(:relationship) }
 
     context 'with valid attriburtes' do
+      it 'is valid' do
+        expect(relationship).to be_valid
+      end
     end
 
     context 'with invalid attributes' do
@@ -17,6 +20,16 @@ RSpec.describe Relationship, type: :model do
         relationship.followed_id = nil
         expect(relationship).to_not be_valid
       end
+    end
+  end
+
+  describe 'destroy' do
+    let!(:relationship) { FactoryBot.create(:relationship) }
+
+    it 'removes the relationship' do
+      expect do
+        relationship.destroy
+      end.to change(Relationship, :count).by(-1)
     end
   end
 end
