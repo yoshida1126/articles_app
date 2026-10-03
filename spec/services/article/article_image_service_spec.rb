@@ -16,12 +16,12 @@ RSpec.describe ArticleImageService, type: :service do
 
             let(:service) { ArticleImageService.new(user, params, :autosave_draft) }
 
-            it 'handle_images_for_autosave_draftを呼び出す' do
+            it 'calls handle_images_for_autosave_draft' do
                 expect(service).to receive(:handle_images_for_autosave_draft).and_call_original
                 service.process
             end
 
-            it 'ArticleDraftモデルのインスタンスが返ってくること' do 
+            it 'returns an ArticleDraft instance' do 
                 result_draft, remaining_mb, max_size = service.process
 
                 expect(result_draft).to be_an(ArticleDraft)
@@ -43,12 +43,12 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :save_draft) }
 
-            it 'handle_imagesを呼び出す' do
+            it 'calls handle_images' do
                 expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'ArticleDraftモデルのインスタンスとパラメータが返ってくること' do 
+            it 'returns an ArticleDraft instance and the parameters' do 
                 result_draft, result_params = service.process
 
                 expect(result_draft).to be_an(ArticleDraft)
@@ -70,12 +70,12 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :save_draft) }
 
-            it 'handle_imagesを呼び出す' do
+            it 'calls handle_images' do
                 expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'ArticleDraftモデルのインスタンスとパラメータが返ってくること' do
+            it 'returns an ArticleDraft instance and the parameters' do
                 result, result_params = service.process
 
                 expect(result).to be_an(ArticleDraft)
@@ -97,12 +97,12 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :commit) }
 
-            it 'handle_imagesを呼び出す' do
+            it 'calls handle_images' do
                 expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'Articleモデル、ArticleDraftモデルのインスタンスとパラメータが返ってくること' do 
+            it 'returns an Article instance, an ArticleDraft instance, and the parameters' do 
                 result_article, result_draft, result_params = service.process
 
                 expect(result_article).to be_an(Article)
@@ -126,12 +126,12 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :update_draft) }
 
-            it 'handle_imagesを呼び出す' do
+            it 'calls handle_images' do
                 expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'ArticleDraftモデルのインスタンスとパラメータが返ってくること' do 
+            it 'returns an ArticleDraft instance and the parameters' do 
                 result_draft, result_params, remaining_mb, max_size = service.process
                 expect(result_draft).to be_an(ArticleDraft)
                 expect(result_params).to eq(params)
@@ -153,12 +153,12 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :update) }
 
-            it 'handle_imagesを呼び出す' do
+            it 'calls handle_images' do
                 expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'Articleモデル、ArticleDraftモデルのインスタンスとパラメータが返ってくること' do 
+            it 'returns an Article instance, an ArticleDraft instance, and the parameters' do 
                 result_article, result_draft, result_params = service.process
 
                 expect(result_article).to be_an(Article)
@@ -184,12 +184,12 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let!(:service) { ArticleImageService.new(user, params, :update) }
 
-            it 'handle_imagesを呼び出す' do
+            it 'calls handle_images' do
                 expect(service).to receive(:handle_images).and_call_original
                 service.process
             end
 
-            it 'Articleモデル、ArticleDraftモデルのインスタンスとパラメータが返ってくること' do
+            it 'returns an Article instance, an ArticleDraft instance, and the parameters' do
                 result_article, result_draft, result_params = service.process
 
                 expect(result_article).to be_an(Article)
@@ -211,7 +211,7 @@ RSpec.describe ArticleImageService, type: :service do
             end
             let(:service) { ArticleImageService.new(user, params, :unexpected_action) }
 
-            it 'エラーが起きること' do
+            it 'raises an error' do
                 expect {
                     service.process
                 }.to raise_error(RuntimeError)
