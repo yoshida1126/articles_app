@@ -17,7 +17,7 @@ RSpec.describe ArticleCommentParams::ArticleCommentParamsPermitter do
     end
 
     describe '#sanitized_article_params' do
-        it '変更を許可されたパラメータが返ってくること' do
+        it 'returns the permitted parameters' do
             sanitized_params = permitter_class.new.sanitized_article_comment_params(params)
             permitted_params = params.require(:article_comment).permit(:comment, :created_at, :updated_at, comment_images: [])
 
