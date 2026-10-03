@@ -13,7 +13,7 @@ RSpec.describe ImageUtils do
            )
         end
 
-        it '返り値が UploadedFile のインスタンスであること' do
+        it 'returns an UploadedFile instance' do
             mock_proc = Proc.new { |tempfile| tempfile }  # 実際のリサイズ処理をモック
 
             result = resize_article_header_image(image, processor_proc: mock_proc)
@@ -21,7 +21,7 @@ RSpec.describe ImageUtils do
             expect(result).to be_an_instance_of(ActionDispatch::Http::UploadedFile)
         end
 
-        it 'ヘッダー画像がアップロードされていない場合はnilが返ること' do
+        it 'returns nil when no header image is uploaded' do
             image = nil
             expect(resize_article_header_image(image)).to eq nil
         end
@@ -39,25 +39,25 @@ RSpec.describe ImageUtils do
             end
         end
 
-        it 'used_blob_signed_idsのblobがリソースにアタッチされること' do
+        it 'attaches the blobs identified by the signed IDs to the resource' do
             # 対象のメソッドを呼び出し
             attach_images_to_resource(mock_resource, ['abc123'], blob_finder: blob_finder)
             # attachが呼ばれたことを確認
             expect(mock_resource).to have_received(:attach).with(mock_blob)
         end
 
-        it 'used_blob_signed_idsが空の場合nilが返ること' do
+        it 'returns nil when the signed IDs are empty' do
             expect(attach_images_to_resource(mock_resource, [], blob_finder: blob_finder)).to eq nil
         end
     end
 
     describe '#extract_s3_urls' do
-        it 'URLが含まれていれば正しく抽出する' do
+        it 'extracts the URL when the content contains an image URL' do
             content = "画像はこちら → rails/active_storage/blobs/abc123/file.png"
             expect(extract_s3_urls(content)).to eq(["rails/active_storage/blobs/abc123/file.png"])
         end
 
-        it '複数のURLがあればすべて抽出する' do
+        it 'extracts all URLs when the content contains multiple image URLs' do
             content = <<~TEXT
                 1枚目の画像
                 rails/active_storage/blobs/abc123/file1.png
@@ -70,7 +70,7 @@ RSpec.describe ImageUtils do
             ])
         end
 
-        it 'URLがなければ空の配列を返す' do
+        it 'returns an empty array when the content contains no URLs' do
             content = "これはただのテキストです"
             expect(extract_s3_urls(content)).to eq([])
         end
@@ -96,7 +96,7 @@ RSpec.describe ImageUtils do
           instance_double('ActiveStorage::Blob', signed_id: 'def123')
         end
 
-        it '記事内で使われる画像のsigned_idの配列が返ってくること' do
+        it 'returns the signed IDs of the images used in the article' do
             image_urls = [
                 'rails/active_storage/blobs/abc123/file1.png',
                 'rails/active_storage/blobs/def123/file1.png'
@@ -107,7 +107,7 @@ RSpec.describe ImageUtils do
             )).to match_array(['abc123', 'def123'])
         end
 
-        it 'image_urlsが空の場合、空配列[]が返ること' do
+        it 'returns an empty array when image URLs are empty' do
             image_urls = []
             expect(get_blob_signed_id_from_url(
                 image_urls,
@@ -121,7 +121,7 @@ RSpec.describe ImageUtils do
         # 実際に本文などで使用されていない(使用されなくなった)未使用の signed_id を特定するためのメソッド。
         # attached_signed_ids(すでに記事本文内で使われていた画像のsinged_id) がある場合は、それを含めた全体から used_blob_signed_ids を引いたものを返す。
 
-        it '記事本文から元々使われていた画像URLと新しく追加された画像URLが消されていない場合、空配列が返されること' do
+        it 'returns an empty array when none of the image URLs have been removed' do
             blob_signed_ids = ['ABC123']
             attached_signed_ids = ['DEF123']
             used_blob_signed_ids = ['ABC123', 'DEF123']
@@ -132,7 +132,7 @@ RSpec.describe ImageUtils do
             )).to eq([])
         end
 
-        it '記事本文からアップロードした画像のURLを消した場合、その画像のsigned_idを含む配列が返されること' do
+        it 'returns the signed ID of an image when its newly uploaded URL has been removed' do
             blob_signed_ids = ['ABC123']
             attached_signed_ids = ['DEF123']
             used_blob_signed_ids = ['DEF123']
@@ -143,7 +143,7 @@ RSpec.describe ImageUtils do
             )).to eq(['ABC123'])
         end
 
-        it '記事本文から元々使われていた画像URLを消した場合、その画像のsigned_idを含む配列が返されること' do
+        it 'returns the signed ID of an image when its previously used URL has been removed' do
             blob_signed_ids = ['ABC123']
             attached_signed_ids = ['DEF123']
             used_blob_signed_ids = ['ABC123']
@@ -154,7 +154,7 @@ RSpec.describe ImageUtils do
             )).to eq(['DEF123'])
         end
 
-        it '記事本文から元々使われていた画像URLと新しく追加された画像URLが全部消されていた場合、それらの画像のsigned_idを含む配列が返されること' do
+        it 'returns the signed IDs of all images when all image URLs have been removed' do
             blob_signed_ids = ['ABC123']
             attached_signed_ids = ['DEF123']
             used_blob_signed_ids = []
@@ -165,7 +165,7 @@ RSpec.describe ImageUtils do
             )).to match_array(['ABC123', 'DEF123'])
         end
 
-        it 'blob_signed_idsが空で、attached_signed_idsだけに値がある場合、attached_signed_idsが返されること' do
+        it 'returns attached signed IDs when blob signed IDs are empty' do
             blob_signed_ids = []
             attached_signed_ids = ['DEF123']
             used_blob_signed_ids = []
@@ -176,7 +176,7 @@ RSpec.describe ImageUtils do
             )).to eq(['DEF123'])
         end
 
-        it 'blob_signed_idsとattached_signed_idsの両方が空の場合、空の配列が返されること' do
+        it 'returns an empty array when both blob signed IDs and attached signed IDs are empty' do
             blob_signed_ids = []
             attached_signed_ids = []
             used_blob_signed_ids = []
@@ -241,8 +241,8 @@ RSpec.describe ImageUtils do
         let(:attachments1) { [mock_attachments1] }
         let(:attachments2) { [mock_attachments2] }
 
-        context 'when create article and article comment and when no attachements' do
-            it '消されるべきblobデータがpurgeされること' do
+        context 'when creating an article or article comment without attachments' do
+            it 'purges the blobs that should be deleted' do
                 unused_blob_signed_ids = ['abc123', 'def123']
                 unused_blob_delete(resource_id, unused_blob_signed_ids, blob_finder: blob_finder)
 
@@ -251,8 +251,8 @@ RSpec.describe ImageUtils do
             end
         end
 
-        context 'when update article and article comment' do
-            it '消されるべきblobデータがpurgeされること' do
+        context 'when updating an article or article comment' do
+            it 'purges the blobs that should be deleted' do
                 unused_blob_signed_ids = ['abc123', 'def123']
                 unused_blob_delete(resource_id, unused_blob_signed_ids, blob_finder: blob_finder, attachments_finder: attachments_finder)
 
