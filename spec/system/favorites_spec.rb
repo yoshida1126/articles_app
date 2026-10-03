@@ -46,7 +46,7 @@ RSpec.describe 'Favorites', type: :system, js: true do
     it 'removes the deleted article from the list' do
       visit user_favorite_article_lists_path(user)
       find('.article-link').click
-      expect(page).to have_content 'Test'
+      expect(page).not_to have_content 'Test article'
     end
   end
 end
