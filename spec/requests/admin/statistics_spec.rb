@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Admin::Statistics", type: :request do
+RSpec.describe 'Admin::Statistics', type: :request do
 
   let(:admin_user) { FactoryBot.create(:admin_user) }
 
@@ -9,7 +9,7 @@ RSpec.describe "Admin::Statistics", type: :request do
       sign_in admin_user
     end
 
-    it 'ユーザーの統計詳細ページにアクセスできること' do
+    it 'allows access to the user statistics detail page' do
       get '/admin/statistics/users'
       expect(response).to have_http_status(:success)
     end
@@ -20,7 +20,7 @@ RSpec.describe "Admin::Statistics", type: :request do
       sign_in admin_user
     end
 
-    it '記事の統計詳細ページにアクセスできること' do
+    it 'allows access to the article statistics detail page' do
       get '/admin/statistics/articles'
       expect(response).to have_http_status(:success)
     end
@@ -31,7 +31,7 @@ RSpec.describe "Admin::Statistics", type: :request do
       sign_in admin_user
     end
 
-    it 'コメントの統計詳細ページにアクセスできること' do
+    it 'allows access to the comment statistics detail page' do
       get '/admin/statistics/comments'
       expect(response).to have_http_status(:success)
     end
@@ -42,7 +42,7 @@ RSpec.describe "Admin::Statistics", type: :request do
       sign_in admin_user
     end
 
-    it 'お気に入りリストの統計詳細ページにアクセスできること' do
+    it 'allows access to the favorite article list statistics detail page' do
       get '/admin/statistics/favorite_article_lists'
       expect(response).to have_http_status(:success)
     end
@@ -53,7 +53,7 @@ RSpec.describe "Admin::Statistics", type: :request do
       sign_in admin_user
     end
 
-    it 'タグの統計詳細ページにアクセスできること' do
+    it 'allows access to the tag statistics detail page' do
       get '/admin/statistics/tags'
       expect(response).to have_http_status(:success)
     end
