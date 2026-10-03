@@ -12,7 +12,7 @@ RSpec.describe UploadQuotaService, type: :service do
             @key = "upload_images_quota:#{user.id}:#{Date.today}"
         end
 
-        it '本日の記事画像未投稿の場合0が返ること' do
+        it 'returns 0 when no article images have been uploaded today' do
             Timecop.freeze(Time.now) do
                 result = service.current
 
@@ -20,7 +20,7 @@ RSpec.describe UploadQuotaService, type: :service do
             end
         end
 
-        it '本日投稿した記事の画像ファイルサイズが4MBの時は4が返ること' do
+        it 'returns 4 MB when 4 MB worth of article images have been uploaded today' do
             Timecop.freeze(Time.now) do
                 $redis.set(@key, 4.megabytes)
 
@@ -40,7 +40,7 @@ RSpec.describe UploadQuotaService, type: :service do
             @key = "upload_images_quota:#{user.id}:#{Date.today}"
         end
 
-        it '本日の記事画像未投稿の場合10MBが返ること' do
+        it 'returns 10 MB when no article images have been uploaded today' do
             Timecop.freeze(Time.now) do
                 result = service.remaining
 
@@ -48,7 +48,7 @@ RSpec.describe UploadQuotaService, type: :service do
             end
         end
 
-        it '本日投稿した記事画像のファイルサイズが4MBの時6MBが返ること' do
+        it 'returns 6 MB when 4 MB worth of article images have been uploaded today' do
             Timecop.freeze(Time.now) do
                 $redis.set(@key, 4.megabytes)
 
@@ -68,7 +68,7 @@ RSpec.describe UploadQuotaService, type: :service do
             @key = "upload_images_quota:#{user.id}:#{Date.today}"
         end
 
-        it '本日の記事画像未投稿の場合10が返ること' do
+        it 'returns 10 when no article images have been uploaded today' do
             Timecop.freeze(Time.now) do
                 result = service.remaining_mb
 
@@ -76,7 +76,7 @@ RSpec.describe UploadQuotaService, type: :service do
             end
         end
 
-        it '本日投稿した記事画像のファイルサイズが4MBの時6が返ること' do
+        it 'returns 6 when 4 MB worth of article images have been uploaded today' do
             Timecop.freeze(Time.now) do
                 $redis.set(@key, 4.megabytes)
 
@@ -88,7 +88,7 @@ RSpec.describe UploadQuotaService, type: :service do
     end
 
     describe '#track!' do
-        context 'When the total file size is within 10MB' do
+        context 'when the total file size is within 10 MB' do
             let(:service) { described_class.new(user: user) }
 
             before do
@@ -97,7 +97,7 @@ RSpec.describe UploadQuotaService, type: :service do
                 @key = "upload_images_quota:#{user.id}:#{Date.today}"
             end
 
-            it 'trueが返ること' do
+            it 'returns true' do
                 Timecop.freeze(Time.now) do
                     result = service.track!(1.megabytes)
 
@@ -105,7 +105,7 @@ RSpec.describe UploadQuotaService, type: :service do
                 end
             end
 
-            it '本日の記事画像のファイルサイズがインクリメントされていて、ttlが設定されていること' do
+            it 'increments the uploaded article image file size and sets a TTL' do
                 Timecop.freeze(Time.now) do
                     service.track!(1.megabytes)
 
@@ -118,7 +118,7 @@ RSpec.describe UploadQuotaService, type: :service do
             end
         end
 
-        context 'When the total file size exceeds 10MB' do
+        context 'when the total file size exceeds 10 MB' do
             let!(:service) { described_class.new(user: user) }
 
             before do
@@ -127,7 +127,7 @@ RSpec.describe UploadQuotaService, type: :service do
                 @key = "upload_images_quota:#{user.id}:#{Date.today}"
             end
 
-            it 'falseが返ること' do
+            it 'returns false' do
                 Timecop.freeze(Time.now) do
                     $redis.set(@key, 10.megabytes)
                     $redis.expire(@key, (Date.tomorrow.beginning_of_day - Time.current).to_i)
