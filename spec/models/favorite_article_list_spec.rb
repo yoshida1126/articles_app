@@ -5,28 +5,28 @@ RSpec.describe FavoriteArticleList, type: :model do
 
   describe 'validation' do
     context 'with valid attributes' do
-      it 'バリデーションが通ること' do
+      it 'is valid' do
         expect(favorite_article_list).to be_valid
       end
 
-      it '20文字のタイトルでバリデーションが通ること(境界値)' do
+      it 'is valid with a 20-character title' do
         favorite_article_list.list_title = 'a' * 20
         expect(favorite_article_list).to be_valid
       end
     end
 
     context 'with invalid attributes' do
-      it 'ユーザーidがないとバリデーションが通らないこと' do
+      it 'is invalid without a user' do
         favorite_article_list.user_id = nil
         expect(favorite_article_list).to_not be_valid
       end
 
-      it 'タイトルがないとバリデーションが通らないこと' do
+      it 'is invalid without a title' do
         favorite_article_list.list_title = nil
         expect(favorite_article_list).to_not be_valid
       end
 
-      it 'タイトルが21文字以上だとバリデーションが通らないこと' do
+      it 'is invalid with a title longer than 20 characters' do
         favorite_article_list.list_title = 'a' * 21
         expect(favorite_article_list).to_not be_valid
       end
