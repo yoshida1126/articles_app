@@ -4,14 +4,14 @@ RSpec.describe ApplicationHelper, type: :helper do
   describe '#full_title' do
 
     context 'when page_title is not provided' do
-      it 'タイトルだけ返すこと' do
+      it 'returns the site title' do
         result = helper.full_title
         expect(result).to eq 'Articles'
       end
     end
 
     context 'when page_title is provided' do
-      it 'サイト名が付加されたタイトルを返すこと' do
+      it 'returns the page title with the site title appended' do
         result = helper.full_title('TEST')
         expect(result).to eq 'TEST | Articles'
       end
@@ -24,7 +24,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
       context 'when value is the confirmation message' do
 
-        it 'warningを返すこと' do
+        it 'returns "warning"' do
           value = 'You have to confirm your email address before continuing.'
           result = helper.bootstrap_alert('alert', value)
           expect(result).to eq 'warning'
@@ -33,7 +33,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
       context 'when value is any other message' do
 
-        it 'dangerを返すこと' do
+        it 'returns "danger"' do
           result = helper.bootstrap_alert('alert', 'test')
           expect(result).to eq 'danger'
         end
@@ -43,7 +43,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     context 'when key is "notice"' do
       context 'when value is the activation message' do
 
-        it 'infoを返すこと' do
+        it 'returns "info"' do
           value = 'Please check your email to active your account.'
           result = helper.bootstrap_alert('notice', value)
           expect(result).to eq 'info'
@@ -52,7 +52,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
       context 'when value is any other message' do
 
-        it 'successを返すこと' do
+        it 'returns "success"' do
           result = helper.bootstrap_alert('notice', 'test')
           expect(result).to eq 'success'
         end
@@ -72,7 +72,7 @@ RSpec.describe ApplicationHelper, type: :helper do
       context 'when action is "new" or "edit"' do
         let(:action_name) { 'new' }
 
-        it 'falseを返すこと' do
+        it 'returns false' do
           expect(helper.show_header?).to be false
         end
       end
@@ -87,7 +87,7 @@ RSpec.describe ApplicationHelper, type: :helper do
           assign(:draft, draft)
         end
 
-        it 'falseを返すこと' do
+        it 'returns false' do
           expect(helper.show_header?).to be false
         end
       end
@@ -100,7 +100,7 @@ RSpec.describe ApplicationHelper, type: :helper do
           assign(:draft, draft)
         end
 
-        it 'trueを返すこと' do
+        it 'returns true' do
           expect(helper.show_header?).to be true
         end
       end
@@ -110,7 +110,7 @@ RSpec.describe ApplicationHelper, type: :helper do
       let(:controller_name) { 'articles' }
       let(:action_name) { 'index' }
 
-      it 'trueを返すこと' do
+      it 'returns true' do
         expect(helper.show_header?).to be true
       end
     end
