@@ -13,14 +13,14 @@ RSpec.describe LikeRateLimiterService, type: :service do
             $redis.flushdb
         end
 
-       it '最後にいいねしてから3秒以内だった場合falseが返ること' do
+       it 'returns false when less than 3 seconds have passed since the last like' do
            Timecop.freeze(Time.now) do
                service.record_like_time
                expect(service.allowed?).to be false
             end
         end
 
-        it '最後にいいねしてから3秒経っている場合はtrueが返ること' do
+        it 'returns true when 3 seconds have passed since the last like' do
             Timecop.freeze(Time.now) do
                 service.record_like_time
             end
@@ -39,14 +39,14 @@ RSpec.describe LikeRateLimiterService, type: :service do
         
         before { $redis.flushdb }
 
-        it 'いいね直後は設定した制限時間を返すこと' do
+        it 'returns the configured rate limit duration immediately after liking' do
             Timecop.freeze(Time.now) do
                 service.record_like_time
                 expect(service.remaining_time).to eq(rate_limit_seconds)
             end
         end
 
-        it '2秒後は制限時間 - 2秒（誤差±1）を返すこと' do
+        it 'returns the remaining time minus 2 seconds after 2 seconds have passed, with a tolerance of ±1 second' do
             Timecop.freeze(Time.now) do
                 service.record_like_time
             end
@@ -56,7 +56,7 @@ RSpec.describe LikeRateLimiterService, type: :service do
             end
         end
 
-        it '3秒以上経っていれば0を返すこと' do
+        it 'returns 0 when 3 seconds or more have passed' do
             Timecop.freeze(Time.now) do
                 service.record_like_time
             end
@@ -66,7 +66,7 @@ RSpec.describe LikeRateLimiterService, type: :service do
             end
         end
 
-        it 'まだ一度もいいねしていない場合は0を返すこと' do
+        it 'returns 0 when the user has never liked an article' do
             expect(service.remaining_time).to eq(0)
         end
     end
@@ -78,7 +78,7 @@ RSpec.describe LikeRateLimiterService, type: :service do
 
         before { $redis.flushdb }
 
-        it 'いいねした時間がRedisに記録されること' do
+        it 'records the like timestamp in Redis' do
             Timecop.freeze(Time.now) do
                 frozen_now = Time.now.to_i
                 service.record_like_time
