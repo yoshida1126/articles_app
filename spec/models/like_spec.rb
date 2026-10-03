@@ -5,20 +5,20 @@ RSpec.describe Like, type: :model do
   let(:other_like) { FactoryBot.build(:like) }
 
   describe 'validation' do
-    context 'logged in user' do
-      it 'いいねできること' do
+    context 'when the user is logged in' do
+      it 'is valid' do
         expect(like).to be_valid
       end
 
-      it 'ユーザーはひとつの記事にひとつしかいいねできないこと' do
+      it 'does not allow a user to like the same article more than once' do
         other_like.user = like.user
         other_like.article = like.article
         expect(other_like).to_not be_valid
       end
     end
 
-    context 'non logged in user' do
-      it 'いいねできないこと' do
+    context 'when the user is not logged in' do
+      it 'is invalid' do
         like.user = nil
         expect(like).to_not be_valid
       end
