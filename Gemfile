@@ -50,10 +50,6 @@ end
 
 group :test do
   gem 'capybara', '3.39.2'
-  gem 'guard', '2.18.0'
-  gem 'guard-minitest', '2.4.6'
-  gem 'minitest', '5.18.0'
-  gem 'minitest-reporters', '1.6.0'
   gem 'rails-controller-testing', '1.0.5'
   gem 'selenium-webdriver'
   gem 'timecop'
