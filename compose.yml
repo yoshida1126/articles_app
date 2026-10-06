@@ -26,6 +26,7 @@ services:
       - .:/articles_app:cached
       - public:/articles_app/public 
       - tmp-data:/articles_app/tmp/sockets
+      - bundle:/usr/local/bundle
     ports:
       - 3000:3000
     depends_on:
@@ -62,6 +63,7 @@ services:
       - ./.env 
     volumes:
       - .:/articles_app/
+      - bundle:/usr/local/bundle
     networks:
       - articles-network
 
@@ -75,6 +77,7 @@ services:
       - articles-network
 
 volumes:
+  bundle:
   mysql_data:
   public:
   tmp-data:
