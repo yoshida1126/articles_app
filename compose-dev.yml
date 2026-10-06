@@ -29,6 +29,7 @@ services:
       - chrome
     volumes:
       - .:/articles_app/  
+      - bundle:/usr/local/bundle
     environment:
       SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
     env_file:
@@ -49,6 +50,7 @@ services:
       - ./.env 
     volumes:
       - .:/articles_app/
+      - bundle:/usr/local/bundle
     networks:
       - articles-net
     
@@ -79,6 +81,7 @@ networks:
     external: true
 
 volumes:
+  bundle:
   mysql_data:
   redis-data:
     driver: local
