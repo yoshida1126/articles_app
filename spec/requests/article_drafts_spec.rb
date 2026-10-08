@@ -256,21 +256,52 @@ RSpec.describe 'ArticleDrafts', type: :request do
     end
   end
   
-  describe '#edit' do 
+  describe '#edit' do
 
-    context 'when logged in as the owner' do 
-      before do 
-        sign_in (user)
-        get "/users/#{ user.id }/article_drafts/#{ article_draft.id }/edit"
-      end 
+    let!(:article) do
+      Article.create(
+        title: "test",
+        content: "test",
+        tag_list: "test",
+        user_id: user.id,
+        article_draft: article_draft
+      )
+    end
 
-      it 'allows access to the draft edit page' do 
-        expect(response).to have_http_status(:success)
+    context 'when logged in as the owner' do
+      context 'when the draft has no associated article' do
+        before do
+          sign_in (user)
+          article_draft.paper_trail.save_with_version
+          get "/users/#{ user.id }/article_drafts/#{ article_draft.id }/edit"
+        end
+
+        it 'allows access to the draft edit page' do
+          expect(response).to have_http_status(:success)
+        end
+
+        it 'assigns the article and a versions array' do
+          expect(assigns(:article)).to be_present
+          expect(assigns(:versions)).to be_present
+        end
+      end
+
+      context 'when the draft has an associated article' do
+        before do
+          sign_in (user)
+          article_draft.paper_trail.save_with_version
+          get "/users/#{ user.id }/article_drafts/#{ article.article_draft.id }/edit"
+        end
+
+        it 'assigns the article and a versions array' do
+          expect(assigns(:article)).to be_present
+          expect(assigns(:versions)).to be_present
+        end
       end
     end
 
     context 'when logged in as another user' do
-      before do 
+      before do
         sign_in other_user
         get "/users/#{ user.id }/article_drafts/#{ article_draft.id }/edit"
       end
@@ -280,16 +311,16 @@ RSpec.describe 'ArticleDrafts', type: :request do
       end
     end
 
-    context 'when not logged in' do 
-      before do 
+    context 'when not logged in' do
+      before do
         get "/users/#{ user.id }/article_drafts/#{ article_draft.id }/edit"
       end
 
-      it 'does not allow access to the draft edit page' do 
+      it 'does not allow access to the draft edit page' do
         expect(response).to have_http_status(:see_other)
-      end 
+      end
 
-      it 'redirects to the login page' do 
+      it 'redirects to the login page' do
         expect(response).to redirect_to login_path
       end
     end
