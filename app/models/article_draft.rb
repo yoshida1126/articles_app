@@ -1,6 +1,9 @@
 class ArticleDraft < ApplicationRecord
   has_one_attached :image # 記事のヘッダー画像
   has_many_attached :article_images # 記事本文に使う画像
+
+  has_paper_trail # 記事編集中の変更履歴を管理する
+
   belongs_to :user
   belongs_to :article, optional: true
 
