@@ -42,6 +42,7 @@ class ArticleDraftsController < ApplicationController
       render 'article_drafts/new', status: :unprocessable_entity
     else
       path = @article.published ? current_user : private_articles_user_path(current_user)
+      @draft.versions.destroy_all
       redirect_to path, notice: notice_or_errors
     end
   end
