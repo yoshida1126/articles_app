@@ -30,6 +30,7 @@ class ArticleDraftsController < ApplicationController
     @draft = DraftArticleSyncService.new(draft: @draft, action: :save_draft, user: current_user, params: params).call
 
     @draft.save!(validate: false)
+    @draft.versions.destroy_all
     redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
   end
 

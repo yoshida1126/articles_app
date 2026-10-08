@@ -73,28 +73,65 @@ RSpec.describe 'ArticleDrafts', type: :request do
     end
   end
 
-  describe '#save_draft' do 
+  describe '#save_draft' do
 
-    context 'with valid information when logged in as the owner' do 
-      before do
-        @valid_draft_params = {
-          title: "test",
-          content: "test",
-          tag_list: "test",
-        }
-        sign_in user 
-        get "/users/#{ user.id }/article_drafts/new"
-      end 
+    context 'with valid information when logged in as the owner' do
 
-      it 'successfully saves the draft' do
-        expect {
-          post save_draft_user_article_drafts_path, params: { user: user, article_draft: @valid_draft_params }
-        }.to change(ArticleDraft, :count).by 1
-      end 
+      context 'when creating a new draft without draft_id' do
+        before do
+          @valid_draft_params = {
+            title: "test",
+            content: "test",
+            tag_list: "test",
+          }
+          sign_in user
+          get "/users/#{ user.id }/article_drafts/new"
+        end
 
-      it 'redirects to the drafts tab on the profile page after saving the draft' do 
-        post save_draft_user_article_drafts_path, params: { user: user, article_draft: @valid_draft_params }
-        expect(response).to redirect_to drafts_user_path(user)
+        subject do 
+          post save_draft_user_article_drafts_path,
+          params: { 
+            user: user,
+            article_draft: @valid_draft_params
+          } 
+        end
+
+        it 'successfully saves the draft' do
+          expect { subject }.to change(ArticleDraft, :count).by 1
+        end
+
+        it 'redirects to the drafts tab on the profile page after saving the draft' do 
+          subject
+          expect(response).to redirect_to drafts_user_path(user)
+        end
+      end
+
+      context 'when saving an existing draft with draft_id' do
+        before do
+          @valid_draft_params = {
+            title: "test",
+            content: "test",
+            tag_list: "test",
+            draft_id: article_draft.id
+          }
+          article_draft.paper_trail.save_with_version
+          sign_in user
+          get "/users/#{ user.id }/article_drafts/new"
+        end
+
+        subject do
+          post save_draft_user_article_drafts_path,
+          params: {
+            user: user,
+            article_draft: @valid_draft_params
+          }
+        end
+
+        it 'has no version history after saving the draft' do
+          expect(article_draft.versions).not_to be_empty
+          subject
+          expect(article_draft.reload.versions).to be_empty
+        end
       end
     end
 
