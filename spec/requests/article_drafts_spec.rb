@@ -42,11 +42,19 @@ RSpec.describe 'ArticleDrafts', type: :request do
   describe '#new' do
 
     context 'when logged in as the owner' do
-      it 'allows access to the article creation page' do
+      before do
         sign_in user
         get "/users/#{ user.id }/article_drafts/new"
+      end
+
+      it 'allows access to the article creation page' do
         expect(response).to have_http_status(:success)
-      end 
+      end
+
+      it 'assigns the draft and an empty versions array' do
+        expect(assigns(:draft)).to be_present
+        expect(assigns(:versions)).to eq([])
+      end
     end
 
     context 'when logged in as another user'  do
