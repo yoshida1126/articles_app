@@ -326,10 +326,11 @@ RSpec.describe 'ArticleDrafts', type: :request do
     end
   end
 
-  describe '#update_draft' do 
+  describe '#update_draft' do
 
     context 'with valid information when logged in as the owner' do 
       before do
+        article_draft.paper_trail.save_with_version
         sign_in (user)
         @valid_draft_params = {
           title: "TEST",
@@ -340,16 +341,20 @@ RSpec.describe 'ArticleDrafts', type: :request do
         patch "/users/#{ user.id }/article_drafts/#{ article_draft.id}/update_draft", params: { user: user, article_draft: @valid_draft_params }
       end
 
-      it 'successfully updates the draft' do 
-        article_draft.reload 
+      it 'successfully updates the draft' do
+        article_draft.reload
         expect(article_draft.title).to eq @valid_draft_params[:title]
         expect(article_draft.content).to eq @valid_draft_params[:content]
-      end 
+      end
+
+      it 'has no version history after updating the draft' do
+        expect(article_draft.versions).not_to be_empty
+      end
 
       it 'redirects to the drafts tab on the profile page after updating the draft' do
         expect(response).to redirect_to drafts_user_path(user)
       end
-    end 
+    end
 
     context 'when logged in as another user' do
       before do
