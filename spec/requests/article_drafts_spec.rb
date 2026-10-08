@@ -348,7 +348,7 @@ RSpec.describe 'ArticleDrafts', type: :request do
       end
 
       it 'has no version history after updating the draft' do
-        expect(article_draft.versions).not_to be_empty
+        expect(article_draft.versions).to be_empty
       end
 
       it 'redirects to the drafts tab on the profile page after updating the draft' do
@@ -374,13 +374,14 @@ RSpec.describe 'ArticleDrafts', type: :request do
   end 
 
   describe '#update' do
-    context 'with valid information when logged in as the owner' do 
+    context 'with valid information when logged in as the owner' do
       let!(:article) { FactoryBot.create(:article) }
       let!(:article_draft) do
         FactoryBot.create(:article_draft, article: article, user: user)
       end
 
       before do
+        article_draft.paper_trail.save_with_version
         sign_in (user)
         @valid_draft_params = {
           title: "TEST",
@@ -391,16 +392,20 @@ RSpec.describe 'ArticleDrafts', type: :request do
         patch "/users/#{ user.id }/article_drafts/#{ article_draft.id }", params: { article_draft: @valid_draft_params, article: { published: "true" } }
       end
 
-      it 'successfully updates the article' do 
-        article.reload 
+      it 'successfully updates the article' do
+        article.reload
         expect(article.title).to eq @valid_draft_params[:title]
         expect(article.content).to eq @valid_draft_params[:content]
-      end 
+      end
+
+      it 'has no version history after updating the draft' do
+        expect(article_draft.versions).to be_empty
+      end
 
       it 'redirects to the profile page after updating the article' do
         expect(response).to redirect_to user_path(user)
       end
-    end 
+    end
 
     context 'when logged in as another user' do
       let!(:article) { FactoryBot.create(:article) }

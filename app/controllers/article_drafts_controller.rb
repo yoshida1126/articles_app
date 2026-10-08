@@ -57,6 +57,7 @@ class ArticleDraftsController < ApplicationController
     @draft = DraftArticleSyncService.new(draft: @draft, action: :update_draft, user: current_user, params: params).call
 
     if @draft.save(validate: false)
+      @draft.versions.destroy_all
       redirect_to drafts_user_path(current_user), notice: '下書きを編集しました'
     else
       @remaining_mb = UploadQuotaService.new(user: current_user).remaining_mb
@@ -72,6 +73,7 @@ class ArticleDraftsController < ApplicationController
       set_upload_quota_data
       render 'article_drafts/edit', status: :unprocessable_entity
     else
+      @draft.versions.destroy_all
       path = @article.published ? current_user : private_articles_user_path(current_user)
       redirect_to path, notice: notice_or_errors
     end
