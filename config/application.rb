@@ -19,6 +19,10 @@ module ArticlesApp
 
     config.active_record.default_timezone = :local
 
+    config.active_record.yaml_column_permitted_classes = [
+      Time
+    ]
+
     config.active_job.queue_adapter = :sidekiq
 
     Faker::Config.locale = :en
