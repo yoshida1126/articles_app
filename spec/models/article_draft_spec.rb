@@ -46,18 +46,8 @@ RSpec.describe ArticleDraft, type: :model do
         expect(article_draft).to_not be_valid
       end
 
-      it 'is invalid without a title' do
-        article_draft.title = nil
-        expect(article_draft).to_not be_valid
-      end
-
       it 'is invalid with a title longer than 50 characters' do
         article_draft.title = 'a' * 51
-        expect(article_draft).to_not be_valid
-      end
-
-      it 'is invalid without content' do
-        article_draft.content = ''
         expect(article_draft).to_not be_valid
       end
     end

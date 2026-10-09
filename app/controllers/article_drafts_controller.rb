@@ -10,13 +10,13 @@ class ArticleDraftsController < ApplicationController
   end
 
   def new
-    @draft = ArticleDraft.new
+    @draft = ArticleDraft.create!(user: current_user)
   end
 
   def autosave_draft
     @draft, remaining_mb, max_size = DraftArticleSyncService.new(draft: @draft, action: :autosave_draft, user: current_user, params: params).call
 
-    @draft.save(validate: false)
+    @draft.save
     render json: {
       status: 'ok',
       id: @draft.id,
@@ -29,7 +29,7 @@ class ArticleDraftsController < ApplicationController
   def save_draft
     @draft = DraftArticleSyncService.new(draft: @draft, action: :save_draft, user: current_user, params: params).call
 
-    @draft.save!(validate: false)
+    @draft.save
     @draft.versions.destroy_all
     redirect_to drafts_user_path(current_user), notice: '下書きを保存しました'
   end
@@ -56,7 +56,7 @@ class ArticleDraftsController < ApplicationController
   def update_draft
     @draft = DraftArticleSyncService.new(draft: @draft, action: :update_draft, user: current_user, params: params).call
 
-    if @draft.save(validate: false)
+    if @draft.save
       @draft.versions.destroy_all
       redirect_to drafts_user_path(current_user), notice: '下書きを編集しました'
     else
