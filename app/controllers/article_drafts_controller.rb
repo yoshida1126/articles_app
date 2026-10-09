@@ -3,14 +3,14 @@ class ArticleDraftsController < ApplicationController
   before_action :authorize_user!, only: %i[new save_draft autosave_draft commit update_draft update]
   before_action :correct_user, only: %i[preview autosave_draft edit update_draft update destroy]
   before_action :set_upload_quota_data, only: %i[new edit]
-  before_action :initialize_versions, only: %i[new edit]
 
   def preview
     @tags = @draft.tag_counts_on(:tags)
   end
 
   def new
-    @draft = ArticleDraft.create!(user: current_user)
+    @draft = ArticleDraft.create!(user: current_user, content: '')
+    initialize_versions
   end
 
   def autosave_draft
@@ -51,6 +51,8 @@ class ArticleDraftsController < ApplicationController
     @user = current_user
 
     @article = @draft&.article
+
+    initialize_versions
   end
 
   def update_draft
@@ -94,6 +96,13 @@ class ArticleDraftsController < ApplicationController
   end
 
   def initialize_versions
-    @versions = @draft&.versions || []
+    if @draft.versions.empty?
+      @draft.paper_trail.save_with_version
+      @versions = [@draft.versions.last.reify&.content]
+    else
+      @versions = @draft&.versions&.map do |version|
+        version.reify&.content
+      end
+    end
   end
 end
