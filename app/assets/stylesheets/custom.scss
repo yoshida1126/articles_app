@@ -2000,6 +2000,7 @@ ul.article-comment-option {
 
 .toolbar {
   display: flex;
+  align-items: center;
   background-color: #99b9c2;
   height: 30px;
   border-top-left-radius: 5px;
@@ -2046,9 +2047,6 @@ ul.article-comment-option {
   display: flex;
   justify-content: space-between;
   margin-left: auto;
-  .fa-book-open {
-    font-size: 1.5rem;
-  }
 }
 
 #scroll-synch {
@@ -2110,6 +2108,27 @@ ul.article-comment-option {
 #markdown.display {
   width: 570px;
   height: 300px;
+}
+
+#version-control {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 15px;
+  height: 30px;
+
+  .undo-change-btn, .redo-change-btn {
+    padding: 5px 10px;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s ease;
+    &:hover {
+      background-color: #96abaf;
+    }
+
+    .fa-rotate-left, .redo-change-btn {
+      display: inline-block;
+    }
+  }
 }
 
 #diff-btn {
