@@ -1,4 +1,12 @@
-<%= form_with model: @draft, url: save_draft_user_article_drafts_path(current_user), method: 'post', id: "article-draft-form" do |f| %>
+<%= form_with model: @draft,
+    url: save_draft_user_article_drafts_path(current_user),
+    method: 'post',
+    id: "article-draft-form",
+    data: {
+      controller: "history",
+      history_versions_value: @versions.to_json,
+      action: "draft-async-save:version-added->history#addVersion"
+    } do |f| %>
 
   <% content_for :form_submit_button do %>
     <%= f.submit '送信する', class: "btn btn-primary" %>
@@ -59,6 +67,7 @@
 
   <div
     data-controller="draft-async-save"
+    data-action="history:restore->draft-async-save#restoreHistory"
     data-draft-async-save-user-id-value="<%= current_user.id %>"
     data-draft-async-save-draft-id-value="<%= @draft&.id %>"
     data-draft-async-save-csrf-token-value="<%= form_authenticity_token %>"
@@ -113,10 +122,20 @@
       <% end %>
       <div class="toolbar-icon">
         <div id="version-control">
-          <div id="undo-change-btn" class="undo-change-btn btn">
+          <div
+            id="undo-change-btn"
+            class="undo-change-btn btn"
+            data-action="click->history#navigate_history"
+            data-direction="-1"
+          >
             <i class="fa-solid fa-rotate-left"></i>
           </div>
-          <div id="redo-change-btn" class="redo-change-btn btn">
+          <div 
+            id="redo-change-btn"
+            class="redo-change-btn btn"
+            data-action="click->history#navigate_history"
+            data-direction="1"
+          >
             <i class="fa-solid fa-rotate-right"></i>
           </div>
         </div>
@@ -158,10 +177,6 @@
 
     <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
     <%= f.hidden_field :draft_id, id: 'draft-id', value: @draft&.id %>
-    <div
-      data-controller="history"
-      data-history-versions-value="<%= @versions.to_json %>">
-    </div>
   </div>
 
   <%= hidden_field_tag 'article[published]', params.dig(:article, :published), id: 'published-input' %>

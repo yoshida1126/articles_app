@@ -4,6 +4,7 @@ module ArticleDraftParams
             params[:article_draft].delete(:images)
             params[:article_draft].delete(:blob_signed_ids)
             params[:article_draft].delete(:draft_id)
+            params[:article_draft].delete(:skip_history)
 
             params.require(:article_draft).permit(:title, :content, :image, :tag_list, article_images: [])
         end

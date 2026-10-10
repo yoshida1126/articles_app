@@ -14,15 +14,26 @@ class ArticleDraftsController < ApplicationController
   end
 
   def autosave_draft
+    skip_history = ActiveModel::Type::Boolean.new.cast(
+      params.dig(:article_draft, :skip_history)
+    )
+    
     @draft, remaining_mb, max_size = DraftArticleSyncService.new(draft: @draft, action: :autosave_draft, user: current_user, params: params).call
 
     @draft.save
+
+    unless skip_history
+      @draft.paper_trail.save_with_version
+      @version = @draft.versions.last.reify&.content
+    end
+
     render json: {
       status: 'ok',
       id: @draft.id,
       remaining_mb: remaining_mb,
       max_size: max_size,
-      updated_at: "#{@draft.updated_at.strftime("%Y-%m-%d %H:%M:%S")}"
+      updated_at: "#{@draft.updated_at.strftime("%Y-%m-%d %H:%M:%S")}",
+      version: @version
     }
   end
 

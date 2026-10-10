@@ -7,6 +7,7 @@ export default class extends Controller {
     this.timeout = null
     this.saving = false
     this.retryNeeded = false
+    this.skipHistory = false
 
     this.changedFields = new Set()
 
@@ -25,6 +26,8 @@ export default class extends Controller {
   }
 
   processInput(event) {
+    if (this.skipHistory) return
+
     this.changedFields.add(event.target.id)
 
     if (this.timeout) clearTimeout(this.timeout)
@@ -70,6 +73,14 @@ export default class extends Controller {
           this.fadeOutIn(this.lastSaveDateField, `最終保存: ${data.updated_at}`)
         }
 
+        if (data.version != null) {
+          this.dispatch("version-added", {
+            detail: { version: data.version }
+          })
+        } else {
+          this.skipHistory = false
+        }
+
         this.changedFields.clear()
       } else {
         this.retryNeeded = true
@@ -80,14 +91,27 @@ export default class extends Controller {
 
       if (this.retryNeeded) {
         this.retryNeeded = false
-        asyncSave()
+        this.asyncSave()
       }
     })
+  }
+
+  restoreHistory(event) {
+    this.skipHistory = true
+
+    this.changedFields.add('markdown')
+
+    if (this.timeout) clearTimeout(this.timeout)
+
+    this.timeout = setTimeout(() => {
+      this.asyncSave()
+    }, 1000)
   }
 
   buildFormDataFromChangedFields() {
     const formData = new FormData()
     formData.append("id", this.draftIdValue || "")
+    formData.append("article_draft[skip_history]", this.skipHistory)
 
     this.changedFields.forEach(fieldId => {
       if (fieldId === "title") {
@@ -105,6 +129,7 @@ export default class extends Controller {
         formData.append("article_draft[blob_signed_ids]", this.blobField.value)
       }
     })
+
     return formData
   }
 
