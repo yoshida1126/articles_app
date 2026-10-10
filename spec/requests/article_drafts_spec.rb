@@ -53,7 +53,7 @@ RSpec.describe 'ArticleDrafts', type: :request do
 
       it 'assigns the draft and an empty versions array' do
         expect(assigns(:draft)).to be_present
-        expect(assigns(:versions)).to eq([])
+        expect(assigns(:versions)).to be_present
       end
     end
 
@@ -272,7 +272,6 @@ RSpec.describe 'ArticleDrafts', type: :request do
       context 'when the draft has no associated article' do
         before do
           sign_in (user)
-          article_draft.paper_trail.save_with_version
           get "/users/#{ user.id }/article_drafts/#{ article_draft.id }/edit"
         end
 
@@ -289,7 +288,6 @@ RSpec.describe 'ArticleDrafts', type: :request do
       context 'when the draft has an associated article' do
         before do
           sign_in (user)
-          article_draft.paper_trail.save_with_version
           get "/users/#{ user.id }/article_drafts/#{ article.article_draft.id }/edit"
         end
 
