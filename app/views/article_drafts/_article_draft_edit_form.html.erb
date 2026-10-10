@@ -194,8 +194,12 @@
         </div>
       </div>
     </div>
-      <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
-      <%= f.hidden_field :draft_id, id: 'draft-id', value: @draft.id %>
+    <%= f.hidden_field :blob_signed_ids, id: 'blob', value: "[]" %>
+    <%= f.hidden_field :draft_id, id: 'draft-id', value: @draft.id %>
+    <div
+      data-controller="history"
+      data-history-versions-value="<%= @versions.to_json %>">
+    </div>
   </div>
 
   <%= hidden_field_tag 'article[published]', params.dig(:article, :published), id: 'published-input' %>
