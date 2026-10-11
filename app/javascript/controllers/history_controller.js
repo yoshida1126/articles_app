@@ -7,6 +7,14 @@ export default class extends Controller {
   connect() {
     this.currentIndex = this.versionsValue.length - 1
     this.contentField = document.querySelector('#markdown')
+    this.undoBtn = document.querySelector('#undo-change-btn')
+    this.redoBtn = document.querySelector('#redo-change-btn')
+
+    this.updateHistoryNavigationButtons()
+  }
+
+  initialize() {
+    this.updateHistoryNavigationButtons = this.updateHistoryNavigationButtons.bind(this)
   }
 
   navigate_history(event) {
@@ -33,9 +41,9 @@ export default class extends Controller {
       this.contentField.dispatchEvent(
         new Event("input", { bubbles: true })
       )
-    } else {
-      console.log("これ以上進む/戻ることはできません。", nextIndex)
     }
+
+    this.updateHistoryNavigationButtons()
   }
 
   addVersion(event) {
@@ -45,6 +53,28 @@ export default class extends Controller {
 
     this.currentIndex = this.versionsValue.length - 1
 
-    console.log(this.currentIndex)
+    this.updateHistoryNavigationButtons()
+  }
+
+  updateHistoryNavigationButtons() {
+    if (this.currentIndex >= 1) {
+      this.undoBtn.style.color = '#fff'
+      this.undoBtn.style.cursor = 'pointer'
+      this.undoBtn.classList.add('bg-undo')
+    } else {
+      this.undoBtn.style.color = '#d6d6d6'
+      this.undoBtn.style.cursor = 'default'
+      this.undoBtn.classList.remove('bg-undo')
+    }
+    
+    if (this.currentIndex < this.versionsValue.length - 1) {
+      this.redoBtn.style.color = '#fff'
+      this.redoBtn.style.cursor = 'pointer'
+      this.redoBtn.classList.add('bg-redo')
+    } else {
+      this.redoBtn.style.color = '#d6d6d6'
+      this.redoBtn.style.cursor = 'default'
+      this.redoBtn.classList.remove('bg-redo')
+    }
   }
 }
