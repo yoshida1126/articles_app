@@ -170,6 +170,40 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         expect(page).to have_selector("img[alt='map.png']")
       end
     end
+
+    context 'when navigating through draft history' do
+      before do
+        sign_in user
+        visit new_user_article_draft_path(user)
+        fill_in 'article_draft[title]', with: 'Article Title'
+        attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
+        fill_in 'article_draft[tag_list]', with: 'article'
+      end
+
+      it 'does not add a history entry when changing fields other than content' do
+        expect(page).to have_no_css('.bg-undo')
+      end
+
+      it 'add a history entry when changing content' do
+        fill_in 'article_draft[content]', with: 'Article content'
+        expect(page).to have_css('.bg-undo')
+        find('#undo-change-btn').click
+        expect(page).to have_no_css('.bg-undo')
+        expect(page).to have_field(
+          'article_draft[content]',
+          with: ''
+        )
+
+        expect(page).to have_css('.bg-redo')
+        find('#redo-change-btn').click
+        expect(page).to have_css('.bg-undo')
+        expect(page).to have_no_css('.bg-redo')
+        expect(page).to have_field(
+         'article_draft[content]',
+          with: 'Article content'
+        )
+      end
+    end
   end
 
   describe '#commit' do
@@ -417,6 +451,65 @@ RSpec.describe 'ArticleDrafts', type: :system, js: true do
         expect(page).to have_selector "img[src$='map.png']"
       end
     end
+
+    context 'when navigating through draft history' do
+      let!(:article_draft) { FactoryBot.create(:article_draft, user: user)}
+      before do
+        sign_in user
+        visit edit_user_article_draft_path(user, article_draft)
+        fill_in 'article_draft[title]', with: 'Article Edit Title'
+        fill_in 'article_draft[tag_list]', with: 'article'
+      end
+
+      context 'when the draft has no history' do
+        it 'does not add a history entry when changing fields other than content' do
+          expect(page).to have_no_css('.bg-undo')
+        end
+
+        it 'add a history entry when changing content' do
+          attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
+          fill_in 'article_draft[content]', with: 'Article Edit content'
+          expect(page).to have_css('.bg-undo')
+          find('#undo-change-btn').click
+          expect(page).to have_no_css('.bg-undo')
+          expect(page).to have_field(
+            'article_draft[content]',
+            with: 'article'
+          )
+        
+          expect(page).to have_css('.bg-redo')
+          find('#redo-change-btn').click
+          expect(page).to have_css('.bg-undo')
+          expect(page).to have_no_css('.bg-redo')
+          expect(page).to have_field(
+           'article_draft[content]',
+            with: 'Article Edit content'
+          )
+        end
+      end
+
+      context 'when the draft has existing history' do
+        before do
+          attach_file 'article_draft[image]', 'spec/fixtures/earth.png', visible: false
+          fill_in 'article_draft[content]', with: 'Article content'
+          expect(page).to have_selector('#file-size-text', text: '残りファイルサイズ 9.88MB / 10MB')
+          page.accept_confirm do
+            visit root_path
+          end
+          visit edit_user_article_draft_path(user, article_draft)
+        end
+
+        it 'allows navigating through existing history when reopening the draft' do
+          expect(page).to have_css('.bg-undo')
+          find('#undo-change-btn').click
+          expect(page).to have_no_css('.bg-undo')
+          expect(page).to have_field(
+           'article_draft[content]',
+            with: 'article'
+          )
+        end
+      end
+    end 
   end
 
   describe '#update' do
