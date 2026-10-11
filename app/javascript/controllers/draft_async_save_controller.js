@@ -111,7 +111,6 @@ export default class extends Controller {
   buildFormDataFromChangedFields() {
     const formData = new FormData()
     formData.append("id", this.draftIdValue || "")
-    formData.append("article_draft[skip_history]", this.skipHistory)
 
     this.changedFields.forEach(fieldId => {
       if (fieldId === "title") {
@@ -130,6 +129,11 @@ export default class extends Controller {
       }
     })
 
+    if (!formData.has("article_draft[content]")) {
+      this.skipHistory = true
+    }
+
+    formData.append("article_draft[skip_history]", this.skipHistory)
     return formData
   }
 

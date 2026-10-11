@@ -20,7 +20,10 @@ module ArticlesApp
     config.active_record.default_timezone = :local
 
     config.active_record.yaml_column_permitted_classes = [
-      Time
+      Time,
+      Symbol,
+      ActsAsTaggableOn::DefaultParser,
+      ActsAsTaggableOn::TagList
     ]
 
     config.active_job.queue_adapter = :sidekiq
